@@ -3,6 +3,7 @@ import 'package:recycling_app/presentation/pages/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discover_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
 import 'package:recycling_app/presentation/pages/search_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -43,19 +44,19 @@ class _HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(FontAwesomeIcons.house),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(FontAwesomeIcons.magnifyingGlass),
             label: 'Suche',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: Icon(FontAwesomeIcons.bookOpen),
             label: 'Entdecken',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_work),
+            icon: Icon(FontAwesomeIcons.peopleGroup),
             label: 'Nachbarschaft',
           ),
         ],
