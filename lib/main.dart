@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:recycling_app/presentation/color_scheme.dart';
+import 'package:recycling_app/presentation/themes/appbar_theme.dart';
+import 'package:recycling_app/presentation/themes/button_theme.dart';
+import 'package:recycling_app/presentation/themes/color_scheme.dart';
+import 'package:recycling_app/presentation/themes/navigationbar_theme.dart';
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
+import 'package:recycling_app/presentation/themes/text_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,19 +51,21 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "RecyclingApp",
       theme: ThemeData(
-        //TODO: add AppBarTheme
-        //appBarTheme: const AppBarTheme(),
+        appBarTheme: const TopAppBarTheme(),
+        bottomNavigationBarTheme: const NavigationBarTheme(),
 
-        //TODO: add ButtonTheme
-        //buttonTheme: const ButtonThemeData(),
+        elevatedButtonTheme: const AppElevatedButtonTheme(),
+        floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
+        outlinedButtonTheme: const AppOutlinedButtonTheme(),
+        textButtonTheme: const AppTextButtonTheme(),
+        toggleButtonsTheme: const AppToggleButtonsTheme(),
 
         colorScheme: const AppColorScheme(),
 
         //TODO: add PageTransitionsTheme
         //pageTransitionsTheme: const PageTransitionsTheme(),
 
-        //TODO: add TextTheme
-        //textTheme: const TextTheme(),
+        textTheme: const AppTextTheme(),
       ),
       locale: _locale,
       supportedLocales: const [
