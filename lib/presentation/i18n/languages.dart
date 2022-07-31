@@ -6,5 +6,8 @@ abstract class Languages {
     return Localizations.of<Languages>(context, Languages);
   }
 
-  String get hello;
+  String get homePageName;
+  String get searchPageName;
+  String get discoveryPageName;
+  String get neighborhoodPageName;
 }

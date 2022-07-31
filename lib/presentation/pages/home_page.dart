@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discover_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
@@ -15,12 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final List<Widget> _pages = <Widget>[
-    const DashboardPage(title: "Home"),
-    const SearchPage(title: "Suche"),
-    const DiscoverPage(title: "Entdecken"),
-    const NeighborhoodPage(title: "Nachbarschaft"),
+    const DashboardPage(),
+    const SearchPage(),
+    const DiscoverPage(),
+    const NeighborhoodPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,22 +43,23 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
+        selectedIconTheme: const IconThemeData(size: 30),
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.house),
-            label: 'Home',
+            icon: const Icon(FontAwesomeIcons.house),
+            label: Languages.of(context)!.homePageName,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.magnifyingGlass),
-            label: 'Suche',
+            icon: const Icon(FontAwesomeIcons.magnifyingGlass),
+            label: Languages.of(context)!.searchPageName,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.bookOpen),
-            label: 'Entdecken',
+            icon: const Icon(FontAwesomeIcons.bookOpen),
+            label: Languages.of(context)!.discoveryPageName,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.peopleGroup),
-            label: 'Nachbarschaft',
+            icon: const Icon(FontAwesomeIcons.peopleGroup),
+            label: Languages.of(context)!.neighborhoodPageName,
           ),
         ],
         currentIndex: _selectedIndex,
