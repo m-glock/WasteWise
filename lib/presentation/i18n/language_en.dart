@@ -2,16 +2,19 @@ import 'languages.dart';
 
 class LanguageEn extends Languages {
 
-  @override
-  String get homePageName => "Home";
+  // app bar
+  @override String get notificationPageName => "Notifications";
+  @override String get profilePageName => "Profile";
 
-  @override
-  String get searchPageName => "Search";
+  // menu
+  @override String get contactPageName => "Contact";
+  @override String get imprintPageName => "Imprint";
+  @override String get settingsPageName => "Settings";
 
-  @override
-  String get discoveryPageName => "Discover";
-
-  @override
-  String get neighborhoodPageName => "Neighborhood";
+  // bottom navigation
+  @override String get homePageName => "Home";
+  @override String get searchPageName => "Search";
+  @override String get discoveryPageName => "Discover";
+  @override String get neighborhoodPageName => "Neighborhood";
 
 }

@@ -6,6 +6,16 @@ abstract class Languages {
     return Localizations.of<Languages>(context, Languages);
   }
 
+  // app bar
+  String get notificationPageName;
+  String get profilePageName;
+
+  // menu
+  String get imprintPageName;
+  String get contactPageName;
+  String get settingsPageName;
+
+  // bottom navigation
   String get homePageName;
   String get searchPageName;
   String get discoveryPageName;

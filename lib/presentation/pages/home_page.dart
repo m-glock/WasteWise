@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discover_page.dart';
+import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
+import 'package:recycling_app/presentation/pages/notification_page.dart';
+import 'package:recycling_app/presentation/pages/profile_page.dart';
 import 'package:recycling_app/presentation/pages/search_page.dart';
+import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,6 +42,62 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NotificationPage()),
+                )
+              },
+              icon: const Icon(FontAwesomeIcons.bell),
+          ),
+          IconButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                )
+              },
+            icon: const Icon(FontAwesomeIcons.user),
+          ),
+        ],
+        titleSpacing: 2.0,
+      ),
+      //TODO: proper design
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              title: Text(Languages.of(context)!.imprintPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ImprintPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(Languages.of(context)!.contactPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(Languages.of(context)!.settingsPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: _pages.elementAt(_selectedIndex),
