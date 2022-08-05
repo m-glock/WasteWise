@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact_page.dart';
-import 'package:recycling_app/presentation/pages/dashboard_page.dart';
+import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discover_page.dart';
 import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';

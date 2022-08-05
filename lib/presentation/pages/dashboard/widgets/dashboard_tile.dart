@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DashboardTile extends StatefulWidget {
-  const DashboardTile({Key? key}) : super(key: key);
+  const DashboardTile({Key? key, required this.tileContent}) : super(key: key);
+
+  final Widget tileContent;
 
   @override
   State<DashboardTile> createState() => _DashboardTileState();
@@ -19,7 +21,11 @@ class _DashboardTileState extends State<DashboardTile> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Row(),
+        child: Row(
+          children: [
+            widget.tileContent,
+          ],
+        ),
       ),
     );
   }

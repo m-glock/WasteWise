@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/widgets/dashboard_tile.dart';
+import 'package:recycling_app/presentation/pages/dashboard/widgets/dashboard_tile.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -21,15 +21,15 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Center(
           child: Column(
             children: [
-              const DashboardTile(),
+              const DashboardTile(tileContent: Text("Top Tile")),
               const Padding(padding: EdgeInsets.all(10)),
-              const DashboardTile(),
+              const DashboardTile(tileContent: Text("Middle Tile")),
               const Padding(padding: EdgeInsets.all(10)),
               Row(
                 children: const [
-                  Flexible(child: DashboardTile()),
+                  Flexible(child: DashboardTile(tileContent: Text("Left Tile"))),
                   Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Flexible(child: DashboardTile()),
+                  Flexible(child: DashboardTile(tileContent: Text("Right Tile"))),
                 ],
               ),
             ],
