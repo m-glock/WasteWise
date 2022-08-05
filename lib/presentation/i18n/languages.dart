@@ -20,4 +20,8 @@ abstract class Languages {
   String get searchPageName;
   String get discoveryPageName;
   String get neighborhoodPageName;
+
+  // dashboard page
+  String get tipTileTitle;
+  String get tipTileButtonText;
 }

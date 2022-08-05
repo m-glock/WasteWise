@@ -17,4 +17,8 @@ class LanguageEn extends Languages {
   @override String get discoveryPageName => "Discover";
   @override String get neighborhoodPageName => "Neighborhood";
 
+  // dashboard
+  @override String get tipTileTitle => "Tip of the Day";
+  @override String get tipTileButtonText => "More Info";
+
 }

@@ -17,4 +17,7 @@ class LanguageDe extends Languages {
   @override String get discoveryPageName => "Entdecken";
   @override String get neighborhoodPageName => "Nachbarschaft";
 
+  // dashboard
+  @override String get tipTileTitle => "Tipp des Tages";
+  @override String get tipTileButtonText => "Mehr erfahren";
 }
