@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/action_tile.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/dashboard_tile.dart';
+import 'package:recycling_app/presentation/pages/dashboard/widgets/text_tile.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
               const Padding(padding: EdgeInsets.all(10)),
               Row(
                 children: const [
-                  Flexible(child: DashboardTile(tileContent: Text("Left Tile"))),
+                  Flexible(child: DashboardTile(tileContent: TextTile())),
                   Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   Flexible(child: DashboardTile(tileContent: ActionTile())),
                 ],

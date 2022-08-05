@@ -24,4 +24,5 @@ abstract class Languages {
   // dashboard page
   String get tipTileTitle;
   String get tipTileButtonText;
+  String get congratsTileTitle;
 }

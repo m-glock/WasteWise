@@ -20,4 +20,5 @@ class LanguageDe extends Languages {
   // dashboard
   @override String get tipTileTitle => "Tipp des Tages";
   @override String get tipTileButtonText => "Mehr erfahren";
+  @override String get congratsTileTitle => "Glückwunsch!";
 }
