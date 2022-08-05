@@ -4,7 +4,7 @@ import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
 import 'package:recycling_app/presentation/themes/color_scheme.dart';
-import 'package:recycling_app/presentation/themes/navigationbar_theme.dart';
+import 'package:recycling_app/presentation/themes/navigationbar_theme.dart' as navbar;
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       title: "RecyclingApp",
       theme: ThemeData(
         appBarTheme: const TopAppBarTheme(),
-        bottomNavigationBarTheme: const NavigationBarTheme(),
+        bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
 
         elevatedButtonTheme: const AppElevatedButtonTheme(),
         floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
