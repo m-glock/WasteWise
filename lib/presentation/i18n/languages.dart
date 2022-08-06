@@ -28,4 +28,5 @@ abstract class Languages {
   String get overviewTileTitle;
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
+  String get progressTileTitle;
 }

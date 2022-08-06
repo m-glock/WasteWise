@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/action_tile.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/dashboard_tile.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/overview_tile.dart';
+import 'package:recycling_app/presentation/pages/dashboard/widgets/progress_tile.dart';
 import 'package:recycling_app/presentation/pages/dashboard/widgets/text_tile.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _DashboardPageState extends State<DashboardPage> {
             children: [
               const DashboardTile(tileContent: OverviewTile()),
               const Padding(padding: EdgeInsets.all(10)),
-              const DashboardTile(tileContent: Text("Middle Tile")),
+              const DashboardTile(tileContent: ProgressTile()),
               const Padding(padding: EdgeInsets.all(10)),
               Row(
                 children: const [

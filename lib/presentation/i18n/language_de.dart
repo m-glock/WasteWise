@@ -24,5 +24,6 @@ class LanguageDe extends Languages {
   @override String get overviewTileTitle => "Insgesamt";
   @override String get overviewTileRecycledText => "Du hast 123 items recycelt.";
   @override String get overviewTileSavedText => "Du hast 69 items vor dem falschen Mülleimer gerettet.";
+  @override String get progressTileTitle => "Fortschritt";
 
 }

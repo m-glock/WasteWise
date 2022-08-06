@@ -24,5 +24,6 @@ class LanguageEn extends Languages {
   @override String get overviewTileTitle => "Total";
   @override String get overviewTileRecycledText => "You have reecyceled 123 items.";
   @override String get overviewTileSavedText => "You have saved 69 items from the wrong waste bin.";
+  @override String get progressTileTitle => "Progress";
 
 }
