@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../i18n/languages.dart';
 
@@ -10,7 +11,6 @@ class ActionTile extends StatefulWidget {
 }
 
 class _ActionTileState extends State<ActionTile> {
-
   //TODO: replace with actual tip of the day
   String tileContent = "Remember to separate the lid from the cup.";
 
@@ -31,22 +31,21 @@ class _ActionTileState extends State<ActionTile> {
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Flexible(
-              child: TextButton(
-                child: Row(
-                  children: [
-                    const Icon(Icons.arrow_forward_ios_sharp, size: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text(Languages.of(context)!.tipTileButtonText),
-                    )
-                  ],
-                ),
-                onPressed: () {
-                  //TODO: open Tip
-                },
+            child: TextButton(
+              child: Row(
+                children: [
+                  const Icon(FontAwesomeIcons.angleRight, size: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(Languages.of(context)!.tipTileButtonText),
+                  )
+                ],
               ),
+              onPressed: () {
+                //TODO: open Tip
+              },
+            ),
           ),
-
         ],
       ),
     );
