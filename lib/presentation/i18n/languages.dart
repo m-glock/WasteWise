@@ -25,4 +25,7 @@ abstract class Languages {
   String get tipTileTitle;
   String get tipTileButtonText;
   String get congratsTileTitle;
+  String get overviewTileTitle;
+  String get overviewTileRecycledText;
+  String get overviewTileSavedText;
 }

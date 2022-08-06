@@ -21,4 +21,8 @@ class LanguageDe extends Languages {
   @override String get tipTileTitle => "Tipp des Tages";
   @override String get tipTileButtonText => "Mehr erfahren";
   @override String get congratsTileTitle => "Glückwunsch!";
+  @override String get overviewTileTitle => "Insgesamt";
+  @override String get overviewTileRecycledText => "Du hast 123 items recycelt.";
+  @override String get overviewTileSavedText => "Du hast 69 items vor dem falschen Mülleimer gerettet.";
+
 }
