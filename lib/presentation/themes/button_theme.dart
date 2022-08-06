@@ -30,8 +30,10 @@ class AppOutlinedButtonTheme extends OutlinedButtonThemeData{
 class AppTextButtonTheme extends TextButtonThemeData{
 
   //TODO
-  const AppTextButtonTheme() : super(
-
+  AppTextButtonTheme() : super(
+    style: ButtonStyle(
+      padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
+    )
   );
 
 }

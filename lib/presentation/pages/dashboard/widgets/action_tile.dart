@@ -12,7 +12,7 @@ class ActionTile extends StatefulWidget {
 class _ActionTileState extends State<ActionTile> {
 
   //TODO: replace with actual tip of the day
-  String tileContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+  String tileContent = "Remember to separate the lid from the cup.";
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +25,28 @@ class _ActionTileState extends State<ActionTile> {
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 7)),
           Text(
             tileContent,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
-          OutlinedButton(
-            child: Text(Languages.of(context)!.tipTileButtonText),
-            onPressed: () {
-              print("Button pressed");
-            },
-          )
+          Flexible(
+              child: TextButton(
+                child: Row(
+                  children: [
+                    const Icon(Icons.arrow_forward_ios_sharp, size: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(Languages.of(context)!.tipTileButtonText),
+                    )
+                  ],
+                ),
+                onPressed: () {
+                  //TODO: open Tip
+                },
+              ),
+          ),
+
         ],
       ),
     );

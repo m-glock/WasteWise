@@ -13,7 +13,7 @@ class _TextTileState extends State<TextTile> {
 
   //TODO: replace with actual text
   String tileContent =
-      "Du bist in den Top 10% deiner Nachbarschaft.";
+      "You are in the top 10% in your neighborhood.";
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,13 @@ class _TextTileState extends State<TextTile> {
           Center(
             child: Text(
               Languages.of(context)!.congratsTileTitle,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          const Padding(padding: EdgeInsets.all(5)),
+          const Padding(padding: EdgeInsets.all(7)),
           Text(
             tileContent,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),

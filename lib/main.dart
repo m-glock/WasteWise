@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         elevatedButtonTheme: const AppElevatedButtonTheme(),
         floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
         outlinedButtonTheme: const AppOutlinedButtonTheme(),
-        textButtonTheme: const AppTextButtonTheme(),
+        textButtonTheme: AppTextButtonTheme(),
         toggleButtonsTheme: const AppToggleButtonsTheme(),
 
         colorScheme: const AppColorScheme(),
