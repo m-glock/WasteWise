@@ -26,14 +26,14 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   controller: controllerUsername,
-                  label: 'Username',
+                  label: Languages.of(context)!.usernameLabel,
                   inputType: TextInputType.text),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   controller: controllerEmail,
-                  label: 'E-Mail',
+                  label: Languages.of(context)!.emailLabel,
                   inputType: TextInputType.emailAddress),
             ),
             Padding(
@@ -41,12 +41,18 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               child: TextInputWidget(
                   isPassword: true,
                   controller: controllerPassword,
-                  label: 'Password',
+                  label: Languages.of(context)!.passwordLabel,
                   inputType: TextInputType.text),
             ),
             ElevatedButton(
-              child: const Text('Sign Up'),
+              child: Text(Languages.of(context)!.signupButtonText),
               onPressed: () => doUserRegistration(),
+            ),
+            TextButton(
+              child: Text(Languages.of(context)!.goToLoginButtonText),
+              onPressed: () {
+                //TODO: switch to login screen
+              },
             ),
           ],
         ),
@@ -59,11 +65,10 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Success!"),
-          content: const Text("User was successfully created!"),
+          title: Text(Languages.of(context)!.successDialogTitle),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child: Text(Languages.of(context)!.registrationDialogCloseButtonText),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -79,11 +84,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Error!"),
+          title: Text(Languages.of(context)!.errorDialogTitle),
           content: Text(errorMessage),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child: Text(Languages.of(context)!.registrationDialogCloseButtonText),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -26,4 +26,14 @@ class LanguageEn extends Languages {
   @override String get overviewTileSavedText => "You have saved 69 items from the wrong waste bin.";
   @override String get progressTileTitle => "Progress";
 
+  // registration/login page
+  @override String get usernameLabel => "Username";
+  @override String get passwordLabel => "Password";
+  @override String get emailLabel => "Email";
+  @override String get signupButtonText => "Sign Up";
+  @override String get goToLoginButtonText => "Already registered? Log in";
+  @override String get successDialogTitle => "User successfully created";
+  @override String get errorDialogTitle => "Something went wrong";
+  @override String get registrationDialogCloseButtonText => "Okay";
+
 }
