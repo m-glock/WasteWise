@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -9,7 +10,15 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  const keyApplicationId = 'tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh';
+  const keyClientKey = 'YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW';
+  const keyParseServerUrl = 'https://parseapi.back4app.com';
+
+  await Parse().initialize(keyApplicationId, keyParseServerUrl,
+      clientKey: keyClientKey, autoSendSessionId: true);
+
   runApp(const MyApp());
 }
 
