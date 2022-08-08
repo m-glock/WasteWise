@@ -70,6 +70,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
             TextButton(
               child: Text(Languages.of(context)!.registrationDialogCloseButtonText),
               onPressed: () {
+                //TODO: show profile page instead of login screen
                 Navigator.of(context).pop();
               },
             ),
