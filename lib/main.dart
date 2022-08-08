@@ -11,6 +11,8 @@ import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 
 void main() async {
+
+  // initialize connection to backend
   WidgetsFlutterBinding.ensureInitialized();
   const keyApplicationId = 'tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh';
   const keyClientKey = 'YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW';
@@ -19,6 +21,7 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 
+  // start app
   runApp(const MyApp());
 }
 
