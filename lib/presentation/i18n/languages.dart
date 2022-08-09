@@ -29,4 +29,15 @@ abstract class Languages {
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
   String get progressTileTitle;
+
+  // registration/login page
+  String get usernameLabel;
+  String get emailLabel;
+  String get passwordLabel;
+  String get signupButtonText;
+  String get loginButtonText;
+  String get goToLoginButtonText;
+  String get goToSignupButtonText;
+  String get errorDialogTitle;
+  String get registrationDialogCloseButtonText;
 }

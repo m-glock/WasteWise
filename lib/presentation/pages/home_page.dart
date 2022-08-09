@@ -6,7 +6,7 @@ import 'package:recycling_app/presentation/pages/discover_page.dart';
 import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
 import 'package:recycling_app/presentation/pages/notification_page.dart';
-import 'package:recycling_app/presentation/pages/profile_page.dart';
+import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const UserPage()),
                 )
               },
             icon: const Icon(FontAwesomeIcons.user),

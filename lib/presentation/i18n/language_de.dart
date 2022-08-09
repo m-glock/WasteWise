@@ -26,4 +26,14 @@ class LanguageDe extends Languages {
   @override String get overviewTileSavedText => "Du hast 69 items vor dem falschen Mülleimer gerettet.";
   @override String get progressTileTitle => "Fortschritt";
 
+  // registration/login page
+  @override String get usernameLabel => "Username";
+  @override String get passwordLabel => "Passwort";
+  @override String get emailLabel => "E-Mail";
+  @override String get signupButtonText => "Registrieren";
+  @override String get loginButtonText => "Einloggen";
+  @override String get goToLoginButtonText => "Bereits registriert? Zum Login";
+  @override String get goToSignupButtonText => "Noch kein Konto? Zur Registrierung";
+  @override String get errorDialogTitle => "Etwas ist schief gelaufen";
+  @override String get registrationDialogCloseButtonText => "Okay";
 }
