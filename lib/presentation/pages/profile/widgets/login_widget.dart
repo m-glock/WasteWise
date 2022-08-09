@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  const LoginWidget({Key? key, required this.authenticated}) : super(key: key);
+
+  final Function authenticated;
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -38,11 +41,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                   inputType: TextInputType.text),
             ),
             ElevatedButton(
-              child: Text('Log in'),
-              onPressed: () {},
+              child: Text(Languages.of(context)!.loginButtonText),
+              onPressed: () => doUserLogin(),
             ),
             TextButton(
-              child: Text('Not registered yet? Sign up'),
+              child: Text(Languages.of(context)!.goToSignupButtonText),
               onPressed: () async {
                 //TODO: switch to registration screen
               },
@@ -53,6 +56,41 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
+  void doUserLogin() async {
+    final String username = controllerUsername.text.trim();
+    final String password = controllerPassword.text.trim();
 
+    final ParseUser user = ParseUser(username, password, null);
+
+    var response = await user.login();
+
+    if (response.success) {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      _prefs.setBool("authenticated", true);
+      widget.authenticated();
+    } else {
+      _showError(response.error!.message);
+    }
+  }
+
+  void _showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Languages.of(context)!.errorDialogTitle),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              child: Text(
+                  Languages.of(context)!.registrationDialogCloseButtonText),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
-

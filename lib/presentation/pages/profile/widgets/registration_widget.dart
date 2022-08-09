@@ -4,7 +4,9 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/text_input_widget.dart';
 
 class RegistrationWidget extends StatefulWidget {
-  const RegistrationWidget({Key? key}) : super(key: key);
+  const RegistrationWidget({Key? key, required this.authenticated}) : super(key: key);
+
+  final Function authenticated;
 
   @override
   State<RegistrationWidget> createState() => _RegistrationWidgetState();
@@ -60,26 +62,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
     );
   }
 
-  void _showSuccess() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(Languages.of(context)!.successDialogTitle),
-          actions: [
-            TextButton(
-              child: Text(Languages.of(context)!.registrationDialogCloseButtonText),
-              onPressed: () {
-                //TODO: show profile page instead of login screen
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _showError(String errorMessage) {
     showDialog(
       context: context,
@@ -112,8 +94,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
     // handle response from server
     if (response.success) {
-      //TODO is registered user already authenticated?
-      _showSuccess();
+      //TODO go to login
     } else {
       _showError(response.error!.message);
     }

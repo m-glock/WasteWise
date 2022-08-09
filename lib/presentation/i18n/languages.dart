@@ -35,8 +35,9 @@ abstract class Languages {
   String get emailLabel;
   String get passwordLabel;
   String get signupButtonText;
+  String get loginButtonText;
   String get goToLoginButtonText;
-  String get successDialogTitle;
+  String get goToSignupButtonText;
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
 }

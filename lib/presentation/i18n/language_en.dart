@@ -31,8 +31,9 @@ class LanguageEn extends Languages {
   @override String get passwordLabel => "Password";
   @override String get emailLabel => "Email";
   @override String get signupButtonText => "Sign Up";
+  @override String get loginButtonText => "Log in";
   @override String get goToLoginButtonText => "Already registered? Log in";
-  @override String get successDialogTitle => "User successfully created";
+  @override String get goToSignupButtonText => "Not registered yet? Sign up";
   @override String get errorDialogTitle => "Something went wrong";
   @override String get registrationDialogCloseButtonText => "Okay";
 

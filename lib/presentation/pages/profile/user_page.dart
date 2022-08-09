@@ -13,30 +13,32 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
 
+  bool _isAuthenticated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfAuthenticated();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(Languages.of(context)!.profilePageName),
       ),
-      body: FutureBuilder<bool>(
-        future: isUserAuthenticated(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if(!snapshot.hasData){
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            bool _isAuthenticated = snapshot.data!;
-            return _isAuthenticated ? const ProfileWidget() : const LoginWidget();
-          }
-        },
-      )
+      body: Column(
+        children: [
+          _isAuthenticated ? const ProfileWidget() : LoginWidget(authenticated: _checkIfAuthenticated)
+        ],
+      ),
     );
   }
 
-  Future<bool> isUserAuthenticated() async {
+  void _checkIfAuthenticated() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    return _prefs.getBool("authenticated") ?? false;
+    setState(() {
+      _isAuthenticated = _prefs.getBool("authenticated") ?? false;
+    });
   }
 }
