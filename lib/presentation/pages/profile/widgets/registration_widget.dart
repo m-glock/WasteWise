@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/profile/widgets/TextInputWidget.dart';
+import 'package:recycling_app/presentation/pages/profile/widgets/text_input_widget.dart';
 
 class RegistrationWidget extends StatefulWidget {
   const RegistrationWidget({Key? key}) : super(key: key);
