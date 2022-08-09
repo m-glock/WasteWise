@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/profile/profile_widget.dart';
+import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +29,9 @@ class _UserPageState extends State<UserPage> {
       ),
       body: Column(
         children: [
-          _isAuthenticated ? const ProfileWidget() : LoginWidget(authenticated: _checkIfAuthenticated)
+          _isAuthenticated
+              ? ProfileWidget(authenticated: _checkIfAuthenticated)
+              : LoginWidget(authenticated: _checkIfAuthenticated)
         ],
       ),
     );

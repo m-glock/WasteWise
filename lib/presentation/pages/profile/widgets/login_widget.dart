@@ -55,7 +55,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               child: _signup
                   ? Text(Languages.of(context)!.signupButtonText)
                   : Text(Languages.of(context)!.loginButtonText),
-              onPressed: () => doUserLoginOrSignup(),
+              onPressed: () => _loginOrSignup(),
             ),
             TextButton(
               child: _signup
@@ -73,7 +73,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
-  void doUserLoginOrSignup() async {
+  void _loginOrSignup() async {
     final String username = controllerUsername.text.trim();
     final String password = controllerPassword.text.trim();
 
