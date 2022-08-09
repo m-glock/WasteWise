@@ -17,6 +17,9 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController controllerUsername = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
+  final TextEditingController controllerEmail = TextEditingController();
+
+  bool _signup = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                   label: Languages.of(context)!.usernameLabel,
                   inputType: TextInputType.text),
             ),
+            if(_signup)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextInputWidget(
+                  controller: controllerEmail,
+                  label: Languages.of(context)!.emailLabel,
+                  inputType: TextInputType.emailAddress),
+            ),
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
@@ -41,13 +52,19 @@ class _LoginWidgetState extends State<LoginWidget> {
                   inputType: TextInputType.text),
             ),
             ElevatedButton(
-              child: Text(Languages.of(context)!.loginButtonText),
-              onPressed: () => doUserLogin(),
+              child: _signup
+                  ? Text(Languages.of(context)!.signupButtonText)
+                  : Text(Languages.of(context)!.loginButtonText),
+              onPressed: () => doUserLoginOrSignup(),
             ),
             TextButton(
-              child: Text(Languages.of(context)!.goToSignupButtonText),
+              child: _signup
+                  ? Text(Languages.of(context)!.goToLoginButtonText)
+                  : Text(Languages.of(context)!.goToSignupButtonText),
               onPressed: () async {
-                //TODO: switch to registration screen
+                setState(() {
+                  _signup = !_signup;
+                });
               },
             ),
           ],
@@ -56,13 +73,19 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
   }
 
-  void doUserLogin() async {
+  void doUserLoginOrSignup() async {
     final String username = controllerUsername.text.trim();
     final String password = controllerPassword.text.trim();
 
-    final ParseUser user = ParseUser(username, password, null);
-
-    var response = await user.login();
+    ParseResponse response;
+    if(_signup){
+      final String email = controllerEmail.text.trim();
+      final ParseUser user = ParseUser.createUser(username, password, email);
+      response = await user.signUp();
+    } else {
+      final ParseUser user = ParseUser(username, password, null);
+      response = await user.login();
+    }
 
     if (response.success) {
       SharedPreferences _prefs = await SharedPreferences.getInstance();
