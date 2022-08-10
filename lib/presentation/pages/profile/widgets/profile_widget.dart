@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
 
@@ -35,8 +34,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     var response = await user.logout();
 
     if (response.success) {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      _prefs.setBool("authenticated", false);
       widget.authenticated();
     } else {
       _showError(response.error!.message);

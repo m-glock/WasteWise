@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -38,9 +38,9 @@ class _UserPageState extends State<UserPage> {
   }
 
   void _checkIfAuthenticated() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+  ParseUser? currentUser = await ParseUser.currentUser();
     setState(() {
-      _isAuthenticated = _prefs.getBool("authenticated") ?? false;
+      _isAuthenticated = currentUser != null;
     });
   }
 }

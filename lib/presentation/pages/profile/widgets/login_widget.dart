@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
 import 'text_input_widget.dart';
@@ -85,14 +84,21 @@ class _LoginWidgetState extends State<LoginWidget> {
     } else {
       final ParseUser user = ParseUser(username, password, null);
       response = await user.login();
+      _setACLsOnServer();
     }
 
     if (response.success) {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      _prefs.setBool("authenticated", true);
       widget.authenticated();
     } else {
       _showError(response.error!.message);
+    }
+  }
+
+  void _setACLsOnServer() async {
+    final ParseCloudFunction function = ParseCloudFunction('setUsersAcls');
+    final ParseResponse parseResponse = await function.execute();
+    if (parseResponse.success && parseResponse.result != null) {
+      debugPrint(parseResponse.result);
     }
   }
 
