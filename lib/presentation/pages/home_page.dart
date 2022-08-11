@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
-import 'package:recycling_app/presentation/pages/discover_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/discover_page.dart';
 import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
 import 'package:recycling_app/presentation/pages/notification_page.dart';
@@ -44,21 +44,22 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NotificationPage()),
-                )
-              },
-              icon: const Icon(FontAwesomeIcons.bell),
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationPage()),
+              )
+            },
+            icon: const Icon(FontAwesomeIcons.bell),
           ),
           IconButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const UserPage()),
-                )
-              },
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UserPage()),
+              )
+            },
             icon: const Icon(FontAwesomeIcons.user),
           ),
         ],
@@ -99,8 +100,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Center(
+          child: _pages.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

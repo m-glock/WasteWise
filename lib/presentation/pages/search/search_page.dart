@@ -19,9 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-        child: Column(
+      body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SearchBar(),
@@ -75,7 +73,6 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ],
-        ),
       ),
     );
   }
