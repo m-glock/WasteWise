@@ -4,13 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class DiscoveryTile extends StatefulWidget {
   const DiscoveryTile(
       {Key? key,
-      required this.icon,
+      required this.leading,
       required this.title,
       required this.subtitle,
       required this.destinationPage})
       : super(key: key);
 
-  final IconData icon;
+  final Widget leading;
   final String title;
   final String subtitle;
   final Widget destinationPage;
@@ -38,10 +38,7 @@ class _DiscoveryTileState extends State<DiscoveryTile> {
           padding: const EdgeInsets.all(15),
           child: Row(
             children: [
-              Icon(
-                widget.icon,
-                size: 50,
-              ),
+              widget.leading,
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),

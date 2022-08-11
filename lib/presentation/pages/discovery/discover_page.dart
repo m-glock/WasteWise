@@ -14,27 +14,30 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
+
+  final double iconSize = 50;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           DiscoveryTile(
-            icon: CustomIcons.garbageCan,
+            leading: Icon(CustomIcons.garbageCan, size: iconSize),
             title: Languages.of(context)!.wasteBinOverviewTitle,
             subtitle: Languages.of(context)!.wasteBinOverviewSubtitle,
             destinationPage: const WasteBinOverviewPage(),
           ),
           const Padding(padding: EdgeInsets.all(5)),
           DiscoveryTile(
-            icon: CustomIcons.lightbulb,
+            leading: Icon(CustomIcons.lightbulb, size: iconSize),
             title: Languages.of(context)!.tipsAndTricksTitle,
             subtitle: Languages.of(context)!.tipsAndTricksSubtitle,
             destinationPage: const TipsAndTricksPage(),
           ),
           const Padding(padding: EdgeInsets.all(5)),
           DiscoveryTile(
-            icon: CustomIcons.map,
+            leading: Icon(CustomIcons.map, size: iconSize),
             title: Languages.of(context)!.collectionPointsTitle,
             subtitle: Languages.of(context)!.collectionPointsSubtitle,
             destinationPage: const CollectionPointPage(),

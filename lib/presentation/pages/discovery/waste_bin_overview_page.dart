@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/tips_and_tricks_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
 
 class WasteBinOverviewPage extends StatefulWidget {
   const WasteBinOverviewPage({Key? key}) : super(key: key);
@@ -16,8 +18,20 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.wasteBinOverviewTitle),
       ),
-      body: const Center(
-        child: Text("Body"),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Center(
+          child: Column(
+            children: const [
+              DiscoveryTile(
+                  leading: Icon(Icons.access_alarm_outlined),
+                  title: "Biotonne",
+                  subtitle: "biologischer Abfall",
+                  destinationPage: TipsAndTricksPage()
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
