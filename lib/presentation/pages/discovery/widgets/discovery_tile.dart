@@ -40,11 +40,11 @@ class _DiscoveryTileState extends State<DiscoveryTile> {
             children: [
               Icon(
                 widget.icon,
-                size: 40,
+                size: 50,
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
