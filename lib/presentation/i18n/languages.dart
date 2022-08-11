@@ -40,4 +40,9 @@ abstract class Languages {
   String get goToSignupButtonText;
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
+
+  // search page
+  String get searchBarHint;
+  String get recentlySearched;
+  String get oftenSearched;
 }

@@ -36,4 +36,9 @@ class LanguageDe extends Languages {
   @override String get goToSignupButtonText => "Noch kein Konto? Zur Registrierung";
   @override String get errorDialogTitle => "Etwas ist schief gelaufen";
   @override String get registrationDialogCloseButtonText => "Okay";
+
+  // search page
+  @override String get oftenSearched => "Oft von anderen gesucht";
+  @override String get recentlySearched => "Zuletzt von dir gesucht";
+  @override String get searchBarHint => "Suche";
 }

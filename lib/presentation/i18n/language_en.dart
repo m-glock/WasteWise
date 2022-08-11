@@ -37,4 +37,8 @@ class LanguageEn extends Languages {
   @override String get errorDialogTitle => "Something went wrong";
   @override String get registrationDialogCloseButtonText => "Okay";
 
+  // search page
+  @override String get oftenSearched => "Commonly searched by others";
+  @override String get recentlySearched => "Your recent searches";
+  @override String get searchBarHint => "Search";
 }
