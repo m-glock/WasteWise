@@ -12,7 +12,7 @@ class DiscoveryTile extends StatefulWidget {
 
   final Widget leading;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final Widget destinationPage;
 
   @override
@@ -51,10 +51,11 @@ class _DiscoveryTileState extends State<DiscoveryTile> {
                         style: Theme.of(context).textTheme.headline3,
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 5)),
-                      Text(
-                        widget.subtitle,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
+                      if(widget.subtitle != null)
+                        Text(
+                          widget.subtitle!,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                     ],
                   ),
                 ),
