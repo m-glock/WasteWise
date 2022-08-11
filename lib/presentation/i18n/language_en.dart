@@ -41,4 +41,13 @@ class LanguageEn extends Languages {
   @override String get oftenSearched => "Commonly searched by others";
   @override String get recentlySearched => "Your recent searches";
   @override String get searchBarHint => "Search";
+
+  // discovery page
+  @override String get wasteBinOverviewTitle => "Waste Bin Overview";
+  @override String get wasteBinOverviewSubtitle => "content, cycle, myths";
+  @override String get tipsAndTricksTitle => "Tips and Tricks";
+  @override String get tipsAndTricksSubtitle => "waste prevention, sorting, and more";
+  @override String get collectionPointsTitle => "Collection Points";
+  @override String get collectionPointsSubtitle => "recycling yard and more";
+
 }

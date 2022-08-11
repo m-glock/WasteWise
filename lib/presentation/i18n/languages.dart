@@ -45,4 +45,12 @@ abstract class Languages {
   String get searchBarHint;
   String get recentlySearched;
   String get oftenSearched;
+
+  // discovery page
+  String get wasteBinOverviewTitle;
+  String get wasteBinOverviewSubtitle;
+  String get tipsAndTricksTitle;
+  String get tipsAndTricksSubtitle;
+  String get collectionPointsTitle;
+  String get collectionPointsSubtitle;
 }
