@@ -58,4 +58,7 @@ abstract class Languages {
 
   // waste bin pages
   Map<WasteBin, String> get wasteBinNames;
+  String get wasteBinContentLabel;
+  String get wasteBinCycleLabel;
+  String get wasteBinMythLabel;
 }

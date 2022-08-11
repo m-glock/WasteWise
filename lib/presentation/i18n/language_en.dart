@@ -58,7 +58,10 @@ class LanguageEn extends Languages {
     WasteBin.glassWaste: "Glass",
     WasteBin.paperWaste: "Paper",
     WasteBin.recyclableWaste: "Wertstofftonne",
-    WasteBin.residualWaste: "Residual Waste",
+    WasteBin.residualWaste: "Residual waste",
     WasteBin.other: "Other"
   };
+  @override String get wasteBinContentLabel => "Content";
+  @override String get wasteBinCycleLabel => "Cycle";
+  @override String get wasteBinMythLabel => "Myths";
 }

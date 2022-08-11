@@ -60,4 +60,7 @@ class LanguageDe extends Languages {
     WasteBin.residualWaste: "Restmüll",
     WasteBin.other: "Sonstiges"
   };
+  @override String get wasteBinContentLabel => "Inhalt";
+  @override String get wasteBinCycleLabel => "Kreislauf";
+  @override String get wasteBinMythLabel => "Mythen";
 }
