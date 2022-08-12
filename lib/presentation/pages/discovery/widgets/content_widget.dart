@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/content_list_widget.dart';
 
 class ContentWidget extends StatefulWidget {
   const ContentWidget({Key? key}) : super(key: key);
@@ -9,173 +9,36 @@ class ContentWidget extends StatefulWidget {
 }
 
 class _ContentWidgetState extends State<ContentWidget> {
-  String bulletPoint = "\u2022 ";
+  List<String> itemNamesYes = [
+    "item 1",
+    "item 2",
+    "item 3",
+    "item 4",
+    "item 5"
+  ];
+  List<String> itemNamesNo = [
+    "item 6",
+    "item 7",
+    "item 8",
+    "item 9",
+    "item 10"
+  ];
 
   //TODO add items with a ListViewBuilder and add items with the onPressed function
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 216, 227, 204),
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.only(top: 25, left: 25, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  "Das gehört rein: ",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => {},
-                    child: Row(
-                      children: const [
-                        Icon(FontAwesomeIcons.angleRight, size: 12),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text("Mehr"),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 235, 206, 206),
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-          ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.only(top: 25, left: 25, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  "Das gehört nicht rein: ",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  "$bulletPoint item 1",
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => {},
-                    child: Row(
-                      children: const [
-                        Icon(FontAwesomeIcons.angleRight, size: 12),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text("Mehr"),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        ContentListWidget(
+            backgroundColor: const Color.fromARGB(255, 216, 227, 204),
+            showMore: () => {},
+            title: "Das gehört rein: ",
+            itemNames: itemNamesYes),
+        ContentListWidget(
+            backgroundColor: const Color.fromARGB(255, 235, 206, 206),
+            showMore: () => {},
+            title: "Das gehört nicht rein: ",
+            itemNames: itemNamesNo),
       ],
     );
   }
