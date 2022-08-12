@@ -30,11 +30,11 @@ class _WasteBinPageState extends State<WasteBinPage> {
               SizedBox(
                 height: 40,
                 child: TabBar(
-                  indicatorColor: Theme.of(context).colorScheme.primary,
-                  labelColor: Theme.of(context).colorScheme.onSurface,
+                  labelColor: Theme.of(context).colorScheme.onPrimary,
+                  unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).colorScheme.surface),
+                      color: Theme.of(context).colorScheme.primary),
                   tabs: [
                     Tab(text: Languages.of(context)!.wasteBinContentLabel),
                     Tab(text: Languages.of(context)!.wasteBinCycleLabel),
