@@ -24,7 +24,7 @@ class _WasteBinPageState extends State<WasteBinPage> {
           title: Text(Languages.of(context)!.wasteBinNames[widget.wasteBin]!),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
           child: Column(
             children: [
               SizedBox(
