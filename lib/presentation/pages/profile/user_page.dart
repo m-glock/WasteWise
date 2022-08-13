@@ -4,6 +4,8 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 
+import '../../util/Constants.dart';
+
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
 
@@ -27,12 +29,15 @@ class _UserPageState extends State<UserPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.profilePageName),
       ),
-      body: Column(
-        children: [
-          _isAuthenticated
-              ? ProfileWidget(authenticated: _checkIfAuthenticated)
-              : LoginWidget(authenticated: _checkIfAuthenticated)
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: Column(
+          children: [
+            _isAuthenticated
+                ? ProfileWidget(authenticated: _checkIfAuthenticated)
+                : LoginWidget(authenticated: _checkIfAuthenticated)
+          ],
+        ),
       ),
     );
   }

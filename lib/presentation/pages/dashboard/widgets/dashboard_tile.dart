@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../util/Constants.dart';
+
 class DashboardTile extends StatefulWidget {
   const DashboardTile({Key? key, required this.tileContent}) : super(key: key);
 
@@ -17,7 +19,7 @@ class _DashboardTileState extends State<DashboardTile> {
       height: 150,
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(Radius.circular(20))
+          borderRadius: Constants.tileBorderRadius,
       ),
       child: Padding(
         padding: const EdgeInsets.all(15),

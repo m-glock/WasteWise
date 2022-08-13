@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../util/Constants.dart';
+
 class ContentListWidget extends StatefulWidget {
   const ContentListWidget(
       {Key? key,
@@ -28,7 +30,7 @@ class _ContentListWidgetState extends State<ContentListWidget> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        borderRadius: Constants.tileBorderRadius,
       ),
       margin: const EdgeInsets.all(15),
       padding: const EdgeInsets.only(top: 25, left: 25, right: 15),

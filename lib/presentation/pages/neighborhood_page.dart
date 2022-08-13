@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/i18n/languages.dart';
+
+import '../util/Constants.dart';
 
 class NeighborhoodPage extends StatefulWidget {
   const NeighborhoodPage({Key? key}) : super(key: key);
@@ -13,8 +14,11 @@ class _NeighborhoodPageState extends State<NeighborhoodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(Languages.of(context)!.neighborhoodPageName),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: const Center(
+          child: Text("Neighborhood"),
+        ),
       ),
     );
   }

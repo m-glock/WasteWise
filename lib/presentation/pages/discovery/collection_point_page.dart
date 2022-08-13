@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
@@ -112,7 +113,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           Padding(padding: EdgeInsets.only(bottom: 10)),
           FloatingActionButton(
             heroTag: 'btn2',
-            child: Icon(Icons.filter_alt_rounded),
+            child: Icon(FontAwesomeIcons.filter),
             onPressed: null,
           ),
         ],

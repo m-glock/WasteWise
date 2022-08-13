@@ -21,7 +21,8 @@ class _MythListWidgetState extends State<MythListWidget> {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(Radius.circular(15))),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+        ),
         child: ExpandablePanel(
           header: Padding(
             padding: const EdgeInsets.all(10),

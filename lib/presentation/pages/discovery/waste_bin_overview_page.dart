@@ -5,6 +5,8 @@ import 'package:recycling_app/presentation/pages/discovery/waste_bin_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
 import 'package:recycling_app/presentation/util/waste_bin.dart';
 
+import '../../util/Constants.dart';
+
 class WasteBinOverviewPage extends StatefulWidget {
   const WasteBinOverviewPage({Key? key}) : super(key: key);
 
@@ -21,7 +23,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
         title: Text(Languages.of(context)!.wasteBinOverviewTitle),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(Constants.pagePadding),
         child: ListView(
           children: [
             DiscoveryTile(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
+import '../util/Constants.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -16,7 +18,10 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.settingsPageName),
       ),
-      body: const Center(),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: const Center(),
+      ),
     );
   }
 }

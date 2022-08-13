@@ -5,6 +5,8 @@ import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.
 import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
 import 'package:recycling_app/presentation/util/waste_bin.dart';
 
+import '../../util/Constants.dart';
+
 class WasteBinPage extends StatefulWidget {
   const WasteBinPage({Key? key, required this.wasteBin}) : super(key: key);
 
@@ -24,7 +26,8 @@ class _WasteBinPageState extends State<WasteBinPage> {
           title: Text(Languages.of(context)!.wasteBinNames[widget.wasteBin]!),
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+          padding: EdgeInsets.symmetric(
+              horizontal: Constants.pagePadding, vertical: 30),
           child: Column(
             children: [
               SizedBox(

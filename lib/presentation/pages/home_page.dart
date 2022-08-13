@@ -10,6 +10,7 @@ import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/util/Constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(Constants.pagePadding),
         child: Center(
           child: _pages.elementAt(_selectedIndex),
         ),

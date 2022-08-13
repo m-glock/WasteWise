@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../util/Constants.dart';
+
 class TipPage extends StatefulWidget {
   const TipPage({Key? key, required this.tipTitle}) : super(key: key);
 
@@ -16,8 +18,9 @@ class _TipPageState extends State<TipPage> {
       appBar: AppBar(
         title: Text(widget.tipTitle),
       ),
-      body: const Center(
-        child: Text("Body"),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: const Center(),
       ),
     );
   }
