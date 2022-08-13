@@ -12,35 +12,36 @@ class CollectionPointPage extends StatefulWidget {
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
 
-  final markers = <Marker>[
+  //TODO ask user for current location
+  final LatLng defaultLatLng = LatLng(52.5200, 13.4050);
+  final List<Marker> markers = [
     Marker(
       width: 80,
       height: 80,
-      point: LatLng(51.5, -0.09),
-      builder: (ctx) => const FlutterLogo(
-        textColor: Colors.blue,
-        key: ObjectKey(Colors.blue),
-      ),
+      point: LatLng(52.49959837860384, 13.48976890965241),
+      builder: (ctx) => const Icon(Icons.location_on),
     ),
     Marker(
       width: 80,
       height: 80,
-      point: LatLng(53.3498, -6.2603),
-      builder: (ctx) => const FlutterLogo(
-        textColor: Colors.green,
-        key: ObjectKey(Colors.green),
-      ),
+      point: LatLng(52.50774876167709, 13.352096497671688),
+      builder: (ctx) => const Icon(Icons.location_on),
     ),
     Marker(
       width: 80,
       height: 80,
-      point: LatLng(48.8566, 2.3522),
-      builder: (ctx) => const FlutterLogo(
-        textColor: Colors.purple,
-        key: ObjectKey(Colors.purple),
-      ),
+      point: LatLng(52.558497882764705, 13.402564931421479),
+      builder: (ctx) => const Icon(Icons.location_on),
     ),
   ];
+
+  final List<DropdownMenuItem<String>> dropdownOptions = const [
+    DropdownMenuItem(child: Text("Elektronik")),
+    DropdownMenuItem(child: Text("Altkleider")),
+    DropdownMenuItem(child: Text("Dritte Option")),
+  ];
+
+  String dropdownValue = 'Elektronik';
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +49,74 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.collectionPointsTitle),
       ),
-      body: FlutterMap(
-          options: MapOptions(
-            center: LatLng(51.509364, -0.128928),
-            zoom: 9.2,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['Elektronik', 'Altkleider', 'Dritte Option']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate:
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: ['a', 'b', 'c'],
-            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+          Flexible(
+            child: FlutterMap(
+              options: MapOptions(
+                center: defaultLatLng,
+                zoom: 9.2,
+              ),
+              layers: [
+                TileLayerOptions(
+                  urlTemplate:
+                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.glock.recyclingapp',
+                ),
+                MarkerLayerOptions(markers: markers),
+              ],
+              nonRotatedChildren: [
+                AttributionWidget.defaultWidget(
+                  source: 'OpenStreetMap contributors',
+                  onSourceTapped: null,
+                ),
+              ],
+            ),
           ),
-          MarkerLayerOptions(markers: markers)
         ],
-        nonRotatedChildren: [
-          AttributionWidget.defaultWidget(
-            source: 'OpenStreetMap contributors',
-            onSourceTapped: () {},
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: const [
+          FloatingActionButton(
+            heroTag: 'btn1',
+            child: Icon(Icons.group),
+            onPressed: null,
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 10)),
+          FloatingActionButton(
+            heroTag: 'btn2',
+            child: Icon(Icons.filter_alt_rounded),
+            onPressed: null,
           ),
         ],
-    ),
+      ),
     );
   }
 }
