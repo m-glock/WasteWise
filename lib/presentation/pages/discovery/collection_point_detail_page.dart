@@ -10,7 +10,7 @@ class CollectionPointDetailPage extends StatefulWidget {
 
   final String address;
   final Map<String, String> openingHours;
-  final String acceptedItems;
+  final List<String> acceptedItems;
 
   @override
   State<CollectionPointDetailPage> createState() =>
@@ -18,14 +18,17 @@ class CollectionPointDetailPage extends StatefulWidget {
 }
 
 class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
+
+  String bulletPoint = "\u2022 ";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Details"),
+        title: const Text("Details"), //TODO correct name of recycling yard
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 30, 20),
         child: Column(
           children: [
             Row(
@@ -54,20 +57,22 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          //color: Colors.lightGreen,
+                          margin: EdgeInsets.only(bottom: 10),
                           alignment: Alignment.centerLeft,
                           height: 25,
-                          child: const Text("Aktuell geöffnet"),
+                          child: const Text("Aktuell geöffnet"), //TODO correct text
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            Text("Example"),
-                            Expanded(
-                              child: Text("12-17 Uhr", textAlign: TextAlign.end),
-                            ),
-                          ],
-                        ),
+                        ...widget.openingHours.entries.map((entry) {
+                          return Padding(padding: EdgeInsets.only(bottom: 5), child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(entry.key),
+                              Expanded(
+                                child: Text(entry.value, textAlign: TextAlign.end),
+                              ),
+                            ],
+                          ),);
+                        }).toList()
                       ],
                     ),
                 ),
@@ -77,12 +82,30 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Icon(Icons.adb), //TODO
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.adb, size: 25), //TODO
+                    ],
+                  ),
                 ),
-                const Text("Annahme von:"),
-                Text(widget.acceptedItems),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        alignment: Alignment.centerLeft,
+                        height: 25,
+                        child: const Text("Annahme von"), //TODO correct text
+                      ),
+                      ...widget.acceptedItems.map((item){
+                        return Padding(padding: EdgeInsets.only(bottom: 5), child: Text("$bulletPoint $item"));
+                      }).toList()
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
