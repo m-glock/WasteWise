@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/icons/bsr_icons.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
-import 'package:recycling_app/presentation/util/waste_bin.dart';
+import 'package:recycling_app/presentation/util/HexColor.dart';
 
+import '../../i18n/locale_constant.dart';
 import '../../util/Constants.dart';
 
 class WasteBinOverviewPage extends StatefulWidget {
@@ -15,6 +17,30 @@ class WasteBinOverviewPage extends StatefulWidget {
 }
 
 class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
+  List<dynamic> categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
+  void _getCategories() async {
+    final ParseCloudFunction function = ParseCloudFunction('getCategories');
+    Locale locale = await getLocale();
+    final Map<String, dynamic> params = <String, dynamic>{
+      'languageCode': locale.languageCode,
+    };
+    final ParseResponse parseResponse =
+        await function.execute(parameters: params);
+    if (parseResponse.success && parseResponse.result != null) {
+      setState(() {
+        categories = parseResponse.result;
+      });
+    } else {
+      //TODO
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,89 +52,24 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
         padding: EdgeInsets.all(Constants.pagePadding),
         child: ListView(
           children: [
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.biologicalWaste,
-                  size: 50,
-                  color: Color.fromARGB(255, 113, 45, 36),
+            ...categories.map((element) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: DiscoveryTile(
+                  leading: SvgPicture.network(
+                    element["category_id"]["image_file"]["url"],
+                    width: 50,
+                    height: 50,
+                    color:
+                        HexColor.fromHex(element["category_id"]["hex_color"]),
+                  ),
+                  title: element["title"],
+                  subtitle: null,
+                  //TODO remove from languages?
+                  destinationPage: WasteBinPage(wasteBinName: element["title"]),
                 ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.biologicalWaste]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.biologicalWaste),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.residualWaste,
-                  size: 50,
-                  color: Color.fromARGB(255, 95, 106, 114),
-                ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.residualWaste]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.residualWaste),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.glass,
-                  size: 50,
-                  color: Color.fromARGB(255, 0, 144, 84),
-                ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.glassWaste]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.glassWaste),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.packaging,
-                  size: 50,
-                  color: Color.fromARGB(255, 248, 198, 0),
-                ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.recyclableWaste]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.recyclableWaste),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.paperWaste,
-                  size: 50,
-                  color: Color.fromARGB(255, 0, 85, 170),
-                ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.paperWaste]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.paperWaste),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            DiscoveryTile(
-              leading: Container(
-                color: Colors.white,
-                child: const Icon(
-                  BsrIcons.bicycle,
-                  size: 50,
-                  color: Color.fromARGB(255, 255, 106, 0),
-                ),
-              ),
-              title: Languages.of(context)!.wasteBinNames[WasteBin.other]!,
-              subtitle: null,
-              destinationPage: const WasteBinPage(wasteBin: WasteBin.other),
-            ),
+              );
+            }).toList(),
           ],
         ),
       ),

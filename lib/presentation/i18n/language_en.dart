@@ -1,5 +1,3 @@
-import 'package:recycling_app/presentation/util/waste_bin.dart';
-
 import 'languages.dart';
 
 class LanguageEn extends Languages {
@@ -53,14 +51,6 @@ class LanguageEn extends Languages {
   @override String get collectionPointsSubtitle => "recycling yard and more";
 
   // waste bin pages
-  @override Map<WasteBin, String> get wasteBinNames => {
-    WasteBin.biologicalWaste: "Biological waste",
-    WasteBin.glassWaste: "Glass",
-    WasteBin.paperWaste: "Paper",
-    WasteBin.recyclableWaste: "Wertstofftonne",
-    WasteBin.residualWaste: "Residual waste",
-    WasteBin.other: "Other"
-  };
   @override String get wasteBinContentLabel => "Content";
   @override String get wasteBinCycleLabel => "Cycle";
   @override String get wasteBinMythLabel => "Myths";

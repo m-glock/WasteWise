@@ -3,14 +3,13 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
-import 'package:recycling_app/presentation/util/waste_bin.dart';
 
 import '../../util/Constants.dart';
 
 class WasteBinPage extends StatefulWidget {
-  const WasteBinPage({Key? key, required this.wasteBin}) : super(key: key);
+  const WasteBinPage({Key? key, required this.wasteBinName}) : super(key: key);
 
-  final WasteBin wasteBin;
+  final String wasteBinName;
 
   @override
   State<WasteBinPage> createState() => _WasteBinPageState();
@@ -23,7 +22,7 @@ class _WasteBinPageState extends State<WasteBinPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(Languages.of(context)!.wasteBinNames[widget.wasteBin]!),
+          title: Text(widget.wasteBinName),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
