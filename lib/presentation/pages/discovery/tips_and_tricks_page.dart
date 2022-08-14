@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
 
+import '../../i18n/locale_constant.dart';
 import '../../util/Constants.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
@@ -13,14 +15,57 @@ class TipsAndTricksPage extends StatefulWidget {
   State<TipsAndTricksPage> createState() => _TipsAndTricksPageState();
 }
 
+//TODO: add bookmarked
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
-  String dropdownValue1 = 'Alle';
-  String dropdownValue2 = 'Alle';
+  Map<String, String> wasteBinTypes = {
+    "default": "All",
+    "sxmLVWMf11": "Wertstofftonne",
+    "GWiuEKUn2B": "Biotonne"
+  };
+  Map<String, String> tipTypes = {
+    "default": "All",
+    "LW8QB9QbbD": "Vermeidung",
+    "YUWVrHr5mE": "Trennung"
+  };
+  late String wasteBinDefault;
+  late String tipTypeDefault;
+  List<dynamic> tips = [];
 
-  void _resetFilterValues() {
+  @override
+  void initState() {
+    super.initState();
+    _setFilterValuesToDefault();
+    _getTips();
+    _getTags();
+  }
+
+  void _getTags() async {
+    // TODO
+    // get categories and save them in tags with "objectId":"title"
+    // get tip types and save them in tags with "objectId":"title"
+  }
+
+  void _getTips() async {
+    final ParseCloudFunction function = ParseCloudFunction('getTips');
+    Locale locale = await getLocale();
+    final Map<String, dynamic> params = <String, dynamic>{
+      'languageCode': locale.languageCode,
+    };
+    final ParseResponse parseResponse =
+        await function.execute(parameters: params);
+    if (parseResponse.success && parseResponse.result != null) {
+      setState(() {
+        tips = parseResponse.result;
+      });
+    } else {
+      //TODO
+    }
+  }
+
+  void _setFilterValuesToDefault() {
     setState(() {
-      dropdownValue1 = 'Alle';
-      dropdownValue2 = 'Alle';
+      wasteBinDefault = 'All';
+      tipTypeDefault = 'All';
       //TODO: reset filter of list
     });
   }
@@ -42,17 +87,18 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Art des Tipps: "),
+                      //TODO: in languages file
+                      const Text("Art des Tipps: "),
                       DropdownButton<String>(
                         isExpanded: true,
-                        value: dropdownValue1,
+                        value: tipTypeDefault,
                         onChanged: (String? newValue) {
                           setState(() {
-                            dropdownValue1 = newValue!;
+                            tipTypeDefault = newValue!;
                             //TODO: filter list
                           });
                         },
-                        items: <String>['Alle', 'Vermeidung', 'Trennung']
+                        items: tipTypes.values
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -68,25 +114,23 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Art des Mülls: "),
+                      //TODO: in languages file
+                      const Text("Art des Mülls: "),
                       Row(
                         children: [
                           Expanded(
                             child: DropdownButton<String>(
                               isExpanded: true,
-                              value: dropdownValue2,
+                              value: wasteBinDefault,
                               onChanged: (String? newValue) {
                                 setState(() {
                                   //TODO: filter list
-                                  dropdownValue2 = newValue!;
+                                  wasteBinDefault = newValue!;
                                 });
                               },
-                              items: <String>[
-                                'Alle',
-                                'Biotonne',
-                                'Wertstofftonne',
-                                'Restmüll'
-                              ].map<DropdownMenuItem<String>>((String value) {
+                              items: wasteBinTypes.values
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -97,7 +141,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                           const Padding(padding: EdgeInsets.only(right: 10)),
                           GestureDetector(
                             child: const Icon(FontAwesomeIcons.xmark),
-                            onTap: () => {_resetFilterValues()},
+                            onTap: () => {_setFilterValuesToDefault()},
                           ),
                         ],
                       ),
@@ -108,75 +152,19 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
             Expanded(
-              //TODO: get actual tips from server
               child: ListView(
-                children: const [
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: true,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: true,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: true,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: true,
-                  ),
-                  TipTile(
-                    title: "Eigenkompostierung ermöglichen",
-                    destinationPage:
-                        TipPage(tipTitle: "Eigenkompostierung ermöglichen"),
-                    bookmarked: false,
-                  ),
+                children: [
+                  ...tips.map((element) {
+                    return TipTile(
+                      title: element["title"],
+                      destinationPage: TipPage(tipTitle: element["title"]),
+                      tags: [
+                        tipTypes[element["tip_id"]["tip_type_id"]["objectId"]]!,
+                        wasteBinTypes[element["tip_id"]["category_id"]
+                            ["objectId"]]!,
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),
