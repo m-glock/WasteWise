@@ -65,7 +65,6 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
                   ),
                   title: element["title"],
                   subtitle: null,
-                  //TODO remove from languages?
                   destinationPage: WasteBinPage(wasteBinName: element["title"]),
                 ),
               );
