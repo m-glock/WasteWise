@@ -24,7 +24,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   String? tipTypeDefault;
   List<Tip> tipList = [];
   String languageCode = "";
-  String queryCategories = """
+  String query = """
     query GetCategories(\$languageCode: String!){
       getCategories(languageCode: \$languageCode){
         title
@@ -36,10 +36,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
           hex_color
         }
       }
-    }
-  """;
-  String queryTipTypes = """
-    query GetTipTypes(\$languageCode: String!){
+      
       getTipTypes(languageCode: \$languageCode){
         title
         tip_type_id{
@@ -47,10 +44,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
           objectId
         }
       }
-    }
-  """;
-  String queryTips = """
-    query GetTips(\$languageCode: String!){
+      
       getTips(languageCode: \$languageCode){
         tip_id{
     	    category_id{
@@ -98,37 +92,60 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
+        child: Query(
+          options: QueryOptions(
+              document: gql(query),
+              variables: {"languageCode": languageCode}
+          ),
+          builder: (QueryResult result,
+              {VoidCallback? refetch, FetchMore? fetchMore}) {
+
+            //TODO execute all three queries somehow
+            if (result.hasException) return Text(result.exception.toString());
+            if (result.isLoading) return const Text('Loading');
+
+            // set dropdown default values
+            wasteBinDefault = Languages.of(context)!.defaultDropdownItem;
+            tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
+            wasteBinDropdownOptions["default"] = wasteBinDefault!;
+            tipTypeDropdownOptions["default"] = tipTypeDefault!;
+
+            // get data
+            List<dynamic> categories = result.data?["getCategories"];
+            List<dynamic> tipTypes = result.data?["getTipTypes"];
+            List<dynamic> tips = result.data?["getTips"];
+
+            // set waste bin types
+            for (dynamic category in categories) {
+              wasteBinDropdownOptions[category["category_id"]["objectId"]]
+                = category["title"];
+            }
+
+            // set tip types
+            for (dynamic element in tipTypes) {
+              tipTypeDropdownOptions[element["tip_type_id"]
+              ["objectId"]] = element["title"];
+            }
+
+            //set tips
+            for (dynamic element in tips) {
+              //TODO better way to do this?
+              if(!tipList.any((tip) => tip.title == element["title"])) {
+                tipList.add(Tip(
+                    element["title"],
+                    element["explanation"],
+                    element["short"],
+                    element["tip_id"]["tip_type_id"]["objectId"],
+                    element["tip_id"]["category_id"]["objectId"]));
+              }
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Query(
-                  options: QueryOptions(
-                      document: gql(queryCategories),
-                      variables: {"languageCode": languageCode}),
-                  builder: (QueryResult result,
-                      {VoidCallback? refetch, FetchMore? fetchMore}) {
-                    if (result.hasException) return Text(result.exception.toString());
-                    if (result.isLoading) return const Text('Loading');
-
-                    List<dynamic> categories = result.data?["getCategories"];
-
-                    if (categories.isEmpty) {
-                      return const Text("No tips found.");
-                    }
-
-                    // set dropdown default and map of all categories
-                    wasteBinDefault =
-                        Languages.of(context)!.defaultDropdownItem;
-                    wasteBinDropdownOptions["default"] = wasteBinDefault!;
-                    for (dynamic element in categories) {
-                      wasteBinDropdownOptions[element["category_id"]
-                          ["objectId"]] = element["title"];
-                    }
-
-                    // display when all data is available
-                    return Expanded(
+                Row(
+                  children: [
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -148,45 +165,20 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                   items: wasteBinDropdownOptions.values
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                Query(
-                  options: QueryOptions(
-                      document: gql(queryTipTypes),
-                      variables: {"languageCode": languageCode}),
-                  builder: (QueryResult result,
-                      {VoidCallback? refetch, FetchMore? fetchMore}) {
-                    if (result.hasException) return Text(result.exception.toString());
-                    if (result.isLoading) return const Text('Loading');
-
-                    List<dynamic> tipTypes = result.data?["getTipTypes"];
-
-                    if (tipTypes.isEmpty) {
-                      return const Text("No tips found.");
-                    }
-
-                    // set dropdown default and map of all categories
-                    tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
-                    tipTypeDropdownOptions["default"] = tipTypeDefault!;
-                    for (dynamic element in tipTypes) {
-                      tipTypeDropdownOptions[element["tip_type_id"]
-                          ["objectId"]] = element["title"];
-                    }
-                    // display when all data is available
-                    return Expanded(
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -210,47 +202,16 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                           ),
                         ],
                       ),
-                    );
-                  },
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    GestureDetector(
+                      child: const Icon(FontAwesomeIcons.xmark),
+                      onTap: () => {_setFilterValuesToDefault()},
+                    ),
+                  ],
                 ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                GestureDetector(
-                  child: const Icon(FontAwesomeIcons.xmark),
-                  onTap: () => {_setFilterValuesToDefault()},
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 10)),
-            Query(
-              options: QueryOptions(
-                  document: gql(queryTips),
-                  variables: {"languageCode": languageCode}),
-              builder: (QueryResult result,
-                  {VoidCallback? refetch, FetchMore? fetchMore}) {
-                if (result.hasException) return Text(result.exception.toString());
-                if (result.isLoading) return const Text('Loading');
-
-                List<dynamic> tips = result.data?["getTips"];
-
-                if (tips.isEmpty) {
-                  return const Text("No tips found.");
-                }
-
-                // det dropdown default and map of all categories
-                for (dynamic element in tips) {
-                  //TODO better way to do this?
-                  if(!tipList.any((tip) => tip.title == element["title"])) {
-                    tipList.add(Tip(
-                        element["title"],
-                        element["explanation"],
-                        element["short"],
-                        element["tip_id"]["tip_type_id"]["objectId"],
-                        element["tip_id"]["category_id"]["objectId"]));
-                  }
-                }
-
-                // display when all data is available
-                return Expanded(
+                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                Expanded(
                   child: ListView(
                     children: [
                       ...tipList.map((tip) {
@@ -265,10 +226,10 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       }),
                     ],
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
