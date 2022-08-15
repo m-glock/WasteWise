@@ -17,16 +17,9 @@ class TipsAndTricksPage extends StatefulWidget {
 
 //TODO: add bookmarked
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
-  Map<String, String> wasteBinTypes = {
-    "default": "All",
-    "sxmLVWMf11": "Wertstofftonne",
-    "GWiuEKUn2B": "Biotonne"
-  };
-  Map<String, String> tipTypes = {
-    "default": "All",
-    "LW8QB9QbbD": "Vermeidung",
-    "YUWVrHr5mE": "Trennung"
-  };
+  //TODO: use translations for default value
+  Map<String, String> wasteBinTypes = {"default": "All"};
+  Map<String, String> tipTypes = {"default": "All"};
   late String wasteBinDefault;
   late String tipTypeDefault;
   List<dynamic> tips = [];
@@ -40,9 +33,26 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   }
 
   void _getTags() async {
-    // TODO
+    final ParseCloudFunction function = ParseCloudFunction('getTipTypes');
+    Locale locale = await getLocale();
+    final Map<String, dynamic> params = <String, dynamic>{
+      'languageCode': locale.languageCode,
+    };
+    final ParseResponse parseResponse =
+    await function.execute(parameters: params);
+    if (parseResponse.success && parseResponse.result != null) {
+      List<dynamic> tipTypesBE = parseResponse.result;
+      Map<String, String> objectIdTitlePairs = {};
+      tipTypesBE.forEach((element) {
+        objectIdTitlePairs[element["tip_type_id"]["objectId"]] = element["title"];
+      });
+      setState(() {
+        tipTypes.addAll(objectIdTitlePairs);
+      });
+    } else {
+      //TODO
+    }
     // get categories and save them in tags with "objectId":"title"
-    // get tip types and save them in tags with "objectId":"title"
   }
 
   void _getTips() async {
@@ -54,6 +64,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     final ParseResponse parseResponse =
         await function.execute(parameters: params);
     if (parseResponse.success && parseResponse.result != null) {
+      // TODO iterate through map/JSON and built Tip object for each
       setState(() {
         tips = parseResponse.result;
       });
@@ -64,8 +75,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
 
   void _setFilterValuesToDefault() {
     setState(() {
-      wasteBinDefault = 'All';
-      tipTypeDefault = 'All';
+      wasteBinDefault = "All";
+      tipTypeDefault = "All";
       //TODO: reset filter of list
     });
   }
@@ -87,8 +98,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //TODO: in languages file
-                      const Text("Art des Tipps: "),
+                      Text(Languages.of(context)!.dropdownTipTypeLabel),
                       DropdownButton<String>(
                         isExpanded: true,
                         value: tipTypeDefault,
@@ -114,8 +124,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //TODO: in languages file
-                      const Text("Art des Mülls: "),
+                      Text(Languages.of(context)!.dropdownWasteBinLabel),
                       Row(
                         children: [
                           Expanded(
@@ -159,9 +168,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       title: element["title"],
                       destinationPage: TipPage(tipTitle: element["title"]),
                       tags: [
-                        tipTypes[element["tip_id"]["tip_type_id"]["objectId"]]!,
-                        wasteBinTypes[element["tip_id"]["category_id"]
-                            ["objectId"]]!,
+                        tipTypes[element["tip_id"]["tip_type_id"]["objectId"]] ?? "",
+                        wasteBinTypes[element["tip_id"]["category_id"]["objectId"]] ?? "",
                       ],
                     );
                   }),

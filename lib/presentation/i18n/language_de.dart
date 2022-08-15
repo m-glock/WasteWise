@@ -54,4 +54,9 @@ class LanguageDe extends Languages {
   @override String get wasteBinContentLabel => "Inhalt";
   @override String get wasteBinCycleLabel => "Kreislauf";
   @override String get wasteBinMythLabel => "Mythen";
+
+  // tips page
+  @override String get dropdownTipTypeLabel => "Art des Tipps:";
+  @override String get dropdownWasteBinLabel => "Mülleimer:";
+  @override String get defaultDropdownItem => "Alle";
 }
