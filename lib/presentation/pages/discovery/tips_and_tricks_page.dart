@@ -17,22 +17,21 @@ class TipsAndTricksPage extends StatefulWidget {
 
 //TODO: add bookmarked
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
-  //TODO: use translations for default value
-  Map<String, String> wasteBinTypes = {"default": "All"};
-  Map<String, String> tipTypes = {"default": "All"};
-  late String wasteBinDefault;
-  late String tipTypeDefault;
+  Map<String, String> wasteBinTypes = {};
+  Map<String, String> tipTypes = {};
+  String? wasteBinDefault;
+  String? tipTypeDefault;
   List<dynamic> tips = [];
 
   @override
   void initState() {
     super.initState();
-    _setFilterValuesToDefault();
     _getTips();
     _getTags();
   }
 
   void _getTags() async {
+    //get tip types
     final ParseCloudFunction function = ParseCloudFunction('getTipTypes');
     Locale locale = await getLocale();
     final Map<String, dynamic> params = <String, dynamic>{
@@ -40,19 +39,40 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     };
     final ParseResponse parseResponse =
     await function.execute(parameters: params);
+
+    Map<String, String> objectIdTitlePairs = {};
     if (parseResponse.success && parseResponse.result != null) {
       List<dynamic> tipTypesBE = parseResponse.result;
-      Map<String, String> objectIdTitlePairs = {};
-      tipTypesBE.forEach((element) {
+      objectIdTitlePairs["default"] = Languages.of(context)!.defaultDropdownItem;
+      for (dynamic element in tipTypesBE) {
         objectIdTitlePairs[element["tip_type_id"]["objectId"]] = element["title"];
-      });
-      setState(() {
-        tipTypes.addAll(objectIdTitlePairs);
-      });
+      }
     } else {
       //TODO
     }
-    // get categories and save them in tags with "objectId":"title"
+
+    // get categories
+    final ParseCloudFunction function2 = ParseCloudFunction('getCategories');
+    final ParseResponse parseResponse2 =
+    await function2.execute(parameters: params);
+
+    Map<String, String> objectIdTitlePairs2 = {};
+    if (parseResponse2.success && parseResponse2.result != null) {
+      List<dynamic> categoriesBE = parseResponse2.result;
+      objectIdTitlePairs2["default"] = Languages.of(context)!.defaultDropdownItem;
+      for (dynamic element in categoriesBE) {
+        objectIdTitlePairs2[element["category_id"]["objectId"]] = element["title"];
+      }
+    } else {
+      //TODO
+    }
+
+    setState(() {
+      tipTypes.addAll(objectIdTitlePairs);
+      wasteBinTypes.addAll(objectIdTitlePairs2);
+      wasteBinDefault = objectIdTitlePairs2["default"]!;
+      tipTypeDefault = objectIdTitlePairs["default"]!;
+    });
   }
 
   void _getTips() async {
@@ -75,8 +95,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
 
   void _setFilterValuesToDefault() {
     setState(() {
-      wasteBinDefault = "All";
-      tipTypeDefault = "All";
+      wasteBinDefault = Languages.of(context)!.defaultDropdownItem;
+      tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
       //TODO: reset filter of list
     });
   }
