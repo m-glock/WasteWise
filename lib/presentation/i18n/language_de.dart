@@ -59,4 +59,5 @@ class LanguageDe extends Languages {
   @override String get dropdownTipTypeLabel => "Art des Tipps:";
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
+  @override String get emptyListText => "Nichts gefunden";
 }

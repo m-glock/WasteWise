@@ -23,6 +23,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   String? wasteBinDefault;
   String? tipTypeDefault;
   List<Tip> tipList = [];
+  List<Tip> filteredTipList = [];
   String languageCode = "";
   String query = """
     query GetCategories(\$languageCode: String!){
@@ -80,8 +81,36 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     setState(() {
       wasteBinDefault = Languages.of(context)!.defaultDropdownItem;
       tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
-      //TODO: reset filter of list
+      filteredTipList = tipList;
     });
+  }
+
+  void _applyTipTypeFilter(String newValue) {
+    tipTypeDefault = newValue;
+    String tipTypeId = tipTypeDropdownOptions.keys
+        .where((key) => tipTypeDropdownOptions[key] == newValue)
+        .first;
+    if (tipTypeDefault == Languages.of(context)!.defaultDropdownItem) {
+      filteredTipList =
+          tipList.where((tip) => tip.tipTypeId == tipTypeId).toList();
+    } else {
+      filteredTipList =
+          filteredTipList.where((tip) => tip.tipTypeId == tipTypeId).toList();
+    }
+  }
+
+  void _applyCategoryFilter(String newValue) {
+    wasteBinDefault = newValue;
+    String wasteBinId = wasteBinDropdownOptions.keys
+        .where((key) => wasteBinDropdownOptions[key] == newValue)
+        .first;
+    if (tipTypeDefault == Languages.of(context)!.defaultDropdownItem) {
+      filteredTipList =
+          tipList.where((tip) => tip.categoryId == wasteBinId).toList();
+    } else {
+      filteredTipList =
+          filteredTipList.where((tip) => tip.categoryId == wasteBinId).toList();
+    }
   }
 
   @override
@@ -94,21 +123,19 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
         padding: EdgeInsets.all(Constants.pagePadding),
         child: Query(
           options: QueryOptions(
-              document: gql(query),
-              variables: {"languageCode": languageCode}
-          ),
+              document: gql(query), variables: {"languageCode": languageCode}),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
-
-            //TODO execute all three queries somehow
             if (result.hasException) return Text(result.exception.toString());
-            if (result.isLoading) return const Text('Loading');
+            if (result.isLoading) return const Center(child: CircularProgressIndicator());
 
             // set dropdown default values
-            wasteBinDefault = Languages.of(context)!.defaultDropdownItem;
-            tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
-            wasteBinDropdownOptions["default"] = wasteBinDefault!;
-            tipTypeDropdownOptions["default"] = tipTypeDefault!;
+            String defaultDropdownItem =
+                Languages.of(context)!.defaultDropdownItem;
+            wasteBinDefault ??= defaultDropdownItem;
+            tipTypeDefault ??= defaultDropdownItem;
+            wasteBinDropdownOptions["default"] ??= defaultDropdownItem;
+            tipTypeDropdownOptions["default"] ??= defaultDropdownItem;
 
             // get data
             List<dynamic> categories = result.data?["getCategories"];
@@ -117,20 +144,20 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
 
             // set waste bin types
             for (dynamic category in categories) {
-              wasteBinDropdownOptions[category["category_id"]["objectId"]]
-                = category["title"];
+              wasteBinDropdownOptions[category["category_id"]["objectId"]] =
+                  category["title"];
             }
 
             // set tip types
             for (dynamic element in tipTypes) {
-              tipTypeDropdownOptions[element["tip_type_id"]
-              ["objectId"]] = element["title"];
+              tipTypeDropdownOptions[element["tip_type_id"]["objectId"]] =
+                  element["title"];
             }
 
             //set tips
             for (dynamic element in tips) {
               //TODO better way to do this?
-              if(!tipList.any((tip) => tip.title == element["title"])) {
+              if (!tipList.any((tip) => tip.title == element["title"])) {
                 tipList.add(Tip(
                     element["title"],
                     element["explanation"],
@@ -138,6 +165,12 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                     element["tip_id"]["tip_type_id"]["objectId"],
                     element["tip_id"]["category_id"]["objectId"]));
               }
+            }
+
+            if (filteredTipList.isEmpty &&
+                tipTypeDefault == defaultDropdownItem &&
+                tipTypeDefault == defaultDropdownItem) {
+              filteredTipList = tipList;
             }
 
             return Column(
@@ -158,18 +191,17 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                   value: wasteBinDefault,
                                   onChanged: (String? newValue) {
                                     setState(() {
-                                      //TODO: filter list
-                                      wasteBinDefault = newValue!;
+                                      _applyCategoryFilter(newValue!);
                                     });
                                   },
                                   items: wasteBinDropdownOptions.values
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
                                 ),
                               ),
                             ],
@@ -188,8 +220,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             value: tipTypeDefault,
                             onChanged: (String? newValue) {
                               setState(() {
-                                tipTypeDefault = newValue!;
-                                //TODO: filter list
+                                _applyTipTypeFilter(newValue!);
                               });
                             },
                             items: tipTypeDropdownOptions.values
@@ -212,20 +243,23 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      ...tipList.map((tip) {
-                        return TipTile(
-                          title: tip.title,
-                          destinationPage: TipPage(tipTitle: tip.title),
-                          tags: [
-                            tipTypeDropdownOptions[tip.tipTypeId] ?? "",
-                            wasteBinDropdownOptions[tip.categoryId] ?? "",
+                  child: filteredTipList.isEmpty
+                      ? Center(
+                          child: Text(Languages.of(context)!.emptyListText))
+                      : ListView(
+                          children: [
+                            ...filteredTipList.map((tip) {
+                              return TipTile(
+                                title: tip.title,
+                                destinationPage: TipPage(tipTitle: tip.title),
+                                tags: [
+                                  tipTypeDropdownOptions[tip.tipTypeId] ?? "",
+                                  wasteBinDropdownOptions[tip.categoryId] ?? "",
+                                ],
+                              );
+                            }),
                           ],
-                        );
-                      }),
-                    ],
-                  ),
+                        ),
                 ),
               ],
             );
