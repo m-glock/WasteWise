@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
@@ -9,6 +10,7 @@ import 'package:recycling_app/presentation/themes/navigationbar_theme.dart' as n
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
+import 'package:recycling_app/presentation/util/Constants.dart';
 
 void main() async {
 
@@ -60,44 +62,63 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "RecyclingApp",
-      theme: ThemeData(
-        appBarTheme: const TopAppBarTheme(),
-        bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
 
-        elevatedButtonTheme: const AppElevatedButtonTheme(),
-        floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
-        outlinedButtonTheme: const AppOutlinedButtonTheme(),
-        textButtonTheme: AppTextButtonTheme(),
-        toggleButtonsTheme: const AppToggleButtonsTheme(),
+    final HttpLink httpLink = HttpLink(
+      Constants.apiURL,
+      defaultHeaders: {
+        'X-Parse-Application-Id': Constants.kParseApplicationId,
+        'X-Parse-Client-Key': Constants.kParseClientKey,
+      }, //getheaders()
+    );
 
-        colorScheme: const AppColorScheme(),
-
-        //TODO: add PageTransitionsTheme
-        //pageTransitionsTheme: const PageTransitionsTheme(),
-
-        textTheme: const AppTextTheme(),
+    ValueNotifier<GraphQLClient> client = ValueNotifier(
+      GraphQLClient(
+        cache: GraphQLCache(), //TODO: check which Cache to use
+        link: httpLink,
       ),
-      locale: _locale,
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('de', '')
-      ],
-      localizationsDelegates: const [
-        AppLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode &&
-              supportedLocale.countryCode == locale?.countryCode) {
-            return supportedLocale;
+    );
+
+    return GraphQLProvider(
+      client: client,
+      child: MaterialApp(
+        title: "RecyclingApp",
+        theme: ThemeData(
+          appBarTheme: const TopAppBarTheme(),
+          bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
+
+          elevatedButtonTheme: const AppElevatedButtonTheme(),
+          floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
+          outlinedButtonTheme: const AppOutlinedButtonTheme(),
+          textButtonTheme: AppTextButtonTheme(),
+          toggleButtonsTheme: const AppToggleButtonsTheme(),
+
+          colorScheme: const AppColorScheme(),
+
+          //TODO: add PageTransitionsTheme
+          //pageTransitionsTheme: const PageTransitionsTheme(),
+
+          textTheme: const AppTextTheme(),
+        ),
+        locale: _locale,
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('de', '')
+        ],
+        localizationsDelegates: const [
+          AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale?.languageCode &&
+                supportedLocale.countryCode == locale?.countryCode) {
+              return supportedLocale;
+            }
           }
-        }
-        return supportedLocales.first;
-      },
-      home: const HomePage(title: 'RecyclingApp'),
+          return supportedLocales.first;
+        },
+        home: const HomePage(title: 'RecyclingApp'),
+      ),
     );
   }
 
