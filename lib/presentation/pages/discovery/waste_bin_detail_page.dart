@@ -6,16 +6,16 @@ import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.d
 
 import '../../util/constants.dart';
 
-class WasteBinPage extends StatefulWidget {
-  const WasteBinPage({Key? key, required this.wasteBinName}) : super(key: key);
+class WasteBinDetailPage extends StatefulWidget {
+  const WasteBinDetailPage({Key? key, required this.wasteBinName}) : super(key: key);
 
   final String wasteBinName;
 
   @override
-  State<WasteBinPage> createState() => _WasteBinPageState();
+  State<WasteBinDetailPage> createState() => _WasteBinDetailPageState();
 }
 
-class _WasteBinPageState extends State<WasteBinPage> {
+class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

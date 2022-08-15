@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/waste_bin_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
 import 'package:recycling_app/presentation/util/hex_color.dart';
 import 'package:recycling_app/presentation/util/waste_bin_category.dart';
@@ -94,7 +94,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
                       title: category.title,
                       subtitle: null,
                       destinationPage:
-                          WasteBinPage(wasteBinName: category.title),
+                          WasteBinDetailPage(wasteBinName: category.title),
                     ),
                   );
                 }).toList(),
