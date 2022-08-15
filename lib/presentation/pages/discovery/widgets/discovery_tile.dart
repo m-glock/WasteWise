@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../util/Constants.dart';
+import '../../../util/constants.dart';
 
 class DiscoveryTile extends StatefulWidget {
   const DiscoveryTile(

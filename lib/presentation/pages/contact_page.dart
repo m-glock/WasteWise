@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
-import '../util/Constants.dart';
+import '../util/constants.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key}) : super(key: key);

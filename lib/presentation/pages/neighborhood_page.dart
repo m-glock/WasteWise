@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../util/Constants.dart';
+import '../util/constants.dart';
 
 class NeighborhoodPage extends StatefulWidget {
   const NeighborhoodPage({Key? key}) : super(key: key);

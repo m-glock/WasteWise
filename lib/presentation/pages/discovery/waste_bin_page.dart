@@ -4,7 +4,7 @@ import 'package:recycling_app/presentation/pages/discovery/widgets/content_widge
 import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
 
-import '../../util/Constants.dart';
+import '../../util/constants.dart';
 
 class WasteBinPage extends StatefulWidget {
   const WasteBinPage({Key? key, required this.wasteBinName}) : super(key: key);

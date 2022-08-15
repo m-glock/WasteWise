@@ -4,11 +4,11 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
-import 'package:recycling_app/presentation/util/HexColor.dart';
+import 'package:recycling_app/presentation/util/hex_color.dart';
 import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 
 import '../../i18n/locale_constant.dart';
-import '../../util/Constants.dart';
+import '../../util/constants.dart';
 
 class WasteBinOverviewPage extends StatefulWidget {
   const WasteBinOverviewPage({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../util/Constants.dart';
+import '../../../util/constants.dart';
 
 class DashboardTile extends StatefulWidget {
   const DashboardTile({Key? key, required this.tileContent}) : super(key: key);

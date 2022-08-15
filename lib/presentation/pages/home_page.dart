@@ -10,7 +10,7 @@ import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:recycling_app/presentation/util/Constants.dart';
+import 'package:recycling_app/presentation/util/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
