@@ -10,7 +10,7 @@ import 'package:recycling_app/presentation/themes/navigationbar_theme.dart' as n
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
-import 'package:recycling_app/presentation/util/Constants.dart';
+import 'package:recycling_app/presentation/util/constants.dart';
 
 void main() async {
 

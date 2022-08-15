@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../util/Constants.dart';
+import '../../util/constants.dart';
 
 class TipPage extends StatefulWidget {
   const TipPage({Key? key, required this.tipTitle}) : super(key: key);

@@ -6,7 +6,7 @@ import 'package:recycling_app/presentation/pages/discovery/tip_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
 
 import '../../i18n/locale_constant.dart';
-import '../../util/Constants.dart';
+import '../../util/constants.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
   const TipsAndTricksPage({Key? key}) : super(key: key);
