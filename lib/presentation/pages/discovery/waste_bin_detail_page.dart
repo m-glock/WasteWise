@@ -47,22 +47,22 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
               ),
               Expanded(
                 child: TabBarView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: ContentWidget(categoryId: widget.wasteBin.objectId),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: CycleWidget(),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: MythWidget(),
-                    ),
-                  ],
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: ContentWidget(categoryId: widget.wasteBin.objectId),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: CycleWidget(categoryId: widget.wasteBin.objectId),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: MythWidget(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
         ),
