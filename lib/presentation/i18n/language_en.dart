@@ -54,4 +54,6 @@ class LanguageEn extends Languages {
   @override String get wasteBinContentLabel => "Content";
   @override String get wasteBinCycleLabel => "Cycle";
   @override String get wasteBinMythLabel => "Myths";
+  @override String get wasteBinNoContentLabel => "Does not belong in there:";
+  @override String get wasteBinYesContentLabel => "Does belong in there:";
 }

@@ -59,7 +59,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
-          if (result.isLoading) return const Text('Loading');
+          if (result.isLoading) return const Center(child: CircularProgressIndicator());
 
           List<dynamic> categories = result.data?["getCategories"];
 
@@ -94,7 +94,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
                       title: category.title,
                       subtitle: null,
                       destinationPage:
-                          WasteBinDetailPage(wasteBinName: category.title),
+                          WasteBinDetailPage(wasteBin: category),
                     ),
                   );
                 }).toList(),

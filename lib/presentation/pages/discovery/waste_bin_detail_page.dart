@@ -3,13 +3,14 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
+import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 
 import '../../util/constants.dart';
 
 class WasteBinDetailPage extends StatefulWidget {
-  const WasteBinDetailPage({Key? key, required this.wasteBinName}) : super(key: key);
+  const WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
 
-  final String wasteBinName;
+  final WasteBinCategory wasteBin;
 
   @override
   State<WasteBinDetailPage> createState() => _WasteBinDetailPageState();
@@ -22,7 +23,7 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.wasteBinName),
+          title: Text(widget.wasteBin.title),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
@@ -44,18 +45,18 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
                   ],
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: TabBarView(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: ContentWidget(),
+                      padding: const EdgeInsets.only(top: 10),
+                      child: ContentWidget(categoryId: widget.wasteBin.objectId),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: CycleWidget(),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: MythWidget(),
                     ),
