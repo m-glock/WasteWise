@@ -67,11 +67,13 @@ class _ContentWidgetState extends State<ContentWidget> {
           return const Text("No tips found.");
         }
 
-        for (dynamic element in categories) {
-          if (element["category_content_id"]["does_belong"]) {
-            itemsYes.add(element["title"]);
-          } else {
-            itemsNo.add(element["title"]);
+        if(itemsYes.isEmpty && itemsNo.isEmpty) {
+          for (dynamic element in categories) {
+            if (element["category_content_id"]["does_belong"]) {
+              itemsYes.add(element["title"]);
+            } else {
+              itemsNo.add(element["title"]);
+            }
           }
         }
 
