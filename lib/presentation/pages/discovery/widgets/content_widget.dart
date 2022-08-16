@@ -58,17 +58,18 @@ class _ContentWidgetState extends State<ContentWidget> {
       builder: (QueryResult result,
           {VoidCallback? refetch, FetchMore? fetchMore}) {
         if (result.hasException) return Text(result.exception.toString());
-        if (result.isLoading)
+        if (result.isLoading) {
           return const Center(child: CircularProgressIndicator());
+        }
 
-        List<dynamic> categories = result.data?["getCategoryContent"];
+        List<dynamic> categoryContent = result.data?["getCategoryContent"];
 
-        if (categories.isEmpty) {
+        if (categoryContent.isEmpty) {
           return const Text("No tips found.");
         }
 
         if(itemsYes.isEmpty && itemsNo.isEmpty) {
-          for (dynamic element in categories) {
+          for (dynamic element in categoryContent) {
             if (element["category_content_id"]["does_belong"]) {
               itemsYes.add(element["title"]);
             } else {
