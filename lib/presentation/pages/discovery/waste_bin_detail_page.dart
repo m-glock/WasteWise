@@ -8,7 +8,8 @@ import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 import '../../util/constants.dart';
 
 class WasteBinDetailPage extends StatefulWidget {
-  const WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
+  const WasteBinDetailPage({Key? key, required this.wasteBin})
+      : super(key: key);
 
   final WasteBinCategory wasteBin;
 
@@ -47,22 +48,23 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
               ),
               Expanded(
                 child: TabBarView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ContentWidget(categoryId: widget.wasteBin.objectId),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: CycleWidget(categoryId: widget.wasteBin.objectId),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: MythWidget(),
-                      ),
-                    ],
-                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child:
+                          ContentWidget(categoryId: widget.wasteBin.objectId),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 0),
+                      child: CycleWidget(categoryId: widget.wasteBin.objectId),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: MythWidget(categoryId: widget.wasteBin.objectId),
+                    ),
+                  ],
                 ),
+              ),
             ],
           ),
         ),

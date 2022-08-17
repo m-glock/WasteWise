@@ -60,4 +60,6 @@ abstract class Languages {
   String get wasteBinMythLabel;
   String get wasteBinYesContentLabel;
   String get wasteBinNoContentLabel;
+  String get wasteBinMythCorrect;
+  String get wasteBinMythIncorrect;
 }
