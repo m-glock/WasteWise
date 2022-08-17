@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/tip_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/tip_detail_hage.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
 
 import '../../i18n/locale_constant.dart';
@@ -26,8 +26,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   List<Tip> filteredTipList = [];
   String languageCode = "";
   String query = """
-    query GetCategories(\$languageCode: String!){
-      getCategories(languageCode: \$languageCode){
+    query GetCategories(\$languageCode: String!, \$municipalityId: String!){
+      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
           objectId
@@ -56,10 +56,12 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     	      objectId
       	    color
     	    },
+    	    image{
+    	      url
+    	    }
   	    }, 
         title,
-        explanation,
-        short
+        explanation
       }
     }
   """;
@@ -122,12 +124,16 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
         child: Query(
-          options: QueryOptions(
-              document: gql(query), variables: {"languageCode": languageCode}),
+          options: QueryOptions(document: gql(query), variables: {
+            "languageCode": languageCode,
+            "municipalityId": "PMJEteBu4m" //TODO get from user
+          }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
             if (result.hasException) return Text(result.exception.toString());
-            if (result.isLoading) return const Center(child: CircularProgressIndicator());
+            if (result.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
             // set dropdown default values
             String defaultDropdownItem =
@@ -161,9 +167,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                 tipList.add(Tip(
                     element["title"],
                     element["explanation"],
-                    element["short"],
                     element["tip_id"]["tip_type_id"]["objectId"],
-                    element["tip_id"]["category_id"]["objectId"]));
+                    element["tip_id"]["category_id"]["objectId"],
+                    element["tip_id"]["image"]["url"]));
               }
             }
 
@@ -251,7 +257,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             ...filteredTipList.map((tip) {
                               return TipTile(
                                 title: tip.title,
-                                destinationPage: TipPage(tipTitle: tip.title),
+                                destinationPage: TipDetailPage(tip: tip),
                                 tags: [
                                   tipTypeDropdownOptions[tip.tipTypeId] ?? "",
                                   wasteBinDropdownOptions[tip.categoryId] ?? "",

@@ -4,8 +4,8 @@ class AppTextTheme extends TextTheme{
 
   //TODO
   const AppTextTheme() : super(
-    headline1: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
-    headline2: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
+    headline1: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
+    headline2: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
     headline3: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black),
     subtitle1: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
     subtitle2: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
