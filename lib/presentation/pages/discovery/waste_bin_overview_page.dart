@@ -20,8 +20,8 @@ class WasteBinOverviewPage extends StatefulWidget {
 class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
   String languageCode = "";
   String query = """
-    query GetCategories(\$languageCode: String!){
-      getCategories(languageCode: \$languageCode){
+    query GetCategories(\$languageCode: String!, \$municipalityId: String!){
+      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
           objectId
@@ -55,7 +55,10 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
       ),
       body: Query(
         options: QueryOptions(
-            document: gql(query), variables: {"languageCode": languageCode}),
+            document: gql(query), variables: {
+              "languageCode": languageCode,
+              "municipalityId": "PMJEteBu4m" //TODO get from user
+            }),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
