@@ -23,6 +23,10 @@ class _SearchPageState extends State<SearchPage> {
     query GetItemNames(\$languageCode: String!){
       getItemNames(languageCode: \$languageCode){
         title
+        synonyms
+        item_id{
+          objectId
+        }
       }
     }
   """;
@@ -90,9 +94,10 @@ class _SearchPageState extends State<SearchPage> {
             return const Text("No tips found.");
           }
 
-          List<String> itemNames = [];
+          Map<String, String> itemNames = {};
           for (dynamic element in items) {
-            itemNames.add(element["title"]);
+            //TODO: entry for each synonym?
+            itemNames[element["title"]] = element["item_id"]["objectId"];
           }
 
           // display when all data is available

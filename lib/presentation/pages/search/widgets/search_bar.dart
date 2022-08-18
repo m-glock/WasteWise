@@ -7,7 +7,7 @@ import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key, required this.itemNames}) : super(key: key);
 
-  final List<String> itemNames;
+  final Map<String, String> itemNames;
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -17,10 +17,11 @@ class _SearchBarState extends State<SearchBar> {
   final GlobalKey<AutoCompleteTextFieldState<String>> _key = GlobalKey();
 
   void _getItemInfo(String selected) {
-    //TODO: check if BE returns an item before opening the page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ItemDetailPage(item: selected)),
+      MaterialPageRoute(
+          builder: (context) => ItemDetailPage(
+              itemName: selected, objectId: widget.itemNames[selected]!)),
     );
   }
 
@@ -44,7 +45,7 @@ class _SearchBarState extends State<SearchBar> {
             ),
             Expanded(
               child: AutoCompleteTextField<String>(
-                suggestions: widget.itemNames,
+                suggestions: widget.itemNames.keys.toList(),
                 decoration: InputDecoration.collapsed(
                   hintText: Languages.of(context)!.searchBarHint,
                 ),
@@ -60,7 +61,7 @@ class _SearchBarState extends State<SearchBar> {
                   );
                 },
                 textSubmitted: (String data) {
-                  if (widget.itemNames.contains(data)) {
+                  if (widget.itemNames.containsKey(data)) {
                     _getItemInfo(data);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
