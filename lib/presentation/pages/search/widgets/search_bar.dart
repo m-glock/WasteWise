@@ -5,15 +5,15 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  const SearchBar({Key? key, required this.itemNames}) : super(key: key);
+
+  final List<String> itemNames;
 
   @override
   State<SearchBar> createState() => _SearchBarState();
 }
 
 class _SearchBarState extends State<SearchBar> {
-  //TODO: replace with items from BE
-  List<String> items = ["Hallo", "Hello", "hola", "Halogen", "homogen"];
   final GlobalKey<AutoCompleteTextFieldState<String>> _key = GlobalKey();
 
   void _getItemInfo(String selected) {
@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
             ),
             Expanded(
               child: AutoCompleteTextField<String>(
-                suggestions: items,
+                suggestions: widget.itemNames,
                 decoration: InputDecoration.collapsed(
                   hintText: Languages.of(context)!.searchBarHint,
                 ),
@@ -60,7 +60,7 @@ class _SearchBarState extends State<SearchBar> {
                   );
                 },
                 textSubmitted: (String data) {
-                  if (items.contains(data)) {
+                  if (widget.itemNames.contains(data)) {
                     _getItemInfo(data);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
