@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:searchfield/searchfield.dart';
+
+import '../../../util/item.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key}) : super(key: key);
@@ -9,44 +12,35 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  String test = "Test";
+  //TODO: replace with items from BE
+  List<Item> items = [
+    Item("Hallo", "Hello, hola"),
+    Item("Halogen", "homogen")
+  ];
 
-  void _filter(String text) {
-    setState(() {
-      //TODO search for autofill
-      test = text;
-    });
+  void _getItemInfo(Item selected) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ItemDetailPage(item: selected)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            border: Border.all(
-              color: Colors.black45,
-              width: 2,
-            ),
-          ),
-          child: TextField(
-            textAlignVertical: TextAlignVertical.center,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass),
-              hintText: 'Search ',
-              hintStyle: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-            onChanged: (text) {
-              text = text.toLowerCase();
-              _filter(text);
-            },
-          ),
-        ),
-        Text(test),
-      ],
+    return SearchField<Item>(
+      hint: "Search",
+      maxSuggestionsInViewPort: 5,
+      onSuggestionTap: (SearchFieldListItem selectedItem) {
+        _getItemInfo(selectedItem.item as Item);
+      },
+      suggestions: items
+          .map((element) => SearchFieldListItem<Item>(
+          element.getWords(),
+          item: element,
+          child: Text(element.title)
+      )).toList(),
+      emptyWidget: Container(), //TODO: show when no suggestion was found
     );
   }
 }
