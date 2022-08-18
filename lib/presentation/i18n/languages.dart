@@ -45,6 +45,7 @@ abstract class Languages {
   String get searchBarHint;
   String get recentlySearched;
   String get oftenSearched;
+  String get searchBarItemNotExist;
 
   // discovery page
   String get wasteBinOverviewTitle;

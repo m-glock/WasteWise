@@ -41,6 +41,7 @@ class LanguageDe extends Languages {
   @override String get oftenSearched => "Oft von anderen gesucht";
   @override String get recentlySearched => "Zuletzt von dir gesucht";
   @override String get searchBarHint => "Suche";
+  @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
