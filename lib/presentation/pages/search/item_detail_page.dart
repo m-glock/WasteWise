@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 
@@ -11,10 +12,9 @@ import '../../util/item.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(
-      {Key? key, required this.itemName, required this.objectId})
+      {Key? key, required this.objectId})
       : super(key: key);
 
-  final String itemName;
   final String objectId;
 
   @override
@@ -141,26 +141,29 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 30)),
-                  Text("Material: ${item.material}",
+                  Text(Languages.of(context)!.itemDetailMaterialLabel + item.material,
                       style: Theme.of(context).textTheme.bodyText1),
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Text("Tonne: ${item.wasteBin.title}",
+                  Text(Languages.of(context)!.itemDetailWasteBinLabel + item.wasteBin.title,
                       style: Theme.of(context).textTheme.bodyText1),
                   const Padding(padding: EdgeInsets.only(bottom: 30)),
-                  Text("Mehr Info zu ${item.subcategory}",
+                  Text(Languages.of(context)!.itemDetailMoreInfoLabel + item.subcategory,
                       style: Theme.of(context).textTheme.bodyText1),
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
                   ItemDetailTile(
-                      headerTitle: "Erklärung", expandedText: item.explanation),
+                      headerTitle: Languages.of(context)!.itemDetailExplanationLabel,
+                      expandedText: item.explanation
+                  ),
                   const Padding(padding: EdgeInsets.only(bottom: 15)),
                   ItemDetailTile(
-                      headerTitle: "Tips", expandedText: item.explanation //TODO
-                      ),
-                  const Padding(padding: EdgeInsets.only(bottom: 15)),
-                  ItemDetailTile(
-                      headerTitle: "Vermeidung",
+                      headerTitle: Languages.of(context)!.itemDetailTipsLabel,
                       expandedText: item.explanation //TODO
-                      ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 15)),
+                  ItemDetailTile(
+                      headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
+                      expandedText: item.explanation //TODO
+                  ),
                 ],
               ),
             ),

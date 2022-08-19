@@ -21,7 +21,8 @@ class _SearchBarState extends State<SearchBar> {
       context,
       MaterialPageRoute(
           builder: (context) => ItemDetailPage(
-              itemName: selected, objectId: widget.itemNames[selected]!)),
+              objectId: widget.itemNames[selected]!
+          )),
     );
   }
 

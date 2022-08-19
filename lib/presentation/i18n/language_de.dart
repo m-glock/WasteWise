@@ -43,6 +43,14 @@ class LanguageDe extends Languages {
   @override String get searchBarHint => "Suche";
   @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
 
+  // item detail page
+  @override String get itemDetailMaterialLabel => "Material: ";
+  @override String get itemDetailWasteBinLabel => "Tonne: ";
+  @override String get itemDetailMoreInfoLabel => "Mehr Informationen über ";
+  @override String get itemDetailExplanationLabel => "Erklärung";
+  @override String get itemDetailPreventionLabel => "Vermeidung";
+  @override String get itemDetailTipsLabel => "Tipps";
+
   // discovery page
   @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
   @override String get wasteBinOverviewSubtitle => "Inhalt, Kreislauf, Mythen";
