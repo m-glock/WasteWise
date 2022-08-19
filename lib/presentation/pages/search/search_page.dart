@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:recycling_app/presentation/pages/search/widgets/barcode_scan_page.dart';
+import 'package:recycling_app/presentation/pages/search/barcode_scan_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 
 import '../../i18n/languages.dart';
