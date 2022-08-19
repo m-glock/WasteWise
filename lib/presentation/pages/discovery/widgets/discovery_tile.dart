@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../util/constants.dart';
+
 class DiscoveryTile extends StatefulWidget {
   const DiscoveryTile(
       {Key? key,
@@ -33,7 +35,8 @@ class _DiscoveryTileState extends State<DiscoveryTile> {
         height: 100,
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
+            borderRadius: Constants.tileBorderRadius,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Row(

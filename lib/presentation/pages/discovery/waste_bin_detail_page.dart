@@ -3,28 +3,32 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
-import 'package:recycling_app/presentation/util/waste_bin.dart';
+import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 
-class WasteBinPage extends StatefulWidget {
-  const WasteBinPage({Key? key, required this.wasteBin}) : super(key: key);
+import '../../util/constants.dart';
 
-  final WasteBin wasteBin;
+class WasteBinDetailPage extends StatefulWidget {
+  const WasteBinDetailPage({Key? key, required this.wasteBin})
+      : super(key: key);
+
+  final WasteBinCategory wasteBin;
 
   @override
-  State<WasteBinPage> createState() => _WasteBinPageState();
+  State<WasteBinDetailPage> createState() => _WasteBinDetailPageState();
 }
 
-class _WasteBinPageState extends State<WasteBinPage> {
+class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(Languages.of(context)!.wasteBinNames[widget.wasteBin]!),
+          title: Text(widget.wasteBin.title),
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+          padding: EdgeInsets.symmetric(
+              horizontal: Constants.pagePadding, vertical: 30),
           child: Column(
             children: [
               SizedBox(
@@ -42,20 +46,21 @@ class _WasteBinPageState extends State<WasteBinPage> {
                   ],
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: TabBarView(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: ContentWidget(),
+                      padding: const EdgeInsets.only(top: 10),
+                      child:
+                          ContentWidget(categoryId: widget.wasteBin.objectId),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: CycleWidget(),
+                      padding: const EdgeInsets.only(top: 0),
+                      child: CycleWidget(categoryId: widget.wasteBin.objectId),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: MythWidget(),
+                      padding: const EdgeInsets.only(top: 10),
+                      child: MythWidget(categoryId: widget.wasteBin.objectId),
                     ),
                   ],
                 ),

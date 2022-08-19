@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
+
+import '../../util/constants.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
   const TipsAndTricksPage({Key? key}) : super(key: key);
@@ -11,6 +14,17 @@ class TipsAndTricksPage extends StatefulWidget {
 }
 
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
+  String dropdownValue1 = 'Alle';
+  String dropdownValue2 = 'Alle';
+
+  void _resetFilterValues() {
+    setState(() {
+      dropdownValue1 = 'Alle';
+      dropdownValue2 = 'Alle';
+      //TODO: reset filter of list
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +32,83 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
         title: Text(Languages.of(context)!.tipsAndTricksTitle),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(Constants.pagePadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            IconButton(
-              iconSize: 30,
-              splashRadius: 5,
-              icon: const Icon(Icons.filter_alt_rounded),
-              onPressed: () => {
-                //TODO add filter
-              },
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Art des Tipps: "),
+                      DropdownButton<String>(
+                        isExpanded: true,
+                        value: dropdownValue1,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue1 = newValue!;
+                            //TODO: filter list
+                          });
+                        },
+                        items: <String>['Alle', 'Vermeidung', 'Trennung']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 10)),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Art des Mülls: "),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: dropdownValue2,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  //TODO: filter list
+                                  dropdownValue2 = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'Alle',
+                                'Biotonne',
+                                'Wertstofftonne',
+                                'Restmüll'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 10)),
+                          GestureDetector(
+                            child: const Icon(FontAwesomeIcons.xmark),
+                            onTap: () => {_resetFilterValues()},
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             const Padding(padding: EdgeInsets.only(bottom: 10)),
             Expanded(
+              //TODO: get actual tips from server
               child: ListView(
                 children: const [
                   TipTile(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../util/constants.dart';
+
 class TipTile extends StatefulWidget {
   const TipTile(
       {Key? key,
@@ -34,7 +36,8 @@ class _TipTileState extends State<TipTile> {
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
+            borderRadius: Constants.tileBorderRadius,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Row(

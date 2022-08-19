@@ -1,4 +1,3 @@
-import '../util/waste_bin.dart';
 import 'languages.dart';
 
 class LanguageDe extends Languages {
@@ -52,15 +51,11 @@ class LanguageDe extends Languages {
   @override String get collectionPointsSubtitle => "Recyclinghof, Altkleidercontainer, etc.";
 
   // waste bin pages
-  @override Map<WasteBin, String> get wasteBinNames => {
-    WasteBin.biologicalWaste: "Biomüll",
-    WasteBin.glassWaste: "Glasmüll",
-    WasteBin.paperWaste: "Papiermüll",
-    WasteBin.recyclableWaste: "Wertstofftonne",
-    WasteBin.residualWaste: "Restmüll",
-    WasteBin.other: "Sonstiges"
-  };
   @override String get wasteBinContentLabel => "Inhalt";
   @override String get wasteBinCycleLabel => "Kreislauf";
   @override String get wasteBinMythLabel => "Mythen";
+  @override String get wasteBinNoContentLabel => "Das gehört rein:";
+  @override String get wasteBinYesContentLabel => "Das gehört nicht rein:";
+  @override String get wasteBinMythCorrect => "Stimmt!";
+  @override String get wasteBinMythIncorrect => "Stimmt nicht!";
 }

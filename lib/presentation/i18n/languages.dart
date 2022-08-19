@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../util/waste_bin.dart';
-
 abstract class Languages {
 
   static Languages? of(BuildContext context) {
@@ -57,8 +55,11 @@ abstract class Languages {
   String get collectionPointsSubtitle;
 
   // waste bin pages
-  Map<WasteBin, String> get wasteBinNames;
   String get wasteBinContentLabel;
   String get wasteBinCycleLabel;
   String get wasteBinMythLabel;
+  String get wasteBinYesContentLabel;
+  String get wasteBinNoContentLabel;
+  String get wasteBinMythCorrect;
+  String get wasteBinMythIncorrect;
 }
