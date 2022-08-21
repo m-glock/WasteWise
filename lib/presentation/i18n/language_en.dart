@@ -58,4 +58,10 @@ class LanguageEn extends Languages {
   @override String get wasteBinYesContentLabel => "Does belong in there:";
   @override String get wasteBinMythCorrect => "Correct!";
   @override String get wasteBinMythIncorrect => "Not correct!";
+
+  // tips page
+  @override String get dropdownTipTypeLabel => "Tip type:";
+  @override String get dropdownWasteBinLabel => "Waste bin type:";
+  @override String get defaultDropdownItem => "All";
+  @override String get emptyListText => "Nothing found";
 }

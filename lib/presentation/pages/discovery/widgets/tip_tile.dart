@@ -8,20 +8,20 @@ class TipTile extends StatefulWidget {
       {Key? key,
       required this.title,
       required this.destinationPage,
-      required this.bookmarked})
+      required this.tags,
+      this.bookmarked = false})
       : super(key: key);
 
   final String title;
   final Widget destinationPage;
   final bool bookmarked;
+  final List<String> tags;
 
   @override
   State<TipTile> createState() => _TipTileState();
 }
 
 class _TipTileState extends State<TipTile> {
-  List<String> tags = ["Vermeidung", "Biotonne"];
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -35,16 +35,16 @@ class _TipTileState extends State<TipTile> {
         height: 80,
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: Constants.tileBorderRadius,
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: Constants.tileBorderRadius,
         ),
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Row(
             children: [
               widget.bookmarked
-                  ? const Icon(Icons.bookmark_border_outlined)
-                  : const Icon(Icons.bookmark),
+                  ? const Icon(Icons.bookmark)
+                  : const Icon(Icons.bookmark_border_outlined),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -58,7 +58,7 @@ class _TipTileState extends State<TipTile> {
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 5)),
                       Row(children: [
-                        ...tags.map((tagName) => Container(
+                        ...widget.tags.map((tagName) => Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 10),
                               margin: const EdgeInsets.only(right: 5),

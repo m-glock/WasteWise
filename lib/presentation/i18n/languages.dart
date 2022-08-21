@@ -62,4 +62,10 @@ abstract class Languages {
   String get wasteBinNoContentLabel;
   String get wasteBinMythCorrect;
   String get wasteBinMythIncorrect;
+
+  // tips page
+  String get dropdownTipTypeLabel;
+  String get dropdownWasteBinLabel;
+  String get defaultDropdownItem;
+  String get emptyListText;
 }
