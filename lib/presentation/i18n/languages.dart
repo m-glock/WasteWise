@@ -45,6 +45,15 @@ abstract class Languages {
   String get searchBarHint;
   String get recentlySearched;
   String get oftenSearched;
+  String get searchBarItemNotExist;
+
+  // item detail page
+  String get itemDetailMaterialLabel;
+  String get itemDetailWasteBinLabel;
+  String get itemDetailMoreInfoLabel;
+  String get itemDetailExplanationLabel;
+  String get itemDetailTipsLabel;
+  String get itemDetailPreventionLabel;
 
   // discovery page
   String get wasteBinOverviewTitle;
