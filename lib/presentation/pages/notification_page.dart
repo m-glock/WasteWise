@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
+import '../util/constants.dart';
+
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
@@ -16,7 +18,10 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.notificationPageName),
       ),
-      body: const Center(),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: const Center(),
+      ),
     );
   }
 }

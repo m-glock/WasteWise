@@ -13,33 +13,26 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 15
+      body: Center(
+        child: Column(
+          children: [
+            const DashboardTile(tileContent: OverviewTile()),
+            const Padding(padding: EdgeInsets.all(10)),
+            const DashboardTile(tileContent: ProgressTile()),
+            const Padding(padding: EdgeInsets.all(10)),
+            Row(
+              children: const [
+                Flexible(child: DashboardTile(tileContent: TextTile())),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                Flexible(child: DashboardTile(tileContent: ActionTile())),
+              ],
+            ),
+          ],
         ),
-        child: Center(
-          child: Column(
-            children: [
-              const DashboardTile(tileContent: OverviewTile()),
-              const Padding(padding: EdgeInsets.all(10)),
-              const DashboardTile(tileContent: ProgressTile()),
-              const Padding(padding: EdgeInsets.all(10)),
-              Row(
-                children: const [
-                  Flexible(child: DashboardTile(tileContent: TextTile())),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Flexible(child: DashboardTile(tileContent: ActionTile())),
-                ],
-              ),
-            ],
-          ),
-        ),
-      )
+      ),
     );
   }
 }

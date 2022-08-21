@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
-import 'package:recycling_app/presentation/pages/discover_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/discover_page.dart';
 import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
 import 'package:recycling_app/presentation/pages/notification_page.dart';
-import 'package:recycling_app/presentation/pages/profile_page.dart';
+import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/util/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -44,21 +45,22 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NotificationPage()),
-                )
-              },
-              icon: const Icon(FontAwesomeIcons.bell),
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationPage()),
+              )
+            },
+            icon: const Icon(FontAwesomeIcons.bell),
           ),
           IconButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
-                )
-              },
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UserPage()),
+              )
+            },
             icon: const Icon(FontAwesomeIcons.user),
           ),
         ],
@@ -99,8 +101,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: Center(
+          child: _pages.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

@@ -29,4 +29,37 @@ abstract class Languages {
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
   String get progressTileTitle;
+
+  // registration/login page
+  String get usernameLabel;
+  String get emailLabel;
+  String get passwordLabel;
+  String get signupButtonText;
+  String get loginButtonText;
+  String get goToLoginButtonText;
+  String get goToSignupButtonText;
+  String get errorDialogTitle;
+  String get registrationDialogCloseButtonText;
+
+  // search page
+  String get searchBarHint;
+  String get recentlySearched;
+  String get oftenSearched;
+
+  // discovery page
+  String get wasteBinOverviewTitle;
+  String get wasteBinOverviewSubtitle;
+  String get tipsAndTricksTitle;
+  String get tipsAndTricksSubtitle;
+  String get collectionPointsTitle;
+  String get collectionPointsSubtitle;
+
+  // waste bin pages
+  String get wasteBinContentLabel;
+  String get wasteBinCycleLabel;
+  String get wasteBinMythLabel;
+  String get wasteBinYesContentLabel;
+  String get wasteBinNoContentLabel;
+  String get wasteBinMythCorrect;
+  String get wasteBinMythIncorrect;
 }

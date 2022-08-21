@@ -26,4 +26,36 @@ class LanguageDe extends Languages {
   @override String get overviewTileSavedText => "Du hast 69 items vor dem falschen Mülleimer gerettet.";
   @override String get progressTileTitle => "Fortschritt";
 
+  // registration/login page
+  @override String get usernameLabel => "Username";
+  @override String get passwordLabel => "Passwort";
+  @override String get emailLabel => "E-Mail";
+  @override String get signupButtonText => "Registrieren";
+  @override String get loginButtonText => "Einloggen";
+  @override String get goToLoginButtonText => "Bereits registriert? Zum Login";
+  @override String get goToSignupButtonText => "Noch kein Konto? Zur Registrierung";
+  @override String get errorDialogTitle => "Etwas ist schief gelaufen";
+  @override String get registrationDialogCloseButtonText => "Okay";
+
+  // search page
+  @override String get oftenSearched => "Oft von anderen gesucht";
+  @override String get recentlySearched => "Zuletzt von dir gesucht";
+  @override String get searchBarHint => "Suche";
+
+  // discovery page
+  @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
+  @override String get wasteBinOverviewSubtitle => "Inhalt, Kreislauf, Mythen";
+  @override String get tipsAndTricksTitle => "Tipps und Tricks";
+  @override String get tipsAndTricksSubtitle => "Müllvemreidung, Trennung, etc.";
+  @override String get collectionPointsTitle => "Sammelstellen";
+  @override String get collectionPointsSubtitle => "Recyclinghof, Altkleidercontainer, etc.";
+
+  // waste bin pages
+  @override String get wasteBinContentLabel => "Inhalt";
+  @override String get wasteBinCycleLabel => "Kreislauf";
+  @override String get wasteBinMythLabel => "Mythen";
+  @override String get wasteBinNoContentLabel => "Das gehört rein:";
+  @override String get wasteBinYesContentLabel => "Das gehört nicht rein:";
+  @override String get wasteBinMythCorrect => "Stimmt!";
+  @override String get wasteBinMythIncorrect => "Stimmt nicht!";
 }

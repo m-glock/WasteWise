@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_scan_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 
+import '../../i18n/languages.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -17,9 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-        child: Column(
+      body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SearchBar(),
@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //TODO replace with actual items and links
-                    Text("Zuletzt gesucht",
+                    Text(Languages.of(context)!.recentlySearched,
                         style: Theme.of(context).textTheme.headline2),
                     const Padding(padding: EdgeInsets.only(bottom: 5)),
                     ...recentlySearched
@@ -61,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
                             style: Theme.of(context).textTheme.bodyText1))
                         .toList(),
                     const Padding(padding: EdgeInsets.only(bottom: 25)),
-                    Text("Häufig gesucht",
+                    Text(Languages.of(context)!.oftenSearched,
                         style: Theme.of(context).textTheme.headline2),
                     const Padding(padding: EdgeInsets.only(bottom: 5)),
                     ...oftenSearched
@@ -73,7 +73,6 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ],
-        ),
       ),
     );
   }
