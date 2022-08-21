@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/waste_bin_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
 import 'package:recycling_app/presentation/util/hex_color.dart';
 import 'package:recycling_app/presentation/util/waste_bin_category.dart';
@@ -20,8 +20,8 @@ class WasteBinOverviewPage extends StatefulWidget {
 class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
   String languageCode = "";
   String query = """
-    query GetCategories(\$languageCode: String!){
-      getCategories(languageCode: \$languageCode){
+    query GetCategories(\$languageCode: String!, \$municipalityId: String!){
+      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
           objectId
@@ -55,11 +55,14 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
       ),
       body: Query(
         options: QueryOptions(
-            document: gql(query), variables: {"languageCode": languageCode}),
+            document: gql(query), variables: {
+              "languageCode": languageCode,
+              "municipalityId": "PMJEteBu4m" //TODO get from user
+            }),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
-          if (result.isLoading) return const Text('Loading');
+          if (result.isLoading) return const Center(child: CircularProgressIndicator());
 
           List<dynamic> categories = result.data?["getCategories"];
 
@@ -94,7 +97,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
                       title: category.title,
                       subtitle: null,
                       destinationPage:
-                          WasteBinPage(wasteBinName: category.title),
+                          WasteBinDetailPage(wasteBin: category),
                     ),
                   );
                 }).toList(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../i18n/languages.dart';
 import '../../../util/constants.dart';
 
 class ContentListWidget extends StatefulWidget {
@@ -37,19 +38,19 @@ class _ContentListWidgetState extends State<ContentListWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headline3,
-            ),
-          ),
           ...widget.itemNames.map(
             (name) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Text(
-                "$bulletPoint $name",
-                style: Theme.of(context).textTheme.bodyText1,
+              child: Row(
+                children: [
+                  widget.title == Languages.of(context)!.wasteBinYesContentLabel
+                      ? const Padding(padding: EdgeInsets.only(right: 5), child: Icon(FontAwesomeIcons.check, size: 20))
+                      : const Padding(padding: EdgeInsets.only(right: 5), child: Icon(FontAwesomeIcons.xmark, size: 20)),
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
               ),
             ),
           ),
@@ -63,7 +64,7 @@ class _ContentListWidgetState extends State<ContentListWidget> {
                     Icon(FontAwesomeIcons.angleRight, size: 12),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Text("Mehr"),
+                      child: Text("Mehr"), //TODO: mehr/details or remove? depends on how much items are in this
                     )
                   ],
                 ),
