@@ -101,34 +101,36 @@ class _SearchPageState extends State<SearchPage> {
           }
 
           // display when all data is available
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SearchBar(itemNames: itemNames),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 10, 40),
-                child: _barcodeScannerButton(),
-              ),
-              Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //TODO replace with actual items and links
-                      Text(Languages.of(context)!.recentlySearched,
-                          style: Theme.of(context).textTheme.headline3),
-                      const Padding(padding: EdgeInsets.only(bottom: 15)),
-                      ..._itemList(recentlySearched),
-                      const Padding(padding: EdgeInsets.only(bottom: 25)),
-                      Text(Languages.of(context)!.oftenSearched,
-                          style: Theme.of(context).textTheme.headline3),
-                      const Padding(padding: EdgeInsets.only(bottom: 15)),
-                      ..._itemList(oftenSearched),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SearchBar(itemNames: itemNames),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 10, 40),
+                  child: _barcodeScannerButton(),
+                ),
+                Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //TODO replace with actual items and links
+                        Text(Languages.of(context)!.recentlySearched,
+                            style: Theme.of(context).textTheme.headline3),
+                        const Padding(padding: EdgeInsets.only(bottom: 15)),
+                        ..._itemList(recentlySearched),
+                        const Padding(padding: EdgeInsets.only(bottom: 25)),
+                        Text(Languages.of(context)!.oftenSearched,
+                            style: Theme.of(context).textTheme.headline3),
+                        const Padding(padding: EdgeInsets.only(bottom: 15)),
+                        ..._itemList(oftenSearched),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           );
         },
       ),
