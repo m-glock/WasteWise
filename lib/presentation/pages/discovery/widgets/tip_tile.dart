@@ -10,10 +10,12 @@ class TipTile extends StatefulWidget {
   const TipTile({
     Key? key,
     required this.tip,
+    required this.tipNumber,
     required this.tags,
   }) : super(key: key);
 
   final Tip tip;
+  final int tipNumber;
   final List<String> tags;
 
   @override
@@ -58,7 +60,7 @@ class _TipTileState extends State<TipTile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TipDetailPage(tip: widget.tip)),
+                        builder: (context) => TipDetailPage(tip: widget.tip, tipNumber: widget.tipNumber,)),
                   );
                 },
                 child: Row(

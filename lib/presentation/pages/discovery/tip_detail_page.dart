@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../util/constants.dart';
 import '../../util/tip.dart';
 
 class TipDetailPage extends StatefulWidget {
-  const TipDetailPage({Key? key, required this.tip}) : super(key: key);
+  const TipDetailPage({
+    Key? key,
+    required this.tip,
+    required this.tipNumber
+  }) : super(key: key);
 
   final Tip tip;
+  final int tipNumber;
 
   @override
   State<TipDetailPage> createState() => _TipDetailPageState();
@@ -25,7 +31,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.tip.title),
+        title: Text("Tipp #${widget.tipNumber}"),
       ),
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
@@ -40,19 +46,19 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       style: Theme.of(context).textTheme.headline1),
                 ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => _changeBookmarkStatus(),
-                  child: widget.tip.isBookmarked
-                      ? const Icon(FontAwesomeIcons.bookmark)
-                      : const Icon(FontAwesomeIcons.solidBookmark),
-                ),
+                widget.tip.isBookmarked
+                      ? CustomIconButton(
+                          onPressed: _changeBookmarkStatus,
+                          icon: const Icon(FontAwesomeIcons.bookmark),
+                        )
+                      : CustomIconButton(
+                          onPressed: _changeBookmarkStatus,
+                          icon: const Icon(FontAwesomeIcons.solidBookmark)
+                        ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                GestureDetector(
-                  onTap: () => {
-                    //TODO: open modal to share with neighborhood
-                  },
-                  child: const Icon(FontAwesomeIcons.shareNodes),
+                CustomIconButton(
+                    onPressed: () => {}, //TODO: open modal to share with neighborhood
+                    icon: const Icon(FontAwesomeIcons.shareNodes)
                 ),
               ],
             ),

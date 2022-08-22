@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
+import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
@@ -240,9 +241,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(right: 10)),
-                    GestureDetector(
-                      child: const Icon(FontAwesomeIcons.xmark),
-                      onTap: () => {_setFilterValuesToDefault()},
+                    CustomIconButton(
+                        onPressed: _setFilterValuesToDefault,
+                        icon: const Icon(FontAwesomeIcons.xmark),
                     ),
                   ],
                 ),
@@ -256,6 +257,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             ...filteredTipList.map((tip) {
                               return TipTile(
                                 tip: tip,
+                                tipNumber: tipList.indexOf(tip) + 1,
                                 tags: [
                                   tipTypeDropdownOptions[tip.tipTypeId] ?? "",
                                   wasteBinDropdownOptions[tip.categoryId] ?? "",
