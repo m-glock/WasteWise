@@ -4,10 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/collection_point_detail_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/map_filter_dropdown_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/map_marker_popup_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/map_widget.dart';
 import 'package:recycling_app/presentation/util/address.dart';
 import 'package:recycling_app/presentation/util/collection_point.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/collection_point_type.dart';
@@ -74,53 +75,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   CollectionPoint? current;
 
   Widget _popup() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: Constants.tileBorderRadius,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Text(current!.collectionPointType.title),
-            const Padding(padding: EdgeInsets.only(bottom: 5)),
-            Text(current!.address.toString()),
-            const Padding(padding: EdgeInsets.only(bottom: 5)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CollectionPointDetailPage(
-                            collectionPoint: current!, acceptedItems: []),
-                      ),
-                    )
-                  },
-                  child: Text(Languages.of(context)!.detailButtonText),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 5)),
-                OutlinedButton(
-                  onPressed: () => {},
-                  child: Text(Languages.of(context)!.routeButtonText),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+    return MapMarkerPopupWidget(collectionPoint: current!);
   }
 
   void _togglePopup(CollectionPoint selected) {
@@ -205,61 +160,19 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           for (dynamic element in availableSubcategories) {
             dropdownValues.add(element["title"]);
           }
-          String dropdownValue = dropdownValues.first;
 
           // display when all data is available
           return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Text(Languages.of(context)!.filterLabelItemType),
-                    const Padding(padding: EdgeInsets.only(right: 5)),
-                    Expanded(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: dropdownValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        },
-                        items: dropdownValues
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
+                child: MapFilterDropdownWidget(
+                  dropdownValues: dropdownValues,
                 ),
               ),
               Flexible(
-                child: FlutterMap(
-                  options: MapOptions(
-                    center: defaultLatLng,
-                    zoom: 13,
-                  ),
-                  layers: [
-                    TileLayerOptions(
-                      urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: ['a', 'b', 'c'],
-                      userAgentPackageName: 'com.glock.recyclingapp',
-                    ),
-                    MarkerLayerOptions(markers: markers.keys.toList()),
-                  ],
-                  nonRotatedChildren: [
-                    AttributionWidget.defaultWidget(
-                      source: 'OpenStreetMap contributors',
-                      onSourceTapped: null,
-                    ),
-                  ],
-                ),
-              ),
+                  child: MapWidget(
+                      defaultLocation: defaultLatLng, marker: markers)),
             ],
           );
         },
