@@ -58,4 +58,7 @@ class LanguageEn extends Languages {
   @override String get wasteBinYesContentLabel => "Does belong in there:";
   @override String get wasteBinMythCorrect => "Correct!";
   @override String get wasteBinMythIncorrect => "Not correct!";
+
+  // collection point page
+  @override String get filterLabelItemType => "Type of item:";
 }

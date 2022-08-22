@@ -62,4 +62,7 @@ abstract class Languages {
   String get wasteBinNoContentLabel;
   String get wasteBinMythCorrect;
   String get wasteBinMythIncorrect;
+
+  // collection point page
+  String get filterLabelItemType;
 }

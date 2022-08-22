@@ -47,6 +47,11 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
     	    image
         }
       }
+      
+      getCollectionPointSubcategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        objectId
+		    title
+      }
     }
   """;
 
@@ -62,15 +67,6 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
       languageCode = locale.languageCode;
     });
   }
-
-  //TODO: where to get these options from? DB?
-  final List<DropdownMenuItem<String>> dropdownOptions = const [
-    DropdownMenuItem(child: Text("Elektronik")),
-    DropdownMenuItem(child: Text("Altkleider")),
-    DropdownMenuItem(child: Text("Dritte Option")),
-  ];
-
-  String dropdownValue = 'Elektronik';
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +87,13 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           }
 
           List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
+          List<dynamic> availableSubcategories = result.data?["getCollectionPointSubcategories"];
 
-          if (collectionPoints.isEmpty) {
-            return const Text("No collection points found.");
+          if (collectionPoints.isEmpty || availableSubcategories.isEmpty) {
+            return const Text("No collection points or subcategories found.");
           }
 
+          // build markers for collection points
           final Map<Marker, CollectionPoint> markers = {};
           for (dynamic element in collectionPoints) {
             CollectionPointType cpType = CollectionPointType(
@@ -126,12 +124,15 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                   icon: const Icon(Icons.location_on),
                 )
             );
-                /*GestureDetector(
-                      child: const Icon(Icons.location_on),
-                      onTap: () => {print("location tapped")},
-                    ));*/
             markers[marker] = collectionPoint;
           }
+
+          // get available subcategories for filter dropdown
+          final List<String> dropdownValues = [];
+          for (dynamic element in availableSubcategories) {
+            dropdownValues.add(element["title"]);
+          }
+          String dropdownValue = dropdownValues.first;
 
           // display when all data is available
           return Column(
@@ -140,6 +141,8 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                 padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
+                    Text(Languages.of(context)!.filterLabelItemType),
+                    const Padding(padding: EdgeInsets.only(right: 5)),
                     Expanded(
                       child: DropdownButton<String>(
                         isExpanded: true,
@@ -149,11 +152,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>[
-                          'Elektronik',
-                          'Altkleider',
-                          'Dritte Option'
-                        ].map<DropdownMenuItem<String>>((String value) {
+                        items: dropdownValues.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),

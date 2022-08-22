@@ -58,4 +58,7 @@ class LanguageDe extends Languages {
   @override String get wasteBinYesContentLabel => "Das gehört nicht rein:";
   @override String get wasteBinMythCorrect => "Stimmt!";
   @override String get wasteBinMythIncorrect => "Stimmt nicht!";
+
+  // collection point page
+  @override String get filterLabelItemType => "Art des Items:";
 }
