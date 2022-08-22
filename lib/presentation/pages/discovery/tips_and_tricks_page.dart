@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/tip_detail_hage.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
 
 import '../../i18n/locale_constant.dart';
@@ -256,8 +255,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                           children: [
                             ...filteredTipList.map((tip) {
                               return TipTile(
-                                title: tip.title,
-                                destinationPage: TipDetailPage(tip: tip),
+                                tip: tip,
                                 tags: [
                                   tipTypeDropdownOptions[tip.tipTypeId] ?? "",
                                   wasteBinDropdownOptions[tip.categoryId] ?? "",
