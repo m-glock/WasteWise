@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/util/collection_point.dart';
 
 class CollectionPointDetailPage extends StatefulWidget {
   const CollectionPointDetailPage(
       {Key? key,
-      required this.address,
-      required this.openingHours,
+      required this.collectionPoint,
       required this.acceptedItems})
       : super(key: key);
 
-  final String address;
-  final Map<String, String> openingHours;
+  final CollectionPoint collectionPoint;
   final List<String> acceptedItems;
 
   @override
@@ -37,7 +36,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                   padding: EdgeInsets.only(right: 10),
                   child: Icon(Icons.location_on, size: 25),
                 ),
-                Text(widget.address),
+                Text(widget.collectionPoint.address.toString()),
               ],
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -62,7 +61,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                           height: 25,
                           child: const Text("Aktuell geöffnet"), //TODO correct text
                         ),
-                        ...widget.openingHours.entries.map((entry) {
+                        /*...widget.openingHours.entries.map((entry) {
                           return Padding(padding: EdgeInsets.only(bottom: 5), child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -72,7 +71,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                               ),
                             ],
                           ),);
-                        }).toList()
+                        }).toList()*/
                       ],
                     ),
                 ),

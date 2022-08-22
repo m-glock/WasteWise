@@ -4,8 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/collection_point_detail_page.dart';
 import 'package:recycling_app/presentation/util/address.dart';
 import 'package:recycling_app/presentation/util/collection_point.dart';
+import 'package:recycling_app/presentation/util/constants.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/collection_point_type.dart';
@@ -73,28 +75,57 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
 
   Widget _popup() {
     return Container(
-      color: Colors.lightGreen,
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Text(current!.collectionPointType.title),
-          Text(current!.address.toString()),
-          Row(
-            children: [
-              ElevatedButton(onPressed: () => {}, child: Text("Details")),
-              ElevatedButton(onPressed: () => {}, child: Text("Route planen")),
-            ],
-          )
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: Constants.tileBorderRadius,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
         ],
-      )
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Text(current!.collectionPointType.title),
+            const Padding(padding: EdgeInsets.only(bottom: 5)),
+            Text(current!.address.toString()),
+            const Padding(padding: EdgeInsets.only(bottom: 5)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CollectionPointDetailPage(
+                            collectionPoint: current!, acceptedItems: []),
+                      ),
+                    )
+                  },
+                  child: Text(Languages.of(context)!.detailButtonText),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 5)),
+                OutlinedButton(
+                  onPressed: () => {},
+                  child: Text(Languages.of(context)!.routeButtonText),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
-  void _togglePopup(CollectionPoint selected){
+  void _togglePopup(CollectionPoint selected) {
     setState(() {
-      current = current?.objectId == selected.objectId
-          ? null
-          : selected;
+      current = current?.objectId == selected.objectId ? null : selected;
     });
   }
 
@@ -141,23 +172,30 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                     element["address_id"]["location"]["longitude"]));
             Contact contact = Contact(element["contact_id"]["phone"],
                 element["contact_id"]["fax"], element["contact_id"]["email"]);
-            CollectionPoint collectionPoint = CollectionPoint(element["objectId"], element["link"],
-                element["opening_hours"], contact, address, cpType);
+            CollectionPoint collectionPoint = CollectionPoint(
+                element["objectId"],
+                element["link"],
+                element["opening_hours"],
+                contact,
+                address,
+                cpType);
             Marker marker = Marker(
-              width: 100,
-              height: 100,
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+              width: 220,
+              height: 200,
               point: collectionPoint.address.location,
               builder: (ctx) => Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if(current?.objectId == collectionPoint.objectId) _popup(),
-                    IconButton(
-                        iconSize: 35,
-                        onPressed: () => _togglePopup(collectionPoint),
-                        icon: const Icon(Icons.location_on),
-                      ),
-                  ],
-                ),
+                //alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  if (current?.objectId == collectionPoint.objectId) _popup(),
+                  IconButton(
+                    iconSize: 35,
+                    onPressed: () => _togglePopup(collectionPoint),
+                    icon: const Icon(Icons.location_on),
+                  ),
+                ],
+              ),
             );
             markers[marker] = collectionPoint;
           }

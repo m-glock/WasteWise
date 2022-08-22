@@ -65,4 +65,6 @@ abstract class Languages {
 
   // collection point page
   String get filterLabelItemType;
+  String get detailButtonText;
+  String get routeButtonText;
 }

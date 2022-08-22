@@ -9,4 +9,9 @@ class Address{
   final LatLng location;
 
   Address(this.street, this.number, this.zipCode, this.district, this.location);
+
+  @override
+  String toString() {
+    return "$street $number,\n $zipCode $district";
+  }
 }

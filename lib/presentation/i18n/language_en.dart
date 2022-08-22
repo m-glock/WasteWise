@@ -61,4 +61,6 @@ class LanguageEn extends Languages {
 
   // collection point page
   @override String get filterLabelItemType => "Type of item:";
+  @override String get detailButtonText => "Details";
+  @override String get routeButtonText => "Plan route";
 }
