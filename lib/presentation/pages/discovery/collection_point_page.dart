@@ -25,6 +25,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   String query = """
     query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
       getCollectionPoints(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        objectId
         opening_hours
         link
         contact_id{
@@ -68,6 +69,35 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
     });
   }
 
+  CollectionPoint? current;
+
+  Widget _popup() {
+    return Container(
+      color: Colors.lightGreen,
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Text(current!.collectionPointType.title),
+          Text(current!.address.toString()),
+          Row(
+            children: [
+              ElevatedButton(onPressed: () => {}, child: Text("Details")),
+              ElevatedButton(onPressed: () => {}, child: Text("Route planen")),
+            ],
+          )
+        ],
+      )
+    );
+  }
+
+  void _togglePopup(CollectionPoint selected){
+    setState(() {
+      current = current?.objectId == selected.objectId
+          ? null
+          : selected;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +117,8 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           }
 
           List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
-          List<dynamic> availableSubcategories = result.data?["getCollectionPointSubcategories"];
+          List<dynamic> availableSubcategories =
+              result.data?["getCollectionPointSubcategories"];
 
           if (collectionPoints.isEmpty || availableSubcategories.isEmpty) {
             return const Text("No collection points or subcategories found.");
@@ -110,19 +141,23 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                     element["address_id"]["location"]["longitude"]));
             Contact contact = Contact(element["contact_id"]["phone"],
                 element["contact_id"]["fax"], element["contact_id"]["email"]);
-            CollectionPoint collectionPoint = CollectionPoint(element["link"],
+            CollectionPoint collectionPoint = CollectionPoint(element["objectId"], element["link"],
                 element["opening_hours"], contact, address, cpType);
             Marker marker = Marker(
-                width: 100,
-                height: 100,
-                point: collectionPoint.address.location,
-                builder: (ctx) => IconButton(
-                  iconSize: 35,
-                  onPressed: () => {
-                    //TODO: open modal
-                  },
-                  icon: const Icon(Icons.location_on),
-                )
+              width: 100,
+              height: 100,
+              point: collectionPoint.address.location,
+              builder: (ctx) => Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if(current?.objectId == collectionPoint.objectId) _popup(),
+                    IconButton(
+                        iconSize: 35,
+                        onPressed: () => _togglePopup(collectionPoint),
+                        icon: const Icon(Icons.location_on),
+                      ),
+                  ],
+                ),
             );
             markers[marker] = collectionPoint;
           }
@@ -152,7 +187,8 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: dropdownValues.map<DropdownMenuItem<String>>((String value) {
+                        items: dropdownValues
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
