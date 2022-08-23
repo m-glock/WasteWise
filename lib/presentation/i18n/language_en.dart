@@ -63,4 +63,6 @@ class LanguageEn extends Languages {
   @override String get filterLabelItemType => "Type of item:";
   @override String get detailButtonText => "Details";
   @override String get routeButtonText => "Plan route";
+  @override String get cpDetailItemsAccepted => "Accepted Items:";
+  @override String get cpDetailsOpeningHours => "Opening hours:";
 }

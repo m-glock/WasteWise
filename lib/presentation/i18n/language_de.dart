@@ -63,4 +63,6 @@ class LanguageDe extends Languages {
   @override String get filterLabelItemType => "Art des Items:";
   @override String get detailButtonText => "Details";
   @override String get routeButtonText => "Route planen";
+  @override String get cpDetailItemsAccepted => "Angenommene Items:";
+  @override String get cpDetailsOpeningHours => "Geöffnet:";
 }

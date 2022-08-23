@@ -67,4 +67,6 @@ abstract class Languages {
   String get filterLabelItemType;
   String get detailButtonText;
   String get routeButtonText;
+  String get cpDetailItemsAccepted;
+  String get cpDetailsOpeningHours;
 }
