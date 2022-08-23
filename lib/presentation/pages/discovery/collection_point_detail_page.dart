@@ -19,12 +19,20 @@ class CollectionPointDetailPage extends StatefulWidget {
 class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
   String bulletPoint = "\u2022 ";
 
-  List<Widget> _getFormattedOpeningHours(){
+  List<Widget> _getFormattedOpeningHours() {
     List<String> openingHours = widget.collectionPoint.openingHours.split("|");
-    List<String> weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    List<String> weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ];
     List<Widget> openingHoursWithDay = [];
 
-    for(int i = 0; i < weekdays.length; i++){
+    for (int i = 0; i < weekdays.length; i++) {
       openingHoursWithDay.add(Padding(
         padding: const EdgeInsets.only(bottom: 5),
         child: Row(
@@ -32,7 +40,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
           children: [
             Text(weekdays.elementAt(i)),
             Expanded(
-              child: Text("${openingHours.elementAt(i)} Uhr", textAlign: TextAlign.end),
+              child: Text(openingHours.elementAt(i), textAlign: TextAlign.end),
             ),
           ],
         ),
@@ -80,7 +88,8 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                         margin: const EdgeInsets.only(bottom: 10),
                         alignment: Alignment.centerLeft,
                         height: 25,
-                        child: Text(Languages.of(context)!.cpDetailsOpeningHours),
+                        child:
+                            Text(Languages.of(context)!.cpDetailsOpeningHours),
                       ),
                       ..._getFormattedOpeningHours(),
                     ],
@@ -108,7 +117,8 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                         margin: const EdgeInsets.only(bottom: 10),
                         alignment: Alignment.centerLeft,
                         height: 25,
-                        child: Text(Languages.of(context)!.cpDetailItemsAccepted),
+                        child:
+                            Text(Languages.of(context)!.cpDetailItemsAccepted),
                       ),
                       ...widget.acceptedItems.map((item) {
                         return Padding(

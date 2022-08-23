@@ -35,9 +35,15 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
-            Text(widget.collectionPoint.collectionPointType.title),
+            Text(
+                widget.collectionPoint.collectionPointType.title,
+                style: Theme.of(context).textTheme.headline3,
+            ),
             const Padding(padding: EdgeInsets.only(bottom: 5)),
-            Text(widget.collectionPoint.address.toString()),
+            Text(
+                widget.collectionPoint.address.toString(),
+                style: Theme.of(context).textTheme.bodyText1,
+            ),
             const Padding(padding: EdgeInsets.only(bottom: 5)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

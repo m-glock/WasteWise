@@ -7,12 +7,9 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/map_marker_popup_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/map_widget.dart';
-import 'package:recycling_app/presentation/util/address.dart';
 import 'package:recycling_app/presentation/util/collection_point.dart';
 
 import '../../i18n/locale_constant.dart';
-import '../../util/collection_point_type.dart';
-import '../../util/contact.dart';
 
 class CollectionPointPage extends StatefulWidget {
   const CollectionPointPage({Key? key}) : super(key: key);
@@ -27,7 +24,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   String languageCode = "";
   String query = """
     query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
-      getCollectionPoints(languageCode: \$languageCode, municipalityId: \$municipalityId){
+      getCollectionPoints(municipalityId: \$municipalityId){
         objectId
         opening_hours
         link
@@ -48,13 +45,19 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
         }
         collection_point_type_id{
           objectId
-    	    image
         }
       }
       
       getCollectionPointSubcategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         objectId
 		    title
+      }
+      
+      getCollectionPointTypes(languageCode: \$languageCode){
+        title
+        collection_point_type_id{
+          objectId
+        }
       }
     }
   """;
@@ -105,35 +108,20 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
           List<dynamic> availableSubcategories =
               result.data?["getCollectionPointSubcategories"];
+          List<dynamic> collectionPointTypes =
+              result.data?["getCollectionPointTypes"];
 
-          if (collectionPoints.isEmpty || availableSubcategories.isEmpty) {
+          if (collectionPoints.isEmpty ||
+              availableSubcategories.isEmpty ||
+              collectionPointTypes.isEmpty) {
             return const Text("No collection points or subcategories found.");
           }
 
           // build markers for collection points
           final Map<Marker, CollectionPoint> markers = {};
           for (dynamic element in collectionPoints) {
-            CollectionPointType cpType = CollectionPointType(
-                element["collection_point_type_id"]["objectId"],
-                "Unknown", //TODO: get translation of collection point type
-                element["collection_point_type_id"]["image"] //TODO
-                );
-            Address address = Address(
-                element["address_id"]["street"],
-                element["address_id"]["number"],
-                element["address_id"]["zip_code"],
-                element["address_id"]["district"],
-                LatLng(element["address_id"]["location"]["latitude"],
-                    element["address_id"]["location"]["longitude"]));
-            Contact contact = Contact(element["contact_id"]["phone"],
-                element["contact_id"]["fax"], element["contact_id"]["email"]);
-            CollectionPoint collectionPoint = CollectionPoint(
-                element["objectId"],
-                element["link"],
-                element["opening_hours"],
-                contact,
-                address,
-                cpType);
+            CollectionPoint collectionPoint =
+                CollectionPoint(element, collectionPointTypes);
             Marker marker = Marker(
               anchorPos: AnchorPos.align(AnchorAlign.top),
               width: 220,
