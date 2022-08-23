@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 import '../../../i18n/languages.dart';
 import '../../../util/collection_point.dart';
@@ -16,6 +17,15 @@ class MapMarkerPopupWidget extends StatefulWidget {
 }
 
 class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
+
+  void _openGoogleMapsForRoute(){
+    MapsLauncher.launchCoordinates(
+        widget.collectionPoint.address.location.latitude,
+        widget.collectionPoint.address.location.longitude,
+        widget.collectionPoint.collectionPointType.title
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,7 +73,7 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
                 OutlinedButton(
-                  onPressed: () => {},
+                  onPressed: _openGoogleMapsForRoute,
                   child: Text(Languages.of(context)!.routeButtonText),
                 ),
               ],
