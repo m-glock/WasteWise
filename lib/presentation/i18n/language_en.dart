@@ -42,6 +42,7 @@ class LanguageEn extends Languages {
   @override String get recentlySearched => "Your recent searches";
   @override String get searchBarHint => "Search";
   @override String get searchBarItemNotExist => "This item is unknown";
+  @override String get barcodeButtonText => "Barcode Scanner";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

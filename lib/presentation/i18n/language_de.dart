@@ -42,6 +42,7 @@ class LanguageDe extends Languages {
   @override String get recentlySearched => "Zuletzt von dir gesucht";
   @override String get searchBarHint => "Suche";
   @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
+  @override String get barcodeButtonText => "Barcodescanner";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
@@ -80,5 +81,4 @@ class LanguageDe extends Languages {
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
   @override String get emptyListText => "Nichts gefunden";
-
 }
