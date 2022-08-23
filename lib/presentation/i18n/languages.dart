@@ -45,6 +45,15 @@ abstract class Languages {
   String get searchBarHint;
   String get recentlySearched;
   String get oftenSearched;
+  String get searchBarItemNotExist;
+
+  // item detail page
+  String get itemDetailMaterialLabel;
+  String get itemDetailWasteBinLabel;
+  String get itemDetailMoreInfoLabel;
+  String get itemDetailExplanationLabel;
+  String get itemDetailTipsLabel;
+  String get itemDetailPreventionLabel;
 
   // discovery page
   String get wasteBinOverviewTitle;
@@ -69,4 +78,10 @@ abstract class Languages {
   String get routeButtonText;
   String get cpDetailItemsAccepted;
   String get cpDetailsOpeningHours;
+
+  // tips page
+  String get dropdownTipTypeLabel;
+  String get dropdownWasteBinLabel;
+  String get defaultDropdownItem;
+  String get emptyListText;
 }

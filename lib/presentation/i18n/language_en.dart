@@ -41,6 +41,15 @@ class LanguageEn extends Languages {
   @override String get oftenSearched => "Commonly searched by others";
   @override String get recentlySearched => "Your recent searches";
   @override String get searchBarHint => "Search";
+  @override String get searchBarItemNotExist => "This item is unknown";
+
+  // item detail page
+  @override String get itemDetailMaterialLabel => "Material: ";
+  @override String get itemDetailWasteBinLabel => "Waste bin: ";
+  @override String get itemDetailMoreInfoLabel => "More Information about ";
+  @override String get itemDetailExplanationLabel => "Explanation";
+  @override String get itemDetailPreventionLabel => "Prevention";
+  @override String get itemDetailTipsLabel => "Tips";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Waste Bin Overview";
@@ -65,4 +74,10 @@ class LanguageEn extends Languages {
   @override String get routeButtonText => "Plan route";
   @override String get cpDetailItemsAccepted => "Accepted Items:";
   @override String get cpDetailsOpeningHours => "Opening hours:";
+
+  // tips page
+  @override String get dropdownTipTypeLabel => "Tip type:";
+  @override String get dropdownWasteBinLabel => "Waste bin type:";
+  @override String get defaultDropdownItem => "All";
+  @override String get emptyListText => "Nothing found";
 }

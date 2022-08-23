@@ -41,6 +41,15 @@ class LanguageDe extends Languages {
   @override String get oftenSearched => "Oft von anderen gesucht";
   @override String get recentlySearched => "Zuletzt von dir gesucht";
   @override String get searchBarHint => "Suche";
+  @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
+
+  // item detail page
+  @override String get itemDetailMaterialLabel => "Material: ";
+  @override String get itemDetailWasteBinLabel => "Tonne: ";
+  @override String get itemDetailMoreInfoLabel => "Mehr Informationen über ";
+  @override String get itemDetailExplanationLabel => "Erklärung";
+  @override String get itemDetailPreventionLabel => "Vermeidung";
+  @override String get itemDetailTipsLabel => "Tipps";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
@@ -65,4 +74,11 @@ class LanguageDe extends Languages {
   @override String get routeButtonText => "Route planen";
   @override String get cpDetailItemsAccepted => "Angenommene Items:";
   @override String get cpDetailsOpeningHours => "Geöffnet:";
+
+  // tips page
+  @override String get dropdownTipTypeLabel => "Art des Tipps:";
+  @override String get dropdownWasteBinLabel => "Mülleimer:";
+  @override String get defaultDropdownItem => "Alle";
+  @override String get emptyListText => "Nichts gefunden";
+
 }

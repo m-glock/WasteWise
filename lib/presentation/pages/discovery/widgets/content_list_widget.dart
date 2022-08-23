@@ -54,7 +54,7 @@ class _ContentListWidgetState extends State<ContentListWidget> {
               ),
             ),
           ),
-          Row(
+          /*Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
@@ -64,13 +64,13 @@ class _ContentListWidgetState extends State<ContentListWidget> {
                     Icon(FontAwesomeIcons.angleRight, size: 12),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Text("Mehr"), //TODO: mehr/details or remove? depends on how much items are in this
+                      child: Text("Mehr"),
                     )
                   ],
                 ),
               ),
             ],
-          ),
+          ),*/
         ],
       ),
     );
