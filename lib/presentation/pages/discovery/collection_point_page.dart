@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/map_filter_dropdown_widget.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/map_marker_popup_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/map_widget.dart';
 import 'package:recycling_app/presentation/util/collection_point.dart';
 
@@ -19,8 +18,6 @@ class CollectionPointPage extends StatefulWidget {
 }
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
-  //TODO ask user for current location
-  final LatLng defaultLatLng = LatLng(52.5200, 13.4050);
   String languageCode = "";
   String query = """
     query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
@@ -75,18 +72,6 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
     });
   }
 
-  CollectionPoint? current;
-
-  Widget _popup() {
-    return MapMarkerPopupWidget(collectionPoint: current!);
-  }
-
-  void _togglePopup(CollectionPoint selected) {
-    setState(() {
-      current = current?.objectId == selected.objectId ? null : selected;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,18 +112,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
               width: 220,
               height: 200,
               point: collectionPoint.address.location,
-              builder: (ctx) => Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                //alignment: AlignmentDirectional.bottomCenter,
-                children: [
-                  if (current?.objectId == collectionPoint.objectId) _popup(),
-                  IconButton(
-                    iconSize: 35,
-                    onPressed: () => _togglePopup(collectionPoint),
-                    icon: const Icon(Icons.location_on),
-                  ),
-                ],
-              ),
+              builder: (ctx) => CustomMarkerWidget(collectionPoint: collectionPoint),
             );
             markers[marker] = collectionPoint;
           }
