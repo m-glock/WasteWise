@@ -17,13 +17,11 @@ class MapMarkerPopupWidget extends StatefulWidget {
 }
 
 class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
-
-  void _openGoogleMapsForRoute(){
+  void _openGoogleMapsForRoute() {
     MapsLauncher.launchCoordinates(
         widget.collectionPoint.address.location.latitude,
         widget.collectionPoint.address.location.longitude,
-        widget.collectionPoint.collectionPointType.title
-    );
+        widget.collectionPoint.collectionPointType.title);
   }
 
   @override
@@ -46,13 +44,13 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
         child: Column(
           children: [
             Text(
-                widget.collectionPoint.collectionPointType.title,
-                style: Theme.of(context).textTheme.headline3,
+              widget.collectionPoint.collectionPointType.title,
+              style: Theme.of(context).textTheme.headline3,
             ),
             const Padding(padding: EdgeInsets.only(bottom: 5)),
             Text(
-                widget.collectionPoint.address.toString(),
-                style: Theme.of(context).textTheme.bodyText1,
+              widget.collectionPoint.address.toString(),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             const Padding(padding: EdgeInsets.only(bottom: 5)),
             Row(
@@ -64,8 +62,7 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => CollectionPointDetailPage(
-                            collectionPoint: widget.collectionPoint,
-                            acceptedItems: const []),
+                            collectionPoint: widget.collectionPoint),
                       ),
                     )
                   },
