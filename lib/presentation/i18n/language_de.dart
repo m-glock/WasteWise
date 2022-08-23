@@ -68,9 +68,17 @@ class LanguageDe extends Languages {
   @override String get wasteBinMythCorrect => "Stimmt!";
   @override String get wasteBinMythIncorrect => "Stimmt nicht!";
 
+  // collection point page
+  @override String get filterLabelItemType => "Art des Items:";
+  @override String get detailButtonText => "Details";
+  @override String get routeButtonText => "Route planen";
+  @override String get cpDetailItemsAccepted => "Angenommene Items:";
+  @override String get cpDetailsOpeningHours => "Geöffnet:";
+
   // tips page
   @override String get dropdownTipTypeLabel => "Art des Tipps:";
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
   @override String get emptyListText => "Nichts gefunden";
+
 }

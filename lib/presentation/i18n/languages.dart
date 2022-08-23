@@ -72,6 +72,13 @@ abstract class Languages {
   String get wasteBinMythCorrect;
   String get wasteBinMythIncorrect;
 
+  // collection point page
+  String get filterLabelItemType;
+  String get detailButtonText;
+  String get routeButtonText;
+  String get cpDetailItemsAccepted;
+  String get cpDetailsOpeningHours;
+
   // tips page
   String get dropdownTipTypeLabel;
   String get dropdownWasteBinLabel;
