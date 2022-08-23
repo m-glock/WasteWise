@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/tip_tile.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../i18n/locale_constant.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/tips/discovery_tile.dart';
 import 'package:recycling_app/presentation/util/hex_color.dart';
 import 'package:recycling_app/presentation/util/waste_bin_category.dart';
 

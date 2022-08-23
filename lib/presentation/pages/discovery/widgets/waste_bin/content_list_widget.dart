@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../i18n/languages.dart';
-import '../../../util/constants.dart';
+import '../../../../i18n/languages.dart';
+import '../../../../util/constants.dart';
 
 class ContentListWidget extends StatefulWidget {
   const ContentListWidget(

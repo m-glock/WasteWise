@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
-import '../../../i18n/languages.dart';
-import '../../../util/collection_point.dart';
-import '../../../util/constants.dart';
-import '../collection_point_detail_page.dart';
+import '../../../../i18n/languages.dart';
+import '../../../../util/collection_point.dart';
+import '../../../../util/constants.dart';
+import '../../collection_point_detail_page.dart';
 
 class MapMarkerPopupWidget extends StatefulWidget {
   const MapMarkerPopupWidget({Key? key, required this.collectionPoint})

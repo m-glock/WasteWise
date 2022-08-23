@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/content_list_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_list_widget.dart';
 
-import '../../../i18n/locale_constant.dart';
+import '../../../../i18n/locale_constant.dart';
 
 class ContentWidget extends StatefulWidget {
   const ContentWidget({Key? key, required this.categoryId}) : super(key: key);

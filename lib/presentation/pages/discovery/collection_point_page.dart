@@ -4,9 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/custom_marker.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/map_filter_dropdown_widget.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/map_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
 import 'package:recycling_app/presentation/util/collection_point.dart';
 import 'package:latlong2/latlong.dart';
 

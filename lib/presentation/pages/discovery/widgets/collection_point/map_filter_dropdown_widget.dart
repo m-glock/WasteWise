@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../i18n/languages.dart';
+import '../../../../i18n/languages.dart';
 
 class MapFilterDropdownWidget extends StatefulWidget {
   const MapFilterDropdownWidget({Key? key, required this.dropdownValues})
