@@ -121,6 +121,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                             Text(Languages.of(context)!.cpDetailItemsAccepted),
                       ),
                       ...widget.acceptedItems.map((item) {
+                        //TODO
                         return Padding(
                             padding: const EdgeInsets.only(bottom: 5),
                             child: Text("$bulletPoint $item"));

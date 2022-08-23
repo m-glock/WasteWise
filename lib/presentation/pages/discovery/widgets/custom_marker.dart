@@ -4,16 +4,18 @@ import '../../../util/collection_point.dart';
 import 'map_marker_popup_widget.dart';
 
 class CustomMarkerWidget extends StatefulWidget {
-  const CustomMarkerWidget({Key? key, required this.collectionPoint}) : super(key: key);
+  const CustomMarkerWidget(
+      {Key? key, this.collectionPoint, this.markerColor = Colors.black})
+      : super(key: key);
 
-  final CollectionPoint collectionPoint;
+  final CollectionPoint? collectionPoint;
+  final Color markerColor;
 
   @override
   State<CustomMarkerWidget> createState() => _CustomMarkerWidgetState();
 }
 
 class _CustomMarkerWidgetState extends State<CustomMarkerWidget> {
-
   bool showPopup = false;
 
   void _togglePopup() {
@@ -23,7 +25,7 @@ class _CustomMarkerWidgetState extends State<CustomMarkerWidget> {
   }
 
   Widget _popup() {
-    return MapMarkerPopupWidget(collectionPoint: widget.collectionPoint);
+    return MapMarkerPopupWidget(collectionPoint: widget.collectionPoint!);
   }
 
   @override
@@ -32,9 +34,10 @@ class _CustomMarkerWidgetState extends State<CustomMarkerWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       //alignment: AlignmentDirectional.bottomCenter,
       children: [
-        if (showPopup) _popup(),
+        if (showPopup && widget.collectionPoint != null) _popup(),
         IconButton(
           iconSize: 35,
+          color: widget.markerColor,
           onPressed: _togglePopup,
           icon: const Icon(Icons.location_on),
         ),
