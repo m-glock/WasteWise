@@ -10,5 +10,5 @@ class DataHolder{
   static final Map<String, String> itemNames = {};
   static final List<CollectionPointType> collectionPointTypes = [];
   static final Map<Marker, CollectionPoint> markers = {};
-  static final List<String> cpSubcategories = [];
+  static final Set<String> cpSubcategories = {};
 }

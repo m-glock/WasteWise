@@ -1,9 +1,4 @@
-import 'package:flutter_map/flutter_map.dart';
-
-import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'data_holder.dart';
-import 'database_classes/collection_point.dart';
-import 'database_classes/collection_point_type.dart';
 import 'database_classes/cycle.dart';
 import 'database_classes/myth.dart';
 import 'database_classes/waste_bin_category.dart';
@@ -70,7 +65,11 @@ class GraphQLQueries{
           }
         }
       }
-      
+    }
+  """;
+
+  static String collectionPointQuery = """
+    query GetItem(\$languageCode: String!, \$municipalityId: String!){
       getCollectionPoints(municipalityId: \$municipalityId){
         objectId
         opening_hours
@@ -186,36 +185,6 @@ class GraphQLQueries{
       //TODO: entry for each synonym?
       DataHolder.itemNames[element["title"]] =
       element["item_id"]["objectId"];
-    }
-
-
-    // get collection point types
-    List<dynamic> collectionPointTypes = data?["getCollectionPointTypes"];
-    for(dynamic cpType in collectionPointTypes){
-      DataHolder.collectionPointTypes.add(CollectionPointType.fromJson(cpType));
-    }
-
-    // get collection points
-    List<dynamic> collectionPoints = data?["getCollectionPoints"];
-
-    // build markers for collection points
-    for (dynamic cp in collectionPoints) {
-      CollectionPoint collectionPoint = CollectionPoint.fromJson(cp);
-      Marker marker = Marker(
-        anchorPos: AnchorPos.align(AnchorAlign.top),
-        width: 220,
-        height: 200,
-        point: collectionPoint.address.location,
-        builder: (ctx) =>
-            CustomMarkerWidget(collectionPoint: collectionPoint),
-      );
-      DataHolder.markers[marker] = collectionPoint;
-    }
-
-    // get available subcategories for filter dropdown
-    List<dynamic> availableSubcategories = data?["getCollectionPointSubcategories"];
-    for (dynamic element in availableSubcategories) {
-      DataHolder.cpSubcategories.add(element["title"]);
     }
   }
 }

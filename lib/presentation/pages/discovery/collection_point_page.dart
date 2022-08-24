@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
+
+import '../../i18n/locale_constant.dart';
+import '../../util/database_classes/collection_point.dart';
+import '../../util/database_classes/collection_point_type.dart';
 
 class CollectionPointPage extends StatefulWidget {
   const CollectionPointPage({Key? key}) : super(key: key);
@@ -16,11 +24,20 @@ class CollectionPointPage extends StatefulWidget {
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
   LatLng currentPosition = LatLng(52.5200, 13.4050);
+  String languageCode = "";
 
   @override
   void initState() {
     super.initState();
+    _getLanguageCode();
     _determinePosition();
+  }
+
+  void _getLanguageCode() async {
+    Locale locale = await getLocale();
+    setState(() {
+      languageCode = locale.languageCode;
+    });
   }
 
   void _determinePosition() async {
@@ -70,20 +87,64 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.collectionPointsTitle),
       ),
-      body: Column(
+      body: Query(
+        options: QueryOptions(document: gql(GraphQLQueries.collectionPointQuery), variables: {
+          "languageCode": languageCode,
+          "municipalityId": "PMJEteBu4m", //TODO get from user
+        }),
+        builder: (QueryResult result,
+            {VoidCallback? refetch, FetchMore? fetchMore}) {
+          if (result.hasException) return Text(result.exception.toString());
+          if (result.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // get collection point types
+          List<dynamic> collectionPointTypes = result.data?["getCollectionPointTypes"];
+          for(dynamic cpType in collectionPointTypes){
+            DataHolder.collectionPointTypes.add(CollectionPointType.fromJson(cpType));
+          }
+
+          // get collection points
+          List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
+
+          // build markers for collection points
+          for (dynamic cp in collectionPoints) {
+            CollectionPoint collectionPoint = CollectionPoint.fromJson(cp);
+            Marker marker = Marker(
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+              width: 220,
+              height: 200,
+              point: collectionPoint.address.location,
+              builder: (ctx) =>
+                  CustomMarkerWidget(collectionPoint: collectionPoint),
+            );
+            DataHolder.markers[marker] = collectionPoint;
+          }
+
+          // get available subcategories for filter dropdown
+          List<dynamic> availableSubcategories = result.data?["getCollectionPointSubcategories"];
+          for (dynamic element in availableSubcategories) {
+            DataHolder.cpSubcategories.add(element["title"]);
+          }
+
+          // display when all data is available
+          return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: MapFilterDropdownWidget(
-                  dropdownValues: DataHolder.cpSubcategories,
+                  dropdownValues: DataHolder.cpSubcategories.toList(),
                 ),
               ),
               Flexible(
                   child: MapWidget(
-                marker: DataHolder.markers,
-                currentPosition: currentPosition,
-              )),
+                    marker: DataHolder.markers,
+                    currentPosition: currentPosition,
+                  )),
             ],
+          );
+        },
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
