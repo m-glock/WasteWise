@@ -7,7 +7,7 @@ import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
-import '../../util/tip.dart';
+import '../../util/database_classes/tip.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
   const TipsAndTricksPage({Key? key}) : super(key: key);

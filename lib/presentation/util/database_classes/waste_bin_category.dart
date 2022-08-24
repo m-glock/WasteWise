@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'hex_color.dart';
+import '../hex_color.dart';
 
 class WasteBinCategory {
   final String title;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../../../i18n/locale_constant.dart';
-import '../../../../util/cycle.dart';
+import '../../../../util/database_classes/cycle.dart';
 
 class CycleWidget extends StatefulWidget {
   const CycleWidget({Key? key, required this.categoryId}) : super(key: key);

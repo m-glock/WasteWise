@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_detail_widget.dart';
-import 'package:recycling_app/presentation/util/myth.dart';
+import 'package:recycling_app/presentation/util/database_classes/myth.dart';
 
 import '../../../../i18n/locale_constant.dart';
 

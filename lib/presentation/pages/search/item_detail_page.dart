@@ -4,11 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
-import 'package:recycling_app/presentation/util/waste_bin_category.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/hex_color.dart';
-import '../../util/item.dart';
+import '../../util/database_classes/item.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(

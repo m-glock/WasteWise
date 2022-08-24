@@ -3,7 +3,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_widget.dart';
-import 'package:recycling_app/presentation/util/waste_bin_category.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 import '../../util/constants.dart';
 

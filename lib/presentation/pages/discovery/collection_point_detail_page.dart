@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/util/collection_point.dart';
+import 'package:recycling_app/presentation/util/database_classes/collection_point.dart';
 
 import '../../i18n/locale_constant.dart';
 

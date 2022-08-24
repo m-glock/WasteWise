@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../util/constants.dart';
-import '../../util/tip.dart';
+import '../../util/database_classes/tip.dart';
 
 class TipDetailPage extends StatefulWidget {
   const TipDetailPage({

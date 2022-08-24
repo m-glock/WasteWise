@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recycling_app/presentation/data_holder.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/discovery_tile.dart';

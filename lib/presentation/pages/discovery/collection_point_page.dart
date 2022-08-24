@@ -7,7 +7,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
-import 'package:recycling_app/presentation/util/collection_point.dart';
+import 'package:recycling_app/presentation/util/database_classes/collection_point.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../i18n/locale_constant.dart';
