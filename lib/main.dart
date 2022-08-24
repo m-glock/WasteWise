@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/GraphlQLQueries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -13,9 +13,6 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
-import 'package:recycling_app/presentation/util/database_classes/cycle.dart';
-import 'package:recycling_app/presentation/util/database_classes/myth.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 void main() async {
   // initialize connection to backend
@@ -45,68 +42,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  String query = """
-    query GetContent(\$languageCode: String!, \$municipalityId: String!){
-      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        title
-        category_id{
-          objectId
-          image_file{
-            url
-          }
-          hex_color
-        }
-      }
-      
-      getItemNames(languageCode: \$languageCode){
-        title
-        synonyms
-        item_id{
-          objectId
-        }
-      }
-      
-      getAllCategoryMyths(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        question
-        answer
-        category_myth_id{
-          category_id{
-     		    objectId
-      	    image_file{
-        	    url
-      	    }
-      	    hex_color
-    	    }
-    	    is_correct
-        }
-      }
-      
-      getAllCategoryContent(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        title
-        category_content_id{
-          does_belong
-          category_id{
-            objectId
-          }
-        }
-      }
-      
-      getAllCategoryCycles(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        title
-        explanation
-        category_cycle_id{
-          position
-          image{
-            url
-          }
-		      category_id{
-		        objectId
-            pictogram
-          }
-        }
-      }
-    }
-  """;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -179,7 +114,7 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         home: Query(
-          options: QueryOptions(document: gql(query), variables: {
+          options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
             "languageCode": _locale?.languageCode,
             "municipalityId": "PMJEteBu4m" //TODO get from user
           }),
@@ -190,56 +125,7 @@ class _MyAppState extends State<MyApp> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            // get waste bin categories
-            List<dynamic> categories = result.data?["getCategories"];
-            Map<String, WasteBinCategory> wasteBinCategories = {};
-            for (dynamic element in categories) {
-              WasteBinCategory category = WasteBinCategory.fromJson(element);
-              wasteBinCategories[category.objectId] = category;
-            }
-
-            // get myths for waste bin categories
-            List<dynamic> categoryMyths = result.data?["getAllCategoryMyths"];
-            for (dynamic element in categoryMyths) {
-              String categoryId =
-                  element["category_myth_id"]["category_id"]["objectId"];
-              wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
-            }
-
-            // get content for waste bin categories
-            List<dynamic> categoryContent =
-                result.data?["getAllCategoryContent"];
-            for (dynamic element in categoryContent) {
-              String categoryId =
-                  element["category_content_id"]["category_id"]["objectId"];
-              if (element["category_content_id"]["does_belong"]) {
-                wasteBinCategories[categoryId]?.itemsBelong
-                    .add(element["title"]);
-              } else {
-                wasteBinCategories[categoryId]?.itemsDontBelong
-                    .add(element["title"]);
-              }
-            }
-
-            // get cycles for waste bin categories
-            List<dynamic> categoryCycles = result.data?["getAllCategoryCycles"];
-            for (dynamic element in categoryCycles) {
-              String categoryId =
-                  element["category_cycle_id"]["category_id"]["objectId"];
-              wasteBinCategories[categoryId]!.cycleSteps
-                  .add(Cycle.fromJson(element));
-            }
-
-            // save waste bin categories
-            DataHolder.categories.addAll(wasteBinCategories.values);
-
-            //get item names
-            List<dynamic> items = result.data?["getItemNames"];
-            for (dynamic element in items) {
-              //TODO: entry for each synonym?
-              DataHolder.itemNames[element["title"]] =
-                  element["item_id"]["objectId"];
-            }
+            GraphQLQueries.extractAndFormatData(result.data);
 
             return const HomePage(title: 'RecyclingApp');
           },
