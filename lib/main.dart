@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/util/GraphlQLQueries.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -125,7 +125,7 @@ class _MyAppState extends State<MyApp> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            GraphQLQueries.extractAndFormatData(result.data);
+            GraphQLQueries.initialDataExtraction(result.data);
 
             return const HomePage(title: 'RecyclingApp');
           },

@@ -68,7 +68,34 @@ class GraphQLQueries{
     }
   """;
 
-  static void extractAndFormatData(dynamic data){
+  static String itemDetailQuery = """
+    query GetItem(\$languageCode: String!, \$itemObjectId: String!){
+      getItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
+        title
+        explanation
+        material
+        item_id{
+          subcategory_id{
+            objectId
+            category_id{
+              objectId
+        	    hex_color
+        	    image_file{
+                url
+              }  
+      	    }
+          }
+        }
+      }
+      
+      getSubcategoryOfItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
+        title
+        explanation
+      }
+    }
+  """;
+
+  static void initialDataExtraction(dynamic data){
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
