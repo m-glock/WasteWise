@@ -19,8 +19,8 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 void main() async {
   // initialize connection to backend
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh';
-  const keyClientKey = 'YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW';
+  const keyApplicationId = Constants.kParseApplicationId;
+  const keyClientKey = Constants.kParseClientKey;
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -77,6 +77,16 @@ class _MyAppState extends State<MyApp> {
       	    hex_color
     	    }
     	    is_correct
+        }
+      }
+      
+      getAllCategoryContent(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        title
+        category_content_id{
+          does_belong
+          category_id{
+            objectId
+          }
         }
       }
     }
@@ -178,6 +188,21 @@ class _MyAppState extends State<MyApp> {
               String categoryId =
                   element["category_myth_id"]["category_id"]["objectId"];
               wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
+            }
+
+            // get content for all waste bin categories
+            List<dynamic> categoryContent =
+                result.data?["getAllCategoryContent"];
+            for (dynamic element in categoryContent) {
+              String categoryId =
+                  element["category_content_id"]["category_id"]["objectId"];
+              if (element["category_content_id"]["does_belong"]) {
+                wasteBinCategories[categoryId]?.itemsBelong
+                    .add(element["title"]);
+              } else {
+                wasteBinCategories[categoryId]?.itemsDontBelong
+                    .add(element["title"]);
+              }
             }
 
             // save waste bin categories

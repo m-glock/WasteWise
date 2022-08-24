@@ -8,6 +8,8 @@ class WasteBinCategory {
   final Color color;
   final String pictogramUrl;
   final List<Myth> myths = [];
+  final List<String> itemsBelong = [];
+  final List<String> itemsDontBelong = [];
 
   WasteBinCategory(this.title, this.objectId, this.color, this.pictogramUrl);
 
