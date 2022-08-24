@@ -43,6 +43,7 @@ class LanguageEn extends Languages {
   @override String get searchBarHint => "Search";
   @override String get searchBarItemNotExist => "This item is unknown";
   @override String get barcodeButtonText => "Barcode Scanner";
+  @override String get searchSortQuestion => "In which waste bin would you put it?";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

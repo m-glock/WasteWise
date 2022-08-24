@@ -2,7 +2,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key, required this.itemNames}) : super(key: key);
@@ -20,9 +20,11 @@ class _SearchBarState extends State<SearchBar> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ItemDetailPage(
-              objectId: widget.itemNames[selected]!
-          )),
+          builder: (context) => SearchSortPage(
+                itemObjectId: selected,
+                itemName: widget.itemNames[selected]!,
+                correctCategory: null, //TODO
+              )),
     );
   }
 

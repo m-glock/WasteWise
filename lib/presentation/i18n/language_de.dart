@@ -43,6 +43,7 @@ class LanguageDe extends Languages {
   @override String get searchBarHint => "Suche";
   @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
   @override String get barcodeButtonText => "Barcodescanner";
+  @override String get searchSortQuestion => "In welchen Müll würden Sie es entsorgen?";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

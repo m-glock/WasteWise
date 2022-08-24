@@ -47,6 +47,7 @@ abstract class Languages {
   String get oftenSearched;
   String get searchBarItemNotExist;
   String get barcodeButtonText;
+  String get searchSortQuestion;
 
   // item detail page
   String get itemDetailMaterialLabel;
