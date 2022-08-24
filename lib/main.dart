@@ -13,6 +13,7 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/presentation/util/database_classes/cycle.dart';
 import 'package:recycling_app/presentation/util/database_classes/myth.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
@@ -86,6 +87,21 @@ class _MyAppState extends State<MyApp> {
           does_belong
           category_id{
             objectId
+          }
+        }
+      }
+      
+      getAllCategoryCycles(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        title
+        explanation
+        category_cycle_id{
+          position
+          image{
+            url
+          }
+		      category_id{
+		        objectId
+            pictogram
           }
         }
       }
@@ -190,7 +206,7 @@ class _MyAppState extends State<MyApp> {
               wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
             }
 
-            // get content for all waste bin categories
+            // get content for waste bin categories
             List<dynamic> categoryContent =
                 result.data?["getAllCategoryContent"];
             for (dynamic element in categoryContent) {
@@ -203,6 +219,15 @@ class _MyAppState extends State<MyApp> {
                 wasteBinCategories[categoryId]?.itemsDontBelong
                     .add(element["title"]);
               }
+            }
+
+            // get cycles for waste bin categories
+            List<dynamic> categoryCycles = result.data?["getAllCategoryCycles"];
+            for (dynamic element in categoryCycles) {
+              String categoryId =
+                  element["category_cycle_id"]["category_id"]["objectId"];
+              wasteBinCategories[categoryId]!.cycleSteps
+                  .add(Cycle.fromJson(element));
             }
 
             // save waste bin categories

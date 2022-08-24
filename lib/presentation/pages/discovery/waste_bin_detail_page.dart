@@ -56,7 +56,7 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 0),
-                      child: CycleWidget(categoryId: widget.wasteBin.objectId),
+                      child: CycleWidget(category: widget.wasteBin),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),

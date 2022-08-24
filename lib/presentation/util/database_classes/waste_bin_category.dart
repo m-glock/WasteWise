@@ -1,5 +1,6 @@
 import 'dart:ui';
 import '../hex_color.dart';
+import 'cycle.dart';
 import 'myth.dart';
 
 class WasteBinCategory {
@@ -10,6 +11,7 @@ class WasteBinCategory {
   final List<Myth> myths = [];
   final List<String> itemsBelong = [];
   final List<String> itemsDontBelong = [];
+  final List<Cycle> cycleSteps = [];
 
   WasteBinCategory(this.title, this.objectId, this.color, this.pictogramUrl);
 
