@@ -3,5 +3,5 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 class DataHolder{
 
   static List<WasteBinCategory> categories = [];
-  static List<String> itemNames = [];
+  static Map<String, String> itemNames = {};
 }

@@ -44,7 +44,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
   String query = """
-    query GetCategories(\$languageCode: String!, \$municipalityId: String!){
+    query GetContent(\$languageCode: String!, \$municipalityId: String!){
       getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
@@ -53,6 +53,14 @@ class _MyAppState extends State<MyApp> {
             url
           }
           hex_color
+        }
+      }
+      
+      getItemNames(languageCode: \$languageCode){
+        title
+        synonyms
+        item_id{
+          objectId
         }
       }
     }
@@ -140,14 +148,17 @@ class _MyAppState extends State<MyApp> {
               return const Center(child: CircularProgressIndicator());
             }
 
+            // get waste bin categories
             List<dynamic> categories = result.data?["getCategories"];
-
-            if (categories.isEmpty) {
-              return const Text("No tips found.");
-            }
-
             for (dynamic element in categories) {
               DataHolder.categories.add(WasteBinCategory.fromJson(element));
+            }
+
+            //get item names
+            List<dynamic> items = result.data?["getItemNames"];
+            for (dynamic element in items) {
+              //TODO: entry for each synonym?
+              DataHolder.itemNames[element["title"]] = element["item_id"]["objectId"];
             }
 
             return const HomePage(title: 'RecyclingApp');
