@@ -13,6 +13,7 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/presentation/util/database_classes/myth.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 void main() async {
@@ -61,6 +62,21 @@ class _MyAppState extends State<MyApp> {
         synonyms
         item_id{
           objectId
+        }
+      }
+      
+      getAllCategoryMyths(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        question
+        answer
+        category_myth_id{
+          category_id{
+     		    objectId
+      	    image_file{
+        	    url
+      	    }
+      	    hex_color
+    	    }
+    	    is_correct
         }
       }
     }
@@ -150,15 +166,29 @@ class _MyAppState extends State<MyApp> {
 
             // get waste bin categories
             List<dynamic> categories = result.data?["getCategories"];
+            Map<String, WasteBinCategory> wasteBinCategories = {};
             for (dynamic element in categories) {
-              DataHolder.categories.add(WasteBinCategory.fromJson(element));
+              WasteBinCategory category = WasteBinCategory.fromJson(element);
+              wasteBinCategories[category.objectId] = category;
             }
+
+            // get myths for waste bin categories
+            List<dynamic> categoryMyths = result.data?["getAllCategoryMyths"];
+            for (dynamic element in categoryMyths) {
+              String categoryId =
+                  element["category_myth_id"]["category_id"]["objectId"];
+              wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
+            }
+
+            // save waste bin categories
+            DataHolder.categories.addAll(wasteBinCategories.values);
 
             //get item names
             List<dynamic> items = result.data?["getItemNames"];
             for (dynamic element in items) {
               //TODO: entry for each synonym?
-              DataHolder.itemNames[element["title"]] = element["item_id"]["objectId"];
+              DataHolder.itemNames[element["title"]] =
+                  element["item_id"]["objectId"];
             }
 
             return const HomePage(title: 'RecyclingApp');

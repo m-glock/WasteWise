@@ -1,11 +1,13 @@
 import 'dart:ui';
 import '../hex_color.dart';
+import 'myth.dart';
 
 class WasteBinCategory {
   final String title;
   final String objectId;
   final Color color;
   final String pictogramUrl;
+  final List<Myth> myths = [];
 
   WasteBinCategory(this.title, this.objectId, this.color, this.pictogramUrl);
 
