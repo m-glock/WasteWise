@@ -4,6 +4,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
@@ -26,18 +28,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   List<Tip> filteredTipList = [];
   String languageCode = "";
   String query = """
-    query GetCategories(\$languageCode: String!, \$municipalityId: String!){
-      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        title
-        category_id{
-          objectId
-          image_file{
-            url
-          }
-          hex_color
-        }
-      }
-      
+    query GetCategories(\$languageCode: String!){
       getTipTypes(languageCode: \$languageCode){
         title
         tip_type_id{
@@ -61,7 +52,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     	    }
   	    }, 
         title,
-        explanation
+        explanation,
+        short
       }
     }
   """;
@@ -126,7 +118,6 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
         child: Query(
           options: QueryOptions(document: gql(query), variables: {
             "languageCode": languageCode,
-            "municipalityId": "PMJEteBu4m" //TODO get from user
           }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -144,14 +135,12 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
             tipTypeDropdownOptions["default"] ??= defaultDropdownItem;
 
             // get data
-            List<dynamic> categories = result.data?["getCategories"];
             List<dynamic> tipTypes = result.data?["getTipTypes"];
             List<dynamic> tips = result.data?["getTips"];
 
             // set waste bin types
-            for (dynamic category in categories) {
-              wasteBinDropdownOptions[category["category_id"]["objectId"]] =
-                  category["title"];
+            for(WasteBinCategory category in DataHolder.categories) {
+              wasteBinDropdownOptions[category.objectId] = category.title;
             }
 
             // set tip types
@@ -162,15 +151,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
 
             //set tips
             for (dynamic element in tips) {
-              //TODO better way to do this?
-              if (!tipList.any((tip) => tip.title == element["title"])) {
-                tipList.add(Tip(
-                    element["title"],
-                    element["explanation"],
-                    element["tip_id"]["tip_type_id"]["objectId"],
-                    element["tip_id"]["category_id"]["objectId"],
-                    element["tip_id"]["image"]["url"]));
-              }
+              tipList.add(Tip.fromJson(element));
             }
 
             if (filteredTipList.isEmpty &&
