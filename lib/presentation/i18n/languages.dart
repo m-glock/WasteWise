@@ -48,6 +48,13 @@ abstract class Languages {
   String get searchBarItemNotExist;
   String get barcodeButtonText;
   String get searchSortQuestion;
+  String get alertDialogCorrectTitle;
+  String get alertDialogCorrectExplanation;
+  String get alertDialogWrongTitle;
+  String get alertDialogWrongExplanation;
+  String get alertDialogPrompt;
+  String get alertDialogButtonDismiss;
+  String get alertDialogButtonMoreInfo;
 
   // item detail page
   String get itemDetailMaterialLabel;

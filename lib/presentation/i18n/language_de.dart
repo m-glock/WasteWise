@@ -44,6 +44,13 @@ class LanguageDe extends Languages {
   @override String get searchBarItemNotExist => "Dieses Item ist unbekannt";
   @override String get barcodeButtonText => "Barcodescanner";
   @override String get searchSortQuestion => "In welchen Müll würden Sie es entsorgen?";
+  @override String get alertDialogCorrectTitle => "Glückwunsch!";
+  @override String get alertDialogCorrectExplanation => "Durch das richtige Entsorgen dieses Items hast du dafür gesorgt, dass es korrekt recycelt werden kann.";
+  @override String get alertDialogWrongTitle => "Leider daneben!";
+  @override String get alertDialogWrongExplanation => "Gut, dass du das in der App geprüpft hast. Somit hast du dafür gesortgt, dass der Gegenstand korrekt entsogt und recycelt werden kann.";
+  @override String get alertDialogPrompt => "Dieses Item gehört in ";
+  @override String get alertDialogButtonDismiss => "Verstanden";
+  @override String get alertDialogButtonMoreInfo => "Mehr Info";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

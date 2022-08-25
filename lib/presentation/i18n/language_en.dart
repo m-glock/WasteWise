@@ -44,6 +44,13 @@ class LanguageEn extends Languages {
   @override String get searchBarItemNotExist => "This item is unknown";
   @override String get barcodeButtonText => "Barcode Scanner";
   @override String get searchSortQuestion => "In which waste bin would you put it?";
+  @override String get alertDialogCorrectTitle => "Congratulation!";
+  @override String get alertDialogCorrectExplanation => "By properly disposing of this item, you have ensured that it can be recycled correctly.";
+  @override String get alertDialogWrongTitle => "Unfortunately wrong!";
+  @override String get alertDialogWrongExplanation => "It's good that you checked with the app. This way you have ensured that the item can be disposed of and recycled correctly.";
+  @override String get alertDialogPrompt => "This item belongs in the ";
+  @override String get alertDialogButtonDismiss => "Understood";
+  @override String get alertDialogButtonMoreInfo => "More Info";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

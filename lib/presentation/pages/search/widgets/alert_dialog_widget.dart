@@ -1,42 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 
 import '../../../util/database_classes/item.dart';
 
-class AlertDialogWidget{
-  static Future<void> showModal(BuildContext context, Item item, bool isCorrect) async {
-    print("is correct: $isCorrect");
+class AlertDialogWidget {
+  static Future<void> showModal(
+      BuildContext context, Item item, bool isCorrect) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('AlertDialog Title'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              isCorrect
+                  ? Text(Languages.of(context)!.alertDialogCorrectTitle)
+                  : Text(Languages.of(context)!.alertDialogWrongTitle),
+              item.bookmarked
+                  ? const Icon(FontAwesomeIcons.bookmark) //TODO make clickable
+                  : const Icon(FontAwesomeIcons.solidBookmark),
+            ],
+          ),
+          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+          content: SizedBox(
+            height: 120,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SvgPicture.network(
+                        item.wasteBin.pictogramUrl,
+                        color: item.wasteBin.color,
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    Expanded(
+                      child: Text(Languages.of(context)!.alertDialogPrompt +
+                          item.wasteBin.title),
+                    ),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                Expanded(
+                  child: isCorrect
+                      ? Text(
+                          Languages.of(context)!.alertDialogCorrectExplanation)
+                      : Text(
+                          Languages.of(context)!.alertDialogWrongExplanation),
+                ),
               ],
             ),
           ),
-          actions: <Widget>[
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
+          actions: [
             TextButton(
-              child: const Text('Learn more'),
+              child: Text(Languages.of(context)!.alertDialogButtonMoreInfo),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ItemDetailPage(item: item)),
+                      builder: (context) => ItemDetailPage(item: item)),
                 );
               },
             ),
             TextButton(
-              child: const Text('Dismiss'),
-              onPressed: () => Navigator.of(context).pop(),
+              child: Text(Languages.of(context)!.alertDialogButtonDismiss),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
