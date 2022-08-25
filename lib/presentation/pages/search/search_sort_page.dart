@@ -3,7 +3,7 @@ import 'package:recycling_app/presentation/pages/search/widgets/search_sort_grid
 import 'package:recycling_app/presentation/util/constants.dart';
 
 import '../../i18n/languages.dart';
-import '../../util/waste_bin_category.dart';
+import '../../util/database_classes/waste_bin_category.dart';
 
 class SearchSortPage extends StatefulWidget {
   const SearchSortPage(

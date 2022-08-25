@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
-import 'package:recycling_app/presentation/util/waste_bin_category.dart';
+
+import '../../../util/database_classes/waste_bin_category.dart';
 
 class SearchSortGridTile extends StatefulWidget {
   const SearchSortGridTile(
