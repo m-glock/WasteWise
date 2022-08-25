@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../util/collection_point.dart';
+import '../../../../util/database_classes/collection_point.dart';
 import 'map_marker_popup_widget.dart';
 
 class CustomMarkerWidget extends StatefulWidget {

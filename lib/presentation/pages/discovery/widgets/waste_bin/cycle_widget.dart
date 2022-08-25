@@ -1,85 +1,24 @@
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-
-import '../../../../i18n/locale_constant.dart';
-import '../../../../util/cycle.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 class CycleWidget extends StatefulWidget {
-  const CycleWidget({Key? key, required this.categoryId}) : super(key: key);
+  const CycleWidget({Key? key, required this.category}) : super(key: key);
 
-  final String categoryId;
+  final WasteBinCategory category;
 
   @override
   State<CycleWidget> createState() => _CycleWidgetState();
 }
 
 class _CycleWidgetState extends State<CycleWidget> {
-  String languageCode = "";
-  String query = """
-    query GetCategoryCycle{
-      getCategoryCycle(languageCode: "en", categoryId: "d1SHnrqu1F"){
-        title
-        explanation
-        category_cycle_id{
-          position
-          image{
-            url
-          }
-		      category_id{
-            pictogram
-          }
-        }
-      }
-    }
-  """;
+
   int _current = 0;
 
   @override
-  void initState() {
-    super.initState();
-    _getLanguageCode();
-  }
-
-  void _getLanguageCode() async {
-    Locale locale = await getLocale();
-    setState(() {
-      languageCode = locale.languageCode;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(document: gql(query), variables: {
-        "languageCode": languageCode,
-        "categoryId": widget.categoryId,
-      }),
-      builder: (QueryResult result,
-          {VoidCallback? refetch, FetchMore? fetchMore}) {
-        if (result.hasException) return Text(result.exception.toString());
-        if (result.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        List<dynamic> cycles = result.data?["getCategoryCycle"];
-
-        if (cycles.isEmpty) {
-          return const Text("No tips found.");
-        }
-
-        List<Cycle> cycleElements = [];
-        for (dynamic element in cycles) {
-          cycleElements.add(Cycle(
-              element["title"],
-              element["explanation"],
-              element["category_cycle_id"]["position"],
-              element["category_cycle_id"]["image"]["url"]));
-        }
-
-        // display when all data is available
-        return Padding(
+    return Padding(
           padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
           child: Row(
             children: [
@@ -98,7 +37,7 @@ class _CycleWidgetState extends State<CycleWidget> {
                       });
                     },
                   ),
-                  items: cycleElements.map((element) {
+                  items: widget.category.cycleSteps.map((element) {
                     return Builder(
                       builder: (BuildContext context) {
                         return Center(
@@ -129,14 +68,12 @@ class _CycleWidgetState extends State<CycleWidget> {
                   color: Theme.of(context).colorScheme.onSecondary,
                   activeColor: Theme.of(context).colorScheme.secondary,
                   height: 15,
-                  count: cycleElements.length,
+                  count: widget.category.cycleSteps.length,
                   index: _current,
                 ),
               ),
             ],
           ),
-        );
-      },
     );
   }
 }

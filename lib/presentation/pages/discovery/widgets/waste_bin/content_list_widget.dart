@@ -8,13 +8,11 @@ class ContentListWidget extends StatefulWidget {
   const ContentListWidget(
       {Key? key,
       required this.backgroundColor,
-      required this.showMore,
       required this.title,
       required this.itemNames})
       : super(key: key);
 
   final Color backgroundColor;
-  final Function showMore;
   final String title;
   final List<String> itemNames;
 
@@ -34,7 +32,7 @@ class _ContentListWidgetState extends State<ContentListWidget> {
         borderRadius: Constants.tileBorderRadius,
       ),
       margin: const EdgeInsets.all(15),
-      padding: const EdgeInsets.only(top: 25, left: 25, right: 15),
+      padding: const EdgeInsets.all(25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,8 +42,12 @@ class _ContentListWidgetState extends State<ContentListWidget> {
               child: Row(
                 children: [
                   widget.title == Languages.of(context)!.wasteBinYesContentLabel
-                      ? const Padding(padding: EdgeInsets.only(right: 5), child: Icon(FontAwesomeIcons.check, size: 20))
-                      : const Padding(padding: EdgeInsets.only(right: 5), child: Icon(FontAwesomeIcons.xmark, size: 20)),
+                      ? const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(FontAwesomeIcons.check, size: 20))
+                      : const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(FontAwesomeIcons.xmark, size: 20)),
                   Text(
                     name,
                     style: Theme.of(context).textTheme.bodyText1,
@@ -54,23 +56,6 @@ class _ContentListWidgetState extends State<ContentListWidget> {
               ),
             ),
           ),
-          /*Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => {},
-                child: Row(
-                  children: const [
-                    Icon(FontAwesomeIcons.angleRight, size: 12),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Text("Mehr"),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),*/
         ],
       ),
     );

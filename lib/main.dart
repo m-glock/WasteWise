@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
 import 'package:recycling_app/presentation/themes/color_scheme.dart';
-import 'package:recycling_app/presentation/themes/navigationbar_theme.dart' as navbar;
+import 'package:recycling_app/presentation/themes/navigationbar_theme.dart'
+    as navbar;
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 
 void main() async {
-
   // initialize connection to backend
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = 'tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh';
-  const keyClientKey = 'YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW';
+  const keyApplicationId = Constants.kParseApplicationId;
+  const keyClientKey = Constants.kParseClientKey;
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -40,7 +41,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   Locale? _locale;
 
   void setLocale(Locale locale) {
@@ -62,7 +62,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     final HttpLink httpLink = HttpLink(
       Constants.apiURL,
       defaultHeaders: {
@@ -100,10 +99,7 @@ class _MyAppState extends State<MyApp> {
           textTheme: const AppTextTheme(),
         ),
         locale: _locale,
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('de', '')
-        ],
+        supportedLocales: const [Locale('en', ''), Locale('de', '')],
         localizationsDelegates: const [
           AppLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,
@@ -117,9 +113,24 @@ class _MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
-        home: const HomePage(title: 'RecyclingApp'),
+        home: Query(
+          options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
+            "languageCode": _locale?.languageCode,
+            "municipalityId": "PMJEteBu4m" //TODO get from user
+          }),
+          builder: (QueryResult result,
+              {VoidCallback? refetch, FetchMore? fetchMore}) {
+            if (result.hasException) return Text(result.exception.toString());
+            if (result.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            GraphQLQueries.initialDataExtraction(result.data);
+
+            return const HomePage(title: 'RecyclingApp');
+          },
+        ),
       ),
     );
   }
-
 }

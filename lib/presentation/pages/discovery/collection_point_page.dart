@@ -7,10 +7,14 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
-import 'package:recycling_app/presentation/util/collection_point.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 
 import '../../i18n/locale_constant.dart';
+import '../../util/database_classes/collection_point.dart';
+import '../../util/database_classes/collection_point_type.dart';
+import '../../util/database_classes/subcategory.dart';
 
 class CollectionPointPage extends StatefulWidget {
   const CollectionPointPage({Key? key}) : super(key: key);
@@ -20,47 +24,8 @@ class CollectionPointPage extends StatefulWidget {
 }
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
-  String languageCode = "";
   LatLng currentPosition = LatLng(52.5200, 13.4050);
-  String query = """
-    query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
-      getCollectionPoints(municipalityId: \$municipalityId){
-        objectId
-        opening_hours
-        link
-        contact_id{
-          phone
-          fax
-          email
-        }
-        address_id{
-          street
-          number
-          zip_code
-          district
-          location{
-            latitude
-            longitude
-          }
-        }
-        collection_point_type_id{
-          objectId
-        }
-      }
-      
-      getCollectionPointSubcategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        objectId
-		    title
-      }
-      
-      getCollectionPointTypes(languageCode: \$languageCode){
-        title
-        collection_point_type_id{
-          objectId
-        }
-      }
-    }
-  """;
+  String languageCode = "";
 
   @override
   void initState() {
@@ -124,10 +89,12 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
         title: Text(Languages.of(context)!.collectionPointsTitle),
       ),
       body: Query(
-        options: QueryOptions(document: gql(query), variables: {
-          "languageCode": languageCode,
-          "municipalityId": "PMJEteBu4m" //TODO get from user
-        }),
+        options: QueryOptions(
+            document: gql(GraphQLQueries.collectionPointQuery),
+            variables: {
+              "languageCode": languageCode,
+              "municipalityId": "PMJEteBu4m", //TODO get from user
+            }),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
@@ -135,23 +102,22 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
-          List<dynamic> availableSubcategories =
-              result.data?["getCollectionPointSubcategories"];
+          // get collection point types
           List<dynamic> collectionPointTypes =
               result.data?["getCollectionPointTypes"];
-
-          if (collectionPoints.isEmpty ||
-              availableSubcategories.isEmpty ||
-              collectionPointTypes.isEmpty) {
-            return const Text("No collection points or subcategories found.");
+          for (dynamic cpType in collectionPointTypes) {
+            DataHolder.collectionPointTypes
+                .add(CollectionPointType.fromJson(cpType));
           }
 
+          // get collection points
+          List<dynamic> collectionPoints = result.data?["getCollectionPoints"];
+
           // build markers for collection points
-          final Map<Marker, CollectionPoint> markers = {};
-          for (dynamic element in collectionPoints) {
-            CollectionPoint collectionPoint =
-                CollectionPoint(element, collectionPointTypes);
+          Map<String, CollectionPoint> cpByObjectId = {};
+          for (dynamic cp in collectionPoints) {
+            CollectionPoint collectionPoint = CollectionPoint.fromJson(cp);
+            cpByObjectId[collectionPoint.objectId] = collectionPoint;
             Marker marker = Marker(
               anchorPos: AnchorPos.align(AnchorAlign.top),
               width: 220,
@@ -160,13 +126,31 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
               builder: (ctx) =>
                   CustomMarkerWidget(collectionPoint: collectionPoint),
             );
-            markers[marker] = collectionPoint;
+            DataHolder.markers[collectionPoint] = marker;
+          }
+
+          // get accepted subcategories for all collection points
+          List<dynamic> subcategoriesOfCP =
+              result.data?["getSubcategoriesOfAllCollectionPoints"];
+          for (dynamic subcategoryCpPair in subcategoriesOfCP) {
+            String collectionPointObjectId =
+                subcategoryCpPair["collection_point_id"]["objectId"];
+            String subcategoryObjectId =
+                subcategoryCpPair["subcategory_id"]["objectId"];
+            Subcategory? subcategory =
+                DataHolder.subcategoriesById[subcategoryObjectId];
+            if (subcategory != null) {
+              cpByObjectId[collectionPointObjectId]
+                  ?.acceptedSubcategories
+                  .add(subcategory);
+            }
           }
 
           // get available subcategories for filter dropdown
-          final List<String> dropdownValues = [];
+          List<dynamic> availableSubcategories =
+              result.data?["getDistinctSubcategoriesForCP"];
           for (dynamic element in availableSubcategories) {
-            dropdownValues.add(element["title"]);
+            DataHolder.cpSubcategories.add(element["title"]);
           }
 
           // display when all data is available
@@ -175,12 +159,12 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: MapFilterDropdownWidget(
-                  dropdownValues: dropdownValues,
+                  dropdownValues: DataHolder.cpSubcategories.toList(),
                 ),
               ),
               Flexible(
                   child: MapWidget(
-                marker: markers,
+                marker: DataHolder.markers,
                 currentPosition: currentPosition,
               )),
             ],
