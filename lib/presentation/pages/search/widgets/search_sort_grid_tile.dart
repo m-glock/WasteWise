@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
 
 import '../../../util/database_classes/waste_bin_category.dart';
 
@@ -21,62 +21,23 @@ class SearchSortGridTile extends StatefulWidget {
 }
 
 class _SearchSortGridTileState extends State<SearchSortGridTile> {
-  void _openModal() {
-    //TODO open modal to show user whether they were right or wrong
-    if (widget.isCorrect) {
-    } else {}
-  }
-
-  Future<void> _showMyDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('AlertDialog Title'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Learn more'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ItemDetailPage(objectId: widget.itemObjectId)),
-                );
-              },
-            ),
-            TextButton(
-              child: const Text('Dismiss'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GridTile(
-      child: GestureDetector(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.network(widget.category.pictogramUrl),
-            Text(widget.category.title)
-          ],
-        ),
-        onTap: _showMyDialog,
+    return GestureDetector(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.network(
+            widget.category.pictogramUrl,
+            color: widget.category.color,
+            width: 100,
+            height: 100,
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 10)),
+          Text(widget.category.title, style: Theme.of(context).textTheme.bodyText1,)
+        ],
       ),
+      onTap: () => AlertDialogWidget.showModal(context, widget.itemObjectId),
     );
   }
 }
