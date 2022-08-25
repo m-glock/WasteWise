@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 
+import '../../../util/database_classes/item.dart';
+
 class AlertDialogWidget{
-  static Future<void> showModal(BuildContext context, String itemObjectId) async {
+  static Future<void> showModal(BuildContext context, Item item, bool isCorrect) async {
+    print("is correct: $isCorrect");
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -27,7 +30,7 @@ class AlertDialogWidget{
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ItemDetailPage(objectId: itemObjectId)),
+                          ItemDetailPage(item: item)),
                 );
               },
             ),

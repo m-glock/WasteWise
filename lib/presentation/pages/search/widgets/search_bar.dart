@@ -22,8 +22,6 @@ class _SearchBarState extends State<SearchBar> {
       MaterialPageRoute(
           builder: (context) => SearchSortPage(
                 itemObjectId: widget.itemNames[selected]!,
-                itemName: selected,
-                correctCategory: null, //TODO
               )),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
+import 'package:recycling_app/presentation/util/database_classes/item.dart';
 
 import '../../../util/database_classes/waste_bin_category.dart';
 
@@ -9,12 +10,12 @@ class SearchSortGridTile extends StatefulWidget {
       {Key? key,
       required this.category,
       required this.isCorrect,
-      required this.itemObjectId})
+      required this.item})
       : super(key: key);
 
   final WasteBinCategory category;
   final bool isCorrect;
-  final String itemObjectId;
+  final Item item;
 
   @override
   State<SearchSortGridTile> createState() => _SearchSortGridTileState();
@@ -34,10 +35,14 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
             height: 100,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
-          Text(widget.category.title, style: Theme.of(context).textTheme.bodyText1,)
+          Text(
+            widget.category.title,
+            style: Theme.of(context).textTheme.bodyText1,
+          )
         ],
       ),
-      onTap: () => AlertDialogWidget.showModal(context, widget.itemObjectId),
+      onTap: () =>
+          AlertDialogWidget.showModal(context, widget.item, widget.isCorrect),
     );
   }
 }
