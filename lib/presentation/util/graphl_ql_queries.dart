@@ -1,3 +1,5 @@
+import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
+
 import 'data_holder.dart';
 import 'database_classes/cycle.dart';
 import 'database_classes/myth.dart';
@@ -65,11 +67,21 @@ class GraphQLQueries{
           }
         }
       }
+      
+      getSubcategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        title
+        subcategory_id{
+          objectId
+          category_id{
+            objectId
+          }
+        }
+      }
     }
   """;
 
   static String collectionPointQuery = """
-    query GetItem(\$languageCode: String!, \$municipalityId: String!){
+    query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
       getCollectionPoints(municipalityId: \$municipalityId){
         objectId
         opening_hours
@@ -94,7 +106,7 @@ class GraphQLQueries{
         }
       }
       
-      getCollectionPointSubcategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
+      getDistinctSubcategoriesForCP(languageCode: \$languageCode, municipalityId: \$municipalityId){
         objectId
 		    title
       }
@@ -102,6 +114,15 @@ class GraphQLQueries{
       getCollectionPointTypes(languageCode: \$languageCode){
         title
         collection_point_type_id{
+          objectId
+        }
+      }
+      
+      getSubcategoriesOfAllCollectionPoints(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        collection_point_id{
+          objectId
+        }
+        subcategory_id{
           objectId
         }
       }
@@ -178,6 +199,13 @@ class GraphQLQueries{
 
     // save waste bin categories
     DataHolder.categories.addAll(wasteBinCategories.values);
+
+    // get subcategories
+    List<dynamic> subcategories = data?["getSubcategories"];
+    for(dynamic element in subcategories){
+      String subcategoryId = element["subcategory_id"]["objectId"];
+      DataHolder.subcategoriesById[subcategoryId] = Subcategory.fromJson(element);
+    }
 
     //get item names
     List<dynamic> items = data?["getItemNames"];
