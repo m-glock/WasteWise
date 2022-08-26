@@ -16,7 +16,13 @@ class ItemDetailPage extends StatefulWidget {
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-  bool isBookmarked = false;
+  late bool isBookmarked;
+
+  @override
+  void initState() {
+    super.initState();
+    isBookmarked = widget.item.bookmarked;
+  }
 
   @override
   Widget build(BuildContext context) {
