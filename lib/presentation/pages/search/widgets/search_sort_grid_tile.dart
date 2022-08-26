@@ -22,6 +22,10 @@ class SearchSortGridTile extends StatefulWidget {
 }
 
 class _SearchSortGridTileState extends State<SearchSortGridTile> {
+  void _updateItemBookmarked() {
+    //TODO: update in DB
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,8 +45,8 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
           )
         ],
       ),
-      onTap: () =>
-          AlertDialogWidget.showModal(context, widget.item, widget.isCorrect),
+      onTap: () => AlertDialogWidget.showModal(
+          context, widget.item, widget.isCorrect, _updateItemBookmarked),
     );
   }
 }
