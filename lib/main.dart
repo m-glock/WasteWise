@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
 import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
+  bool introDone = false; //TODO
 
   void setLocale(Locale locale) {
     setState(() {
@@ -127,7 +129,9 @@ class _MyAppState extends State<MyApp> {
 
             GraphQLQueries.initialDataExtraction(result.data);
 
-            return const HomePage(title: 'RecyclingApp');
+            return introDone
+                ? const HomePage(title: Constants.appTitle)
+                : const IntroductionPage();
           },
         ),
       ),

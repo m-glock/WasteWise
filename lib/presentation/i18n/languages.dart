@@ -15,6 +15,11 @@ abstract class Languages {
   String get contactPageName;
   String get settingsPageName;
 
+  // introduction
+  String get skipButtonText;
+  String get nextButtonText;
+  String get doneButtonText;
+
   // bottom navigation
   String get homePageName;
   String get searchPageName;

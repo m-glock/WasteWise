@@ -156,6 +156,15 @@ class GraphQLQueries{
     }
   """;
 
+  static String municipalityQuery = """
+    query GetMunicipalities{
+      getMunicipalities{
+        objectId
+        name
+      }
+    }
+  """;
+
   static void initialDataExtraction(dynamic data){
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];

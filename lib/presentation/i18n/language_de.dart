@@ -11,6 +11,11 @@ class LanguageDe extends Languages {
   @override String get imprintPageName => "Impressum";
   @override String get settingsPageName => "Einstellungen";
 
+  // introduction
+  @override String get doneButtonText => "Fertig";
+  @override String get nextButtonText => "Weiter";
+  @override String get skipButtonText => "Überspringen";
+
   // bottom navigation
   @override String get homePageName => "Home";
   @override String get searchPageName => "Suche";

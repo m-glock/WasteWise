@@ -11,6 +11,11 @@ class LanguageEn extends Languages {
   @override String get imprintPageName => "Imprint";
   @override String get settingsPageName => "Settings";
 
+  // introduction
+  @override String get doneButtonText => "Done";
+  @override String get nextButtonText => "Next";
+  @override String get skipButtonText => "Skip";
+
   // bottom navigation
   @override String get homePageName => "Home";
   @override String get searchPageName => "Search";
