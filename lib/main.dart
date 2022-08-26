@@ -17,8 +17,8 @@ import 'package:recycling_app/presentation/util/constants.dart';
 void main() async {
   // initialize connection to backend
   WidgetsFlutterBinding.ensureInitialized();
-  const keyApplicationId = Constants.kParseApplicationId;
-  const keyClientKey = Constants.kParseClientKey;
+  String keyApplicationId = Constants.kParseApplicationId;
+  String keyClientKey = Constants.kParseClientKey;
   const keyParseServerUrl = 'https://parseapi.back4app.com';
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,

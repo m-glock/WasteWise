@@ -63,22 +63,18 @@ class _SearchPageState extends State<SearchPage> {
               child: _barcodeScannerButton(),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //TODO replace with actual items and links
-                    Text(Languages.of(context)!.recentlySearched,
-                        style: Theme.of(context).textTheme.headline3),
-                    const Padding(padding: EdgeInsets.only(bottom: 15)),
-                    ..._itemList(recentlySearched),
-                    const Padding(padding: EdgeInsets.only(bottom: 25)),
-                    Text(Languages.of(context)!.oftenSearched,
-                        style: Theme.of(context).textTheme.headline3),
-                    const Padding(padding: EdgeInsets.only(bottom: 15)),
-                    ..._itemList(oftenSearched),
-                  ],
-                ),
+                //TODO replace with actual items and links
+                Text(Languages.of(context)!.recentlySearched,
+                    style: Theme.of(context).textTheme.headline3),
+                const Padding(padding: EdgeInsets.only(bottom: 15)),
+                ..._itemList(recentlySearched),
+                const Padding(padding: EdgeInsets.only(bottom: 25)),
+                Text(Languages.of(context)!.oftenSearched,
+                    style: Theme.of(context).textTheme.headline3),
+                const Padding(padding: EdgeInsets.only(bottom: 15)),
+                ..._itemList(oftenSearched),
               ],
             ),
           ],
