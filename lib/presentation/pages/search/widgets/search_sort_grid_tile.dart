@@ -45,8 +45,11 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
           )
         ],
       ),
-      onTap: () => AlertDialogWidget.showModal(
-          context, widget.item, widget.isCorrect, _updateItemBookmarked),
+      onTap: () {
+        //TODO: save sorting attempt in search history
+        AlertDialogWidget.showModal(
+            context, widget.item, widget.isCorrect, _updateItemBookmarked);
+      },
     );
   }
 }
