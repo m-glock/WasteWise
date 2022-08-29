@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
+import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
@@ -35,11 +36,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
           bodyWidget: const LanguageIntroScreen(),
           decoration: _getPageDecoration(),
         ),
-        /*PageViewModel(
-          title: "What is the app about",
+        PageViewModel(
+          title: Languages.of(context)!.purposeScreenTitle,
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
-        ),*/
+        ),
         PageViewModel(
           //choose language
           title: Languages.of(context)!.municipalityScreenTitle,
