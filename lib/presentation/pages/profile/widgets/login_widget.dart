@@ -5,9 +5,10 @@ import '../../../i18n/languages.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key, required this.authenticated}) : super(key: key);
+  const LoginWidget({Key? key, required this.authenticated, this.onlySignup = false}) : super(key: key);
 
   final Function authenticated;
+  final bool onlySignup;
 
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
@@ -18,7 +19,13 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
 
-  bool _signup = false;
+  late bool _signup;
+
+  @override
+  void initState() {
+    super.initState();
+    _signup = widget.onlySignup;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -15,6 +15,19 @@ abstract class Languages {
   String get contactPageName;
   String get settingsPageName;
 
+  // introduction
+  String get skipButtonText;
+  String get nextButtonText;
+  String get doneButtonText;
+  String get languageScreenTitle;
+  String get languageScreenExplanation;
+  String get purposeScreenTitle;
+  String get purposeScreenExplanation;
+  String get municipalityScreenTitle;
+  String get municipalityScreenExplanation;
+  String get profileScreenTitle;
+  String get profileScreenExplanation;
+
   // bottom navigation
   String get homePageName;
   String get searchPageName;
