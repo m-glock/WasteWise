@@ -21,7 +21,8 @@ abstract class Languages {
   String get doneButtonText;
   String get languageScreenTitle;
   String get languageScreenExplanation;
-  String get municipalityExplanation;
+  String get municipalityScreenTitle;
+  String get municipalityScreenExplanation;
 
   // bottom navigation
   String get homePageName;

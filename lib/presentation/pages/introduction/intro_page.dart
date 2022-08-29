@@ -16,8 +16,7 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
-
-  PageDecoration _getPageDecoration(){
+  PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
       titlePadding: const EdgeInsets.only(top: 40, bottom: 40),
@@ -30,13 +29,15 @@ class _IntroductionPageState extends State<IntroductionPage> {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: [
-        PageViewModel( //choose language
+        PageViewModel(
+          //choose language
           title: Languages.of(context)!.languageScreenTitle,
           bodyWidget: const LanguageIntroScreen(),
           decoration: _getPageDecoration(),
         ),
-        PageViewModel( //choose language
-          title: "Page 1",
+        PageViewModel(
+          //choose language
+          title: Languages.of(context)!.municipalityScreenTitle,
           bodyWidget: const UserDataIntroScreen(),
           decoration: _getPageDecoration(),
         ),
@@ -55,11 +56,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
         ),
       ],
       onDone: () => Navigator.push(
-        context,
-        MaterialPageRoute(
+          context,
+          MaterialPageRoute(
             builder: (context) => const HomePage(title: Constants.appTitle),
-        )
-      ),
+          )),
       dotsDecorator: DotsDecorator(
         size: const Size(10.0, 10.0),
         color: Theme.of(context).colorScheme.surface,
@@ -70,9 +70,18 @@ class _IntroductionPageState extends State<IntroductionPage> {
         ),
       ),
       showSkipButton: true,
-      skip: Text(Languages.of(context)!.skipButtonText, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-      done: Text(Languages.of(context)!.doneButtonText, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-      next: Text(Languages.of(context)!.nextButtonText, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+      skip: Text(
+        Languages.of(context)!.skipButtonText,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      ),
+      done: Text(
+        Languages.of(context)!.doneButtonText,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      ),
+      next: Text(
+        Languages.of(context)!.nextButtonText,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      ),
     );
   }
 }
