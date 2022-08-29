@@ -106,4 +106,7 @@ abstract class Languages {
   String get dropdownWasteBinLabel;
   String get defaultDropdownItem;
   String get emptyListText;
+
+  // neighborhood
+  String get neighborhoodNotAuthenticatedText;
 }

@@ -4,7 +4,7 @@ import 'package:recycling_app/presentation/pages/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/discover_page.dart';
 import 'package:recycling_app/presentation/pages/imprint_page.dart';
-import 'package:recycling_app/presentation/pages/neighborhood_page.dart';
+import 'package:recycling_app/presentation/pages/neighborhood/neighborhood_page.dart';
 import 'package:recycling_app/presentation/pages/notification_page.dart';
 import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';

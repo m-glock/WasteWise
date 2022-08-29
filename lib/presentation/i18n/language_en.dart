@@ -104,4 +104,7 @@ class LanguageEn extends Languages {
   @override String get dropdownWasteBinLabel => "Waste bin type:";
   @override String get defaultDropdownItem => "All";
   @override String get emptyListText => "Nothing found";
+
+  // neighborhood
+  @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";
 }

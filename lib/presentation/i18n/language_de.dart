@@ -103,4 +103,7 @@ class LanguageDe extends Languages {
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
   @override String get emptyListText => "Nichts gefunden";
+
+  // neighborhood
+  @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";
 }
