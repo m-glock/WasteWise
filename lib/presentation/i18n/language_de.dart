@@ -1,3 +1,4 @@
+import '../util/constants.dart';
 import 'languages.dart';
 
 class LanguageDe extends Languages {
@@ -16,9 +17,11 @@ class LanguageDe extends Languages {
   @override String get nextButtonText => "Weiter";
   @override String get skipButtonText => "Überspringen";
   @override String get languageScreenTitle => "Sprache auswählen";
-  @override String get languageScreenExplanation => "Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
+  @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
   @override String get municipalityScreenTitle => "Region auswählen";
   @override String get municipalityScreenExplanation => "Jede Gemeinde in Deutschland hat ihre eigenen Regeln und kann sich in manchen Fällen auch in der Auswahl der Mülltonnen von anderen unterscheiden. Bitte teile uns mit, in welcher Region du wohst damit die App entsprechend darauf angepasst werdem kann.";
+  @override String get profileScreenTitle => "Profil erstellen";
+  @override String get profileScreenExplanation => "Ein Profile ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
 
   // bottom navigation
   @override String get homePageName => "Home";

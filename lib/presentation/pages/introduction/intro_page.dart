@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
-import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
+import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 
 import '../../util/constants.dart';
 
@@ -35,22 +35,36 @@ class _IntroductionPageState extends State<IntroductionPage> {
           bodyWidget: const LanguageIntroScreen(),
           decoration: _getPageDecoration(),
         ),
+        /*PageViewModel(
+          title: "What is the app about",
+          bodyWidget: const AppPurposeIntroScreen(),
+          decoration: _getPageDecoration(),
+        ),*/
         PageViewModel(
           //choose language
           title: Languages.of(context)!.municipalityScreenTitle,
           bodyWidget: const UserDataIntroScreen(),
           decoration: _getPageDecoration(),
         ),
-        PageViewModel(
-          title: "Page 2",
+        /*PageViewModel(
+          title: "How do you want to use the app?",
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
-        ),
+        ),*/
         PageViewModel(
-          title: "Page 3",
-          bodyWidget: Container(
-            color: Colors.lightGreen,
-            child: const Text("Example"),
+          title: Languages.of(context)!.profilePageName,
+          bodyWidget: Column(
+            children: [
+              Text(
+                Languages.of(context)!.profileScreenExplanation,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              LoginWidget(
+                authenticated: () => {},
+                onlySignup: true,
+              ),
+            ],
           ),
           decoration: _getPageDecoration(),
         ),

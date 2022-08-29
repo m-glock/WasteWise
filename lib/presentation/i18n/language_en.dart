@@ -1,3 +1,5 @@
+import 'package:recycling_app/presentation/util/constants.dart';
+
 import 'languages.dart';
 
 class LanguageEn extends Languages {
@@ -16,9 +18,11 @@ class LanguageEn extends Languages {
   @override String get nextButtonText => "Next";
   @override String get skipButtonText => "Skip";
   @override String get languageScreenTitle => "Choose language";
-  @override String get languageScreenExplanation => "Please choose the language for the app. You can always change it later on in the settings.";
+  @override String get languageScreenExplanation => "Welcome to ${Constants.appTitle}. Please choose the language for the app. You can always change it later on in the settings.";
   @override String get municipalityScreenTitle => "Choose municipality";
   @override String get municipalityScreenExplanation => "Every municipality in Germany has its own rules and might even differ in the type of waste bins they have available for sorting waste. Please let us know where you live so that we can adapt the app accordingly.";
+  @override String get profileScreenTitle => "Create a profile";
+  @override String get profileScreenExplanation => "A profile allows you to use the social forum of the app and to bookmark certain items or tips. The general information is still available without a profile and you can still create an account at a later date.";
 
   // bottom navigation
   @override String get homePageName => "Home";

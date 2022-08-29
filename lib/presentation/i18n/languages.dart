@@ -23,6 +23,8 @@ abstract class Languages {
   String get languageScreenExplanation;
   String get municipalityScreenTitle;
   String get municipalityScreenExplanation;
+  String get profileScreenTitle;
+  String get profileScreenExplanation;
 
   // bottom navigation
   String get homePageName;
