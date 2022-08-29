@@ -5,6 +5,12 @@ class Constants{
   // App title
   static const String appTitle = "RecyclingApp";
 
+  // languages
+  static Map<Locale, String> languages = {
+    const Locale("de", ""): "Deutsch",
+    const Locale("en", ""): "English"
+  };
+
   // GraphQL setup
   static String apiURL= "https://parseapi.back4app.com/graphql";
   static const String kParseApplicationId = "tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh";

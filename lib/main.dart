@@ -101,10 +101,12 @@ class _MyAppState extends State<MyApp> {
           textTheme: const AppTextTheme(),
         ),
         locale: _locale,
-        supportedLocales: const [Locale('en', ''), Locale('de', '')],
+        supportedLocales: Constants.languages.keys,
         localizationsDelegates: const [
           AppLocalizationsDelegate(),
+          GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocale in supportedLocales) {
