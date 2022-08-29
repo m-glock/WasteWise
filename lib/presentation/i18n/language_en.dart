@@ -15,6 +15,9 @@ class LanguageEn extends Languages {
   @override String get doneButtonText => "Done";
   @override String get nextButtonText => "Next";
   @override String get skipButtonText => "Skip";
+  @override String get languageScreenTitle => "Choose language";
+  @override String get languageScreenExplanation => "Please choose the language for the app. You can always change it later on in the settings.";
+  @override String get municipalityExplanation => "Every municipality in Germany has its own rules and might even differ in the type of waste bins they have available for sorting waste. Please let us know where you live so that we can adapt the app accordingly.";
 
   // bottom navigation
   @override String get homePageName => "Home";

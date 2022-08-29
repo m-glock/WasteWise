@@ -15,6 +15,10 @@ class LanguageDe extends Languages {
   @override String get doneButtonText => "Fertig";
   @override String get nextButtonText => "Weiter";
   @override String get skipButtonText => "Überspringen";
+  @override String get languageScreenTitle => "Sprache auswählen";
+  @override String get languageScreenExplanation => "Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
+  @override String get municipalityExplanation => "Jede Gemeinde in Deutschland hat ihre eigenen Regeln und kann sich in manchen Fällen auch in der Auswahl der Mülltonnen von anderen unterscheiden. Bitte teile uns mit, in welcher Region du wohst damit die App entsprechend darauf angepasst werdem kann.";
+
 
   // bottom navigation
   @override String get homePageName => "Home";

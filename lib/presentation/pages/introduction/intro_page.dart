@@ -3,6 +3,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
+import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 
 import '../../util/constants.dart';
@@ -19,7 +20,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   PageDecoration _getPageDecoration(){
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
-      titlePadding: const EdgeInsets.only(top: 40, bottom: 20),
+      titlePadding: const EdgeInsets.only(top: 40, bottom: 40),
       bodyTextStyle: Theme.of(context).textTheme.bodyText1!,
       bodyPadding: const EdgeInsets.symmetric(horizontal: 25),
     );
@@ -29,6 +30,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: [
+        PageViewModel( //choose language
+          title: Languages.of(context)!.languageScreenTitle,
+          bodyWidget: const LanguageIntroScreen(),
+          decoration: _getPageDecoration(),
+        ),
         PageViewModel( //choose language
           title: "Page 1",
           bodyWidget: const UserDataIntroScreen(),
