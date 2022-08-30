@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_button.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/pages/search/barcode_scan_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 
 import '../../i18n/languages.dart';
@@ -16,29 +15,6 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   List<String> recentlySearched = ["Styropor", "Asche", "Holz"];
   List<String> oftenSearched = ["Korken", "Kleiderbügel", "Knochen"];
-
-  Widget _barcodeScannerButton() {
-    return SizedBox(
-      width: 160,
-      child: ElevatedButton(
-        child: Row(
-          children: const [
-            Icon(FontAwesomeIcons.barcode, size: 12),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Text('Barcode Scanner'),
-            )
-          ],
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const BarcodeScanPage()),
-          );
-        },
-      ),
-    );
-  }
 
   List<Widget> _itemList(List<String> listOfNames) {
     return listOfNames
@@ -58,9 +34,9 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SearchBar(itemNames: DataHolder.itemNames),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 10, 40),
-              child: _barcodeScannerButton(),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 10, 40),
+              child: BarcodeScannerButton(),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

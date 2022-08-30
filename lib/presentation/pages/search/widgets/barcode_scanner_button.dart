@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-
-import '../barcode_scan_page.dart';
+import 'package:http/http.dart' as http;
+import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:recycling_app/presentation/util/BarcodeResult.dart';
+import 'package:recycling_app/presentation/util/database_classes/item.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class BarcodeScannerButton extends StatefulWidget {
   const BarcodeScannerButton({Key? key}): super(key: key);
@@ -12,6 +15,37 @@ class BarcodeScannerButton extends StatefulWidget {
 }
 
 class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
+
+  Future<void> _scanBarcodeNormal() async {
+    String barcodeScanRes = "";
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on Exception {
+      barcodeScanRes = "Failed to get platform version.";
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    Map<String, String> params = {
+      "ean": barcodeScanRes,
+      "cmd": "query",
+      "queryid": "400000000"
+    };
+    Uri url = Uri.https('opengtindb.org', "/", params);
+    http.Response response = await http.post(url);
+    Item item = BarcodeResult.getItemFromBarcodeInfo(response.body);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -26,12 +60,7 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
             )
           ],
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const BarcodeScanPage()),
-          );
-        },
+        onPressed: _scanBarcodeNormal,
       ),
     );
   }
