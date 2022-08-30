@@ -22,7 +22,6 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print(barcodeScanRes);
     } on Exception {
       barcodeScanRes = "Failed to get platform version.";
     }
@@ -30,20 +29,26 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
-    if (!mounted) return;
+    // also return if barcode scan was cancelled
+    if (!mounted || barcodeScanRes == "-1") return;
 
     Map<String, String> params = {
       "ean": barcodeScanRes,
       "cmd": "query",
       "queryid": "400000000"
     };
-    Uri url = Uri.https('opengtindb.org', "/", params);
+    Uri url = Uri.https("opengtindb.org", "/", params);
     http.Response response = await http.post(url);
-    Item item = BarcodeResult.getItemFromBarcodeInfo(response.body);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
-    );
+    Item? item = BarcodeResult.getItemFromBarcodeInfo(response.body);
+    if(item != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
+      );
+    } else {
+      //TODO: no item found in database
+      print("item not found in database");
+    }
   }
 
   @override
