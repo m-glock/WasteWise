@@ -10,7 +10,7 @@ class BarcodeResult{
   static List<String> materials = [];
 
   static Item? getItemFromBarcodeInfo(String responseBody){
-    if(responseBody.contains("error=1")) return null;
+    if(!responseBody.contains("error=0")) return null;
 
     List<String> values = responseBody.split("\n");
     String name = values.firstWhere((element) =>
@@ -21,14 +21,13 @@ class BarcodeResult{
     List<int> numbers = getValues(packNr);
     if(numbers.length == 1){
       String material = getMaterial(numbers).join(",");
-      String explanation = "";
       WasteBinCategory wasteBin = getWasteBin(packNr);
 
       return Item(
           name,
-          explanation,
+          null,
           material,
-          wasteBin.title, //TODO subcategory
+          null,
           wasteBin,
           false
       );

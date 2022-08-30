@@ -65,6 +65,9 @@ class LanguageDe extends Languages {
   @override String get alertDialogPrompt => "Dieses Item gehört in ";
   @override String get alertDialogButtonDismiss => "Verstanden";
   @override String get alertDialogButtonMoreInfo => "Mehr Info";
+  @override String get barcodeAlertDialogTitle => "Item nicht gefunden";
+  @override String get barcodeAlertDialogExplanation => "Leider wurde für den Barcode kein entsprechendes Item gefunden.";
+  @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";

@@ -3,9 +3,9 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 
 class Item {
   final String title;
-  final String explanation;
+  final String? explanation;
   final String material;
-  final String subcategory;
+  final String? subcategory;
   final WasteBinCategory wasteBin;
   bool bookmarked;
 

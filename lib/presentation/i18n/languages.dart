@@ -68,6 +68,9 @@ abstract class Languages {
   String get alertDialogPrompt;
   String get alertDialogButtonDismiss;
   String get alertDialogButtonMoreInfo;
+  String get barcodeAlertDialogTitle;
+  String get barcodeAlertDialogExplanation;
+  String get barcodeAlertDialogButtonText;
 
   // item detail page
   String get itemDetailMaterialLabel;

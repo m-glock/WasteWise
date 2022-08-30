@@ -40,14 +40,29 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
     Uri url = Uri.https("opengtindb.org", "/", params);
     http.Response response = await http.post(url);
     Item? item = BarcodeResult.getItemFromBarcodeInfo(response.body);
-    if(item != null) {
+    if (item != null) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
       );
     } else {
-      //TODO: no item found in database
-      print("item not found in database");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(Languages.of(context)!.barcodeAlertDialogTitle),
+            contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+            content: Text(Languages.of(context)!.barcodeAlertDialogExplanation),
+            actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
+            actions: [
+              TextButton(
+                child: Text(Languages.of(context)!.barcodeAlertDialogButtonText),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
