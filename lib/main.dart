@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
-import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -14,6 +13,7 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // initialize connection to backend
@@ -43,7 +43,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  bool introDone = false; //TODO
+  bool _introDone = false;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -54,10 +54,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() async {
     // update language
-    getLocale().then((locale) {
-      setState(() {
-        _locale = locale;
-      });
+    Locale locale = await getLocale();
+    // update intro done
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool done = _prefs.getBool(Constants.prefIntroDone) ?? false;
+
+    setState(() {
+      _locale = locale;
+      _introDone = done;
     });
     super.didChangeDependencies();
   }
@@ -117,25 +121,9 @@ class _MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
-        home: Query(
-          options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
-            "languageCode": _locale?.languageCode,
-            "municipalityId": "PMJEteBu4m" //TODO get from user
-          }),
-          builder: (QueryResult result,
-              {VoidCallback? refetch, FetchMore? fetchMore}) {
-            if (result.hasException) return Text(result.exception.toString());
-            if (result.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            GraphQLQueries.initialDataExtraction(result.data);
-
-            return introDone
-                ? const HomePage(title: Constants.appTitle)
-                : const IntroductionPage();
-          },
-        ),
+        home: _introDone
+            ? const HomePage()
+            : const IntroductionPage(),
       ),
     );
   }

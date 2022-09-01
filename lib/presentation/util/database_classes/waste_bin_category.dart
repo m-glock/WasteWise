@@ -15,7 +15,7 @@ class WasteBinCategory {
 
   WasteBinCategory(this.title, this.objectId, this.color, this.pictogramUrl);
 
-  static WasteBinCategory fromJson(Map<dynamic, dynamic> category){
+  static WasteBinCategory fromJson(dynamic category){
     return WasteBinCategory(
         category["title"],
         category["category_id"]["objectId"],

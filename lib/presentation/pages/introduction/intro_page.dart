@@ -6,6 +6,7 @@ import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
 
@@ -20,10 +21,15 @@ class _IntroductionPageState extends State<IntroductionPage> {
   PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
-      titlePadding: const EdgeInsets.only(top: 40, bottom: 40),
+      titlePadding: const EdgeInsets.only(top: 40, bottom: 30),
       bodyTextStyle: Theme.of(context).textTheme.bodyText1!,
       bodyPadding: const EdgeInsets.symmetric(horizontal: 25),
     );
+  }
+
+  void _setIntroDone() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.setBool(Constants.prefIntroDone, true);
   }
 
   @override
@@ -37,17 +43,19 @@ class _IntroductionPageState extends State<IntroductionPage> {
           decoration: _getPageDecoration(),
         ),
         PageViewModel(
+          // explain what the app is about
           title: Languages.of(context)!.purposeScreenTitle,
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
         ),
         PageViewModel(
-          //choose language
+          //choose municipality and show pictograms for waste bins
           title: Languages.of(context)!.municipalityScreenTitle,
           bodyWidget: const UserDataIntroScreen(),
           decoration: _getPageDecoration(),
         ),
         /*PageViewModel(
+          // choose how you want to use the app
           title: "How do you want to use the app?",
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
@@ -70,11 +78,15 @@ class _IntroductionPageState extends State<IntroductionPage> {
           decoration: _getPageDecoration(),
         ),
       ],
-      onDone: () => Navigator.push(
+      onDone: () {
+        _setIntroDone();
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomePage(title: Constants.appTitle),
-          )),
+            builder: (context) => const HomePage(),
+          ),
+        );
+      },
       dotsDecorator: DotsDecorator(
         size: const Size(10.0, 10.0),
         color: Theme.of(context).colorScheme.surface,

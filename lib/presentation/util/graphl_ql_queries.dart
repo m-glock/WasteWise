@@ -165,6 +165,21 @@ class GraphQLQueries{
     }
   """;
 
+  static String categoryQuery = """
+    query GetContent(\$languageCode: String!, \$municipalityId: String!){
+      getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
+        title
+        category_id{
+          objectId
+          image_file{
+            url
+          }
+          hex_color
+        }
+      }
+    }
+  """;
+
   static void initialDataExtraction(dynamic data){
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];

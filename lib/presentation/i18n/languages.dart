@@ -25,6 +25,8 @@ abstract class Languages {
   String get purposeScreenExplanation;
   String get municipalityScreenTitle;
   String get municipalityScreenExplanation;
+  String get municipalitySelectedTitle;
+  String get municipalitySelectedNotFound;
   String get profileScreenTitle;
   String get profileScreenExplanation;
 
