@@ -2,6 +2,7 @@ import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 class Item {
+  final String objectId;
   final String title;
   final String explanation;
   final String material;
@@ -11,11 +12,12 @@ class Item {
 
   //TODO: get tips and preventions
 
-  Item(this.title, this.explanation, this.material, this.subcategory,
-      this.wasteBin, this.bookmarked);
+  Item(this.objectId, this.title, this.explanation, this.material,
+      this.subcategory, this.wasteBin, this.bookmarked);
 
   static Item fromJson(
       Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData) {
+    String objectId = item["item_id"]["objectId"];
     String categoryId =
         item["item_id"]["subcategory_id"]["category_id"]["objectId"];
     String explanation =
@@ -27,6 +29,7 @@ class Item {
     bool isBookmarked = false;
 
     return Item(
+        objectId,
         item["title"],
         explanation,
         item["material"],

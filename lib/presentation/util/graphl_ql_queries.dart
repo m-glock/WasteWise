@@ -136,6 +136,7 @@ class GraphQLQueries{
         explanation
         material
         item_id{
+          objectId
           subcategory_id{
             objectId
             category_id{
@@ -179,6 +180,36 @@ class GraphQLQueries{
       }
     }
   """;
+
+  static String searchHistoryMutation = """
+    mutation CreateObject(\$input: CreateSearchHistoryFieldsInput){
+      createSearchHistory(input: {fields: \$input}){
+        searchHistory{
+          id
+          objectId
+        }
+      }
+     }
+  """;
+
+  static dynamic getInputVariablesForSearchHistory(
+      String userObjectId,
+      String itemObjectId,
+      String selectedCategoryObjectId) {
+    return {
+      "input": {
+        "user_id": {
+          "link": userObjectId
+        },
+        "item_id": {
+          "link": itemObjectId
+        },
+        "selected_category_id": {
+          "link": selectedCategoryObjectId
+        },
+      }
+    };
+  }
 
   static void initialDataExtraction(dynamic data){
     // get waste bin categories
