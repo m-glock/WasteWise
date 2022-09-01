@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:http/http.dart' as http;
-import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
-import 'package:recycling_app/presentation/util/BarcodeResult.dart';
-import 'package:recycling_app/presentation/util/database_classes/item.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:http/http.dart' as http;
 
 class BarcodeScannerButton extends StatefulWidget {
   const BarcodeScannerButton({Key? key}): super(key: key);
@@ -38,32 +37,12 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
       "queryid": "400000000"
     };
     Uri url = Uri.https("opengtindb.org", "/", params);
-    http.Response response = await http.post(url);
-    Item? item = BarcodeResult.getItemFromBarcodeInfo(response.body);
-    if (item != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(Languages.of(context)!.barcodeAlertDialogTitle),
-            contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            content: Text(Languages.of(context)!.barcodeAlertDialogExplanation),
-            actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
-            actions: [
-              TextButton(
-                child: Text(Languages.of(context)!.barcodeAlertDialogButtonText),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    Response response = await http.post(url);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ItemDetailPage(item: null, responseBody: response.body)),
+    );
   }
 
   @override

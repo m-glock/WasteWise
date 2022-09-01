@@ -5,14 +5,13 @@ class Item {
   final String title;
   final String? explanation;
   final String material;
-  final String? subcategory;
+  final String subcategory;
   final WasteBinCategory wasteBin;
   bool bookmarked;
-
   //TODO: get tips and preventions
 
-  Item(this.title, this.explanation, this.material, this.subcategory,
-      this.wasteBin, this.bookmarked);
+  Item(this.title, this.material, this.wasteBin,
+      this.bookmarked, {this.subcategory = "", this.explanation});
 
   static Item fromJson(
       Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData) {
@@ -27,12 +26,13 @@ class Item {
     bool isBookmarked = false;
 
     return Item(
-        item["title"],
-        explanation,
-        item["material"],
-        subcategoryTitle,
-        DataHolder.categories
-            .firstWhere((category) => category.objectId == categoryId),
-        isBookmarked);
+      item["title"],
+      item["material"],
+      DataHolder.categories
+          .firstWhere((category) => category.objectId == categoryId),
+      isBookmarked,
+      subcategory: subcategoryTitle,
+      explanation: explanation
+    );
   }
 }

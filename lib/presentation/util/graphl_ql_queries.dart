@@ -165,6 +165,20 @@ class GraphQLQueries{
     }
   """;
 
+  static String barcodeMaterialQuery = """
+  query GetBarcodeMaterials(\$languageCode: String!, \$municipalityId: String!){
+    getBarcodeMaterials(languageCode: \$languageCode, municipalityId: \$municipalityId){
+      title
+      barcode_material_id{
+        binary_value
+        category_id{
+          objectId
+        }
+      }
+    }
+  }
+  """;
+
   static void initialDataExtraction(dynamic data){
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];
