@@ -20,9 +20,11 @@ class LanguageEn extends Languages {
   @override String get languageScreenTitle => "Choose language";
   @override String get languageScreenExplanation => "Welcome to ${Constants.appTitle}. Please choose the language for the app. You can always change it later on in the settings.";
   @override String get purposeScreenTitle => "Purpose of the App";
-  @override String get purposeScreenExplanation => ""; //TODO
+  @override String get purposeScreenExplanation => "Every municipality in Germany has its own rules and might even differ in the type of waste bins they have available for sorting waste. Please let us know where you live so that we can adapt the app accordingly."; //TODO
   @override String get municipalityScreenTitle => "Choose municipality";
-  @override String get municipalityScreenExplanation => "Every municipality in Germany has its own rules and might even differ in the type of waste bins they have available for sorting waste. Please let us know where you live so that we can adapt the app accordingly.";
+  @override String get municipalityScreenExplanation => "Your region will determine certain waste separation rules and available waste bins. The pictograms below will appear in certain places of the app to depict these waste bins.";
+  @override String get municipalitySelectedTitle => "Region ";
+  @override String get municipalitySelectedNotFound => "Something went wrong. No waste bins found.";
   @override String get profileScreenTitle => "Create a profile";
   @override String get profileScreenExplanation => "A profile allows you to use the social forum of the app and to bookmark certain items or tips. The general information is still available without a profile and you can still create an account at a later date.";
 

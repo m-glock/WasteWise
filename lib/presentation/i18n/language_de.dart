@@ -19,9 +19,11 @@ class LanguageDe extends Languages {
   @override String get languageScreenTitle => "Sprache auswählen";
   @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
   @override String get purposeScreenTitle => "Ziel der App";
-  @override String get purposeScreenExplanation => ""; //TODO
+  @override String get purposeScreenExplanation => "Jede Gemeinde in Deutschland hat ihre eigenen Regeln und kann sich in manchen Fällen auch in der Auswahl der Mülltonnen von anderen unterscheiden. Bitte teile uns mit, in welcher Region du wohst damit die App entsprechend darauf angepasst werdem kann."; //TODO
   @override String get municipalityScreenTitle => "Region auswählen";
-  @override String get municipalityScreenExplanation => "Jede Gemeinde in Deutschland hat ihre eigenen Regeln und kann sich in manchen Fällen auch in der Auswahl der Mülltonnen von anderen unterscheiden. Bitte teile uns mit, in welcher Region du wohst damit die App entsprechend darauf angepasst werdem kann.";
+  @override String get municipalityScreenExplanation => "Deine Region bestimmt gewisse Regeln bei der Mülltrennung und die vorhanden Mülleimer. Die unten dargestellten Piktogramme werden an verschiedenen Stellen in der App genutzt, um die entsprechenden Mülleimer darzustellen.";
+  @override String get municipalitySelectedTitle => "Region ";
+  @override String get municipalitySelectedNotFound => "Etwas ist schiefgelaufen. Es wurden keine Mülleimer gefunden.";
   @override String get profileScreenTitle => "Profil erstellen";
   @override String get profileScreenExplanation => "Ein Profile ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
 

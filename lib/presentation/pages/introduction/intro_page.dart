@@ -21,7 +21,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
-      titlePadding: const EdgeInsets.only(top: 40, bottom: 40),
+      titlePadding: const EdgeInsets.only(top: 40, bottom: 30),
       bodyTextStyle: Theme.of(context).textTheme.bodyText1!,
       bodyPadding: const EdgeInsets.symmetric(horizontal: 25),
     );
@@ -79,10 +79,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
       onDone: () {
         _setIntroDone();
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
         );
       },
       dotsDecorator: DotsDecorator(

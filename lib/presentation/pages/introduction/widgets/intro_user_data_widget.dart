@@ -53,35 +53,40 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
         }
 
         // display when all data is available
-        return Column(
-          children: [
-            //Image(image: image),
-            const Padding(padding: EdgeInsets.only(bottom: 20)),
-            Text(
-              Languages.of(context)!.municipalityScreenExplanation,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 20)),
-            DropdownButton<String>(
-              isExpanded: true,
-              value: municipalityDefault,
-              onChanged: (String? newValue) {
-                setState(() {
-                  municipalityDefault = newValue!;
-                });
-                _setMunicipalityId(municipalitiesById[newValue]!);
-              },
-              items: municipalitiesById.keys
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 10)),
-            WasteBinExplanationScreen(municipalityId: municipalityIdDefault ?? ""),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              //Image(image: image),
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              Text(
+                Languages.of(context)!.municipalityScreenExplanation,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              DropdownButton<String>(
+                isExpanded: true,
+                value: municipalityDefault,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    municipalityDefault = newValue!;
+                  });
+                  _setMunicipalityId(municipalitiesById[newValue]!);
+                },
+                items: municipalitiesById.keys
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              WasteBinExplanationScreen(
+                municipalityId: municipalityIdDefault ?? "",
+                municipalityName: municipalityDefault ?? "",
+              ),
+            ],
+          ),
         );
       },
     );
