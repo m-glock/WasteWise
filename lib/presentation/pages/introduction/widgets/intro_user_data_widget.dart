@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/introduction/widgets/wastebin_explanation_widget.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,11 +16,15 @@ class UserDataIntroScreen extends StatefulWidget {
 
 class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
   String? municipalityDefault;
+  String? municipalityIdDefault;
 
   void _setMunicipalityId(String municipalityObjectId) async {
+    municipalityIdDefault = municipalityObjectId;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(
-        Constants.prefSelectedMunicipalityCode, municipalityObjectId);
+        Constants.prefSelectedMunicipalityCode,
+        municipalityObjectId
+    );
   }
 
   @override
@@ -63,8 +68,8 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
               onChanged: (String? newValue) {
                 setState(() {
                   municipalityDefault = newValue!;
-                  _setMunicipalityId(municipalitiesById[newValue]!);
                 });
+                _setMunicipalityId(municipalitiesById[newValue]!);
               },
               items: municipalitiesById.keys
                   .map<DropdownMenuItem<String>>((String value) {
@@ -74,6 +79,8 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
                 );
               }).toList(),
             ),
+            const Padding(padding: EdgeInsets.only(bottom: 10)),
+            WasteBinExplanationScreen(municipalityId: municipalityIdDefault ?? ""),
           ],
         );
       },

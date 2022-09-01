@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
-import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -122,25 +121,9 @@ class _MyAppState extends State<MyApp> {
           }
           return supportedLocales.first;
         },
-        home: Query(
-          options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
-            "languageCode": _locale?.languageCode,
-            "municipalityId": "PMJEteBu4m" //TODO get from user
-          }),
-          builder: (QueryResult result,
-              {VoidCallback? refetch, FetchMore? fetchMore}) {
-            if (result.hasException) return Text(result.exception.toString());
-            if (result.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            GraphQLQueries.initialDataExtraction(result.data);
-
-            return _introDone
-                ? const HomePage(title: Constants.appTitle)
-                : const IntroductionPage();
-          },
-        ),
+        home: _introDone
+            ? const HomePage()
+            : const IntroductionPage(),
       ),
     );
   }

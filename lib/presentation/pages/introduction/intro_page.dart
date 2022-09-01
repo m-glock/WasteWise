@@ -81,7 +81,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomePage(title: Constants.appTitle),
+              builder: (context) => const HomePage(),
             ),
         );
       },
