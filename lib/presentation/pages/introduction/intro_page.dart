@@ -43,17 +43,19 @@ class _IntroductionPageState extends State<IntroductionPage> {
           decoration: _getPageDecoration(),
         ),
         PageViewModel(
+          // explain what the app is about
           title: Languages.of(context)!.purposeScreenTitle,
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
         ),
         PageViewModel(
-          //choose language
+          //choose municipality and show pictograms for waste bins
           title: Languages.of(context)!.municipalityScreenTitle,
           bodyWidget: const UserDataIntroScreen(),
           decoration: _getPageDecoration(),
         ),
         /*PageViewModel(
+          // choose how you want to use the app
           title: "How do you want to use the app?",
           bodyWidget: const AppPurposeIntroScreen(),
           decoration: _getPageDecoration(),
