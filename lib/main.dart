@@ -14,6 +14,7 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // initialize connection to backend
@@ -43,7 +44,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  bool introDone = false; //TODO
+  bool _introDone = false;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -54,10 +55,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() async {
     // update language
-    getLocale().then((locale) {
-      setState(() {
-        _locale = locale;
-      });
+    Locale locale = await getLocale();
+    // update intro done
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool done = _prefs.getBool(Constants.prefIntroDone) ?? false;
+
+    setState(() {
+      _locale = locale;
+      _introDone = done;
     });
     super.didChangeDependencies();
   }
@@ -131,7 +136,7 @@ class _MyAppState extends State<MyApp> {
 
             GraphQLQueries.initialDataExtraction(result.data);
 
-            return introDone
+            return _introDone
                 ? const HomePage(title: Constants.appTitle)
                 : const IntroductionPage();
           },

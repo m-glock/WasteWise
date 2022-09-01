@@ -6,6 +6,7 @@ import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
 
@@ -24,6 +25,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
       bodyTextStyle: Theme.of(context).textTheme.bodyText1!,
       bodyPadding: const EdgeInsets.symmetric(horizontal: 25),
     );
+  }
+
+  void _setIntroDone() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.setBool(Constants.prefIntroDone, true);
   }
 
   @override
@@ -70,11 +76,15 @@ class _IntroductionPageState extends State<IntroductionPage> {
           decoration: _getPageDecoration(),
         ),
       ],
-      onDone: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(title: Constants.appTitle),
-          )),
+      onDone: () {
+        _setIntroDone();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(title: Constants.appTitle),
+            ),
+        );
+      },
       dotsDecorator: DotsDecorator(
         size: const Size(10.0, 10.0),
         color: Theme.of(context).colorScheme.surface,

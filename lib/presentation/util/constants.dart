@@ -10,7 +10,10 @@ class Constants{
     const Locale("de", ""): "Deutsch",
     const Locale("en", ""): "English"
   };
+
+  //SharedPrefs
   static String prefSelectedMunicipalityCode = "SelectedMunicipality";
+  static String prefIntroDone = "IntroDone";
 
   // GraphQL setup
   static String apiURL= "https://parseapi.back4app.com/graphql";
