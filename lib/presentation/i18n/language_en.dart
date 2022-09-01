@@ -77,6 +77,8 @@ class LanguageEn extends Languages {
   @override String get itemDetailExplanationLabel => "Explanation";
   @override String get itemDetailPreventionLabel => "Prevention";
   @override String get itemDetailTipsLabel => "Tips";
+  @override String get itemDetailBarcodeWarningTitle => "Warning";
+  @override String get itemDetailBarcodeWarningText => "This information comes from an open database (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Waste Bin Overview";

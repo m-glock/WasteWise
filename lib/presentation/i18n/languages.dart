@@ -79,6 +79,8 @@ abstract class Languages {
   String get itemDetailExplanationLabel;
   String get itemDetailTipsLabel;
   String get itemDetailPreventionLabel;
+  String get itemDetailBarcodeWarningTitle;
+  String get itemDetailBarcodeWarningText;
 
   // discovery page
   String get wasteBinOverviewTitle;

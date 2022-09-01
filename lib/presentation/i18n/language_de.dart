@@ -76,6 +76,8 @@ class LanguageDe extends Languages {
   @override String get itemDetailExplanationLabel => "Erklärung";
   @override String get itemDetailPreventionLabel => "Vermeidung";
   @override String get itemDetailTipsLabel => "Tipps";
+  @override String get itemDetailBarcodeWarningTitle => "Achtung";
+  @override String get itemDetailBarcodeWarningText => "Diese Informationen sind von einer offenen Datenbank übernommen (http://www.opengtindb.org). Keine Garantie für die Richtigkeit der Daten.";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";

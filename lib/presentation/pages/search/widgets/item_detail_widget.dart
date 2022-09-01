@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../i18n/languages.dart';
 import '../../../util/database_classes/item.dart';
+import 'barcode_item_warning_widget.dart';
 import 'item_detail_tile.dart';
 
 class ItemDetailWidget extends StatefulWidget {
@@ -42,6 +43,12 @@ class _ItemDetailWidgetState extends State<ItemDetailWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (widget.item.subcategory == null ||
+                  widget.item.explanation == null)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: BarcodeItemWarningWidget(),
+                ),
               Center(
                 child: SvgPicture.network(
                   widget.item.wasteBin.pictogramUrl,
@@ -60,7 +67,8 @@ class _ItemDetailWidgetState extends State<ItemDetailWidget> {
                   Languages.of(context)!.itemDetailWasteBinLabel +
                       widget.item.wasteBin.title,
                   style: Theme.of(context).textTheme.bodyText1),
-              if(widget.item.subcategory != null && widget.item.explanation != null) ...[
+              if (widget.item.subcategory != null &&
+                  widget.item.explanation != null) ...[
                 const Padding(padding: EdgeInsets.only(bottom: 30)),
                 Text(
                     Languages.of(context)!.itemDetailMoreInfoLabel +
@@ -69,7 +77,7 @@ class _ItemDetailWidgetState extends State<ItemDetailWidget> {
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 ItemDetailTile(
                     headerTitle:
-                    Languages.of(context)!.itemDetailExplanationLabel,
+                        Languages.of(context)!.itemDetailExplanationLabel,
                     expandedText: widget.item.explanation!),
                 const Padding(padding: EdgeInsets.only(bottom: 15)),
                 //TODO: get tips and preventions
@@ -78,7 +86,8 @@ class _ItemDetailWidgetState extends State<ItemDetailWidget> {
                     expandedText: widget.item.explanation!),
                 const Padding(padding: EdgeInsets.only(bottom: 15)),
                 ItemDetailTile(
-                    headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
+                    headerTitle:
+                        Languages.of(context)!.itemDetailPreventionLabel,
                     expandedText: widget.item.explanation!),
               ],
             ],
