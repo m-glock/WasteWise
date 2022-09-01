@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/pages/search/widgets/basic_item_detail_widget.dart';
-import 'package:recycling_app/presentation/pages/search/widgets/full_item_detail_widget.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_detail_widget.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/item_detail_widget.dart';
 
 import '../../util/database_classes/item.dart';
 
@@ -27,7 +27,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
   @override
   Widget build(BuildContext context) {
     return widget.item != null
-        ? FullItemDetailWidget(item: widget.item!)
-        : BasicItemDetailWidget(responseBody: widget.responseBody);
+        ? ItemDetailWidget(item: widget.item!)
+        : BarcodeItemDetailWidget(responseBody: widget.responseBody);
   }
 }

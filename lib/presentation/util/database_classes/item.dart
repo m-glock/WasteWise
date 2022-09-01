@@ -5,13 +5,13 @@ class Item {
   final String title;
   final String? explanation;
   final String material;
-  final String subcategory;
+  final String? subcategory;
   final WasteBinCategory wasteBin;
   bool bookmarked;
   //TODO: get tips and preventions
 
   Item(this.title, this.material, this.wasteBin,
-      this.bookmarked, {this.subcategory = "", this.explanation});
+      this.bookmarked, {this.subcategory, this.explanation});
 
   static Item fromJson(
       Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData) {
