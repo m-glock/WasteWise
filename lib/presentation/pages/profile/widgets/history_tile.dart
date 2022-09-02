@@ -59,20 +59,47 @@ class _HistoryTileState extends State<HistoryTile> {
                   Expanded(
                     child: Row(
                       children: [
-                        SvgPicture.network(
-                          widget.item.selectedCategory.pictogramUrl,
-                          color: widget.item.selectedCategory.color,
-                          height: 30,
-                          width: 30,
-                          alignment: Alignment.centerLeft,
-                        ),
-                        const Padding(padding: EdgeInsets.only(right: 10)),
-                        SvgPicture.network(
-                          widget.item.item.wasteBin.pictogramUrl,
-                          color: widget.item.item.wasteBin.color,
-                          height: 30,
-                          width: 30,
-                          alignment: Alignment.centerLeft,
+                        if (widget.item.selectedCategory !=
+                            widget.item.item.wasteBin) ...[
+                          Stack(
+                            children: [
+                              Container(
+                                color: Colors.white,
+                                width: 30,
+                                height: 30,
+                              ),
+                              SvgPicture.network(
+                                widget.item.selectedCategory.pictogramUrl,
+                                color: widget.item.selectedCategory.color
+                                    .withAlpha(100),
+                                height: 30,
+                                width: 30,
+                                alignment: Alignment.centerLeft,
+                              ),
+                              SvgPicture.asset(
+                                "assets/images/strikethrough.svg",
+                                width: 30,
+                                height: 30,
+                              ),
+                            ],
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 10)),
+                        ],
+                        Stack(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              width: 30,
+                              height: 30,
+                            ),
+                            SvgPicture.network(
+                              widget.item.item.wasteBin.pictogramUrl,
+                              color: widget.item.item.wasteBin.color,
+                              height: 30,
+                              width: 30,
+                              alignment: Alignment.centerLeft,
+                            ),
+                          ],
                         ),
                       ],
                     ),
