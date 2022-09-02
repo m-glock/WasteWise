@@ -181,6 +181,33 @@ class GraphQLQueries{
     }
   """;
 
+  static String searchHistoryQuery = """
+    query GetSearchHistory(\$languageCode: String!, \$userId: String){
+      getSearchHistory(languageCode: \$languageCode, userId: \$userId){
+        createdAt
+        item_id{
+          objectId
+          subcategory_id{
+            category_id{
+              objectId
+            }
+          }
+        }
+        selected_category_id{
+          objectId
+        }
+      }
+    }
+  """;
+
+  static String getItemName = """
+    query GetItemName(\$languageCode: String!, \$itemId: String){
+      getItemName(languageCode: \$languageCode, itemId: \$itemId){
+        title
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$input: CreateSearchHistoryFieldsInput){
       createSearchHistory(input: {fields: \$input}){

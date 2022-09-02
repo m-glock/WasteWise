@@ -4,16 +4,16 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 class Item {
   final String objectId;
   final String title;
-  final String explanation;
+  final String? explanation;
   final String material;
-  final String subcategory;
+  final String? subcategory;
   final WasteBinCategory wasteBin;
   bool bookmarked;
 
   //TODO: get tips and preventions
 
-  Item(this.objectId, this.title, this.explanation, this.material,
-      this.subcategory, this.wasteBin, this.bookmarked);
+  Item(this.objectId, this.title, this.material,
+       this.wasteBin, {this.explanation, this.subcategory, this.bookmarked = false});
 
   static Item fromJson(
       Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData) {
@@ -31,10 +31,10 @@ class Item {
     return Item(
         objectId,
         item["title"],
-        explanation,
         item["material"],
-        subcategoryTitle,
         DataHolder.categories[categoryId]!,
-        isBookmarked);
+        explanation: explanation,
+        subcategory: subcategoryTitle,
+        bookmarked: isBookmarked);
   }
 }

@@ -69,22 +69,22 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Text(
                   Languages.of(context)!.itemDetailMoreInfoLabel +
-                      widget.item.subcategory,
+                      widget.item.subcategory!,
                   style: Theme.of(context).textTheme.bodyText1),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               ItemDetailTile(
                   headerTitle:
                       Languages.of(context)!.itemDetailExplanationLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
               const Padding(padding: EdgeInsets.only(bottom: 15)),
               //TODO: get tips and preventions
               ItemDetailTile(
                   headerTitle: Languages.of(context)!.itemDetailTipsLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
               const Padding(padding: EdgeInsets.only(bottom: 15)),
               ItemDetailTile(
                   headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
             ],
           ),
         ),
