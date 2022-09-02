@@ -139,7 +139,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
             List<dynamic> tips = result.data?["getTips"];
 
             // set waste bin types
-            for(WasteBinCategory category in DataHolder.categories) {
+            for(WasteBinCategory category in DataHolder.categories.values) {
               wasteBinDropdownOptions[category.objectId] = category.title;
             }
 

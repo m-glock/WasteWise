@@ -34,8 +34,7 @@ class Item {
         explanation,
         item["material"],
         subcategoryTitle,
-        DataHolder.categories
-            .firstWhere((category) => category.objectId == categoryId),
+        DataHolder.categories[categoryId]!,
         isBookmarked);
   }
 }

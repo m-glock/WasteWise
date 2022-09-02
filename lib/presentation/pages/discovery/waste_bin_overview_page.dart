@@ -24,7 +24,7 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
         padding: EdgeInsets.all(Constants.pagePadding),
         child: ListView(
           children: [
-            ...DataHolder.categories.map((category) {
+            ...DataHolder.categories.values.map((category) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: DiscoveryTile(
