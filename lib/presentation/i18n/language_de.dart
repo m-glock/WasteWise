@@ -53,6 +53,15 @@ class LanguageDe extends Languages {
   @override String get errorDialogTitle => "Etwas ist schief gelaufen";
   @override String get registrationDialogCloseButtonText => "Okay";
 
+  // profile page
+  @override String get profileRecycledItemsText => "Anzahl der recycelten Items:";
+  @override String get profileSavedItemsText => "Anzahl der geretteten Items:";
+  @override String get profileRankingText => "Ranking in der Nachbarschaft:";
+  @override String get profileRankingPlaceText => "Platz";
+  @override String get bookmarkPageTitle => "Lesezeichen";
+  @override String get searchHistoryPageTitle => "Suchverlauf";
+  @override String get profileLogoutButtonText => "Logout";
+
   // search page
   @override String get oftenSearched => "Oft von anderen gesucht";
   @override String get recentlySearched => "Zuletzt von dir gesucht";

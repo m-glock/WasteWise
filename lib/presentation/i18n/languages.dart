@@ -56,6 +56,19 @@ abstract class Languages {
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
 
+  // profile page
+  String get profileRecycledItemsText;
+  String get profileSavedItemsText;
+  String get profileRankingText;
+  String get profileRankingPlaceText;
+  String get profileLogoutButtonText;
+
+  // search history page
+  String get searchHistoryPageTitle;
+
+  // bookmark page
+  String get bookmarkPageTitle;
+
   // search page
   String get searchBarHint;
   String get recentlySearched;
