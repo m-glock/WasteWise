@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/profile/bookmark_page.dart';
 import 'package:recycling_app/presentation/pages/profile/search_history_page.dart';
@@ -27,7 +28,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   void _getCurrentUser() async {
-    current = await ParseUser.currentUser() as ParseUser;
+    ParseUser currentUser = await ParseUser.currentUser() as ParseUser;
+    setState(() {
+      current = currentUser;
+    });
   }
 
   void _logout() async {
@@ -62,20 +66,31 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ParseFile? avatarPicture = current?.get("avatar_picture");
+    double size = MediaQuery.of(context).size.width / 2;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if(current != null)
           ClipRRect(
-            borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.width / 2),
-            //TODO: replace with avatar
-            child: SvgPicture.network(
-              "https://parsefiles.back4app.com/tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh/fbee06be8eb6f17186adaf236a69811b_icon_biogut.svg",
-              color: Colors.lightGreen,
-              width: MediaQuery.of(context).size.width / 2,
-              height: MediaQuery.of(context).size.width / 2,
-            ),
+            borderRadius: BorderRadius.circular(size),
+            child: avatarPicture != null
+                ? SvgPicture.network(
+                    avatarPicture.url!,
+                    width: size,
+                    height: size,
+                  )
+                : Container(
+                    color: Colors.black12,
+                    width: size,
+                    height: size,
+                    child: Icon(
+                      FontAwesomeIcons.user,
+                      size: MediaQuery.of(context).size.width / 3,
+                    ),
+                  ),
           ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           Text(
@@ -83,9 +98,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             style: Theme.of(context).textTheme.bodyText1,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 5)),
-          //TODO: replace with actual zip code
           Text(
-            "12437",
+            current?.get("zip_code") ?? "",
             style: Theme.of(context).textTheme.bodyText1,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -137,7 +151,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     ),
                     Expanded(
                       child: Text(
-                          "3. ${Languages.of(context)!.profileRankingPlaceText}",
+                          "3 ${Languages.of(context)!.profileRankingPlaceText}",
                           style: Theme.of(context).textTheme.bodyText1,
                           textAlign: TextAlign.end),
                     ),
