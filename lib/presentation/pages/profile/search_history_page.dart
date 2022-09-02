@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/history_tile.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/item.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/presentation/util/database_classes/search_history_item.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
@@ -19,7 +17,7 @@ class SearchHistoryPage extends StatefulWidget {
 
 class _SearchHistoryPageState extends State<SearchHistoryPage> {
   String languageCode = "";
-  Map<Item, WasteBinCategory> itemsAndCategories = {};
+  List<SearchHistoryItem> itemsAndCategories = [];
 
   @override
   void initState() {
@@ -35,26 +33,11 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
   }
 
   void _getItems(List<dynamic> searchHistoryData) async {
-    Map<Item, WasteBinCategory> items = {};
+    List<SearchHistoryItem> items = [];
+    GraphQLClient client = GraphQLProvider.of(context).value;
     for (dynamic element in searchHistoryData) {
-      WasteBinCategory correctCategory = DataHolder.categories[
-          element["item_id"]["subcategory_id"]["category_id"]["objectId"]]!;
-
-      GraphQLClient client = GraphQLProvider.of(context).value;
-      QueryResult<Object> result = await client.query(
-        QueryOptions(
-          document: gql(GraphQLQueries.getItemName),
-          variables: {
-            "languageCode": languageCode,
-            "itemId": element["item_id"]["objectId"],
-          },
-        ),
-      );
-
-      Item item = Item(element["item_id"]["objectId"],
-          result.data?["getItemName"]["title"], "", correctCategory);
-      items[item] =
-          DataHolder.categories[element["selected_category_id"]["objectId"]]!;
+      items
+          .add(await SearchHistoryItem.fromJson(element, client, languageCode));
     }
 
     setState(() {
@@ -92,9 +75,8 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
             padding: EdgeInsets.all(Constants.pagePadding),
             child: ListView(
               children: [
-                ...itemsAndCategories.entries.map((entry) {
-                  return HistoryTile(
-                      item: entry.key, selectedCategory: entry.value);
+                ...itemsAndCategories.map((element) {
+                  return HistoryTile(item: element);
                 }),
               ],
             ),
