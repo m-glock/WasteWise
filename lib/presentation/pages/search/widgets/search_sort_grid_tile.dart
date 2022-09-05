@@ -25,9 +25,6 @@ class SearchSortGridTile extends StatefulWidget {
 }
 
 class _SearchSortGridTileState extends State<SearchSortGridTile> {
-  void _updateItemBookmarked() {
-    //TODO: update in DB
-  }
 
   void _addToSearchHistory() async{
     ParseUser? currentUser = await ParseUser.currentUser();
@@ -71,7 +68,7 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
       onTap: () {
         _addToSearchHistory();
         AlertDialogWidget.showModal(
-            context, widget.item, widget.isCorrect, _updateItemBookmarked);
+            context, widget.item, widget.isCorrect);
       },
     );
   }

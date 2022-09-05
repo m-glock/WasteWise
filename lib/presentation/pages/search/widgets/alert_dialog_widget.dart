@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 
 import '../../../util/database_classes/item.dart';
+import '../../../util/graphl_ql_queries.dart';
 
 class AlertDialogWidget {
-  static Future<void> showModal(BuildContext context, Item item, bool isCorrect,
-      Function bookmarkItem) async {
+  static Future<void> showModal(BuildContext context, Item item, bool isCorrect) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -25,12 +26,28 @@ class AlertDialogWidget {
                     ? Text(Languages.of(context)!.alertDialogCorrectTitle)
                     : Text(Languages.of(context)!.alertDialogWrongTitle),
                 IconButton(
-                    onPressed: () {
-                      setState(() {
-                        item.bookmarked = !item.bookmarked;
-                        isBookmarked = item.bookmarked;
-                      });
-                      bookmarkItem();
+                    onPressed: () async {
+                      GraphQLClient client = GraphQLProvider.of(context).value;
+
+                      // remove or add the bookmark depending on the bookmark state
+                      bool success = isBookmarked
+                          ? await GraphQLQueries.removeItemBookmark(
+                          item.objectId, client)
+                          : await GraphQLQueries.addItemBookmark(
+                          item.objectId, client);
+
+                      // change bookmark status if DB entry was successful
+                      // or notify user if not
+                      if (success) {
+                        item.bookmarked = !isBookmarked;
+                        setState(() {
+                          isBookmarked = !isBookmarked;
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(Languages.of(context)!.searchBarItemNotExist),
+                        ));
+                      }
                     },
                     icon: isBookmarked
                         ? const Icon(FontAwesomeIcons.solidBookmark)
