@@ -202,6 +202,17 @@ class GraphQLQueries{
     }
   """;
 
+  static String bookmarkedItemsQuery = """
+    query GetAllItemBookmarksForUser(\$languageCode: String!, \$userId: String){
+      getAllItemBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
+        title
+        item_id{
+          objectId
+        }
+      }
+    }
+  """;
+
   static String getItemName = """
     query GetItemName(\$languageCode: String!, \$itemId: String){
       getItemName(languageCode: \$languageCode, itemId: \$itemId){
