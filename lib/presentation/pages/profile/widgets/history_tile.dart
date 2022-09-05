@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/util/database_classes/search_history_item.dart';
 
 import '../../../util/constants.dart';
+import '../../../util/database_classes/item.dart';
+import '../../../util/graphl_ql_queries.dart';
+import '../../search/item_detail_page.dart';
 
 class HistoryTile extends StatefulWidget {
   const HistoryTile({
@@ -18,8 +23,34 @@ class HistoryTile extends StatefulWidget {
 }
 
 class _HistoryTileState extends State<HistoryTile> {
+  double pictogramSize = 30;
+
   String _getDateString(DateTime dateTime) {
     return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+  }
+
+  void _openItemDetailPage() async {
+    Locale locale = await getLocale();
+    Map<String, dynamic> inputVariables = {
+      "languageCode": locale.languageCode,
+      "itemObjectId": widget.item.objectId
+    };
+
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: gql(GraphQLQueries.itemDetailQuery),
+        variables: inputVariables,
+      ),
+    );
+
+    Item item = Item.fromJson(
+        result.data?["getItem"][0], result.data?["getSubcategoryOfItem"][0]);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
+    );
   }
 
   @override
@@ -34,9 +65,10 @@ class _HistoryTileState extends State<HistoryTile> {
       child: Row(
         children: [
           Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {},
+            child: InkWell(
+              onTap: () async {
+                _openItemDetailPage();
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -45,12 +77,12 @@ class _HistoryTileState extends State<HistoryTile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.item.item.title,
+                          widget.item.title,
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         Text(
                           _getDateString(widget.item.createdAt),
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.bodyText1,
                         )
                       ],
                     ),
@@ -60,26 +92,26 @@ class _HistoryTileState extends State<HistoryTile> {
                     child: Row(
                       children: [
                         if (widget.item.selectedCategory !=
-                            widget.item.item.wasteBin) ...[
+                            widget.item.correctWasteBin) ...[
                           Stack(
                             children: [
                               Container(
                                 color: Colors.white,
-                                width: 30,
-                                height: 30,
+                                width: pictogramSize,
+                                height: pictogramSize,
                               ),
                               SvgPicture.network(
                                 widget.item.selectedCategory.pictogramUrl,
                                 color: widget.item.selectedCategory.color
                                     .withAlpha(100),
-                                height: 30,
-                                width: 30,
+                                height: pictogramSize,
+                                width: pictogramSize,
                                 alignment: Alignment.centerLeft,
                               ),
                               SvgPicture.asset(
                                 "assets/images/strikethrough.svg",
-                                width: 30,
-                                height: 30,
+                                width: pictogramSize,
+                                height: pictogramSize,
                               ),
                             ],
                           ),
@@ -89,14 +121,14 @@ class _HistoryTileState extends State<HistoryTile> {
                           children: [
                             Container(
                               color: Colors.white,
-                              width: 30,
-                              height: 30,
+                              width: pictogramSize,
+                              height: pictogramSize,
                             ),
                             SvgPicture.network(
-                              widget.item.item.wasteBin.pictogramUrl,
-                              color: widget.item.item.wasteBin.color,
-                              height: 30,
-                              width: 30,
+                              widget.item.correctWasteBin.pictogramUrl,
+                              color: widget.item.correctWasteBin.color,
+                              height: pictogramSize,
+                              width: pictogramSize,
                               alignment: Alignment.centerLeft,
                             ),
                           ],

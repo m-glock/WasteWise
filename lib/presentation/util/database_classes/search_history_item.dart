@@ -3,14 +3,16 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 
 import '../data_holder.dart';
 import '../graphl_ql_queries.dart';
-import 'item.dart';
 
 class SearchHistoryItem {
-  final Item item;
+  final String objectId;
+  final String title;
+  final WasteBinCategory correctWasteBin;
   final WasteBinCategory selectedCategory;
   final DateTime createdAt;
 
-  SearchHistoryItem(this.item, this.selectedCategory, this.createdAt);
+  SearchHistoryItem(this.objectId, this.title, this.correctWasteBin,
+      this.selectedCategory, this.createdAt);
 
   static Future<SearchHistoryItem> fromJson(dynamic searchHistoryData,
       GraphQLClient client, String languageCode) async {
@@ -28,12 +30,11 @@ class SearchHistoryItem {
       ),
     );
 
-    Item item = Item(searchHistoryData["item_id"]["objectId"],
-        result.data?["getItemName"]["title"], "", correctCategory);
-
     DateTime temp = DateTime.parse(searchHistoryData["createdAt"]);
     return SearchHistoryItem(
-        item,
+        searchHistoryData["item_id"]["objectId"],
+        result.data?["getItemName"]["title"],
+        correctCategory,
         DataHolder
             .categories[searchHistoryData["selected_category_id"]["objectId"]]!,
         temp);
