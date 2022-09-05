@@ -66,8 +66,9 @@ abstract class Languages {
   // search history page
   String get searchHistoryPageTitle;
 
-  // bookmark page
+  // bookmark and bookmark page
   String get bookmarkPageTitle;
+  String get bookmarkingFailedText;
 
   // search page
   String get searchBarHint;

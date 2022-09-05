@@ -1,3 +1,5 @@
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 
 import 'data_holder.dart';
@@ -218,6 +220,54 @@ class GraphQLQueries{
       }
      }
   """;
+
+  static String addBookmarkItemMutation = """
+    mutation CreateObject(\$userId: String!, \$itemId: String!){
+      createBookmarkedItem(userId: \$userId, itemId: \$itemId)
+    }
+  """;
+
+  static String deleteBookmarkItemMutation = """
+    mutation CreateObject(\$userId: String!, \$itemId: String!){
+      deleteBookmarkedItem(userId: \$userId, itemId: \$itemId)
+    }
+  """;
+
+  static Future<bool> addItemBookmark(String itemId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "itemId": itemId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.addBookmarkItemMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["createBookmarkedItem"] ?? false;
+  }
+
+  static Future<bool> removeItemBookmark(String itemId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "itemId": itemId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.deleteBookmarkItemMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["deleteBookmarkedItem"] ?? false;
+  }
 
   static dynamic getInputVariablesForSearchHistory(
       String userObjectId,

@@ -59,9 +59,14 @@ class LanguageEn extends Languages {
   @override String get profileSavedItemsText => "Amount of saved items:";
   @override String get profileRankingText => "Ranking in neighborhood:";
   @override String get profileRankingPlaceText => "place";
-  @override String get bookmarkPageTitle => "Bookmarks";
-  @override String get searchHistoryPageTitle => "Search History";
   @override String get profileLogoutButtonText => "Logout";
+
+  // search history page
+  @override String get searchHistoryPageTitle => "Search History";
+
+  // bookmark and bookmark page
+  @override String get bookmarkPageTitle => "Bookmarks";
+  @override String get bookmarkingFailedText => "Something went wrong. Bookmark was not successful.";
 
   // search page
   @override String get oftenSearched => "Commonly searched by others";

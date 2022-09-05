@@ -58,9 +58,14 @@ class LanguageDe extends Languages {
   @override String get profileSavedItemsText => "Anzahl der geretteten Items:";
   @override String get profileRankingText => "Ranking in der Nachbarschaft:";
   @override String get profileRankingPlaceText => "Platz";
-  @override String get bookmarkPageTitle => "Lesezeichen";
-  @override String get searchHistoryPageTitle => "Suchverlauf";
   @override String get profileLogoutButtonText => "Logout";
+
+  // search history page
+  @override String get searchHistoryPageTitle => "Suchverlauf";
+
+  // bookmark and bookmark page
+  @override String get bookmarkPageTitle => "Lesezeichen";
+  @override String get bookmarkingFailedText => "Etwas ist schiefgelaufen. Lesezeichen konnte nicht gesetzt werden.";
 
   // search page
   @override String get oftenSearched => "Oft von anderen gesucht";
