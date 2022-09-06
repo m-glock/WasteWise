@@ -47,8 +47,8 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
     );
 
     bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
-    Item item = Item.fromJson(result.data?["getItem"][0],
-        result.data?["getSubcategoryOfItem"][0], bookmarkedStatus);
+    Item item = Item.fromJson(result.data?["getItem"],
+        result.data?["getSubcategoryOfItem"], bookmarkedStatus);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),

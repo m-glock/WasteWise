@@ -60,17 +60,17 @@ class _SearchSortPageState extends State<SearchSortPage> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        List<dynamic> items = result.data?["getItem"];
-        List<dynamic> subcategory = result.data?["getSubcategoryOfItem"];
+        Map<String, dynamic> itemData = result.data?["getItem"];
+        Map<String, dynamic> subcategory = result.data?["getSubcategoryOfItem"];
         bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
 
-        if (items.isEmpty) {
+        if (itemData.isEmpty) {
           Navigator.pop(context);
           //TODO: let user know whats wrong
           return const Text("No item found.");
         }
 
-        Item item = Item.fromJson(items[0], subcategory[0], bookmarkedStatus);
+        Item item = Item.fromJson(itemData, subcategory, bookmarkedStatus);
 
         // display when all data is available
         return Scaffold(
