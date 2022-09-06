@@ -9,7 +9,8 @@ import '../../../util/database_classes/item.dart';
 import '../../../util/graphl_ql_queries.dart';
 
 class AlertDialogWidget {
-  static Future<void> showModal(BuildContext context, Item item, bool isCorrect) async {
+  static Future<void> showModal(
+      BuildContext context, Item item, bool isCorrect) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -32,9 +33,9 @@ class AlertDialogWidget {
                       // remove or add the bookmark depending on the bookmark state
                       bool success = isBookmarked
                           ? await GraphQLQueries.removeItemBookmark(
-                          item.objectId, client)
+                              item.objectId, client)
                           : await GraphQLQueries.addItemBookmark(
-                          item.objectId, client);
+                              item.objectId, client);
 
                       // change bookmark status if DB entry was successful
                       // or notify user if not
@@ -45,7 +46,8 @@ class AlertDialogWidget {
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(Languages.of(context)!.searchBarItemNotExist),
+                          content: Text(
+                              Languages.of(context)!.bookmarkingFailedText),
                         ));
                       }
                     },

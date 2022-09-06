@@ -15,11 +15,13 @@ class BookmarkedTile extends StatefulWidget {
     required this.title,
     required this.objectId,
     required this.isItem,
+    required this.removeBookmark,
   }) : super(key: key);
 
   final String title;
   final String objectId;
   final bool isItem;
+  final void Function(String, bool) removeBookmark;
 
   @override
   State<BookmarkedTile> createState() => _BookmarkedTileState();
@@ -72,9 +74,10 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
                 children: [
                   CustomIconButton(
                     icon: const Icon(FontAwesomeIcons.solidBookmark),
-                    onPressed: () {
-                      //TODO: remove bookmark in DB and item from list
-                    },
+                    onPressed: () => widget.removeBookmark(
+                        widget.objectId,
+                        widget.isItem,
+                    ),
                   ),
                   const Padding(padding: EdgeInsets.only(right: 10)),
                   Expanded(

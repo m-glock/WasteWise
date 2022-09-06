@@ -67,6 +67,7 @@ class LanguageEn extends Languages {
   // bookmark and bookmark page
   @override String get bookmarkPageTitle => "Bookmarks";
   @override String get bookmarkingFailedText => "Something went wrong. Bookmark was not successful.";
+  @override String get noBookmarksAvailableText => "No bookmarks set.";
 
   // search page
   @override String get oftenSearched => "Commonly searched by others";

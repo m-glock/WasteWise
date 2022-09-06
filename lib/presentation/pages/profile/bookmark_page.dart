@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/bookmarked_tile.dart';
 
@@ -16,18 +17,46 @@ class BookmarkPage extends StatefulWidget {
 
 class _BookmarkPageState extends State<BookmarkPage> {
   String languageCode = "";
+  String userId = "";
+  bool itemRemoved = false;
+  Map<String, String> bookmarkedItems = {};
 
   @override
   void initState() {
     super.initState();
-    _getLanguageCode();
+    _getLanguageCodeAndUser();
   }
 
-  void _getLanguageCode() async {
+  void _getLanguageCodeAndUser() async {
     Locale locale = await getLocale();
+    ParseUser current = await ParseUser.currentUser();
     setState(() {
       languageCode = locale.languageCode;
+      userId = current.objectId!;
     });
+  }
+
+  void _removeBookmark(String objectId, bool isItem) async {
+    // remove from database
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    bool success = false;
+    if (isItem) {
+      success = await GraphQLQueries.removeItemBookmark(objectId, client);
+    } else {
+      //TODO: remove bookmark for tip
+    }
+
+    //remove from display list
+    if (success) {
+      setState(() {
+        bookmarkedItems.remove(objectId);
+        itemRemoved = true;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
   }
 
   @override
@@ -41,7 +70,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           document: gql(GraphQLQueries.bookmarkedItemsQuery),
           variables: {
             "languageCode": languageCode,
-            "userId": "WLm921fNAG",
+            "userId": userId,
           },
         ),
         builder: (QueryResult result,
@@ -52,27 +81,35 @@ class _BookmarkPageState extends State<BookmarkPage> {
           }
 
           // get municipalities for selection
-          List<dynamic> bookmarkedItemData =
-              result.data?["getAllItemBookmarksForUser"];
-          Map<String, String> bookmarkedItems = {};
-          for (dynamic element in bookmarkedItemData) {
-            bookmarkedItems[element["item_id"]["objectId"]] = element["title"];
+          if (bookmarkedItems.isEmpty && !itemRemoved) {
+            List<dynamic> bookmarkedItemData =
+                result.data?["getAllItemBookmarksForUser"];
+            for (dynamic element in bookmarkedItemData) {
+              bookmarkedItems[element["item_id"]["objectId"]] =
+                  element["title"];
+            }
           }
 
           // display when all data is available
           return Padding(
             padding: EdgeInsets.all(Constants.pagePadding),
-            child: ListView(
-              children: [
-                ...bookmarkedItems.entries.map((element) {
-                  return BookmarkedTile(
-                    title: element.value,
-                    objectId: element.key,
-                    isItem: true,
-                  );
-                }),
-              ],
-            ),
+            child: bookmarkedItems.isEmpty
+                ? Center(
+                    child:
+                        Text(Languages.of(context)!.noBookmarksAvailableText),
+                  )
+                : ListView(
+                    children: [
+                      ...bookmarkedItems.entries.map((element) {
+                        return BookmarkedTile(
+                          title: element.value,
+                          objectId: element.key,
+                          isItem: true,
+                          removeBookmark: _removeBookmark,
+                        );
+                      }),
+                    ],
+                  ),
           );
         },
       ),
