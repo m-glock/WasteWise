@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
+import '../../../../i18n/languages.dart';
 import '../../../../util/constants.dart';
 import '../../../../util/custom_icon_button.dart';
 import '../../../../util/database_classes/tip.dart';
+import '../../../../util/graphl_ql_queries.dart';
 
 class TipTile extends StatefulWidget {
   const TipTile({
@@ -23,11 +26,35 @@ class TipTile extends StatefulWidget {
 }
 
 class _TipTileState extends State<TipTile> {
-  void _bookmarkTip() {
-    //TODO: update in DB
-    setState(() {
-      widget.tip.isBookmarked = !widget.tip.isBookmarked;
-    });
+  late bool isBookmarked;
+
+  @override
+  void initState() {
+    super.initState();
+    isBookmarked = widget.tip.isBookmarked;
+  }
+
+  void _bookmarkTip() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    // remove or add the bookmark depending on the bookmark state
+    bool success = isBookmarked
+        ? await GraphQLQueries.removeTipBookmark(
+        widget.tip.objectId, client)
+        : await GraphQLQueries.addTipBookmark(
+        widget.tip.objectId, client);
+
+    // change bookmark status if DB entry was successful
+    // or notify user if not
+    if (success) {
+      widget.tip.isBookmarked = !isBookmarked;
+      setState(() {
+        isBookmarked = !isBookmarked;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
   }
 
   @override

@@ -52,7 +52,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   });
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(Languages.of(context)!.searchBarItemNotExist),
+                    content: Text(Languages.of(context)!.bookmarkingFailedText),
                   ));
                 }
               },

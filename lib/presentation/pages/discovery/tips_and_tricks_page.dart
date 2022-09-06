@@ -6,6 +6,7 @@ import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
@@ -18,7 +19,6 @@ class TipsAndTricksPage extends StatefulWidget {
   State<TipsAndTricksPage> createState() => _TipsAndTricksPageState();
 }
 
-//TODO: add bookmarked
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   Map<String, String> wasteBinDropdownOptions = {};
   Map<String, String> tipTypeDropdownOptions = {};
@@ -27,36 +27,6 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   List<Tip> tipList = [];
   List<Tip> filteredTipList = [];
   String languageCode = "";
-  String query = """
-    query GetCategories(\$languageCode: String!){
-      getTipTypes(languageCode: \$languageCode){
-        title
-        tip_type_id{
-          color
-          objectId
-        }
-      }
-      
-      getTips(languageCode: \$languageCode){
-        tip_id{
-    	    category_id{
-    	      objectId
-      	    pictogram
-    	    },
-    	    tip_type_id{
-    	      objectId
-      	    color
-    	    },
-    	    image{
-    	      url
-    	    }
-  	    }, 
-        title,
-        explanation,
-        short
-      }
-    }
-  """;
 
   @override
   void initState() {
@@ -116,7 +86,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
         child: Query(
-          options: QueryOptions(document: gql(query), variables: {
+          options: QueryOptions(document: gql(GraphQLQueries.tipListQuery), variables: {
             "languageCode": languageCode,
           }),
           builder: (QueryResult result,

@@ -1,4 +1,5 @@
 class Tip {
+  final String objectId;
   final String title;
   final String explanation;
   final String short;
@@ -7,12 +8,13 @@ class Tip {
   final String imageUrl;
   bool isBookmarked;
 
-  Tip(this.title, this.explanation, this.tipTypeId, this.categoryId,
+  Tip(this.objectId, this.title, this.explanation, this.tipTypeId, this.categoryId,
       this.imageUrl, this.short,
       {this.isBookmarked = false});
 
   static Tip fromJson(Map<dynamic, dynamic> tip) {
     return Tip(
+        tip["tip_id"]["objectId"],
         tip["title"],
         tip["explanation"],
         tip["tip_id"]["tip_type_id"]["objectId"],

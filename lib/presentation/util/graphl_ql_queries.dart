@@ -163,6 +163,38 @@ class GraphQLQueries{
     }
   """;
 
+  static String tipListQuery = """
+    query GetCategories(\$languageCode: String!){
+      getTipTypes(languageCode: \$languageCode){
+        title
+        tip_type_id{
+          color
+          objectId
+        }
+      }
+      
+      getTips(languageCode: \$languageCode){
+        tip_id{
+          objectId
+    	    category_id{
+    	      objectId
+      	    pictogram
+    	    },
+    	    tip_type_id{
+    	      objectId
+      	    color
+    	    },
+    	    image{
+    	      url
+    	    }
+  	    }, 
+        title,
+        explanation,
+        short
+      }
+    }
+  """;
+
   static String municipalityQuery = """
     query GetMunicipalities{
       getMunicipalities{
@@ -248,6 +280,18 @@ class GraphQLQueries{
     }
   """;
 
+  static String addBookmarkTipMutation = """
+    mutation CreateObject(\$userId: String!, \$tipId: String!){
+      createBookmarkedTip(userId: \$userId, tipId: \$tipId)
+    }
+  """;
+
+  static String deleteBookmarkTipMutation = """
+    mutation CreateObject(\$userId: String!, \$tipId: String!){
+      deleteBookmarkedTip(userId: \$userId, tipId: \$tipId)
+    }
+  """;
+
   static Future<bool> addItemBookmark(String itemId, GraphQLClient client) async {
     ParseUser current = await ParseUser.currentUser();
     Map<String, dynamic> inputVariables = {
@@ -282,6 +326,42 @@ class GraphQLQueries{
     if(result.hasException) return false;
 
     return result.data?["deleteBookmarkedItem"] ?? false;
+  }
+
+  static Future<bool> addTipBookmark(String tipId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "tipId": tipId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.addBookmarkTipMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["createBookmarkedTip"] ?? false;
+  }
+
+  static Future<bool> removeTipBookmark(String tipId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "tipId": tipId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.deleteBookmarkTipMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["deleteBookmarkedTip"] ?? false;
   }
 
   static dynamic getInputVariablesForSearchHistory(
