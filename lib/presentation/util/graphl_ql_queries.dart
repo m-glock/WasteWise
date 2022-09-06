@@ -164,7 +164,7 @@ class GraphQLQueries{
   """;
 
   static String tipListQuery = """
-    query GetCategories(\$languageCode: String!){
+    query GetCategories(\$languageCode: String!, \$userId: String){
       getTipTypes(languageCode: \$languageCode){
         title
         tip_type_id{
@@ -191,6 +191,12 @@ class GraphQLQueries{
         title,
         explanation,
         short
+      }
+      
+      getTipBookmarks(userId: \$userId){
+        tip_id{
+          objectId
+        }
       }
     }
   """;

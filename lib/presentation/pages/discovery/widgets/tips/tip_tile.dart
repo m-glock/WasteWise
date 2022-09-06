@@ -26,35 +26,30 @@ class TipTile extends StatefulWidget {
 }
 
 class _TipTileState extends State<TipTile> {
-  late bool isBookmarked;
-
-  @override
-  void initState() {
-    super.initState();
-    isBookmarked = widget.tip.isBookmarked;
-  }
-
   void _bookmarkTip() async {
     GraphQLClient client = GraphQLProvider.of(context).value;
     // remove or add the bookmark depending on the bookmark state
-    bool success = isBookmarked
-        ? await GraphQLQueries.removeTipBookmark(
-        widget.tip.objectId, client)
-        : await GraphQLQueries.addTipBookmark(
-        widget.tip.objectId, client);
+    bool success = widget.tip.isBookmarked
+        ? await GraphQLQueries.removeTipBookmark(widget.tip.objectId, client)
+        : await GraphQLQueries.addTipBookmark(widget.tip.objectId, client);
 
     // change bookmark status if DB entry was successful
     // or notify user if not
     if (success) {
-      widget.tip.isBookmarked = !isBookmarked;
       setState(() {
-        isBookmarked = !isBookmarked;
+        widget.tip.isBookmarked = !widget.tip.isBookmarked;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(Languages.of(context)!.bookmarkingFailedText),
       ));
     }
+  }
+
+  void _updateBookmarkInWidget() {
+    setState(() {
+      widget.tip.isBookmarked = !widget.tip.isBookmarked;
+    });
   }
 
   @override
@@ -87,7 +82,12 @@ class _TipTileState extends State<TipTile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TipDetailPage(tip: widget.tip, tipNumber: widget.tipNumber,)),
+                      builder: (context) => TipDetailPage(
+                        tip: widget.tip,
+                        tipNumber: widget.tipNumber,
+                        updateBookmarkInParent: _updateBookmarkInWidget,
+                      ),
+                    ),
                   );
                 },
                 child: Row(
