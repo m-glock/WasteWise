@@ -8,11 +8,11 @@ class Tip {
   final String imageUrl;
   bool isBookmarked;
 
-  Tip(this.objectId, this.title, this.explanation, this.tipTypeId, this.categoryId,
-      this.imageUrl, this.short,
+  Tip(this.objectId, this.title, this.explanation, this.tipTypeId,
+      this.categoryId, this.imageUrl, this.short,
       {this.isBookmarked = false});
 
-  static Tip fromJson(Map<dynamic, dynamic> tip) {
+  static Tip fromJson(Map<dynamic, dynamic> tip, {bool bookmarked = false}) {
     return Tip(
         tip["tip_id"]["objectId"],
         tip["title"],
@@ -20,6 +20,7 @@ class Tip {
         tip["tip_id"]["tip_type_id"]["objectId"],
         tip["tip_id"]["category_id"]["objectId"],
         tip["tip_id"]["image"]["url"],
-        tip["short"]);
+        tip["short"],
+        isBookmarked: bookmarked);
   }
 }

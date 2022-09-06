@@ -70,6 +70,8 @@ abstract class Languages {
   String get bookmarkPageTitle;
   String get bookmarkingFailedText;
   String get noBookmarksAvailableText;
+  String get itemBookmarkTagTitle;
+  String get tipBookmarkTagTitle;
 
   // search page
   String get searchBarHint;

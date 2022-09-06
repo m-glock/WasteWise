@@ -16,10 +16,11 @@ class BookmarkPage extends StatefulWidget {
 }
 
 class _BookmarkPageState extends State<BookmarkPage> {
-  String languageCode = "";
-  String userId = "";
+  String? languageCode;
+  String? userId;
   bool itemRemoved = false;
   Map<String, String> bookmarkedItems = {};
+  Map<String, String> bookmarkedTips = {};
 
   @override
   void initState() {
@@ -39,17 +40,18 @@ class _BookmarkPageState extends State<BookmarkPage> {
   void _removeBookmark(String objectId, bool isItem) async {
     // remove from database
     GraphQLClient client = GraphQLProvider.of(context).value;
-    bool success = false;
-    if (isItem) {
-      success = await GraphQLQueries.removeItemBookmark(objectId, client);
-    } else {
-      //TODO: remove bookmark for tip
-    }
+    bool success = isItem
+        ? await GraphQLQueries.removeItemBookmark(objectId, client)
+        : await GraphQLQueries.removeTipBookmark(objectId, client);
 
     //remove from display list
     if (success) {
       setState(() {
-        bookmarkedItems.remove(objectId);
+        if(isItem){
+          bookmarkedItems.remove(objectId);
+        } else {
+          bookmarkedTips.remove(objectId);
+        }
         itemRemoved = true;
       });
     } else {
@@ -65,54 +67,76 @@ class _BookmarkPageState extends State<BookmarkPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.bookmarkPageTitle),
       ),
-      body: Query(
-        options: QueryOptions(
-          document: gql(GraphQLQueries.bookmarkedItemsQuery),
-          variables: {
-            "languageCode": languageCode,
-            "userId": userId,
-          },
-        ),
-        builder: (QueryResult result,
-            {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.hasException) return Text(result.exception.toString());
-          if (result.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: languageCode == null || userId == null
+          ? const Center(child: CircularProgressIndicator())
+          : Query(
+              options: QueryOptions(
+                document: gql(GraphQLQueries.bookmarkedItemsQuery),
+                variables: {
+                  "languageCode": languageCode,
+                  "userId": userId,
+                },
+              ),
+              builder: (QueryResult result,
+                  {VoidCallback? refetch, FetchMore? fetchMore}) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
+                if (result.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          // get municipalities for selection
-          if (bookmarkedItems.isEmpty && !itemRemoved) {
-            List<dynamic> bookmarkedItemData =
-                result.data?["getAllItemBookmarksForUser"];
-            for (dynamic element in bookmarkedItemData) {
-              bookmarkedItems[element["item_id"]["objectId"]] =
-                  element["title"];
-            }
-          }
+                // get municipalities for selection
+                if (bookmarkedItems.isEmpty && !itemRemoved) {
+                  List<dynamic> bookmarkedItemData =
+                      result.data?["getAllItemBookmarksForUser"];
+                  for (dynamic element in bookmarkedItemData) {
+                    bookmarkedItems[element["item_id"]["objectId"]] =
+                        element["title"];
+                  }
+                }
 
-          // display when all data is available
-          return Padding(
-            padding: EdgeInsets.all(Constants.pagePadding),
-            child: bookmarkedItems.isEmpty
-                ? Center(
-                    child:
-                        Text(Languages.of(context)!.noBookmarksAvailableText),
-                  )
-                : ListView(
-                    children: [
-                      ...bookmarkedItems.entries.map((element) {
-                        return BookmarkedTile(
-                          title: element.value,
-                          objectId: element.key,
-                          isItem: true,
-                          removeBookmark: _removeBookmark,
-                        );
-                      }),
-                    ],
-                  ),
-          );
-        },
-      ),
+                if (bookmarkedTips.isEmpty && !itemRemoved) {
+                  List<dynamic> bookmarkedTipData =
+                      result.data?["getAllTipBookmarksForUser"];
+                  for (dynamic element in bookmarkedTipData) {
+                    bookmarkedTips[element["tip_id"]["objectId"]] =
+                        element["title"];
+                  }
+                }
+
+                // display when all data is available
+                return Padding(
+                  padding: EdgeInsets.all(Constants.pagePadding),
+                  child: bookmarkedItems.isEmpty && bookmarkedTips.isEmpty
+                      ? Center(
+                          child: Text(
+                              Languages.of(context)!.noBookmarksAvailableText),
+                        )
+                      : ListView(
+                          children: [
+                            //TODO: how to sort them?
+                            ...bookmarkedItems.entries.map((element) {
+                              return BookmarkedTile(
+                                title: element.value,
+                                objectId: element.key,
+                                isItem: true,
+                                removeBookmarkInParent: _removeBookmark,
+                              );
+                            }),
+                            ...bookmarkedTips.entries.map((element) {
+                              return BookmarkedTile(
+                                title: element.value,
+                                objectId: element.key,
+                                isItem: false,
+                                removeBookmarkInParent: _removeBookmark,
+                              );
+                            }),
+                          ],
+                        ),
+                );
+              },
+            ),
     );
   }
 }

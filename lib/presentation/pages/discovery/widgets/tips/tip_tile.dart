@@ -120,8 +120,8 @@ class _TipTileState extends State<TipTile> {
                                         Theme.of(context).colorScheme.secondary,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                )),
-                          ])
+                                ),),
+                          ],)
                         ],
                       ),
                     ),

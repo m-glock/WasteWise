@@ -9,21 +9,37 @@ import '../../util/database_classes/item.dart';
 import '../../util/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
-  const ItemDetailPage({Key? key, required this.item}) : super(key: key);
+  const ItemDetailPage(
+      {Key? key, required this.item, this.updateBookmarkInParent})
+      : super(key: key);
 
   final Item item;
+  final Function? updateBookmarkInParent;
 
   @override
   State<ItemDetailPage> createState() => _ItemDetailPageState();
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-  late bool isBookmarked;
+  void _updateBookmark() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
 
-  @override
-  void initState() {
-    super.initState();
-    isBookmarked = widget.item.bookmarked;
+    // remove or add the bookmark depending on the bookmark state
+    bool success = widget.item.bookmarked
+        ? await GraphQLQueries.removeItemBookmark(widget.item.objectId, client)
+        : await GraphQLQueries.addItemBookmark(widget.item.objectId, client);
+
+    // change bookmark status if DB entry was successful
+    // or notify user if not
+    if (success) {
+      setState(() {
+        widget.item.bookmarked = !widget.item.bookmarked;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
   }
 
   @override
@@ -33,30 +49,17 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         title: Text(widget.item.title),
         actions: [
           IconButton(
-              onPressed: () async {
-                GraphQLClient client = GraphQLProvider.of(context).value;
-
-                // remove or add the bookmark depending on the bookmark state
-                bool success = isBookmarked
-                    ? await GraphQLQueries.removeItemBookmark(
-                        widget.item.objectId, client)
-                    : await GraphQLQueries.addItemBookmark(
-                        widget.item.objectId, client);
-
-                // change bookmark status if DB entry was successful
-                // or notify user if not
-                if (success) {
-                  widget.item.bookmarked = !isBookmarked;
-                  setState(() {
-                    isBookmarked = !isBookmarked;
-                  });
+              onPressed: () {
+                if (widget.updateBookmarkInParent == null) {
+                  _updateBookmark();
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(Languages.of(context)!.bookmarkingFailedText),
-                  ));
+                  widget.updateBookmarkInParent!();
+                  setState(() {
+                    widget.item.bookmarked = !widget.item.bookmarked;
+                  });
                 }
               },
-              icon: isBookmarked
+              icon: widget.item.bookmarked
                   ? const Icon(FontAwesomeIcons.solidBookmark)
                   : const Icon(FontAwesomeIcons.bookmark))
         ],

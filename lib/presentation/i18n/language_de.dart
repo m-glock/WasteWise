@@ -67,6 +67,8 @@ class LanguageDe extends Languages {
   @override String get bookmarkPageTitle => "Lesezeichen";
   @override String get bookmarkingFailedText => "Etwas ist schiefgelaufen. Lesezeichen konnte nicht gesetzt werden.";
   @override String get noBookmarksAvailableText => "Keine Lesezeichen gesetzt.";
+  @override String get itemBookmarkTagTitle => "Item";
+  @override String get tipBookmarkTagTitle => "Tipp";
 
   // search page
   @override String get oftenSearched => "Oft von anderen gesucht";

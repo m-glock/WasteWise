@@ -36,6 +36,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     // or notify user if not
     if (success) {
       setState(() {
+        widget.tip.isBookmarked = !widget.tip.isBookmarked;
         widget.updateBookmarkInParent();
       });
     } else {

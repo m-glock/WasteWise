@@ -201,6 +201,30 @@ class GraphQLQueries{
     }
   """;
 
+  static String tipDetailQuery = """
+    query GetTip(\$languageCode: String!, \$tipId: String!){
+      getTip(languageCode: \$languageCode, tipId: \$tipId){
+        tip_id{
+          objectId
+    	    category_id{
+    	      objectId
+      	    pictogram
+    	    },
+    	    tip_type_id{
+    	      objectId
+      	    color
+    	    },
+    	    image{
+    	      url
+    	    }
+  	    }, 
+        title,
+        explanation,
+        short
+      }
+    }
+  """;
+
   static String municipalityQuery = """
     query GetMunicipalities{
       getMunicipalities{
@@ -249,6 +273,13 @@ class GraphQLQueries{
       getAllItemBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
         title
         item_id{
+          objectId
+        }
+      }
+      
+      getAllTipBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
+        title
+        tip_id{
           objectId
         }
       }
