@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
@@ -32,7 +33,8 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
     Locale locale = await getLocale();
     Map<String, dynamic> inputVariables = {
       "languageCode": locale.languageCode,
-      "itemObjectId": widget.objectId
+      "itemObjectId": widget.objectId,
+      "userId": (await ParseUser.currentUser()).objectId!,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -44,8 +46,9 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Item item = Item.fromJson(
-        result.data?["getItem"][0], result.data?["getSubcategoryOfItem"][0]);
+    bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
+    Item item = Item.fromJson(result.data?["getItem"][0],
+        result.data?["getSubcategoryOfItem"][0], bookmarkedStatus);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
@@ -75,8 +78,8 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
                   CustomIconButton(
                     icon: const Icon(FontAwesomeIcons.solidBookmark),
                     onPressed: () => widget.removeBookmark(
-                        widget.objectId,
-                        widget.isItem,
+                      widget.objectId,
+                      widget.isItem,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(right: 10)),

@@ -16,7 +16,7 @@ class Item {
        this.wasteBin, {this.explanation, this.subcategory, this.bookmarked = false});
 
   static Item fromJson(
-      Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData) {
+      Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData, bool bookmarkStatus) {
     String objectId = item["item_id"]["objectId"];
     String categoryId =
         item["item_id"]["subcategory_id"]["category_id"]["objectId"];
@@ -25,8 +25,7 @@ class Item {
             ? item["explanation"]
             : subcategoryData["explanation"];
     String subcategoryTitle = subcategoryData["title"];
-    //TODO figure out how to get bookmarked information
-    bool isBookmarked = false;
+    bool isBookmarked = bookmarkStatus;
 
     return Item(
         objectId,

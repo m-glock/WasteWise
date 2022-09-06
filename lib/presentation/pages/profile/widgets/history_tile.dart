@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/util/database_classes/search_history_item.dart';
 
@@ -33,7 +34,8 @@ class _HistoryTileState extends State<HistoryTile> {
     Locale locale = await getLocale();
     Map<String, dynamic> inputVariables = {
       "languageCode": locale.languageCode,
-      "itemObjectId": widget.item.objectId
+      "itemObjectId": widget.item.objectId,
+      "userId": (await ParseUser.currentUser()).objectId!,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -45,8 +47,9 @@ class _HistoryTileState extends State<HistoryTile> {
       ),
     );
 
-    Item item = Item.fromJson(
-        result.data?["getItem"][0], result.data?["getSubcategoryOfItem"][0]);
+    bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
+    Item item = Item.fromJson(result.data?["getItem"][0],
+        result.data?["getSubcategoryOfItem"][0], bookmarkedStatus);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),

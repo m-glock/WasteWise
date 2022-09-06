@@ -132,7 +132,7 @@ class GraphQLQueries{
   """;
 
   static String itemDetailQuery = """
-    query GetItem(\$languageCode: String!, \$itemObjectId: String!){
+    query GetItem(\$languageCode: String!, \$itemObjectId: String!, \$userId: String!){
       getItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
         title
         explanation
@@ -155,6 +155,10 @@ class GraphQLQueries{
       getSubcategoryOfItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
         title
         explanation
+      }
+      
+      getBookmarkStatusOfItem(itemObjectId: \$itemObjectId, userId: \$userId){
+        objectId
       }
     }
   """;

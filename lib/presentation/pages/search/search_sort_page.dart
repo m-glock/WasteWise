@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_sort_grid_tile.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
@@ -23,17 +24,20 @@ class SearchSortPage extends StatefulWidget {
 
 class _SearchSortPageState extends State<SearchSortPage> {
   String languageCode = "";
+  String userId = "";
 
   @override
   void initState() {
     super.initState();
-    _getLanguageCode();
+    _getLanguageCodeAndUserId();
   }
 
-  void _getLanguageCode() async {
+  void _getLanguageCodeAndUserId() async {
     Locale locale = await getLocale();
+    ParseUser current = await ParseUser.currentUser();
     setState(() {
       languageCode = locale.languageCode;
+      userId = current.objectId!;
     });
   }
 
@@ -47,6 +51,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
           variables: {
             "languageCode": languageCode,
             "itemObjectId": widget.itemObjectId,
+            "userId": userId,
           }),
       builder: (QueryResult result,
           {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -57,6 +62,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
 
         List<dynamic> items = result.data?["getItem"];
         List<dynamic> subcategory = result.data?["getSubcategoryOfItem"];
+        bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
 
         if (items.isEmpty) {
           Navigator.pop(context);
@@ -64,7 +70,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
           return const Text("No item found.");
         }
 
-        Item item = Item.fromJson(items[0], subcategory[0]);
+        Item item = Item.fromJson(items[0], subcategory[0], bookmarkedStatus);
 
         // display when all data is available
         return Scaffold(
