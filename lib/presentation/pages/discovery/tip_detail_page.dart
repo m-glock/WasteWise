@@ -28,11 +28,23 @@ class TipDetailPage extends StatefulWidget {
 class _TipDetailPageState extends State<TipDetailPage> {
 
   ParseUser? currentUser;
+  late Image _image;
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+    _image = Image.network(widget.tip.imageUrl);
+    _image.image
+        .resolve(const ImageConfiguration())
+        .addListener(ImageStreamListener((image, synchronousCall) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    }));
   }
 
   void _getCurrentUser() async {
@@ -69,44 +81,49 @@ class _TipDetailPageState extends State<TipDetailPage> {
       appBar: AppBar(
         title: Text("Tipp #${widget.tipNumber}"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(Constants.pagePadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(widget.tip.title,
-                      style: Theme.of(context).textTheme.headline1),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                if(currentUser != null) ...[
-                  widget.tip.isBookmarked
-                      ? CustomIconButton(
-                      onPressed: _changeBookmarkStatus,
-                      icon: const Icon(FontAwesomeIcons.solidBookmark))
-                      : CustomIconButton(
-                    onPressed: _changeBookmarkStatus,
-                    icon: const Icon(FontAwesomeIcons.bookmark),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.all(Constants.pagePadding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(widget.tip.title,
+                            style: Theme.of(context).textTheme.headline1),
+                      ),
+                      const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5)),
+                      if (currentUser != null) ...[
+                        widget.tip.isBookmarked
+                            ? CustomIconButton(
+                                onPressed: _changeBookmarkStatus,
+                                icon:
+                                    const Icon(FontAwesomeIcons.solidBookmark))
+                            : CustomIconButton(
+                                onPressed: _changeBookmarkStatus,
+                                icon: const Icon(FontAwesomeIcons.bookmark),
+                              ),
+                        const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5)),
+                      ],
+                      CustomIconButton(
+                          onPressed: () => {},
+                          //TODO: open modal to share with neighborhood
+                          icon: const Icon(FontAwesomeIcons.shareNodes)),
+                    ],
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                  const Padding(padding: EdgeInsets.only(bottom: 30)),
+                  _image,
+                  const Padding(padding: EdgeInsets.only(bottom: 30)),
+                  Text(widget.tip.explanation,
+                      style: Theme.of(context).textTheme.bodyText1)
                 ],
-                CustomIconButton(
-                    onPressed: () => {},
-                    //TODO: open modal to share with neighborhood
-                    icon: const Icon(FontAwesomeIcons.shareNodes)),
-              ],
+              ),
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 30)),
-            Image.network(widget.tip.imageUrl),
-            const Padding(padding: EdgeInsets.only(bottom: 30)),
-            Text(widget.tip.explanation,
-                style: Theme.of(context).textTheme.bodyText1)
-          ],
-        ),
-      ),
     );
   }
 }
