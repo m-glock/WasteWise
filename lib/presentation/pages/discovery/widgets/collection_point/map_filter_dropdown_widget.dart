@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../../i18n/languages.dart';
 
 class MapFilterDropdownWidget extends StatefulWidget {
-  const MapFilterDropdownWidget({Key? key, required this.dropdownValues})
-      : super(key: key);
+  const MapFilterDropdownWidget({
+    Key? key,
+    required this.dropdownValues,
+    required this.updateMarkersInParent
+  }) : super(key: key);
 
   final List<String> dropdownValues;
+  final void Function(String) updateMarkersInParent;
 
   @override
   State<MapFilterDropdownWidget> createState() =>
@@ -27,8 +31,9 @@ class _MapFilterDropdownWidgetState extends State<MapFilterDropdownWidget> {
             isExpanded: true,
             value: dropdownDefault,
             onChanged: (String? newValue) {
+              widget.updateMarkersInParent(newValue!);
               setState(() {
-                dropdownDefault = newValue!;
+                dropdownDefault = newValue;
               });
             },
             items: widget.dropdownValues

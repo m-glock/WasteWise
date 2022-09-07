@@ -7,9 +7,11 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
+import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/database_classes/collection_point.dart';
@@ -25,19 +27,24 @@ class CollectionPointPage extends StatefulWidget {
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
   LatLng currentPosition = LatLng(52.5200, 13.4050);
+  Map<CollectionPoint, Marker> filteredMarkers = {};
   String languageCode = "";
+  String municipalityId = "";
 
   @override
   void initState() {
     super.initState();
-    _getLanguageCode();
+    _getLanguageCodeAndMunicipality();
     _determinePosition();
   }
 
-  void _getLanguageCode() async {
+  void _getLanguageCodeAndMunicipality() async {
     Locale locale = await getLocale();
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
     setState(() {
       languageCode = locale.languageCode;
+      municipalityId = id ?? "";
     });
   }
 
@@ -82,6 +89,14 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
     });
   }
 
+  void _filterMarkers(String subcategoryTitle) {
+    setState(() {
+      filteredMarkers.addAll(DataHolder.markers);
+      filteredMarkers.removeWhere(
+              (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,11 +105,12 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
       ),
       body: Query(
         options: QueryOptions(
-            document: gql(GraphQLQueries.collectionPointQuery),
-            variables: {
-              "languageCode": languageCode,
-              "municipalityId": "PMJEteBu4m", //TODO get from user
-            }),
+          document: gql(GraphQLQueries.collectionPointQuery),
+          variables: {
+            "languageCode": languageCode,
+            "municipalityId": municipalityId,
+          },
+        ),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
@@ -128,6 +144,9 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
             );
             DataHolder.markers[collectionPoint] = marker;
           }
+          if (filteredMarkers.isEmpty){
+            filteredMarkers.addAll(DataHolder.markers);
+          }
 
           // get accepted subcategories for all collection points
           List<dynamic> subcategoriesOfCP =
@@ -160,11 +179,12 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
                 padding: const EdgeInsets.all(10),
                 child: MapFilterDropdownWidget(
                   dropdownValues: DataHolder.cpSubcategories.toList(),
+                  updateMarkersInParent: _filterMarkers,
                 ),
               ),
               Flexible(
                   child: MapWidget(
-                marker: DataHolder.markers,
+                marker: filteredMarkers,
                 currentPosition: currentPosition,
               )),
             ],

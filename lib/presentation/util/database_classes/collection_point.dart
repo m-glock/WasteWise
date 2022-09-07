@@ -31,4 +31,19 @@ class CollectionPoint {
         Address.fromJson(collectionPointData["address_id"]),
         cpType);
   }
+
+  bool containsSubcategoryTitle(String title){
+    return acceptedSubcategories
+        .where((subcategory) => subcategory.title == title)
+        .isNotEmpty;
+  }
+
+  @override
+  bool operator == (Object other){
+    return other is CollectionPoint && objectId == other.objectId;
+  }
+
+  @override
+  int get hashCode => objectId.hashCode;
+
 }
