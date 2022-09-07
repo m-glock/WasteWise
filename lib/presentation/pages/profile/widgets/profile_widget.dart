@@ -9,10 +9,12 @@ import '../../../i18n/languages.dart';
 import '../../../util/constants.dart';
 
 class ProfileWidget extends StatefulWidget {
-  const ProfileWidget({Key? key, required this.authenticated})
+  const ProfileWidget(
+      {Key? key, required this.authenticated, this.introView = false})
       : super(key: key);
 
   final Function authenticated;
+  final bool introView;
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
@@ -73,25 +75,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if(current != null)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(size),
-            child: avatarPicture != null
-                ? SvgPicture.network(
-                    avatarPicture.url!,
-                    width: size,
-                    height: size,
-                  )
-                : Container(
-                    color: Colors.black12,
-                    width: size,
-                    height: size,
-                    child: Icon(
-                      FontAwesomeIcons.user,
-                      size: MediaQuery.of(context).size.width / 3,
+          if (current != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(size),
+              child: avatarPicture != null
+                  ? SvgPicture.network(
+                      avatarPicture.url!,
+                      width: size,
+                      height: size,
+                    )
+                  : Container(
+                      color: Colors.black12,
+                      width: size,
+                      height: size,
+                      child: Icon(
+                        FontAwesomeIcons.user,
+                        size: MediaQuery.of(context).size.width / 3,
+                      ),
                     ),
-                  ),
-          ),
+            ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           Text(
             current?.username ?? "",
@@ -102,90 +104,93 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             current?.get("zip_code") ?? "",
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          const Padding(padding: EdgeInsets.only(bottom: 20)),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: Constants.tileBorderRadius,
+          if (!widget.introView) ...[
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: Constants.tileBorderRadius,
+              ),
+              child: Column(
+                //TODO: get values from Backend
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        Languages.of(context)!.profileRecycledItemsText,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Expanded(
+                        child: Text("123",
+                            style: Theme.of(context).textTheme.bodyText1,
+                            textAlign: TextAlign.end),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        Languages.of(context)!.profileSavedItemsText,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Expanded(
+                        child: Text("52",
+                            style: Theme.of(context).textTheme.bodyText1,
+                            textAlign: TextAlign.end),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(bottom: 20)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        Languages.of(context)!.profileRankingText,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Expanded(
+                        child: Text(
+                            "3 ${Languages.of(context)!.profileRankingPlaceText}",
+                            style: Theme.of(context).textTheme.bodyText1,
+                            textAlign: TextAlign.end),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              //TODO: get values from Backend
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      Languages.of(context)!.profileRecycledItemsText,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Expanded(
-                      child: Text("123",
-                          style: Theme.of(context).textTheme.bodyText1,
-                          textAlign: TextAlign.end),
-                    ),
-                  ],
+                OutlinedButton(
+                  child: Text(Languages.of(context)!.searchHistoryPageTitle),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SearchHistoryPage()),
+                  ),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 10)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      Languages.of(context)!.profileSavedItemsText,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Expanded(
-                      child: Text("52",
-                          style: Theme.of(context).textTheme.bodyText1,
-                          textAlign: TextAlign.end),
-                    ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(bottom: 20)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      Languages.of(context)!.profileRankingText,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Expanded(
-                      child: Text(
-                          "3 ${Languages.of(context)!.profileRankingPlaceText}",
-                          style: Theme.of(context).textTheme.bodyText1,
-                          textAlign: TextAlign.end),
-                    ),
-                  ],
+                OutlinedButton(
+                  child: Text(Languages.of(context)!.bookmarkPageTitle),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BookmarkPage()),
+                  ),
                 ),
               ],
             ),
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              OutlinedButton(
-                child: Text(Languages.of(context)!.searchHistoryPageTitle),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SearchHistoryPage()),
-                ),
-              ),
-              OutlinedButton(
-                child: Text(Languages.of(context)!.bookmarkPageTitle),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BookmarkPage()),
-                ),
-              ),
-            ],
-          ),
+          ],
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           ElevatedButton(
             onPressed: () => _logout(),
             child: Text(Languages.of(context)!.profileLogoutButtonText),
-          )
+          ),
         ],
       ),
     );

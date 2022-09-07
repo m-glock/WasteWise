@@ -4,8 +4,8 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
+import 'package:recycling_app/presentation/pages/introduction/widgets/intro_login_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
-import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
@@ -18,6 +18,8 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+  String? municipalityId;
+
   PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
@@ -62,19 +64,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
         ),*/
         PageViewModel(
           title: Languages.of(context)!.profilePageName,
-          bodyWidget: Column(
-            children: [
-              Text(
-                Languages.of(context)!.profileScreenExplanation,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
-              LoginWidget(
-                authenticated: () => {},
-                onlySignup: true,
-              ),
-            ],
-          ),
+          bodyWidget: const IntroLoginWidget(),
           decoration: _getPageDecoration(),
         ),
       ],
@@ -95,11 +85,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
         activeShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),
-      ),
-      showSkipButton: true,
-      skip: Text(
-        Languages.of(context)!.skipButtonText,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       done: Text(
         Languages.of(context)!.doneButtonText,

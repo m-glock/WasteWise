@@ -15,7 +15,6 @@ class LanguageDe extends Languages {
   // introduction
   @override String get doneButtonText => "Fertig";
   @override String get nextButtonText => "Weiter";
-  @override String get skipButtonText => "Überspringen";
   @override String get languageScreenTitle => "Sprache auswählen";
   @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
   @override String get purposeScreenTitle => "Ziel der App";
@@ -46,6 +45,7 @@ class LanguageDe extends Languages {
   @override String get usernameLabel => "Username";
   @override String get passwordLabel => "Passwort";
   @override String get emailLabel => "E-Mail";
+  @override String get zipCodeLabel => "Postleitzahl (optional)";
   @override String get signupButtonText => "Registrieren";
   @override String get loginButtonText => "Einloggen";
   @override String get goToLoginButtonText => "Bereits registriert? Zum Login";

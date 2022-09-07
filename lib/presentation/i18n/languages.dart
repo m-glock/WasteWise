@@ -16,7 +16,6 @@ abstract class Languages {
   String get settingsPageName;
 
   // introduction
-  String get skipButtonText;
   String get nextButtonText;
   String get doneButtonText;
   String get languageScreenTitle;
@@ -49,6 +48,7 @@ abstract class Languages {
   String get usernameLabel;
   String get emailLabel;
   String get passwordLabel;
+  String get zipCodeLabel;
   String get signupButtonText;
   String get loginButtonText;
   String get goToLoginButtonText;

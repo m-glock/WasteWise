@@ -16,7 +16,6 @@ class LanguageEn extends Languages {
   // introduction
   @override String get doneButtonText => "Done";
   @override String get nextButtonText => "Next";
-  @override String get skipButtonText => "Skip";
   @override String get languageScreenTitle => "Choose language";
   @override String get languageScreenExplanation => "Welcome to ${Constants.appTitle}. Please choose the language for the app. You can always change it later on in the settings.";
   @override String get purposeScreenTitle => "Purpose of the App";
@@ -46,6 +45,7 @@ class LanguageEn extends Languages {
   // registration/login page
   @override String get usernameLabel => "Username";
   @override String get passwordLabel => "Password";
+  @override String get zipCodeLabel => "zip code (optional)";
   @override String get emailLabel => "Email";
   @override String get signupButtonText => "Sign Up";
   @override String get loginButtonText => "Log in";
