@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 
 import '../../util/database_classes/item.dart';
+import '../../util/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
-  const ItemDetailPage({Key? key, required this.item}) : super(key: key);
+  const ItemDetailPage(
+      {Key? key, required this.item, this.updateBookmarkInParent})
+      : super(key: key);
 
   final Item item;
+  final Function? updateBookmarkInParent;
 
   @override
   State<ItemDetailPage> createState() => _ItemDetailPageState();
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-  late bool isBookmarked;
+  void _updateBookmark() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
 
-  @override
-  void initState() {
-    super.initState();
-    isBookmarked = widget.item.bookmarked;
+    // remove or add the bookmark depending on the bookmark state
+    bool success = widget.item.bookmarked
+        ? await GraphQLQueries.removeItemBookmark(widget.item.objectId, client)
+        : await GraphQLQueries.addItemBookmark(widget.item.objectId, client);
+
+    // change bookmark status if DB entry was successful
+    // or notify user if not
+    if (success) {
+      setState(() {
+        widget.item.bookmarked = !widget.item.bookmarked;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
   }
 
   @override
@@ -32,12 +50,16 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         actions: [
           IconButton(
               onPressed: () {
-                setState(() {
-                  isBookmarked = !isBookmarked;
-                  //TODO: update DB
-                });
+                if (widget.updateBookmarkInParent == null) {
+                  _updateBookmark();
+                } else {
+                  widget.updateBookmarkInParent!();
+                  setState(() {
+                    widget.item.bookmarked = !widget.item.bookmarked;
+                  });
+                }
               },
-              icon: isBookmarked
+              icon: widget.item.bookmarked
                   ? const Icon(FontAwesomeIcons.solidBookmark)
                   : const Icon(FontAwesomeIcons.bookmark))
         ],
@@ -69,22 +91,22 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Text(
                   Languages.of(context)!.itemDetailMoreInfoLabel +
-                      widget.item.subcategory,
+                      widget.item.subcategory!,
                   style: Theme.of(context).textTheme.bodyText1),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               ItemDetailTile(
                   headerTitle:
                       Languages.of(context)!.itemDetailExplanationLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
               const Padding(padding: EdgeInsets.only(bottom: 15)),
               //TODO: get tips and preventions
               ItemDetailTile(
                   headerTitle: Languages.of(context)!.itemDetailTipsLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
               const Padding(padding: EdgeInsets.only(bottom: 15)),
               ItemDetailTile(
                   headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
-                  expandedText: widget.item.explanation),
+                  expandedText: widget.item.explanation!),
             ],
           ),
         ),

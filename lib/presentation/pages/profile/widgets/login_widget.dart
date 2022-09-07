@@ -105,7 +105,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     final ParseCloudFunction function = ParseCloudFunction('setUsersAcls');
     final ParseResponse parseResponse = await function.execute();
     if (parseResponse.success && parseResponse.result != null) {
-      debugPrint(parseResponse.result);
+      debugPrint(parseResponse.result.toString());
     }
   }
 

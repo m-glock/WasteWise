@@ -14,7 +14,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-
   bool _isAuthenticated = false;
 
   @override
@@ -31,19 +30,15 @@ class _UserPageState extends State<UserPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
-        child: Column(
-          children: [
-            _isAuthenticated
-                ? ProfileWidget(authenticated: _checkIfAuthenticated)
-                : LoginWidget(authenticated: _checkIfAuthenticated)
-          ],
-        ),
+        child: _isAuthenticated
+            ? ProfileWidget(authenticated: _checkIfAuthenticated)
+            : LoginWidget(authenticated: _checkIfAuthenticated),
       ),
     );
   }
 
   void _checkIfAuthenticated() async {
-  ParseUser? currentUser = await ParseUser.currentUser();
+    ParseUser? currentUser = await ParseUser.currentUser();
     setState(() {
       _isAuthenticated = currentUser != null;
     });

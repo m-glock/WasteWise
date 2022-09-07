@@ -3,7 +3,7 @@ import '../hex_color.dart';
 import 'cycle.dart';
 import 'myth.dart';
 
-class WasteBinCategory {
+class WasteBinCategory{
   final String title;
   final String objectId;
   final Color color;
@@ -22,4 +22,13 @@ class WasteBinCategory {
         HexColor.fromHex(category["category_id"]["hex_color"]),
         category["category_id"]["image_file"]["url"]);
   }
+
+  @override
+  bool operator == (Object other){
+    return other is WasteBinCategory && objectId == other.objectId;
+  }
+
+  @override
+  int get hashCode => objectId.hashCode;
+
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
+import '../../../../i18n/languages.dart';
 import '../../../../util/constants.dart';
 import '../../../../util/custom_icon_button.dart';
 import '../../../../util/database_classes/tip.dart';
+import '../../../../util/graphl_ql_queries.dart';
 
 class TipTile extends StatefulWidget {
   const TipTile({
@@ -23,8 +26,27 @@ class TipTile extends StatefulWidget {
 }
 
 class _TipTileState extends State<TipTile> {
-  void _bookmarkTip() {
-    //TODO: update in DB
+  void _bookmarkTip() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    // remove or add the bookmark depending on the bookmark state
+    bool success = widget.tip.isBookmarked
+        ? await GraphQLQueries.removeTipBookmark(widget.tip.objectId, client)
+        : await GraphQLQueries.addTipBookmark(widget.tip.objectId, client);
+
+    // change bookmark status if DB entry was successful
+    // or notify user if not
+    if (success) {
+      setState(() {
+        widget.tip.isBookmarked = !widget.tip.isBookmarked;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
+  }
+
+  void _updateBookmarkInWidget() {
     setState(() {
       widget.tip.isBookmarked = !widget.tip.isBookmarked;
     });
@@ -60,7 +82,12 @@ class _TipTileState extends State<TipTile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TipDetailPage(tip: widget.tip, tipNumber: widget.tipNumber,)),
+                      builder: (context) => TipDetailPage(
+                        tip: widget.tip,
+                        tipNumber: widget.tipNumber,
+                        updateBookmarkInParent: _updateBookmarkInWidget,
+                      ),
+                    ),
                   );
                 },
                 child: Row(
@@ -93,8 +120,8 @@ class _TipTileState extends State<TipTile> {
                                         Theme.of(context).colorScheme.secondary,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                )),
-                          ])
+                                ),),
+                          ],)
                         ],
                       ),
                     ),

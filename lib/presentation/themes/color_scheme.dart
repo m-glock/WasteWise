@@ -11,11 +11,11 @@ class AppColorScheme extends ColorScheme{
     secondary: const Color.fromARGB(255, 140, 108, 48),
     surface: const Color.fromARGB(255, 236, 232, 221),
     primary: const Color.fromARGB(255, 120, 155, 96),
+    tertiary: const Color.fromARGB(255, 197, 173, 125),
     error: const Color.fromARGB(255, 213, 76, 76),
     onSurface: const Color.fromARGB(255, 50, 50, 50),
     onBackground: const Color.fromARGB(255, 50, 50, 50),
     brightness: Brightness.light,
-    // 203010
   );
 
 }

@@ -54,6 +54,23 @@ class LanguageEn extends Languages {
   @override String get errorDialogTitle => "Something went wrong";
   @override String get registrationDialogCloseButtonText => "Okay";
 
+  // profile page
+  @override String get profileRecycledItemsText => "Amount of recycled items:";
+  @override String get profileSavedItemsText => "Amount of saved items:";
+  @override String get profileRankingText => "Ranking in neighborhood:";
+  @override String get profileRankingPlaceText => "place";
+  @override String get profileLogoutButtonText => "Logout";
+
+  // search history page
+  @override String get searchHistoryPageTitle => "Search History";
+
+  // bookmark and bookmark page
+  @override String get bookmarkPageTitle => "Bookmarks";
+  @override String get bookmarkingFailedText => "Something went wrong. Bookmark was not successful.";
+  @override String get noBookmarksAvailableText => "No bookmarks set.";
+  @override String get itemBookmarkTagTitle => "Item";
+  @override String get tipBookmarkTagTitle => "Tip";
+
   // search page
   @override String get oftenSearched => "Commonly searched by others";
   @override String get recentlySearched => "Your recent searches";

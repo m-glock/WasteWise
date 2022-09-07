@@ -1,3 +1,5 @@
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 
 import 'data_holder.dart';
@@ -130,12 +132,13 @@ class GraphQLQueries{
   """;
 
   static String itemDetailQuery = """
-    query GetItem(\$languageCode: String!, \$itemObjectId: String!){
+    query GetItem(\$languageCode: String!, \$itemObjectId: String!, \$userId: String!){
       getItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
         title
         explanation
         material
         item_id{
+          objectId
           subcategory_id{
             objectId
             category_id{
@@ -152,6 +155,72 @@ class GraphQLQueries{
       getSubcategoryOfItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
         title
         explanation
+      }
+      
+      getBookmarkStatusOfItem(itemObjectId: \$itemObjectId, userId: \$userId){
+        objectId
+      }
+    }
+  """;
+
+  static String tipListQuery = """
+    query GetCategories(\$languageCode: String!, \$userId: String){
+      getTipTypes(languageCode: \$languageCode){
+        title
+        tip_type_id{
+          color
+          objectId
+        }
+      }
+      
+      getTips(languageCode: \$languageCode){
+        tip_id{
+          objectId
+    	    category_id{
+    	      objectId
+      	    pictogram
+    	    },
+    	    tip_type_id{
+    	      objectId
+      	    color
+    	    },
+    	    image{
+    	      url
+    	    }
+  	    }, 
+        title,
+        explanation,
+        short
+      }
+      
+      getTipBookmarks(userId: \$userId){
+        tip_id{
+          objectId
+        }
+      }
+    }
+  """;
+
+  static String tipDetailQuery = """
+    query GetTip(\$languageCode: String!, \$tipId: String!){
+      getTip(languageCode: \$languageCode, tipId: \$tipId){
+        tip_id{
+          objectId
+    	    category_id{
+    	      objectId
+      	    pictogram
+    	    },
+    	    tip_type_id{
+    	      objectId
+      	    color
+    	    },
+    	    image{
+    	      url
+    	    }
+  	    }, 
+        title,
+        explanation,
+        short
       }
     }
   """;
@@ -179,6 +248,177 @@ class GraphQLQueries{
       }
     }
   """;
+
+  static String searchHistoryQuery = """
+    query GetSearchHistory(\$languageCode: String!, \$userId: String){
+      getSearchHistory(languageCode: \$languageCode, userId: \$userId){
+        createdAt
+        item_id{
+          objectId
+          subcategory_id{
+            category_id{
+              objectId
+            }
+          }
+        }
+        selected_category_id{
+          objectId
+        }
+      }
+    }
+  """;
+
+  static String bookmarkedItemsQuery = """
+    query GetAllItemBookmarksForUser(\$languageCode: String!, \$userId: String){
+      getAllItemBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
+        title
+        item_id{
+          objectId
+        }
+      }
+      
+      getAllTipBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
+        title
+        tip_id{
+          objectId
+        }
+      }
+    }
+  """;
+
+  static String getItemName = """
+    query GetItemName(\$languageCode: String!, \$itemId: String){
+      getItemName(languageCode: \$languageCode, itemId: \$itemId){
+        title
+      }
+    }
+  """;
+
+  static String searchHistoryMutation = """
+    mutation CreateObject(\$input: CreateSearchHistoryFieldsInput){
+      createSearchHistory(input: {fields: \$input}){
+        searchHistory{
+          id
+          objectId
+        }
+      }
+     }
+  """;
+
+  static String addBookmarkItemMutation = """
+    mutation CreateObject(\$userId: String!, \$itemId: String!){
+      createBookmarkedItem(userId: \$userId, itemId: \$itemId)
+    }
+  """;
+
+  static String deleteBookmarkItemMutation = """
+    mutation CreateObject(\$userId: String!, \$itemId: String!){
+      deleteBookmarkedItem(userId: \$userId, itemId: \$itemId)
+    }
+  """;
+
+  static String addBookmarkTipMutation = """
+    mutation CreateObject(\$userId: String!, \$tipId: String!){
+      createBookmarkedTip(userId: \$userId, tipId: \$tipId)
+    }
+  """;
+
+  static String deleteBookmarkTipMutation = """
+    mutation CreateObject(\$userId: String!, \$tipId: String!){
+      deleteBookmarkedTip(userId: \$userId, tipId: \$tipId)
+    }
+  """;
+
+  static Future<bool> addItemBookmark(String itemId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "itemId": itemId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.addBookmarkItemMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["createBookmarkedItem"] ?? false;
+  }
+
+  static Future<bool> removeItemBookmark(String itemId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "itemId": itemId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.deleteBookmarkItemMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["deleteBookmarkedItem"] ?? false;
+  }
+
+  static Future<bool> addTipBookmark(String tipId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "tipId": tipId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.addBookmarkTipMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["createBookmarkedTip"] ?? false;
+  }
+
+  static Future<bool> removeTipBookmark(String tipId, GraphQLClient client) async {
+    ParseUser current = await ParseUser.currentUser();
+    Map<String, dynamic> inputVariables = {
+      "userId": current.objectId,
+      "tipId": tipId,
+    };
+
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.deleteBookmarkTipMutation),
+        variables: inputVariables,
+      ),
+    );
+    if(result.hasException) return false;
+
+    return result.data?["deleteBookmarkedTip"] ?? false;
+  }
+
+  static dynamic getInputVariablesForSearchHistory(
+      String userObjectId,
+      String itemObjectId,
+      String selectedCategoryObjectId) {
+    return {
+      "input": {
+        "user_id": {
+          "link": userObjectId
+        },
+        "item_id": {
+          "link": itemObjectId
+        },
+        "selected_category_id": {
+          "link": selectedCategoryObjectId
+        },
+      }
+    };
+  }
 
   static void initialDataExtraction(dynamic data){
     // get waste bin categories

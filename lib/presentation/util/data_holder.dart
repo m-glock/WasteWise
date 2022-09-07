@@ -7,7 +7,7 @@ import 'database_classes/collection_point_type.dart';
 
 class DataHolder{
 
-  static final List<WasteBinCategory> categories = [];
+  static final Map<String, WasteBinCategory> categories = {};
   static final Map<String, Subcategory> subcategoriesById = {};
   static final Map<String, String> itemNames = {};
   static final List<CollectionPointType> collectionPointTypes = [];
