@@ -89,6 +89,7 @@ class LanguageEn extends Languages {
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
   @override String get itemDetailWasteBinLabel => "Waste bin: ";
+  @override String get itemDetailSynonymsLabel => "Alternative terms: ";
   @override String get itemDetailMoreInfoLabel => "More Information about ";
   @override String get itemDetailExplanationLabel => "Explanation";
   @override String get itemDetailPreventionLabel => "Prevention";

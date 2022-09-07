@@ -137,6 +137,7 @@ class GraphQLQueries{
         title
         explanation
         material
+        synonyms
         item_id{
           objectId
           subcategory_id{
@@ -462,7 +463,7 @@ class GraphQLQueries{
     }
 
     // save waste bin categories
-    DataHolder.categories.addAll(wasteBinCategories.values);
+    DataHolder.categories.addAll(wasteBinCategories);
 
     // get subcategories
     List<dynamic> subcategories = data?["getSubcategories"];

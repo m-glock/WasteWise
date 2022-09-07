@@ -4,6 +4,7 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 class Item {
   final String objectId;
   final String title;
+  final String? synonyms;
   final String? explanation;
   final String material;
   final String? subcategory;
@@ -13,7 +14,7 @@ class Item {
   //TODO: get tips and preventions
 
   Item(this.objectId, this.title, this.material,
-       this.wasteBin, {this.explanation, this.subcategory, this.bookmarked = false});
+       this.wasteBin, {this.synonyms, this.explanation, this.subcategory, this.bookmarked = false});
 
   static Item fromJson(
       Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData, bool bookmarkStatus) {
@@ -32,6 +33,7 @@ class Item {
         item["title"],
         item["material"],
         DataHolder.categories[categoryId]!,
+        synonyms: item["synonyms"],
         explanation: explanation,
         subcategory: subcategoryTitle,
         bookmarked: isBookmarked);

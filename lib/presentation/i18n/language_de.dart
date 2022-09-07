@@ -88,6 +88,7 @@ class LanguageDe extends Languages {
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
   @override String get itemDetailWasteBinLabel => "Tonne: ";
+  @override String get itemDetailSynonymsLabel => "Alternative Begriffe: ";
   @override String get itemDetailMoreInfoLabel => "Mehr Informationen über ";
   @override String get itemDetailExplanationLabel => "Erklärung";
   @override String get itemDetailPreventionLabel => "Vermeidung";
