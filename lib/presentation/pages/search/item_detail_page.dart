@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 
@@ -21,6 +22,22 @@ class ItemDetailPage extends StatefulWidget {
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
+
+  ParseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      currentUser = current;
+    });
+  }
+
   void _updateBookmark() async {
     GraphQLClient client = GraphQLProvider.of(context).value;
 
@@ -48,7 +65,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       appBar: AppBar(
         title: Text(widget.item.title),
         actions: [
-          IconButton(
+          if(currentUser != null)
+            IconButton(
               onPressed: () {
                 if (widget.updateBookmarkInParent == null) {
                   _updateBookmark();
@@ -61,7 +79,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               },
               icon: widget.item.bookmarked
                   ? const Icon(FontAwesomeIcons.solidBookmark)
-                  : const Icon(FontAwesomeIcons.bookmark))
+                  : const Icon(FontAwesomeIcons.bookmark),
+            )
         ],
       ),
       body: Padding(

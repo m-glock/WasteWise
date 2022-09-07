@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
 import '../../../../i18n/languages.dart';
@@ -26,6 +27,22 @@ class TipTile extends StatefulWidget {
 }
 
 class _TipTileState extends State<TipTile> {
+
+  ParseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      currentUser = current;
+    });
+  }
+
   void _bookmarkTip() async {
     GraphQLClient client = GraphQLProvider.of(context).value;
     // remove or add the bookmark depending on the bookmark state
@@ -65,14 +82,15 @@ class _TipTileState extends State<TipTile> {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            widget.tip.isBookmarked
+            if(currentUser != null)
+              widget.tip.isBookmarked
                 ? CustomIconButton(
                     onPressed: _bookmarkTip,
-                    icon: const Icon(Icons.bookmark),
+                    icon: const Icon(FontAwesomeIcons.solidBookmark),
                   )
                 : CustomIconButton(
                     onPressed: _bookmarkTip,
-                    icon: const Icon(Icons.bookmark_border_outlined),
+                    icon: const Icon(FontAwesomeIcons.bookmark),
                   ),
             const Padding(padding: EdgeInsets.only(right: 15)),
             Expanded(

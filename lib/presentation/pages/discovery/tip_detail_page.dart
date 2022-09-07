@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 
 import '../../i18n/languages.dart';
@@ -25,6 +26,22 @@ class TipDetailPage extends StatefulWidget {
 }
 
 class _TipDetailPageState extends State<TipDetailPage> {
+
+  ParseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      currentUser = current;
+    });
+  }
+
   void _changeBookmarkStatus() async {
     GraphQLClient client = GraphQLProvider.of(context).value;
     // remove or add the bookmark depending on the bookmark state
@@ -65,15 +82,17 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       style: Theme.of(context).textTheme.headline1),
                 ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                widget.tip.isBookmarked
-                    ? CustomIconButton(
-                        onPressed: _changeBookmarkStatus,
-                        icon: const Icon(FontAwesomeIcons.solidBookmark))
-                    : CustomIconButton(
-                        onPressed: _changeBookmarkStatus,
-                        icon: const Icon(FontAwesomeIcons.bookmark),
-                      ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                if(currentUser != null) ...[
+                  widget.tip.isBookmarked
+                      ? CustomIconButton(
+                      onPressed: _changeBookmarkStatus,
+                      icon: const Icon(FontAwesomeIcons.solidBookmark))
+                      : CustomIconButton(
+                    onPressed: _changeBookmarkStatus,
+                    icon: const Icon(FontAwesomeIcons.bookmark),
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                ],
                 CustomIconButton(
                     onPressed: () => {},
                     //TODO: open modal to share with neighborhood
