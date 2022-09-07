@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 
@@ -11,6 +12,7 @@ import '../../../util/graphl_ql_queries.dart';
 class AlertDialogWidget {
   static Future<void> showModal(
       BuildContext context, Item item, bool isCorrect) async {
+    ParseUser? currentUser = await ParseUser.currentUser();
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -26,7 +28,8 @@ class AlertDialogWidget {
                 isCorrect
                     ? Text(Languages.of(context)!.alertDialogCorrectTitle)
                     : Text(Languages.of(context)!.alertDialogWrongTitle),
-                IconButton(
+                if(currentUser != null)
+                  IconButton(
                     onPressed: () async {
                       GraphQLClient client = GraphQLProvider.of(context).value;
 
@@ -53,7 +56,8 @@ class AlertDialogWidget {
                     },
                     icon: isBookmarked
                         ? const Icon(FontAwesomeIcons.solidBookmark)
-                        : const Icon(FontAwesomeIcons.bookmark))
+                        : const Icon(FontAwesomeIcons.bookmark),
+                  )
               ],
             ),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),

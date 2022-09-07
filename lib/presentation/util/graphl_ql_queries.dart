@@ -462,7 +462,7 @@ class GraphQLQueries{
     }
 
     // save waste bin categories
-    DataHolder.categories.addAll(wasteBinCategories.values);
+    DataHolder.categories.addAll(wasteBinCategories);
 
     // get subcategories
     List<dynamic> subcategories = data?["getSubcategories"];
