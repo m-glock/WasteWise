@@ -12,11 +12,11 @@ import '../../util/graphl_ql_queries.dart';
 
 class SearchSortPage extends StatefulWidget {
   const SearchSortPage(
-      {Key? key,
-      required this.itemObjectId})
+      {Key? key, required this.itemObjectId, required this.title})
       : super(key: key);
 
   final String itemObjectId;
+  final String title;
 
   @override
   State<SearchSortPage> createState() => _SearchSortPageState();
@@ -43,41 +43,43 @@ class _SearchSortPageState extends State<SearchSortPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(
-        //TODO: check if still necessary after figuring cache out
-          fetchPolicy: FetchPolicy.networkOnly,
-          document: gql(GraphQLQueries.itemDetailQuery),
-          variables: {
-            "languageCode": languageCode,
-            "itemObjectId": widget.itemObjectId,
-            "userId": userId,
-          }),
-      builder: (QueryResult result,
-          {VoidCallback? refetch, FetchMore? fetchMore}) {
-        if (result.hasException) return Text(result.exception.toString());
-        if (result.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Query(
+        options: QueryOptions(
+            //TODO: check if still necessary after figuring cache out
+            fetchPolicy: FetchPolicy.networkOnly,
+            document: gql(GraphQLQueries.itemDetailQuery),
+            variables: {
+              "languageCode": languageCode,
+              "itemObjectId": widget.itemObjectId,
+              "userId": userId,
+            }),
+        builder: (QueryResult result,
+            {VoidCallback? refetch, FetchMore? fetchMore}) {
+          if (result.hasException) return Text(result.exception.toString());
+          if (result.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        Map<String, dynamic> itemData = result.data?["getItem"];
-        Map<String, dynamic> subcategory = result.data?["getSubcategoryOfItem"];
-        bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
+          Map<String, dynamic> itemData = result.data?["getItem"];
+          Map<String, dynamic> subcategory =
+              result.data?["getSubcategoryOfItem"];
+          bool bookmarkedStatus =
+              result.data?["getBookmarkStatusOfItem"] != null;
 
-        if (itemData.isEmpty) {
-          Navigator.pop(context);
-          //TODO: let user know whats wrong
-          return const Text("No item found.");
-        }
+          if (itemData.isEmpty) {
+            Navigator.pop(context);
+            //TODO: let user know whats wrong
+            return const Text("No item found.");
+          }
 
-        Item item = Item.fromJson(itemData, subcategory, bookmarkedStatus);
+          Item item = Item.fromJson(itemData, subcategory, bookmarkedStatus);
 
-        // display when all data is available
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(item.title),
-          ),
-          body: SingleChildScrollView(
+          // display when all data is available
+          return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.all(Constants.pagePadding),
               child: Column(
@@ -97,7 +99,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
                         return SearchSortGridTile(
                           category: category,
                           isCorrect:
-                          category.objectId == item.wasteBin.objectId,
+                              category.objectId == item.wasteBin.objectId,
                           item: item,
                         );
                       }).toList(),
@@ -106,9 +108,9 @@ class _SearchSortPageState extends State<SearchSortPage> {
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

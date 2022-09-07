@@ -475,9 +475,13 @@ class GraphQLQueries{
     //get item names
     List<dynamic> items = data?["getItemNames"];
     for (dynamic element in items) {
-      //TODO: entry for each synonym?
-      DataHolder.itemNames[element["title"]] =
-      element["item_id"]["objectId"];
+      DataHolder.itemNames[element["title"]] = element["item_id"]["objectId"];
+      List<String> synonyms = element["synonyms"] != null
+          ? element["synonyms"].toString().split(",")
+          : [];
+      for(String synonym in synonyms){
+        DataHolder.itemNames[synonym.trim()] = element["item_id"]["objectId"];
+      };
     }
   }
 }
