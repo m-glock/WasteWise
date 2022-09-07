@@ -137,6 +137,7 @@ class GraphQLQueries{
         title
         explanation
         material
+        synonyms
         item_id{
           objectId
           subcategory_id{
@@ -462,7 +463,7 @@ class GraphQLQueries{
     }
 
     // save waste bin categories
-    DataHolder.categories.addAll(wasteBinCategories.values);
+    DataHolder.categories.addAll(wasteBinCategories);
 
     // get subcategories
     List<dynamic> subcategories = data?["getSubcategories"];
@@ -474,9 +475,13 @@ class GraphQLQueries{
     //get item names
     List<dynamic> items = data?["getItemNames"];
     for (dynamic element in items) {
-      //TODO: entry for each synonym?
-      DataHolder.itemNames[element["title"]] =
-      element["item_id"]["objectId"];
+      DataHolder.itemNames[element["title"]] = element["item_id"]["objectId"];
+      List<String> synonyms = element["synonyms"] != null
+          ? element["synonyms"].toString().split(",")
+          : [];
+      for(String synonym in synonyms){
+        DataHolder.itemNames[synonym.trim()] = element["item_id"]["objectId"];
+      };
     }
   }
 }

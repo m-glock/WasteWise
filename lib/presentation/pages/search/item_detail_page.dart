@@ -78,6 +78,15 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   height: MediaQuery.of(context).size.width / 2,
                 ),
               ),
+              if(widget.item.synonyms != null) ...[
+                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                Center(
+                  child: Text(
+                      Languages.of(context)!.itemDetailSynonymsLabel +
+                          widget.item.synonyms!,
+                      style: Theme.of(context).textTheme.bodyText1),
+                ),
+              ],
               const Padding(padding: EdgeInsets.only(bottom: 30)),
               Text(
                   Languages.of(context)!.itemDetailMaterialLabel +

@@ -91,6 +91,7 @@ abstract class Languages {
   // item detail page
   String get itemDetailMaterialLabel;
   String get itemDetailWasteBinLabel;
+  String get itemDetailSynonymsLabel;
   String get itemDetailMoreInfoLabel;
   String get itemDetailExplanationLabel;
   String get itemDetailTipsLabel;
