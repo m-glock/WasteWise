@@ -18,7 +18,14 @@ class MapFilterDropdownWidget extends StatefulWidget {
 }
 
 class _MapFilterDropdownWidgetState extends State<MapFilterDropdownWidget> {
-  late String dropdownDefault = widget.dropdownValues.first;
+  late String dropdownDefault;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.dropdownValues.insert(0, "All");
+    dropdownDefault = widget.dropdownValues.first;
+  }
 
   @override
   Widget build(BuildContext context) {

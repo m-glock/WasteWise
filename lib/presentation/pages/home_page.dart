@@ -12,6 +12,7 @@ import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../i18n/locale_constant.dart';
 import '../util/graphl_ql_queries.dart';
@@ -24,7 +25,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String languageCode = "";
+  String? languageCode;
+  String? municipalityId;
   int _selectedIndex = 0;
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
@@ -36,13 +38,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _getLanguageCode();
+    _getLanguageCodeAndMunicipality();
   }
 
-  void _getLanguageCode() async {
+  void _getLanguageCodeAndMunicipality() async {
     Locale locale = await getLocale();
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
     setState(() {
       languageCode = locale.languageCode;
+      municipalityId = id ?? "";
     });
   }
 
@@ -117,28 +122,34 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Query(
-        options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
-          "languageCode": languageCode,
-          "municipalityId": "PMJEteBu4m" //TODO get from user
-        }),
-        builder: (QueryResult result,
-            {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.hasException) return Text(result.exception.toString());
-          if (result.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: languageCode == null || municipalityId == null
+          ? const Center(child: CircularProgressIndicator())
+          : Query(
+              options: QueryOptions(
+                  document: gql(GraphQLQueries.initialQuery),
+                  variables: {
+                    "languageCode": languageCode,
+                    "municipalityId": municipalityId
+                  }),
+              builder: (QueryResult result,
+                  {VoidCallback? refetch, FetchMore? fetchMore}) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
+                if (result.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          GraphQLQueries.initialDataExtraction(result.data);
+                GraphQLQueries.initialDataExtraction(result.data);
 
-          return Padding(
-            padding: EdgeInsets.all(Constants.pagePadding),
-            child: Center(
-              child: _pages.elementAt(_selectedIndex),
+                return Padding(
+                  padding: EdgeInsets.all(Constants.pagePadding),
+                  child: Center(
+                    child: _pages.elementAt(_selectedIndex),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedIconTheme: const IconThemeData(size: 30),
