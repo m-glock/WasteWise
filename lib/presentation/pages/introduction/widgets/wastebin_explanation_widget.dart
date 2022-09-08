@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
@@ -86,11 +86,12 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SvgPicture.network(
-                                category.pictogramUrl,
-                                color: category.color,
+                              CachedNetworkImage(
+                                imageUrl: category.pictogramUrl,
                                 width: 50,
                                 height: 50,
+                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
                               ),
                               const Padding(
                                   padding: EdgeInsets.only(bottom: 10)),

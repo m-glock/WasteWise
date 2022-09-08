@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -103,13 +104,14 @@ class _HistoryTileState extends State<HistoryTile> {
                                 width: pictogramSize,
                                 height: pictogramSize,
                               ),
-                              SvgPicture.network(
-                                widget.item.selectedCategory.pictogramUrl,
-                                color: widget.item.selectedCategory.color
-                                    .withAlpha(100),
-                                height: pictogramSize,
+                              CachedNetworkImage(
+                                imageUrl: widget.item.selectedCategory.pictogramUrl,
                                 width: pictogramSize,
-                                alignment: Alignment.centerLeft,
+                                height: pictogramSize,
+                                color: Colors.white.withOpacity(0.5),
+                                colorBlendMode: BlendMode.modulate,
+                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
                               ),
                               SvgPicture.asset(
                                 "assets/images/strikethrough.svg",
@@ -127,12 +129,12 @@ class _HistoryTileState extends State<HistoryTile> {
                               width: pictogramSize,
                               height: pictogramSize,
                             ),
-                            SvgPicture.network(
-                              widget.item.correctWasteBin.pictogramUrl,
-                              color: widget.item.correctWasteBin.color,
-                              height: pictogramSize,
+                            CachedNetworkImage(
+                              imageUrl: widget.item.correctWasteBin.pictogramUrl,
                               width: pictogramSize,
-                              alignment: Alignment.centerLeft,
+                              height: pictogramSize,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                             ),
                           ],
                         ),
