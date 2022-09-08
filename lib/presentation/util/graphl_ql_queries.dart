@@ -289,6 +289,17 @@ class GraphQLQueries{
     }
   """;
 
+  static String getRecentlySearched = """
+    query RecentlySearched(\$languageCode: String!, \$userId: String){
+      recentlySearched(languageCode: \$languageCode, userId: \$userId){
+        title
+        item_id{
+          objectId
+        }
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$input: CreateSearchHistoryFieldsInput){
       createSearchHistory(input: {fields: \$input}){
