@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/profile/bookmark_page.dart';
@@ -79,8 +79,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             ClipRRect(
               borderRadius: BorderRadius.circular(size),
               child: avatarPicture != null
-                  ? SvgPicture.network(
-                      avatarPicture.url!,
+                  ? CachedNetworkImage(
+                      imageUrl: avatarPicture.url!,
                       width: size,
                       height: size,
                     )
