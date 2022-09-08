@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
@@ -52,11 +52,12 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SvgPicture.network(
-            widget.category.pictogramUrl,
-            color: widget.category.color,
+          CachedNetworkImage(
+            imageUrl: widget.category.pictogramUrl,
             width: 100,
             height: 100,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           Text(

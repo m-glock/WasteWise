@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -90,11 +90,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: SvgPicture.network(
-                  widget.item.wasteBin.pictogramUrl,
-                  color: widget.item.wasteBin.color,
+                child: CachedNetworkImage(
+                  imageUrl: widget.item.wasteBin.pictogramUrl,
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.width / 2,
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               if(widget.item.synonyms != null) ...[

@@ -18,7 +18,6 @@ class GraphQLQueries{
           image_file{
             url
           }
-          hex_color
         }
       }
       
@@ -143,11 +142,7 @@ class GraphQLQueries{
           subcategory_id{
             objectId
             category_id{
-              objectId
-        	    hex_color
-        	    image_file{
-                url
-              }  
+              objectId 
       	    }
           }
         }
@@ -244,7 +239,6 @@ class GraphQLQueries{
           image_file{
             url
           }
-          hex_color
         }
       }
     }
