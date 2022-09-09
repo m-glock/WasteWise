@@ -42,7 +42,7 @@ class _OverviewTileState extends State<OverviewTile> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 7),
             child: Text(
-              Languages.of(context)!.overviewTileSavedText,
+              Languages.of(context)!.overviewTileSavedText + (DataHolder.amountOfRescuedItems ?? 0).toString(),
               style: Theme.of(context).textTheme.bodyText1,
             ),
           )

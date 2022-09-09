@@ -14,4 +14,5 @@ class DataHolder{
   static final Map<CollectionPoint, Marker> markers = {};
   static final Set<String> cpSubcategories = {};
   static int? amountOfSearchedItems;
+  static int? amountOfRescuedItems;
 }

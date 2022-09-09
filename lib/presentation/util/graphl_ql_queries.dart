@@ -80,6 +80,8 @@ class GraphQLQueries{
       }
       
       amountOfSearchedItems(userId: \$userId)
+      
+      amountOfWronglySortedItems(userId: \$userId)
     }
   """;
 
@@ -474,7 +476,9 @@ class GraphQLQueries{
       };
     }
 
-    dynamic amountOfSearchedItemsData = data?["amountOfSearchedItems"];
-    DataHolder.amountOfSearchedItems = amountOfSearchedItemsData;
+    // set searched and rescued data amounts
+    DataHolder.amountOfSearchedItems = data?["amountOfSearchedItems"];
+
+    DataHolder.amountOfRescuedItems =  data?["amountOfWronglySortedItems"];
   }
 }
