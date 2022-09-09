@@ -10,7 +10,7 @@ import 'database_classes/waste_bin_category.dart';
 class GraphQLQueries{
 
   static String initialQuery = """
-    query GetContent(\$languageCode: String!, \$municipalityId: String!){
+    query GetContent(\$languageCode: String!, \$municipalityId: String!, \$userId: String!){
       getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
@@ -78,6 +78,8 @@ class GraphQLQueries{
           }
         }
       }
+      
+      amountOfSearchedItems(userId: \$userId)
     }
   """;
 
@@ -471,5 +473,8 @@ class GraphQLQueries{
         DataHolder.itemNames[synonym.trim()] = element["item_id"]["objectId"];
       };
     }
+
+    dynamic amountOfSearchedItemsData = data?["amountOfSearchedItems"];
+    DataHolder.amountOfSearchedItems = amountOfSearchedItemsData;
   }
 }

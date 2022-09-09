@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 
 import '../../../i18n/languages.dart';
 
@@ -17,6 +18,8 @@ class _OverviewTileState extends State<OverviewTile> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Flexible(
       child: Column(
         children: [
@@ -32,7 +35,7 @@ class _OverviewTileState extends State<OverviewTile> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 7),
             child: Text(
-              Languages.of(context)!.overviewTileRecycledText,
+              Languages.of(context)!.overviewTileRecycledText + (DataHolder.amountOfSearchedItems ?? 0).toString(),
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),

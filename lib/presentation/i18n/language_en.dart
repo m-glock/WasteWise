@@ -38,8 +38,8 @@ class LanguageEn extends Languages {
   @override String get tipTileButtonText => "More Info";
   @override String get congratsTileTitle => "Congratulation!";
   @override String get overviewTileTitle => "Total";
-  @override String get overviewTileRecycledText => "You have reecyceled 123 items.";
-  @override String get overviewTileSavedText => "You have saved 69 items from the wrong waste bin.";
+  @override String get overviewTileRecycledText => "Searched items: ";
+  @override String get overviewTileSavedText => "Saved items: ";
   @override String get progressTileTitle => "Progress";
 
   // registration/login page

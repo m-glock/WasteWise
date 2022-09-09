@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
@@ -27,6 +28,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? languageCode;
   String? municipalityId;
+  String? userId;
   int _selectedIndex = 0;
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
@@ -45,9 +47,11 @@ class _HomePageState extends State<HomePage> {
     Locale locale = await getLocale();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
+    ParseUser? currentUser = await ParseUser.currentUser();
     setState(() {
       languageCode = locale.languageCode;
       municipalityId = id ?? "";
+      userId = currentUser?.objectId ?? "";
     });
   }
 
@@ -129,7 +133,8 @@ class _HomePageState extends State<HomePage> {
                   document: gql(GraphQLQueries.initialQuery),
                   variables: {
                     "languageCode": languageCode,
-                    "municipalityId": municipalityId
+                    "municipalityId": municipalityId,
+                    "userId": userId,
                   }),
               builder: (QueryResult result,
                   {VoidCallback? refetch, FetchMore? fetchMore}) {
