@@ -29,18 +29,16 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
   void _addToSearchHistory() async{
     ParseUser? currentUser = await ParseUser.currentUser();
     if(currentUser != null){
-      dynamic inputVariables = GraphQLQueries.getInputVariablesForSearchHistory(
-          currentUser.objectId!,
-          widget.item.objectId,
-          widget.category.objectId
-      );
-
       GraphQLClient client = GraphQLProvider.of(context).value;
       await client.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
           document: gql(GraphQLQueries.searchHistoryMutation),
-          variables: inputVariables,
+          variables: {
+            "itemId": widget.item.objectId,
+            "userId": currentUser.objectId,
+            "selectedCategoryId": widget.category.objectId
+          },
         ),
       );
     }

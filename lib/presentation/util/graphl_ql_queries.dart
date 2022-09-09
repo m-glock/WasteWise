@@ -289,9 +289,16 @@ class GraphQLQueries{
     }
   """;
 
-  static String getRecentlySearched = """
+  static String getRecentlyAndOftenSearched = """
     query RecentlySearched(\$languageCode: String!, \$userId: String){
       recentlySearched(languageCode: \$languageCode, userId: \$userId){
+        title
+        item_id{
+          objectId
+        }
+      }
+      
+      oftenSearched(languageCode: \$languageCode){
         title
         item_id{
           objectId
@@ -301,14 +308,9 @@ class GraphQLQueries{
   """;
 
   static String searchHistoryMutation = """
-    mutation CreateObject(\$input: CreateSearchHistoryFieldsInput){
-      createSearchHistory(input: {fields: \$input}){
-        searchHistory{
-          id
-          objectId
-        }
-      }
-     }
+    mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!){
+      addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId)
+    }
   """;
 
   static String addBookmarkItemMutation = """
@@ -405,25 +407,6 @@ class GraphQLQueries{
     if(result.hasException) return false;
 
     return result.data?["deleteBookmarkedTip"] ?? false;
-  }
-
-  static dynamic getInputVariablesForSearchHistory(
-      String userObjectId,
-      String itemObjectId,
-      String selectedCategoryObjectId) {
-    return {
-      "input": {
-        "user_id": {
-          "link": userObjectId
-        },
-        "item_id": {
-          "link": itemObjectId
-        },
-        "selected_category_id": {
-          "link": selectedCategoryObjectId
-        },
-      }
-    };
   }
 
   static void initialDataExtraction(dynamic data){

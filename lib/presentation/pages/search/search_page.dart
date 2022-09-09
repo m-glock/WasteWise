@@ -19,11 +19,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Map<String, String> oftenSearched = {
-    "Korken": "www",
-    "Kleiderbügel": "www",
-    "Knochen": "www"
-  };
   String? languageCode;
   String? userId;
 
@@ -103,7 +98,7 @@ class _SearchPageState extends State<SearchPage> {
                   )
                 : Query(
                     options: QueryOptions(
-                      document: gql(GraphQLQueries.getRecentlySearched),
+                      document: gql(GraphQLQueries.getRecentlyAndOftenSearched),
                       variables: {
                         "languageCode": languageCode,
                         "userId": userId,
@@ -118,13 +113,22 @@ class _SearchPageState extends State<SearchPage> {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      // get municipalities for selection
+                      // get recently searched items
                       List<dynamic> recentlySearchedData =
                           result.data?["recentlySearched"];
                       Map<String, String> recentlySearchedItems = {};
                       for (dynamic element in recentlySearchedData) {
                         recentlySearchedItems[element["title"]] =
                             element["item_id"]["objectId"];
+                      }
+
+                      // get often searched items
+                      List<dynamic> oftenSearchedData =
+                          result.data?["oftenSearched"];
+                      Map<String, String> oftenSearched = {};
+                      for (dynamic element in oftenSearchedData) {
+                        oftenSearched[element["title"]] =
+                        element["item_id"]["objectId"];
                       }
 
                       // display when all data is available
