@@ -37,7 +37,8 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
           variables: {
             "itemId": widget.item.objectId,
             "userId": currentUser.objectId,
-            "selectedCategoryId": widget.category.objectId
+            "selectedCategoryId": widget.category.objectId,
+            "sortedCorrectly": widget.category == widget.item.wasteBin
           },
         ),
       );
