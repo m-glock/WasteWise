@@ -37,9 +37,11 @@ class LanguageEn extends Languages {
   @override String get tipTileTitle => "Tip of the Day";
   @override String get tipTileButtonText => "More Info";
   @override String get congratsTileTitle => "Congratulation!";
+  @override String get congratsTileFirstFragment => "You are in the top  ";
+  @override String get congratsTileSecondFragment => "  in your neighborhood.";
   @override String get overviewTileTitle => "Total";
-  @override String get overviewTileRecycledText => "Searched items: ";
-  @override String get overviewTileSavedText => "Saved items: ";
+  @override String get overviewTileRecycledText => " items searched";
+  @override String get overviewTileSavedText => " items saved";
   @override String get progressTileTitle => "Progress";
 
   // registration/login page

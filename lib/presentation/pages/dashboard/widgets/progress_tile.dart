@@ -21,7 +21,7 @@ class _ProgressTileState extends State<ProgressTile> {
             child: Center(
               child: Text(
                 Languages.of(context)!.progressTileTitle,
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
           ),

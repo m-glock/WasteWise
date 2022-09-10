@@ -11,15 +11,29 @@ class OverviewTile extends StatefulWidget {
 }
 
 class _OverviewTileState extends State<OverviewTile> {
-
-  //TODO: replace with actual text
-  String tileContent =
-      "You are in the top 10% in your neighborhood.";
+  Widget _richText(int amount, String text){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Text.rich(
+        TextSpan(
+          text: amount.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+                text: text,
+                style: Theme.of(context).textTheme.bodyText1
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Flexible(
       child: Column(
         children: [
@@ -28,24 +42,18 @@ class _OverviewTileState extends State<OverviewTile> {
             child: Center(
               child: Text(
                 Languages.of(context)!.overviewTileTitle,
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7),
-            child: Text(
-              Languages.of(context)!.overviewTileRecycledText + (DataHolder.amountOfSearchedItems ?? 0).toString(),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
+          _richText(
+            DataHolder.amountOfSearchedItems ?? 0,
+            Languages.of(context)!.overviewTileRecycledText,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7),
-            child: Text(
-              Languages.of(context)!.overviewTileSavedText + (DataHolder.amountOfRescuedItems ?? 0).toString(),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          )
+          _richText(
+              DataHolder.amountOfRescuedItems ?? 0,
+              Languages.of(context)!.overviewTileSavedText,
+          ),
         ],
       ),
     );

@@ -36,9 +36,11 @@ class LanguageDe extends Languages {
   @override String get tipTileTitle => "Tipp des Tages";
   @override String get tipTileButtonText => "Mehr erfahren";
   @override String get congratsTileTitle => "Glückwunsch!";
+  @override String get congratsTileFirstFragment => "Du bist in den Top  ";
+  @override String get congratsTileSecondFragment => "  in deiner Nachbarschaft";
   @override String get overviewTileTitle => "Insgesamt";
-  @override String get overviewTileRecycledText => "Recycelte Items: ";
-  @override String get overviewTileSavedText => "Gerettete Items: ";
+  @override String get overviewTileRecycledText => " Items recycelt";
+  @override String get overviewTileSavedText => " Items gerettet";
   @override String get progressTileTitle => "Fortschritt";
 
   // registration/login page

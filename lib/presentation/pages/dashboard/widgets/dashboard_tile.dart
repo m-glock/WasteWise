@@ -22,7 +22,7 @@ class _DashboardTileState extends State<DashboardTile> {
           borderRadius: Constants.tileBorderRadius,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Row(
           children: [
             widget.tileContent,
