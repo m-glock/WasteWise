@@ -64,12 +64,8 @@ class _SearchSortPageState extends State<SearchSortPage> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          Item item = Item.fromJson(
-              result.data?["getItem"],
-              result.data?["getTipsOfItem"],
-              result.data?["getSubcategoryOfItem"],
-              result.data?["getBookmarkStatusOfItem"] != null
-          );
+          Item? item = Item.fromJson(result.data);
+          if(item == null) throw Exception("No item found.");
 
           // display when all data is available
           return SingleChildScrollView(

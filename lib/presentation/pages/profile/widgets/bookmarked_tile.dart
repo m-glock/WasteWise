@@ -52,12 +52,8 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Item item = Item.fromJson(
-        result.data?["getItem"],
-        result.data?["getTipsOfItem"],
-        result.data?["getSubcategoryOfItem"],
-        true
-    );
+    Item? item = Item.fromJson(result.data);
+    if(item == null) throw Exception("No item found.");
 
     Navigator.push(
       context,

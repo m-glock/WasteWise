@@ -11,15 +11,19 @@ class Item {
   final String? subcategory;
   final WasteBinCategory wasteBin;
   final List<Tip> tips = [];
-  final List<Tip> preventions = [];
   bool bookmarked;
 
   Item(this.objectId, this.title, this.material, this.wasteBin,
       {this.synonyms, this.explanation, this.subcategory,
         this.bookmarked = false});
 
-  static Item fromJson(Map<dynamic, dynamic> item, List<dynamic> itemTips,
-      Map<dynamic, dynamic> subcategoryData, bool bookmarkStatus) {
+  static Item? fromJson(Map<dynamic, dynamic>? data) {
+    if(data == null) return null;
+
+    Map<dynamic, dynamic> item = data["getItem"];
+    List<dynamic> itemTips = data["getTipsOfItem"];
+    Map<dynamic, dynamic> subcategoryData = data["getSubcategoryOfItem"];
+
     String objectId = item["item_id"]["objectId"];
     String categoryId =
         item["item_id"]["subcategory_id"]["category_id"]["objectId"];
@@ -28,7 +32,7 @@ class Item {
             ? item["explanation"]
             : subcategoryData["explanation"];
     String subcategoryTitle = subcategoryData["title"];
-    bool isBookmarked = bookmarkStatus;
+    bool isBookmarked = data["getBookmarkStatusOfItem"] != null;
 
     Item newItem = Item(objectId, item["title"], item["material"],
         DataHolder.categories[categoryId]!,
@@ -39,7 +43,7 @@ class Item {
 
     for (dynamic tip in itemTips) {
       newItem.tips.add(
-          Tip.fromJson(tip)); //TODO: differentiate between tips and prevention
+          Tip.fromJson(tip));
     }
 
     return newItem;

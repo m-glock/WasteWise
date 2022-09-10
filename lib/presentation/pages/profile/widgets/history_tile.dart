@@ -48,11 +48,8 @@ class _HistoryTileState extends State<HistoryTile> {
       ),
     );
 
-    Item item = Item.fromJson(
-        result.data?["getItem"],
-        result.data?["getTipsOfItem"],
-        result.data?["getSubcategoryOfItem"],
-        result.data?["getBookmarkStatusOfItem"] != null);
+    Item? item = Item.fromJson(result.data);
+    if(item == null) throw Exception("No item found.");
 
     Navigator.push(
       context,
