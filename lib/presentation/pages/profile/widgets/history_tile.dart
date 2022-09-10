@@ -48,9 +48,12 @@ class _HistoryTileState extends State<HistoryTile> {
       ),
     );
 
-    bool bookmarkedStatus = result.data?["getBookmarkStatusOfItem"] != null;
-    Item item = Item.fromJson(result.data?["getItem"],
-        result.data?["getSubcategoryOfItem"], bookmarkedStatus);
+    Item item = Item.fromJson(
+        result.data?["getItem"],
+        result.data?["getTipsOfItem"],
+        result.data?["getSubcategoryOfItem"],
+        result.data?["getBookmarkStatusOfItem"] != null);
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
@@ -105,13 +108,16 @@ class _HistoryTileState extends State<HistoryTile> {
                                 height: pictogramSize,
                               ),
                               CachedNetworkImage(
-                                imageUrl: widget.item.selectedCategory.pictogramUrl,
+                                imageUrl:
+                                    widget.item.selectedCategory.pictogramUrl,
                                 width: pictogramSize,
                                 height: pictogramSize,
                                 color: Colors.white.withOpacity(0.5),
                                 colorBlendMode: BlendMode.modulate,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
                               SvgPicture.asset(
                                 "assets/images/strikethrough.svg",
@@ -130,11 +136,14 @@ class _HistoryTileState extends State<HistoryTile> {
                               height: pictogramSize,
                             ),
                             CachedNetworkImage(
-                              imageUrl: widget.item.correctWasteBin.pictogramUrl,
+                              imageUrl:
+                                  widget.item.correctWasteBin.pictogramUrl,
                               width: pictogramSize,
                               height: pictogramSize,
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ],
                         ),

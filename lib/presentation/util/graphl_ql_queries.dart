@@ -157,6 +157,21 @@ class GraphQLQueries{
         explanation
       }
       
+      getTipsOfItem(languageCode: \$languageCode, itemId: \$itemObjectId){
+        title
+        explanation
+        short
+        tip_id{
+          objectId
+          image{
+            url
+          }
+          tip_type_id{
+            objectId
+          }
+        }
+      }
+      
       getBookmarkStatusOfItem(itemObjectId: \$itemObjectId, userId: \$userId){
         objectId
       }

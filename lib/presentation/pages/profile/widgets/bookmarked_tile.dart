@@ -52,8 +52,13 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Item item = Item.fromJson(result.data?["getItem"],
-        result.data?["getSubcategoryOfItem"], true);
+    Item item = Item.fromJson(
+        result.data?["getItem"],
+        result.data?["getTipsOfItem"],
+        result.data?["getSubcategoryOfItem"],
+        true
+    );
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>

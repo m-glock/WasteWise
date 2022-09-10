@@ -1,4 +1,5 @@
 import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/tip.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
 class Item {
@@ -9,15 +10,16 @@ class Item {
   final String material;
   final String? subcategory;
   final WasteBinCategory wasteBin;
+  final List<Tip> tips = [];
+  final List<Tip> preventions = [];
   bool bookmarked;
 
-  //TODO: get tips and preventions
+  Item(this.objectId, this.title, this.material, this.wasteBin,
+      {this.synonyms, this.explanation, this.subcategory,
+        this.bookmarked = false});
 
-  Item(this.objectId, this.title, this.material,
-       this.wasteBin, {this.synonyms, this.explanation, this.subcategory, this.bookmarked = false});
-
-  static Item fromJson(
-      Map<dynamic, dynamic> item, Map<dynamic, dynamic> subcategoryData, bool bookmarkStatus) {
+  static Item fromJson(Map<dynamic, dynamic> item, List<dynamic> itemTips,
+      Map<dynamic, dynamic> subcategoryData, bool bookmarkStatus) {
     String objectId = item["item_id"]["objectId"];
     String categoryId =
         item["item_id"]["subcategory_id"]["category_id"]["objectId"];
@@ -28,14 +30,18 @@ class Item {
     String subcategoryTitle = subcategoryData["title"];
     bool isBookmarked = bookmarkStatus;
 
-    return Item(
-        objectId,
-        item["title"],
-        item["material"],
+    Item newItem = Item(objectId, item["title"], item["material"],
         DataHolder.categories[categoryId]!,
         synonyms: item["synonyms"],
         explanation: explanation,
         subcategory: subcategoryTitle,
         bookmarked: isBookmarked);
+
+    for (dynamic tip in itemTips) {
+      newItem.tips.add(
+          Tip.fromJson(tip)); //TODO: differentiate between tips and prevention
+    }
+
+    return newItem;
   }
 }
