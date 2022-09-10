@@ -6,11 +6,11 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
+import '../../util/database_classes/subcategory.dart';
 import '../../util/database_classes/tip.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
@@ -73,11 +73,15 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
         .where((key) => wasteBinDropdownOptions[key] == newValue)
         .first;
     if (tipTypeDefault == Languages.of(context)!.defaultDropdownItem) {
-      filteredTipList =
-          tipList.values.where((tip) => tip.categoryId == wasteBinId).toList();
+      filteredTipList = tipList.values
+          .where((tip) => tip.subcategories
+              .any((subcategory) => subcategory.parentId == wasteBinId))
+          .toList();
     } else {
-      filteredTipList =
-          filteredTipList.where((tip) => tip.categoryId == wasteBinId).toList();
+      filteredTipList = filteredTipList
+          .where((tip) => tip.subcategories
+              .any((subcategory) => subcategory.parentId == wasteBinId))
+          .toList();
     }
   }
 
@@ -120,12 +124,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   List<dynamic> tipTypes = result.data?["getTipTypes"];
                   List<dynamic> tips = result.data?["getTips"];
                   List<dynamic> tipBookmarks = result.data?["getTipBookmarks"];
-
-                  // set waste bin types
-                  for (WasteBinCategory category
-                      in DataHolder.categories.values) {
-                    wasteBinDropdownOptions[category.objectId] = category.title;
-                  }
+                  List<dynamic> tipSubcategories =
+                      result.data?["getTipSubcategories"];
 
                   // set tip types
                   for (dynamic element in tipTypes) {
@@ -137,6 +137,15 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   for (dynamic element in tips) {
                     tipList[element["tip_id"]["objectId"]] =
                         Tip.fromJson(element);
+                  }
+
+                  // set waste bin types
+                  for (dynamic element in tipSubcategories) {
+                    Tip? tip = tipList[element["tip_id"]["objectId"]];
+                    Subcategory? subcategory = DataHolder.subcategoriesById[
+                        element["subcategory_id"]["objectId"]];
+                    if (subcategory != null)
+                      tip?.subcategories.add(subcategory);
                   }
 
                   // set bookmarks
@@ -238,9 +247,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                       tags: [
                                         tipTypeDropdownOptions[tip.tipTypeId] ??
                                             "",
-                                        wasteBinDropdownOptions[
-                                                tip.categoryId] ??
-                                            "",
+                                        ...tip.subcategories.map((cat) =>
+                                            DataHolder.categories[cat.parentId]!
+                                                .title)
                                       ],
                                     );
                                   }),

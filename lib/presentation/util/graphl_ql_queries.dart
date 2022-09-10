@@ -176,10 +176,6 @@ class GraphQLQueries{
       getTips(languageCode: \$languageCode){
         tip_id{
           objectId
-    	    category_id{
-    	      objectId
-      	    pictogram
-    	    },
     	    tip_type_id{
     	      objectId
       	    color
@@ -191,6 +187,15 @@ class GraphQLQueries{
         title,
         explanation,
         short
+      }
+      
+      getTipSubcategories{
+        tip_id{
+          objectId
+        }
+        subcategory_id{
+          objectId
+        }
       }
       
       getTipBookmarks(userId: \$userId){
