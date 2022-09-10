@@ -11,6 +11,7 @@ class Item {
   final String? subcategory;
   final WasteBinCategory wasteBin;
   final List<Tip> tips = [];
+  final List<Tip> preventions = [];
   bool bookmarked;
 
   Item(this.objectId, this.title, this.material, this.wasteBin,
@@ -41,9 +42,21 @@ class Item {
         subcategory: subcategoryTitle,
         bookmarked: isBookmarked);
 
+    List<dynamic> tipTypeData = data["getTipTypes"];
+    Map<String, String> tipTypeById = {};
+    for (dynamic tipType in tipTypeData) {
+      tipTypeById[tipType["tip_type_id"]["default_label"]] =
+          tipType["tip_type_id"]["objectId"];
+    }
+
     for (dynamic tip in itemTips) {
-      newItem.tips.add(
-          Tip.fromJson(tip));
+      Tip newTip = Tip.fromJson(tip);
+      if(newTip.tipTypeId == tipTypeById["Prevention"]){
+        newItem.preventions.add(newTip);
+      } else if(newTip.tipTypeId == tipTypeById["Separation"]){
+        newItem.tips.add(newTip);
+      }
+
     }
 
     return newItem;

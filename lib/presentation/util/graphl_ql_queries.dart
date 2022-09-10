@@ -172,6 +172,13 @@ class GraphQLQueries{
         }
       }
       
+      getTipTypes(languageCode: \$languageCode){
+        tip_type_id{
+          objectId
+          default_label
+        }
+      }
+      
       getBookmarkStatusOfItem(itemObjectId: \$itemObjectId, userId: \$userId){
         objectId
       }

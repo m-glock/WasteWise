@@ -13,12 +13,10 @@ class TipDetailPage extends StatefulWidget {
   const TipDetailPage(
       {Key? key,
       required this.tip,
-      required this.tipNumber,
       required this.updateBookmarkInParent})
       : super(key: key);
 
   final Tip tip;
-  final int tipNumber;
   final Function updateBookmarkInParent;
 
   @override
@@ -79,7 +77,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tipp #${widget.tipNumber}"),
+        title: Text(Languages.of(context)!.tipBookmarkTagTitle),
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())

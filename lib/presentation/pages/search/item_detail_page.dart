@@ -4,9 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 
 import '../../util/database_classes/item.dart';
+import '../../util/database_classes/tip.dart';
 import '../../util/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
@@ -22,7 +24,6 @@ class ItemDetailPage extends StatefulWidget {
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-
   ParseUser? currentUser;
 
   @override
@@ -59,13 +60,47 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     }
   }
 
+  Widget _getTipLinks(bool prevention) {
+    List<Tip> tipList = prevention ? widget.item.preventions : widget.item.tips;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...tipList.map((tip) => Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: InkWell(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tip.title,
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TipDetailPage(
+                      tip: tip,
+                      updateBookmarkInParent: () => {}),
+                ),
+              ),
+          )),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.item.title),
         actions: [
-          if(currentUser != null)
+          if (currentUser != null)
             IconButton(
               onPressed: () {
                 if (widget.updateBookmarkInParent == null) {
@@ -94,11 +129,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   imageUrl: widget.item.wasteBin.pictogramUrl,
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.width / 2,
-                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
-              if(widget.item.synonyms != null) ...[
+              if (widget.item.synonyms != null) ...[
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 Center(
                   child: Text(
@@ -124,18 +160,22 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   style: Theme.of(context).textTheme.bodyText1),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               ItemDetailTile(
-                  headerTitle:
-                      Languages.of(context)!.itemDetailExplanationLabel,
-                  expandedText: widget.item.explanation!),
-              const Padding(padding: EdgeInsets.only(bottom: 15)),
-              //TODO: get tips and preventions
-              ItemDetailTile(
-                  headerTitle: Languages.of(context)!.itemDetailTipsLabel,
-                  expandedText: widget.item.explanation!),
+                headerTitle: Languages.of(context)!.itemDetailExplanationLabel,
+                expandedWidget: Text(
+                  widget.item.explanation!,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
               const Padding(padding: EdgeInsets.only(bottom: 15)),
               ItemDetailTile(
-                  headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
-                  expandedText: widget.item.explanation!),
+                headerTitle: Languages.of(context)!.itemDetailTipsLabel,
+                expandedWidget: _getTipLinks(false),
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 15)),
+              ItemDetailTile(
+                headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
+                expandedWidget: _getTipLinks(true),
+              ),
             ],
           ),
         ),

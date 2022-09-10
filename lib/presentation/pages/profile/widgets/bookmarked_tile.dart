@@ -86,7 +86,6 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       MaterialPageRoute(builder: (context) =>
           TipDetailPage(
             tip: tip,
-            tipNumber: 1, //TODO?
             updateBookmarkInParent: _updateBookmarkForWidget,
           )),
     );

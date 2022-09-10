@@ -144,8 +144,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                     Tip? tip = tipList[element["tip_id"]["objectId"]];
                     Subcategory? subcategory = DataHolder.subcategoriesById[
                         element["subcategory_id"]["objectId"]];
-                    if (subcategory != null)
+                    if (subcategory != null) {
                       tip?.subcategories.add(subcategory);
+                    }
                   }
 
                   // set bookmarks
@@ -241,9 +242,6 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                   ...filteredTipList.map((tip) {
                                     return TipTile(
                                       tip: tip,
-                                      tipNumber:
-                                          tipList.values.toList().indexOf(tip) +
-                                              1,
                                       tags: [
                                         tipTypeDropdownOptions[tip.tipTypeId] ??
                                             "",
