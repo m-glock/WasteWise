@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../i18n/locale_constant.dart';
 import '../util/graphl_ql_queries.dart';
+import 'imprint/imprint_page.dart';
+import 'notification_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -66,11 +68,18 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(left: 25),
-          child: Text(Constants.appTitle),
-        ),
+        title: const Text(Constants.appTitle),
         actions: [
+          IconButton(
+            onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationPage()),
+              )
+            },
+            icon: const Icon(FontAwesomeIcons.bell),
+          ),
           CustomIconButton(
             padding: const EdgeInsets.symmetric(horizontal: 7),
             onPressed: () => {
@@ -81,28 +90,43 @@ class _HomePageState extends State<HomePage> {
             },
             icon: const Icon(FontAwesomeIcons.user),
           ),
-          CustomIconButton(
-            padding: const EdgeInsets.symmetric(horizontal: 7),
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ContactPage()),
-              )
-            },
-            icon: const Icon(Icons.info_outline, size: 30,),
-          ),
-          CustomIconButton(
-            padding: const EdgeInsets.symmetric(horizontal: 7),
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              )
-            },
-            icon: const Icon(FontAwesomeIcons.gear),
-          ),
         ],
         titleSpacing: 2.0,
+      ),
+      //TODO: proper design
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              title: Text(Languages.of(context)!.imprintPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ImprintPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(Languages.of(context)!.contactPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(Languages.of(context)!.settingsPageName),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: languageCode == null || municipalityId == null
           ? const Center(child: CircularProgressIndicator())
