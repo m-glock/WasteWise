@@ -125,6 +125,7 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomIconButton(
+                    padding: const EdgeInsets.only(right: 10),
                     icon: const Icon(FontAwesomeIcons.solidBookmark),
                     onPressed: () =>
                         widget.removeBookmarkInParent(
@@ -132,7 +133,6 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
                           widget.isItem,
                         ),
                   ),
-                  const Padding(padding: EdgeInsets.only(right: 10)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

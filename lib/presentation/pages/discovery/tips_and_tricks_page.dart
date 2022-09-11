@@ -224,8 +224,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                               ],
                             ),
                           ),
-                          const Padding(padding: EdgeInsets.only(right: 10)),
                           CustomIconButton(
+                            padding: const EdgeInsets.only(right: 10),
                             onPressed: _setFilterValuesToDefault,
                             icon: const Icon(FontAwesomeIcons.xmark),
                           ),

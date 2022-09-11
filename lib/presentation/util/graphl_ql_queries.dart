@@ -238,10 +238,6 @@ class GraphQLQueries{
       getTip(languageCode: \$languageCode, tipId: \$tipId){
         tip_id{
           objectId
-    	    category_id{
-    	      objectId
-      	    pictogram
-    	    },
     	    tip_type_id{
     	      objectId
       	    color

@@ -93,22 +93,21 @@ class _TipDetailPageState extends State<TipDetailPage> {
                         child: Text(widget.tip.title,
                             style: Theme.of(context).textTheme.headline1),
                       ),
-                      const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5)),
                       if (currentUser != null) ...[
                         widget.tip.isBookmarked
                             ? CustomIconButton(
+                                padding: const EdgeInsets.symmetric(horizontal: 7),
                                 onPressed: _changeBookmarkStatus,
                                 icon:
                                     const Icon(FontAwesomeIcons.solidBookmark))
                             : CustomIconButton(
+                                padding: const EdgeInsets.symmetric(horizontal: 7),
                                 onPressed: _changeBookmarkStatus,
                                 icon: const Icon(FontAwesomeIcons.bookmark),
                               ),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5)),
                       ],
                       CustomIconButton(
+                          padding: const EdgeInsets.symmetric(horizontal: 7),
                           onPressed: () => {},
                           //TODO: open modal to share with neighborhood
                           icon: const Icon(FontAwesomeIcons.shareNodes)),

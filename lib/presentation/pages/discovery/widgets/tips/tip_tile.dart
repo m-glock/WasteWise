@@ -83,14 +83,15 @@ class _TipTileState extends State<TipTile> {
             if(currentUser != null)
               widget.tip.isBookmarked
                 ? CustomIconButton(
+                    padding: const EdgeInsets.only(right: 10),
                     onPressed: _bookmarkTip,
                     icon: const Icon(FontAwesomeIcons.solidBookmark),
                   )
                 : CustomIconButton(
+                    padding: const EdgeInsets.only(right: 10),
                     onPressed: _bookmarkTip,
                     icon: const Icon(FontAwesomeIcons.bookmark),
                   ),
-            const Padding(padding: EdgeInsets.only(right: 15)),
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
