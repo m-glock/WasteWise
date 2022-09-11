@@ -137,4 +137,15 @@ class LanguageEn extends Languages {
   @override String get settingsPageTitle => "Settings";
   @override String get settingsPageLanguageSetting => "Select language: ";
   @override String get settingsPageMunicipalitySetting => "Select municipality: ";
+
+  // contact page
+  @override String get contactPageIntroText => "You have a question or want to submit a suggestion? Please fill out the contact form. For technical concerns please use ";
+  @override String get contactPageGitHub => "GitHub.";
+  @override String get contactPageNameHintText => "Name";
+  @override String get contactPageEmailHintText => "Email";
+  @override String get contactPageContentHintText => "Content";
+  @override String get contactPageSubmitButtonText => "Submit";
+  @override String get contactPageImprintParagraphTitle => "Information according to § 5 TMG";
+  @override String get contactPageValidationText => "Cannot be empty";
+  @override String get contactPageEmailValidationText => "Not a valid email";
 }

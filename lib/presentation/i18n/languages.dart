@@ -139,4 +139,15 @@ abstract class Languages {
   String get settingsPageTitle;
   String get settingsPageLanguageSetting;
   String get settingsPageMunicipalitySetting;
+
+  // contact page
+  String get contactPageIntroText;
+  String get contactPageGitHub;
+  String get contactPageNameHintText;
+  String get contactPageEmailHintText;
+  String get contactPageContentHintText;
+  String get contactPageSubmitButtonText;
+  String get contactPageImprintParagraphTitle;
+  String get contactPageValidationText;
+  String get contactPageEmailValidationText;
 }

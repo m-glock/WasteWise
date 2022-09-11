@@ -136,4 +136,15 @@ class LanguageDe extends Languages {
   @override String get settingsPageTitle => "Einstellungen";
   @override String get settingsPageLanguageSetting => "Sprache auswählen: ";
   @override String get settingsPageMunicipalitySetting => "Region auswählen: ";
+
+  // contact page
+  @override String get contactPageIntroText => "Sie haben Fragen oder möchten Vorschläge einbringen? Füllen Sie das Kontaktformular aus. Für technische Anliegen nutzen Sie bitte ";
+  @override String get contactPageGitHub => "GitHub.";
+  @override String get contactPageNameHintText => "Name";
+  @override String get contactPageEmailHintText => "E-Mail";
+  @override String get contactPageContentHintText => "Inhalt";
+  @override String get contactPageSubmitButtonText => "Abschicken";
+  @override String get contactPageImprintParagraphTitle => "Angaben gemäß § 5 TMG";
+  @override String get contactPageValidationText => "Darf nicht leer sein.";
+  @override String get contactPageEmailValidationText => "Keine valide E-Mail Adresse";
 }
