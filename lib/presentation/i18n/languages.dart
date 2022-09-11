@@ -45,6 +45,8 @@ abstract class Languages {
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
   String get progressTileTitle;
+  String get progressTileRecycledLabel;
+  String get progressTileSavedLabel;
 
   // registration/login page
   String get usernameLabel;

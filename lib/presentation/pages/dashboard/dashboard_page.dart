@@ -21,7 +21,10 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             const DashboardTile(tileContent: ActionTile()),
             const Padding(padding: EdgeInsets.all(10)),
-            const DashboardTile(tileContent: ProgressTile()),
+            const DashboardTile(
+              tileContent: ProgressTile(),
+              onlyTitlePadding: true,
+            ),
             const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: const [

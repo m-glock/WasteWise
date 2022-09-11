@@ -40,9 +40,11 @@ class LanguageEn extends Languages {
   @override String get congratsTileFirstFragment => "You are in the top  ";
   @override String get congratsTileSecondFragment => "  in your neighborhood.";
   @override String get overviewTileTitle => "Total";
-  @override String get overviewTileRecycledText => " items searched";
-  @override String get overviewTileSavedText => " items saved";
+  @override String get overviewTileRecycledText => "  items searched";
+  @override String get overviewTileSavedText => "  items saved";
   @override String get progressTileTitle => "Progress";
+  @override String get progressTileRecycledLabel => "Recycled";
+  @override String get progressTileSavedLabel => "Saved";
 
   // registration/login page
   @override String get usernameLabel => "Username";

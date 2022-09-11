@@ -42,6 +42,8 @@ class LanguageDe extends Languages {
   @override String get overviewTileRecycledText => " Items recycelt";
   @override String get overviewTileSavedText => " Items gerettet";
   @override String get progressTileTitle => "Fortschritt";
+  @override String get progressTileRecycledLabel => "Recycelt";
+  @override String get progressTileSavedLabel => "Gerettet";
 
   // registration/login page
   @override String get usernameLabel => "Username";
