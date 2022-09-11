@@ -70,12 +70,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
       ],
       onDone: () {
         _setIntroDone();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
+        Route route = MaterialPageRoute(builder: (context) => const HomePage());
+        Navigator.pushReplacement(context, route);
       },
       dotsDecorator: DotsDecorator(
         size: const Size(10.0, 10.0),
