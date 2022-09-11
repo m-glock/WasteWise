@@ -10,7 +10,7 @@ import 'package:recycling_app/presentation/pages/neighborhood/neighborhood_page.
 import 'package:recycling_app/presentation/pages/notification_page.dart';
 import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
-import 'package:recycling_app/presentation/pages/settings_page.dart';
+import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';

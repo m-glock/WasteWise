@@ -132,4 +132,9 @@ class LanguageEn extends Languages {
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";
+
+  // settings page
+  @override String get settingsPageTitle => "Settings";
+  @override String get settingsPageLanguageSetting => "Select language: ";
+  @override String get settingsPageMunicipalitySetting => "Select municipality: ";
 }

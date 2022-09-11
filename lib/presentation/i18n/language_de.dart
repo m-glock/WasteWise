@@ -131,4 +131,9 @@ class LanguageDe extends Languages {
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";
+
+  // settings page
+  @override String get settingsPageTitle => "Einstellungen";
+  @override String get settingsPageLanguageSetting => "Sprache auswählen: ";
+  @override String get settingsPageMunicipalitySetting => "Region auswählen: ";
 }

@@ -134,4 +134,9 @@ abstract class Languages {
 
   // neighborhood
   String get neighborhoodNotAuthenticatedText;
+
+  // settings page
+  String get settingsPageTitle;
+  String get settingsPageLanguageSetting;
+  String get settingsPageMunicipalitySetting;
 }
