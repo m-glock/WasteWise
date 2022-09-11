@@ -13,6 +13,7 @@ class DataHolder{
   static final List<CollectionPointType> collectionPointTypes = [];
   static final Map<CollectionPoint, Marker> markers = {};
   static final Set<String> cpSubcategories = {};
+  static final Map<String, String> municipalitiesById = {};
   static int? amountOfSearchedItems;
   static int? amountOfRescuedItems;
 }

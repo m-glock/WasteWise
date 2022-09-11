@@ -79,6 +79,11 @@ class GraphQLQueries{
         }
       }
       
+      getMunicipalities{
+        objectId
+        name
+      }
+      
       amountOfSearchedItems(userId: \$userId)
       
       amountOfWronglySortedItems(userId: \$userId)
@@ -441,6 +446,12 @@ class GraphQLQueries{
   }
 
   static void initialDataExtraction(dynamic data){
+    // get municipalities
+    List<dynamic> municipalities = data?["getMunicipalities"];
+    for(dynamic municipality in municipalities){
+      DataHolder.municipalitiesById[municipality["objectId"]] = municipality["name"];
+    }
+
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
