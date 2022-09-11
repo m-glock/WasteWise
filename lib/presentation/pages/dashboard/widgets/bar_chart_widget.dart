@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
 
 class BarChartWidget extends StatefulWidget {
   const BarChartWidget({Key? key}) : super(key: key);
@@ -25,14 +26,19 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   ];
 
   Widget _bottomTitles(double value, TitleMeta meta) {
+    List<String> months = Languages.of(context)!.months;
+    int currentMonth = DateTime.now().month;
+
     String text;
+    // get labels for previous four months
     switch (value.toInt()) {
-      case 0: text = 'Jun'; break;
-      case 1: text = 'Jul'; break;
-      case 2: text = 'Aug'; break;
-      case 3: text = 'Sep'; break;
+      case 0: text = months[(currentMonth - 5) % months.length]; break;
+      case 1: text = months[(currentMonth - 4) % months.length]; break;
+      case 2: text = months[(currentMonth - 3) % months.length]; break;
+      case 3: text = months[(currentMonth - 2) % months.length]; break;
       default: text = ''; break;
     }
+
     return SideTitleWidget(
       child: Text(text, style: Theme.of(context).textTheme.bodyText1),
       axisSide: meta.axisSide,
@@ -51,6 +57,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    int index = 0;
     return BarChart(
       BarChartData(
         groupsSpace: 40,
@@ -80,7 +87,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         barGroups: [
           ...barChartValues.map(
             (values) => BarChartGroupData(
-              x: 0,
+              x: index++,
               barRods: [
                 BarChartRodData(
                   toY: values.a,

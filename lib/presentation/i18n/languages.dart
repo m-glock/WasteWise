@@ -47,6 +47,7 @@ abstract class Languages {
   String get progressTileTitle;
   String get progressTileRecycledLabel;
   String get progressTileSavedLabel;
+  List<String> get months;
 
   // registration/login page
   String get usernameLabel;

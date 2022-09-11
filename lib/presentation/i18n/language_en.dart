@@ -45,6 +45,7 @@ class LanguageEn extends Languages {
   @override String get progressTileTitle => "Progress";
   @override String get progressTileRecycledLabel => "Recycled";
   @override String get progressTileSavedLabel => "Saved";
+  @override List<String> get months => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   // registration/login page
   @override String get usernameLabel => "Username";
