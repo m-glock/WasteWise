@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../i18n/languages.dart';
+
 class TextInputWidget extends StatelessWidget {
   const TextInputWidget(
       {Key? key,
@@ -23,9 +25,11 @@ class TextInputWidget extends StatelessWidget {
       textCapitalization: TextCapitalization.none,
       autocorrect: false,
       decoration: InputDecoration(
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          labelText: label),
+        labelText: label,
+        filled: true,
+        hintText: Languages.of(context)!.contactPageNameHintText,
+        border: InputBorder.none,
+      ),
     );
   }
 }
