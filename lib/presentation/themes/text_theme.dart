@@ -11,6 +11,7 @@ class AppTextTheme extends TextTheme{
     subtitle2: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
     bodyText1: const TextStyle(fontSize: 14.0),
     bodyText2: const TextStyle(fontSize: 13.0),
+    labelMedium: const TextStyle(fontSize: 15.0),
     button: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
     caption: const TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold)
   );

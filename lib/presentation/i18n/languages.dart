@@ -139,6 +139,10 @@ abstract class Languages {
   String get settingsPageTitle;
   String get settingsPageLanguageSetting;
   String get settingsPageMunicipalitySetting;
+  String get settingsPageLearnMoreSetting;
+  String get settingsPageAlertDialogTextStart;
+  String get settingsPageAlertDialogBulletPoints;
+  String get settingsPageAlertDialogTextEnd;
 
   // contact page
   String get contactPageIntroText;

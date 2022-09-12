@@ -14,6 +14,7 @@ class Constants{
   //SharedPrefs
   static String prefSelectedMunicipalityCode = "SelectedMunicipality";
   static String prefIntroDone = "IntroDone";
+  static String prefLearnMore = "LearnMore";
 
   // GraphQL setup
   static String apiURL= "https://parseapi.back4app.com/graphql";

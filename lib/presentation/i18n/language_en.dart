@@ -135,8 +135,14 @@ class LanguageEn extends Languages {
 
   // settings page
   @override String get settingsPageTitle => "Settings";
-  @override String get settingsPageLanguageSetting => "Select language: ";
-  @override String get settingsPageMunicipalitySetting => "Select municipality: ";
+  @override String get settingsPageLanguageSetting => "Language";
+  @override String get settingsPageMunicipalitySetting => "Municipality";
+  @override String get settingsPageLearnMoreSetting => "Learning mode";
+  @override String get settingsPageAlertDialogTextStart => "The 'Learning Mode' feature includes";
+  @override String get settingsPageAlertDialogBulletPoints => "\u2022  A sorting prompt for items"
+      "\n\u2022  Regular challenges"
+      "\n\u2022  Notification to test your knowledge";
+  @override String get settingsPageAlertDialogTextEnd => "Its purpose is to help you learn more about recycling and waste separation. If you prefer quick answers and no unneccessary notifications, disable this feature.";
 
   // contact page
   @override String get contactPageIntroText => "You have a question or want to submit a suggestion? Please fill out the contact form. For technical concerns please use ";

@@ -134,8 +134,15 @@ class LanguageDe extends Languages {
 
   // settings page
   @override String get settingsPageTitle => "Einstellungen";
-  @override String get settingsPageLanguageSetting => "Sprache auswählen: ";
-  @override String get settingsPageMunicipalitySetting => "Region auswählen: ";
+  @override String get settingsPageLanguageSetting => "Sprache";
+  @override String get settingsPageMunicipalitySetting => "Region";
+  @override String get settingsPageLearnMoreSetting => "Lernmodus";
+  @override String get settingsPageAlertDialogTextStart => "Die $settingsPageLearnMoreSetting Funktion beinhaltet";
+  @override String get settingsPageAlertDialogBulletPoints => "\u2022  Eine Sortieraufforderung für Items"
+      "\n\u2022  Regelmäßige Herausforderungen"
+      "\n\u2022  Benachrichtigungen zur Wissensprüfung";
+  @override String get settingsPageAlertDialogTextEnd => "Das Ziel ist es, Ihnen zu helfen, mehr über Recycling und Abfalltrennung zu lernen. Wenn Sie schnelle Antworten und keine unnötigen Benachrichtigungen bevorzugen, deaktivieren Sie diese Funktion.";
+
 
   // contact page
   @override String get contactPageIntroText => "Sie haben Fragen oder möchten Vorschläge einbringen? Füllen Sie das Kontaktformular aus. Für technische Anliegen nutzen Sie bitte ";
