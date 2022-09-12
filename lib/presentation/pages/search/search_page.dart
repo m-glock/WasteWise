@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/pages/search/barcode_scan_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
+import '../../util/constants.dart';
+import '../../util/database_classes/item.dart';
 import '../../util/graphl_ql_queries.dart';
 
 class SearchPage extends StatefulWidget {
@@ -21,19 +25,22 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String? languageCode;
   String? userId;
+  bool? learnMore;
 
   @override
   void initState() {
     super.initState();
-    _getLanguageCodeAndUserId();
+    _getVariables();
   }
 
-  void _getLanguageCodeAndUserId() async {
+  void _getVariables() async {
     Locale locale = await getLocale();
     ParseUser? current = await ParseUser.currentUser();
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     setState(() {
       languageCode = locale.languageCode;
       userId = current?.objectId ?? "";
+      learnMore = _prefs.getBool(Constants.prefLearnMore) ?? true;
     });
   }
 
@@ -63,14 +70,18 @@ class _SearchPageState extends State<SearchPage> {
   List<Widget> _getItemList(Map<String, String> namesAndIds) {
     return namesAndIds.entries
         .map((entry) => InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SearchSortPage(
-                      itemObjectId: entry.value,
-                      title: entry.key,
-                    )),
-              ),
+              onTap: () {
+                _getItem(entry.value).then((item) {
+                  if(item == null) throw Exception("No item found.");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => learnMore ?? true
+                            ? SearchSortPage(item: item)
+                            : ItemDetailPage(item: item)
+                    ));
+                });
+              },
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Text(entry.key,
@@ -78,6 +89,24 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ))
         .toList();
+  }
+
+  Future<Item?> _getItem(String itemId) async {
+    // get item info
+    Locale locale = await getLocale();
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult result = await client.query(
+      QueryOptions(
+        //TODO: check if still necessary after figuring cache out
+          fetchPolicy: FetchPolicy.networkOnly,
+          document: gql(GraphQLQueries.itemDetailQuery),
+          variables: {
+            "languageCode": locale.languageCode,
+            "itemObjectId": itemId,
+            "userId": (await ParseUser.currentUser())?.objectId ?? "",
+          }),
+    );
+    return Item.fromJson(result.data);
   }
 
   @override
