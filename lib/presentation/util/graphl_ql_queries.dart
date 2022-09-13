@@ -349,6 +349,26 @@ class GraphQLQueries{
     }
   """;
 
+  static String getForumEntries = """
+    query GetForumEntries(\$municipalityId: String!){
+      getForumEntries(municipalityId: \$municipalityId){
+        createdAt
+        objectId
+        forum_entry_type_id{
+          objectId
+          type_name
+        }
+        user_id{
+          username
+          avatar_picture{
+            url
+          }
+        }
+        link_id
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
       addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)
