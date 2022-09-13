@@ -129,6 +129,8 @@ class LanguageEn extends Languages {
   @override String get dropdownWasteBinLabel => "Waste bin type:";
   @override String get defaultDropdownItem => "All";
   @override String get emptyListText => "Nothing found";
+  @override String get tipShareSuccessfulText => "Tip successfully shared";
+  @override String get tipShareUnsuccessfulText => "Sharing tip failed. Please try again later";
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";

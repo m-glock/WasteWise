@@ -131,6 +131,8 @@ abstract class Languages {
   String get dropdownWasteBinLabel;
   String get defaultDropdownItem;
   String get emptyListText;
+  String get tipShareSuccessfulText;
+  String get tipShareUnsuccessfulText;
 
   // neighborhood
   String get neighborhoodNotAuthenticatedText;

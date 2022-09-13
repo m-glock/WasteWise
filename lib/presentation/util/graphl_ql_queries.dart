@@ -405,6 +405,17 @@ class GraphQLQueries{
     }
   """;
 
+  static String createForumPost = """
+    mutation CreateForumEntries(\$userId: String!, \$forumEntryTypeId: String!, \$linkId: String, \$questionText: String){
+      createForumEntries(
+        userId: \$userId, 
+        forumEntryTypeId: \$forumEntryTypeId, 
+        linkId: \$linkId,
+        questionText: \$questionText
+      )
+    }
+  """;
+
   static Future<bool> addItemBookmark(String itemId, GraphQLClient client) async {
     ParseUser current = await ParseUser.currentUser();
     Map<String, dynamic> inputVariables = {

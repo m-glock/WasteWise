@@ -128,6 +128,8 @@ class LanguageDe extends Languages {
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
   @override String get emptyListText => "Nichts gefunden";
+  @override String get tipShareSuccessfulText => "Tipp erfolgreich geteilt";
+  @override String get tipShareUnsuccessfulText => "Teilen des Tipps fehlgeschagen. Bitte später erneut versuchen.";
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";
