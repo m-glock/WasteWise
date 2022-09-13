@@ -64,9 +64,10 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                         userName: entry["user_id"]["username"],
                         userPictureUrl: entry["user_id"]["avatar_picture"]
                         ?["url"],
-                        forumText: type.text,
-                        buttonText: type.buttonText,
+                        type: type,
                         createdAt: DateTime.parse(entry["createdAt"]),
+                        linkId: entry["link_id"],
+                        questionText: entry["question_text"],
                       );
                     },
                   ),

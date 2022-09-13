@@ -91,6 +91,7 @@ class GraphQLQueries{
         button_text
         forum_entry_type_id{
           objectId
+          type_name
         }
       }
       
@@ -323,6 +324,12 @@ class GraphQLQueries{
     }
   """;
 
+  static String getTipName = """
+    query GetTipName(\$languageCode: String!, \$tipId: String){
+      getTipName(languageCode: \$languageCode, tipId: \$tipId)
+    }
+  """;
+
   static String getItemName = """
     query GetItemName(\$languageCode: String!, \$itemId: String){
       getItemName(languageCode: \$languageCode, itemId: \$itemId){
@@ -353,10 +360,8 @@ class GraphQLQueries{
     query GetForumEntries(\$municipalityId: String!){
       getForumEntries(municipalityId: \$municipalityId){
         createdAt
-        objectId
         forum_entry_type_id{
           objectId
-          type_name
         }
         user_id{
           username
@@ -365,6 +370,7 @@ class GraphQLQueries{
           }
         }
         link_id
+        question_text
       }
     }
   """;
