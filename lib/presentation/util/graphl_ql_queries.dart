@@ -1,5 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 
 import 'data_holder.dart';
@@ -82,6 +83,15 @@ class GraphQLQueries{
       getMunicipalities{
         objectId
         name
+      }
+      
+
+      getForumEntryTypes(languageCode: \$languageCode){
+        text
+        button_text
+        forum_entry_type_id{
+          objectId
+        }
       }
       
       amountOfSearchedItems(userId: \$userId)
@@ -508,6 +518,13 @@ class GraphQLQueries{
       for(String synonym in synonyms){
         DataHolder.itemNames[synonym.trim()] = element["item_id"]["objectId"];
       };
+    }
+
+    //get forum types
+    List<dynamic> forumEntryTypes = data?["getForumEntryTypes"];
+    for(dynamic entryType in forumEntryTypes){
+      ForumEntryType type = ForumEntryType.fromJson(entryType);
+      DataHolder.forumEntryTypesById[type.objectId] = type;
     }
 
     // set searched and rescued data amounts
