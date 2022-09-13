@@ -125,6 +125,10 @@ abstract class Languages {
   String get routeButtonText;
   String get cpDetailItemsAccepted;
   String get cpDetailsOpeningHours;
+  String get cpAlliesButtonShareText;
+  String get cpAlliesButtonCancelText;
+  String get cpAlliesButtonShareTitle;
+  String get cpAlliesButtonShareExplanation;
 
   // tips page
   String get dropdownTipTypeLabel;
@@ -136,6 +140,7 @@ abstract class Languages {
 
   // neighborhood
   String get neighborhoodNotAuthenticatedText;
+  String get notLoggedInErrorText;
 
   // settings page
   String get settingsPageTitle;

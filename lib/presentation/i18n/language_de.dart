@@ -122,7 +122,10 @@ class LanguageDe extends Languages {
   @override String get routeButtonText => "Route planen";
   @override String get cpDetailItemsAccepted => "Angenommene Items:";
   @override String get cpDetailsOpeningHours => "Geöffnet:";
-
+  @override String get cpAlliesButtonShareText => "Suchen";
+  @override String get cpAlliesButtonCancelText => "Abbrechen";
+  @override String get cpAlliesButtonShareTitle => "Schließt euch zusammen";
+  @override String get cpAlliesButtonShareExplanation => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt? Suche Verbündete in deiner Nachbarhschaft und sammelt gemeinsam.";
   // tips page
   @override String get dropdownTipTypeLabel => "Art des Tipps:";
   @override String get dropdownWasteBinLabel => "Mülleimer:";
@@ -133,6 +136,7 @@ class LanguageDe extends Languages {
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";
+  @override String get notLoggedInErrorText => "Sie müssen für diese Aktion angemeldet sein";
 
   // settings page
   @override String get settingsPageTitle => "Einstellungen";

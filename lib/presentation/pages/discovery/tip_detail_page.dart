@@ -72,6 +72,12 @@ class _TipDetailPageState extends State<TipDetailPage> {
   }
 
   void _shareTipWithNeighborhood() async {
+    if(currentUser == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.notLoggedInErrorText),
+      ));
+    }
+
     String forumTypeId = DataHolder.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Share")
         .key;

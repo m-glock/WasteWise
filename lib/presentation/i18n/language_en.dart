@@ -123,6 +123,10 @@ class LanguageEn extends Languages {
   @override String get routeButtonText => "Plan route";
   @override String get cpDetailItemsAccepted => "Accepted Items:";
   @override String get cpDetailsOpeningHours => "Opening hours:";
+  @override String get cpAlliesButtonShareText => "Search";
+  @override String get cpAlliesButtonCancelText => "Cancel";
+  @override String get cpAlliesButtonShareTitle => "Join forces";
+  @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the receiving office? Find allies in your neighborhood and collect together.";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";
@@ -134,6 +138,7 @@ class LanguageEn extends Languages {
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";
+  @override String get notLoggedInErrorText => "You need to be logged in for this action";
 
   // settings page
   @override String get settingsPageTitle => "Settings";
