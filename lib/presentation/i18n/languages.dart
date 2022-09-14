@@ -129,6 +129,8 @@ abstract class Languages {
   String get cpAlliesButtonCancelText;
   String get cpAlliesButtonShareTitle;
   String get cpAlliesButtonShareExplanation;
+  String get cpAllySuccessfulText;
+  String get cpAllyUnsuccessfulText;
 
   // tips page
   String get dropdownTipTypeLabel;

@@ -20,7 +20,7 @@ class ComradeDialogWidget {
             title: Text(Languages.of(context)!.cpAlliesButtonShareTitle),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
             content: SizedBox(
-              height: 150,
+              height: 170,
               child: Column(
                 children: [
                   Text(Languages.of(context)!.cpAlliesButtonShareExplanation),
@@ -76,7 +76,7 @@ class ComradeDialogWidget {
         .firstWhere((element) => element.value.title == subcategoryTitle)
         .key;
     String forumTypeId = DataHolder.forumEntryTypesById.entries
-        .firstWhere((element) => element.value.typeName == "Share")
+        .firstWhere((element) => element.value.typeName == "Ally")
         .key;
     Map<String, dynamic> inputVariables = {
       "userId": currentUser?.objectId,
@@ -94,12 +94,12 @@ class ComradeDialogWidget {
 
     String snackBarText =
         result.hasException || !result.data?["createForumEntries"]
-            ? Languages.of(context)!.tipShareUnsuccessfulText
-            : Languages.of(context)!.tipShareSuccessfulText;
+            ? Languages.of(context)!.cpAllySuccessfulText
+            : Languages.of(context)!.cpAllyUnsuccessfulText;
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(snackBarText),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(snackBarText))
+    );
     Navigator.pop(context);
   }
 }

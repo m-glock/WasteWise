@@ -53,26 +53,25 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
               List<dynamic> forumEntries = result.data?["getForumEntries"];
 
               return Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: forumEntries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Map<String, dynamic> entry = forumEntries[index];
-                      ForumEntryType type = DataHolder.forumEntryTypesById[
-                      entry["forum_entry_type_id"]["objectId"]]!;
-                      return ForumEntryWidget(
-                        userName: entry["user_id"]["username"],
-                        userPictureUrl: entry["user_id"]["avatar_picture"]
-                        ?["url"],
-                        type: type,
-                        createdAt: DateTime.parse(entry["createdAt"]),
-                        linkId: entry["link_id"],
-                        questionText: entry["question_text"],
-                      );
-                    },
-                  ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: forumEntries.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map<String, dynamic> entry = forumEntries[index];
+                    ForumEntryType type = DataHolder.forumEntryTypesById[
+                        entry["forum_entry_type_id"]["objectId"]]!;
+                    return ForumEntryWidget(
+                      userName: entry["user_id"]["username"],
+                      userPictureUrl: entry["user_id"]["avatar_picture"]
+                          ?["url"],
+                      type: type,
+                      createdAt: DateTime.parse(entry["createdAt"]),
+                      linkId: entry["link_id"],
+                      questionText: entry["question_text"],
+                    );
+                  },
+                ),
               );
-            }
-          );
+            });
   }
 }

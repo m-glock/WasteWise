@@ -126,7 +126,9 @@ class LanguageEn extends Languages {
   @override String get cpAlliesButtonShareText => "Search";
   @override String get cpAlliesButtonCancelText => "Cancel";
   @override String get cpAlliesButtonShareTitle => "Join forces";
-  @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the receiving office? Find allies in your neighborhood and collect together.";
+  @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the collection point? Find allies through the forum in your neighborhood and collect together. Choose what kind of item you are trying to collect and a post will be created in the forum.";
+  @override String get cpAllySuccessfulText => "Successfully started looking for allies";
+  @override String get cpAllyUnsuccessfulText => "Looking for allies failed. Please try again later";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";

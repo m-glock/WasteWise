@@ -125,14 +125,17 @@ class LanguageDe extends Languages {
   @override String get cpAlliesButtonShareText => "Suchen";
   @override String get cpAlliesButtonCancelText => "Abbrechen";
   @override String get cpAlliesButtonShareTitle => "Schließt euch zusammen";
-  @override String get cpAlliesButtonShareExplanation => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt? Suche Verbündete in deiner Nachbarhschaft und sammelt gemeinsam.";
+  @override String get cpAlliesButtonShareExplanation => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt? Suche Mitstreiter in deiner Nachbarschaft und sammelt gemeinsam. Wähle die Art von Item, die gesammelt werden soll und ein entsprechender Post wird im Forum erstellt.";
+  @override String get cpAllySuccessfulText => "Suche nach Mitstreitern erfolgreich gestartet";
+  @override String get cpAllyUnsuccessfulText => "Suche nach Mitstreitern fehlgeschlagen. Bitte später erneut versuchen";
+
   // tips page
   @override String get dropdownTipTypeLabel => "Art des Tipps:";
   @override String get dropdownWasteBinLabel => "Mülleimer:";
   @override String get defaultDropdownItem => "Alle";
   @override String get emptyListText => "Nichts gefunden";
   @override String get tipShareSuccessfulText => "Tipp erfolgreich geteilt";
-  @override String get tipShareUnsuccessfulText => "Teilen des Tipps fehlgeschagen. Bitte später erneut versuchen.";
+  @override String get tipShareUnsuccessfulText => "Teilen des Tipps fehlgeschagen. Bitte später erneut versuchen";
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";

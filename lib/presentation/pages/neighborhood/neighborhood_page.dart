@@ -33,36 +33,33 @@ class _NeighborhoodPageState extends State<NeighborhoodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(Constants.pagePadding),
-        child: _isAuthenticated
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CustomIconButton(
-                    onPressed: () => {},
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    icon: const Icon(FontAwesomeIcons.filter),
+      body: _isAuthenticated
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CustomIconButton(
+                  onPressed: () => {},
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  icon: const Icon(FontAwesomeIcons.filter),
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: Constants.tileBorderRadius,
                   ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: Constants.tileBorderRadius,
-                    ),
-                    height: 70,
-                    width: double.infinity,
-                    child: const Text("Placeholder 'Write question'"),
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  const NeighborhoodFeedWidget(),
-                ],
-              )
-            : Center(
-                child: Text(
-                    Languages.of(context)!.neighborhoodNotAuthenticatedText),
-              ),
-      ),
+                  height: 70,
+                  width: double.infinity,
+                  child: const Text("Placeholder 'Write question'"),
+                ),
+                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                const NeighborhoodFeedWidget(),
+              ],
+            )
+          : Center(
+              child:
+                  Text(Languages.of(context)!.neighborhoodNotAuthenticatedText),
+            ),
     );
   }
 }
