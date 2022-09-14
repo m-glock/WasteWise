@@ -147,7 +147,19 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
               textAlign: TextAlign.start,
             ),
           ),
-          TextButton(onPressed: () => {}, child: Text(widget.type.buttonText)),
+          TextButton(
+            onPressed: () => {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(widget.type.buttonText),
+                ),
+                const Icon(FontAwesomeIcons.angleRight, size: 12),
+              ],
+            ),
+          ),
         ],
       ),
     );
