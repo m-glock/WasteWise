@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 
 import '../../../i18n/locale_constant.dart';
 import '../../../util/constants.dart';
 import '../../../util/database_classes/forum_entry_type.dart';
 import '../../../util/database_classes/subcategory.dart';
+import '../../../util/database_classes/tip.dart';
 import '../../../util/graphl_ql_queries.dart';
 import '../../../util/time_duration.dart';
 
@@ -36,6 +38,7 @@ class ForumEntryWidget extends StatefulWidget {
 class _ForumEntryWidgetState extends State<ForumEntryWidget> {
   double pictureSize = 30;
   String postContent = "";
+  Tip? tip;
 
   @override
   void initState() {
@@ -48,7 +51,8 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     String content = "";
     switch (forumEntryType) {
       case "Share":
-        content = await _getTipName();
+        tip = await _getTip();
+        content = tip!.title;
         break;
       case "Ally":
         content = await _getSubcategory();
@@ -65,7 +69,34 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     });
   }
 
-  Future<String> _getTipName() async {
+  Future<String> _getSubcategory() async {
+    Subcategory subcategory = DataHolder.subcategoriesById[widget.linkId]!;
+    return "\"${subcategory.title}\"";
+  }
+
+  void _buttonPressed() {
+    switch (widget.type.typeName) {
+      case "Share":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  TipDetailPage(tip: tip!, updateBookmarkInParent: () => {})),
+        );
+        break;
+      case "Ally":
+        //TODO: open Thread
+        break;
+      case "Question":
+        //TODO open Thread
+        break;
+      default:
+        throw Exception("Database error: entry type of forum post "
+            "could not be detected.");
+    }
+  }
+
+  Future<Tip> _getTip() async {
     Locale locale = await getLocale();
     Map<String, dynamic> inputVariables = {
       "languageCode": locale.languageCode,
@@ -76,16 +107,11 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     QueryResult<Object?> result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.getTipName),
+        document: gql(GraphQLQueries.tipDetailQuery),
         variables: inputVariables,
       ),
     );
-    return "\"${result.data?["getTipName"]}\"";
-  }
-
-  Future<String> _getSubcategory() async {
-    Subcategory subcategory = DataHolder.subcategoriesById[widget.linkId]!;
-    return "\"${subcategory.title}\"";
+    return Tip.fromJson(result.data?["getTip"]);
   }
 
   @override
@@ -148,7 +174,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
             ),
           ),
           TextButton(
-            onPressed: () => {},
+            onPressed: () => _buttonPressed(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

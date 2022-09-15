@@ -324,12 +324,6 @@ class GraphQLQueries{
     }
   """;
 
-  static String getTipName = """
-    query GetTipName(\$languageCode: String!, \$tipId: String){
-      getTipName(languageCode: \$languageCode, tipId: \$tipId)
-    }
-  """;
-
   static String getItemName = """
     query GetItemName(\$languageCode: String!, \$itemId: String){
       getItemName(languageCode: \$languageCode, itemId: \$itemId){
