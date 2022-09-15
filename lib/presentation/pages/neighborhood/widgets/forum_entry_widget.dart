@@ -81,7 +81,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ThreadPage(forumEntry: widget.forumEntry)),
+              builder: (context) => ThreadPage(parentForumEntry: widget.forumEntry,)),
         );
         break;
       default:

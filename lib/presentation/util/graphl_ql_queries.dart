@@ -353,6 +353,7 @@ class GraphQLQueries{
   static String getForumEntries = """
     query GetForumEntries(\$municipalityId: String!){
       getForumEntries(municipalityId: \$municipalityId){
+        objectId
         createdAt
         forum_entry_type_id{
           objectId
@@ -370,9 +371,13 @@ class GraphQLQueries{
   """;
 
   static String getForumReplies = """
-    query GetForumEntries(\$parentEntryId: String!){
+    query GetForumEntryReplies(\$parentEntryId: String!){
       getForumEntryReplies(parentEntryId: \$parentEntryId){
+        objectId
         createdAt
+        forum_entry_type_id{
+          objectId
+        }
         user_id{
           username
           avatar_picture{

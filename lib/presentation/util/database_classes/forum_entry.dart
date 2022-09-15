@@ -2,6 +2,7 @@ import '../data_holder.dart';
 import 'forum_entry_type.dart';
 
 class ForumEntry {
+  final String objectId;
   final String userName;
   final String? userPictureUrl;
   final ForumEntryType type;
@@ -9,11 +10,12 @@ class ForumEntry {
   final String? linkId;
   final String? questionText;
 
-  ForumEntry(this.userName, this.userPictureUrl, this.type, this.createdAt,
+  ForumEntry(this.objectId, this.userName, this.userPictureUrl, this.type, this.createdAt,
       {this.linkId, this.questionText});
 
   static ForumEntry fromJson(Map<String, dynamic> entry){
     return ForumEntry(
+      entry["objectId"],
       entry["user_id"]["username"],
       entry["user_id"]["avatar_picture"]?["url"],
       DataHolder.forumEntryTypesById[entry["forum_entry_type_id"]["objectId"]]!,
