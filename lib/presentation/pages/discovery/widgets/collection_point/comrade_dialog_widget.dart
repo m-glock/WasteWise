@@ -94,8 +94,8 @@ class ComradeDialogWidget {
 
     String snackBarText =
         result.hasException || !result.data?["createForumEntries"]
-            ? Languages.of(context)!.cpAllySuccessfulText
-            : Languages.of(context)!.cpAllyUnsuccessfulText;
+            ? Languages.of(context)!.cpAllyUnsuccessfulText
+            : Languages.of(context)!.cpAllySuccessfulText;
 
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(snackBarText))
