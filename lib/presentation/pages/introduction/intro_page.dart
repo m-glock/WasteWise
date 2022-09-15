@@ -6,6 +6,7 @@ import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_login_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
@@ -18,8 +19,6 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
-  String? municipalityId;
-
   PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
@@ -68,8 +67,19 @@ class _IntroductionPageState extends State<IntroductionPage> {
           decoration: _getPageDecoration(),
         ),
       ],
-      onDone: () {
+      onDone: () async {
         _setIntroDone();
+        SharedPreferences _prefs = await SharedPreferences.getInstance();
+        bool municipalityNotSet =
+            _prefs.getString(Constants.prefSelectedMunicipalityCode) == null;
+        if(municipalityNotSet){
+          String? municipalityId =
+              DataHolder.municipalitiesById.entries.first.key;
+          await _prefs.setString(
+              Constants.prefSelectedMunicipalityCode,
+              municipalityId
+          );
+        }
         Route route = MaterialPageRoute(builder: (context) => const HomePage());
         Navigator.pushReplacement(context, route);
       },
