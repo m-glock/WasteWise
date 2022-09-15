@@ -145,6 +145,9 @@ abstract class Languages {
   String get notLoggedInErrorText;
   String get cpPostSuccessfulText;
   String get cpPostUnsuccessfulText;
+  String get threadReplyHintText;
+  String get askQuestionHintText;
+  String get threadPageTitle;
 
   // settings page
   String get settingsPageTitle;

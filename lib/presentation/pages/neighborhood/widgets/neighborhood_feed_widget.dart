@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
@@ -38,7 +38,6 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     });
   }
 
-
   void _createForumPost() async {
     String forumTypeId = DataHolder.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Question")
@@ -46,7 +45,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     Map<String, dynamic> inputVariables = {
       "userId": (await ParseUser.currentUser())?.objectId,
       "forumEntryTypeId": forumTypeId,
-      "questionText": controller.text,
+      "text": controller.text,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -58,9 +57,9 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     );
 
     String snackBarText =
-    result.hasException || !result.data?["createForumEntries"]
-        ? Languages.of(context)!.cpPostUnsuccessfulText
-        : Languages.of(context)!.cpPostSuccessfulText;
+        result.hasException || !result.data?["createForumEntries"]
+            ? Languages.of(context)!.cpPostUnsuccessfulText
+            : Languages.of(context)!.cpPostSuccessfulText;
 
     setState(() {
       controller.text = "";
@@ -68,9 +67,8 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
 
     FocusManager.instance.primaryFocus?.unfocus();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(snackBarText))
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(snackBarText)));
   }
 
   @override
@@ -102,29 +100,31 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                     icon: const Icon(FontAwesomeIcons.filter),
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: controller,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                            fillColor: Theme.of(context).colorScheme.surface,
-                            labelText: "Content",
-                            filled: true,
-                            border: InputBorder.none,
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: controller,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              fillColor: Theme.of(context).colorScheme.surface,
+                              labelText: Languages.of(context)!.askQuestionHintText,
+                              filled: true,
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
-                      CustomIconButton(
-                        padding: EdgeInsets.zero,
-                        icon: const Icon(Icons.send),
-                        onPressed: () => _createForumPost(),
-                      ),
-                    ],
+                        CustomIconButton(
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          icon: const Icon(Icons.send),
+                          onPressed: () => _createForumPost(),
+                        ),
+                      ],
+                    ),
                   ),
                   const Padding(padding: EdgeInsets.only(bottom: 10)),
                   Expanded(
@@ -132,24 +132,15 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                       shrinkWrap: true,
                       itemCount: forumEntries.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Map<String, dynamic> entry = forumEntries[index];
-                        ForumEntryType type = DataHolder.forumEntryTypesById[
-                        entry["forum_entry_type_id"]["objectId"]]!;
-                        return ForumEntryWidget(
-                          userName: entry["user_id"]["username"],
-                          userPictureUrl: entry["user_id"]["avatar_picture"]
-                          ?["url"],
-                          type: type,
-                          createdAt: DateTime.parse(entry["createdAt"]),
-                          linkId: entry["link_id"],
-                          questionText: entry["question_text"],
-                        );
+                        ForumEntry entry =
+                            ForumEntry.fromJson(forumEntries[index]);
+                        return ForumEntryWidget(forumEntry: entry);
                       },
                     ),
                   ),
                 ],
               );
             },
-    );
+          );
   }
 }

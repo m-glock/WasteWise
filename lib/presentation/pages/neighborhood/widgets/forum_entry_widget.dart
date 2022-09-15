@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
+import 'package:recycling_app/presentation/pages/neighborhood/thread_page.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
 
 import '../../../i18n/locale_constant.dart';
 import '../../../util/constants.dart';
-import '../../../util/database_classes/forum_entry_type.dart';
 import '../../../util/database_classes/subcategory.dart';
 import '../../../util/database_classes/tip.dart';
 import '../../../util/graphl_ql_queries.dart';
@@ -15,21 +16,11 @@ import '../../../util/time_duration.dart';
 
 class ForumEntryWidget extends StatefulWidget {
   const ForumEntryWidget(
-      {Key? key,
-      required this.userName,
-      this.userPictureUrl,
-      required this.type,
-      required this.createdAt,
-      this.linkId,
-      this.questionText})
+      {Key? key, required this.forumEntry, this.showButton = true})
       : super(key: key);
 
-  final String userName;
-  final String? userPictureUrl;
-  final ForumEntryType type;
-  final DateTime createdAt;
-  final String? linkId;
-  final String? questionText;
+  final ForumEntry forumEntry;
+  final bool showButton;
 
   @override
   State<ForumEntryWidget> createState() => _ForumEntryWidgetState();
@@ -47,7 +38,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
   }
 
   void _getPostContent() async {
-    String forumEntryType = widget.type.typeName;
+    String forumEntryType = widget.forumEntry.type.typeName;
     String content = "";
     switch (forumEntryType) {
       case "Share":
@@ -58,7 +49,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         content = await _getSubcategory();
         break;
       case "Question":
-        content = "\n${widget.questionText}";
+        content = "\n${widget.forumEntry.questionText}";
         break;
       default:
         throw Exception("Database error: entry type of forum post "
@@ -70,12 +61,13 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
   }
 
   Future<String> _getSubcategory() async {
-    Subcategory subcategory = DataHolder.subcategoriesById[widget.linkId]!;
+    Subcategory subcategory =
+        DataHolder.subcategoriesById[widget.forumEntry.linkId]!;
     return "\"${subcategory.title}\"";
   }
 
   void _buttonPressed() {
-    switch (widget.type.typeName) {
+    switch (widget.forumEntry.type.typeName) {
       case "Share":
         Navigator.push(
           context,
@@ -85,10 +77,12 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         );
         break;
       case "Ally":
-        //TODO: open Thread
-        break;
       case "Question":
-        //TODO open Thread
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ThreadPage(forumEntry: widget.forumEntry)),
+        );
         break;
       default:
         throw Exception("Database error: entry type of forum post "
@@ -100,7 +94,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     Locale locale = await getLocale();
     Map<String, dynamic> inputVariables = {
       "languageCode": locale.languageCode,
-      "tipId": widget.linkId,
+      "tipId": widget.forumEntry.linkId,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -131,9 +125,9 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(pictureSize),
-                child: widget.userPictureUrl != null
+                child: widget.forumEntry.userPictureUrl != null
                     ? CachedNetworkImage(
-                        imageUrl: widget.userPictureUrl!,
+                        imageUrl: widget.forumEntry.userPictureUrl!,
                         width: pictureSize,
                         height: pictureSize,
                       )
@@ -154,11 +148,11 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.userName,
+                    widget.forumEntry.userName,
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   Text(
-                    getTimeframe(widget.createdAt),
+                    getTimeframe(widget.forumEntry.createdAt),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
@@ -169,23 +163,25 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
           SizedBox(
             width: double.infinity,
             child: Text(
-              widget.type.text.replaceFirst("\${}", postContent),
+              widget.forumEntry.type.text.replaceFirst("\${}", postContent),
               textAlign: TextAlign.start,
             ),
           ),
-          TextButton(
-            onPressed: () => _buttonPressed(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Text(widget.type.buttonText),
-                ),
-                const Icon(FontAwesomeIcons.angleRight, size: 12),
-              ],
-            ),
-          ),
+          widget.showButton
+              ? TextButton(
+                  onPressed: () => _buttonPressed(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(widget.forumEntry.type.buttonText),
+                      ),
+                      const Icon(FontAwesomeIcons.angleRight, size: 12),
+                    ],
+                  ),
+                )
+              : const Padding(padding: EdgeInsets.only(bottom: 15)),
         ],
       ),
     );

@@ -364,7 +364,23 @@ class GraphQLQueries{
           }
         }
         link_id
-        question_text
+        text
+      }
+    }
+  """;
+
+  static String getForumReplies = """
+    query GetForumEntries(\$parentEntryId: String!){
+      getForumEntryReplies(parentEntryId: \$parentEntryId){
+        createdAt
+        user_id{
+          username
+          avatar_picture{
+            url
+          }
+        }
+        link_id
+        text
       }
     }
   """;
@@ -400,12 +416,13 @@ class GraphQLQueries{
   """;
 
   static String createForumPost = """
-    mutation CreateForumEntries(\$userId: String!, \$forumEntryTypeId: String!, \$linkId: String, \$questionText: String){
+    mutation CreateForumEntries(\$userId: String!, \$forumEntryTypeId: String!, \$linkId: String, \$text: String, \$parentEntryId: String){
       createForumEntries(
         userId: \$userId, 
         forumEntryTypeId: \$forumEntryTypeId, 
         linkId: \$linkId,
-        questionText: \$questionText
+        text: \$text,
+        parentEntryId: \$parentEntryId
       )
     }
   """;

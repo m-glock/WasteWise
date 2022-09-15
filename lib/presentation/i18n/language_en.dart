@@ -143,6 +143,9 @@ class LanguageEn extends Languages {
   @override String get notLoggedInErrorText => "You need to be logged in for this action";
   @override String get cpPostSuccessfulText => "Post successfully created";
   @override String get cpPostUnsuccessfulText => "Post creation failed. Please try again later";
+  @override String get threadReplyHintText => "Type a reply";
+  @override String get askQuestionHintText => "Ask a question";
+  @override String get threadPageTitle => "Thread";
 
   // settings page
   @override String get settingsPageTitle => "Settings";

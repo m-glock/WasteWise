@@ -28,7 +28,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     );
   }
 
-  void _setIntroDone() async {
+  Future<void> _setIntroDone() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setBool(Constants.prefIntroDone, true);
   }
@@ -68,7 +68,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
         ),
       ],
       onDone: () async {
-        _setIntroDone();
+        await _setIntroDone();
         SharedPreferences _prefs = await SharedPreferences.getInstance();
         bool municipalityNotSet =
             _prefs.getString(Constants.prefSelectedMunicipalityCode) == null;

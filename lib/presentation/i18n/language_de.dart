@@ -142,6 +142,9 @@ class LanguageDe extends Languages {
   @override String get notLoggedInErrorText => "Sie müssen für diese Aktion angemeldet sein";
   @override String get cpPostSuccessfulText => "Post erfolgreich erstellt";
   @override String get cpPostUnsuccessfulText => "Erstellen des Posts fehlgeschlagen. Bitte später erneut versuchen";
+  @override String get threadReplyHintText => "Schreibe eine Antwort";
+  @override String get askQuestionHintText => "Stelle eine Frage";
+  @override String get threadPageTitle => "Diskussion";
 
   // settings page
   @override String get settingsPageTitle => "Einstellungen";
