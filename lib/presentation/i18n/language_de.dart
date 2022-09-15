@@ -140,6 +140,8 @@ class LanguageDe extends Languages {
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Nur eigeloggte Nutzer können den Nachbarschaftsfeed benutzen. Bitte melde dich an oder registriere dich.";
   @override String get notLoggedInErrorText => "Sie müssen für diese Aktion angemeldet sein";
+  @override String get cpPostSuccessfulText => "Post erfolgreich erstellt";
+  @override String get cpPostUnsuccessfulText => "Erstellen des Posts fehlgeschlagen. Bitte später erneut versuchen";
 
   // settings page
   @override String get settingsPageTitle => "Einstellungen";

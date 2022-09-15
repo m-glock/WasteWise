@@ -143,6 +143,8 @@ abstract class Languages {
   // neighborhood
   String get neighborhoodNotAuthenticatedText;
   String get notLoggedInErrorText;
+  String get cpPostSuccessfulText;
+  String get cpPostUnsuccessfulText;
 
   // settings page
   String get settingsPageTitle;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/neighborhood_feed_widget.dart';
 
-import '../../util/constants.dart';
 import '../../util/custom_icon_button.dart';
+import '../../util/data_holder.dart';
+import '../../util/graphl_ql_queries.dart';
 
 class NeighborhoodPage extends StatefulWidget {
   const NeighborhoodPage({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class NeighborhoodPage extends StatefulWidget {
 
 class _NeighborhoodPageState extends State<NeighborhoodPage> {
   bool _isAuthenticated = false;
+  final TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -28,6 +31,37 @@ class _NeighborhoodPageState extends State<NeighborhoodPage> {
     setState(() {
       _isAuthenticated = currentUser != null;
     });
+  }
+
+  void _createForumPost() async {
+    String forumTypeId = DataHolder.forumEntryTypesById.entries
+        .firstWhere((element) => element.value.typeName == "Question")
+        .key;
+    Map<String, dynamic> inputVariables = {
+      "userId": (await ParseUser.currentUser())?.objectId,
+      "forumEntryTypeId": forumTypeId,
+      "questionText": controller.text,
+    };
+
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.createForumPost),
+        variables: inputVariables,
+      ),
+    );
+
+    String snackBarText =
+    result.hasException || !result.data?["createForumEntries"]
+        ? Languages.of(context)!.cpPostUnsuccessfulText
+        : Languages.of(context)!.cpPostSuccessfulText;
+
+    controller.text = "";
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(snackBarText))
+    );
   }
 
   @override
@@ -43,14 +77,29 @@ class _NeighborhoodPageState extends State<NeighborhoodPage> {
                   icon: const Icon(FontAwesomeIcons.filter),
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: Constants.tileBorderRadius,
-                  ),
-                  height: 70,
-                  width: double.infinity,
-                  child: const Text("Placeholder 'Write question'"),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: controller,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          labelText: "Content",
+                          filled: true,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
+                    CustomIconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(Icons.send),
+                      onPressed: () => _createForumPost(),
+                    ),
+                  ],
                 ),
                 const Padding(padding: EdgeInsets.only(bottom: 10)),
                 const NeighborhoodFeedWidget(),

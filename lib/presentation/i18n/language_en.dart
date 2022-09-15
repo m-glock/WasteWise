@@ -141,6 +141,8 @@ class LanguageEn extends Languages {
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";
   @override String get notLoggedInErrorText => "You need to be logged in for this action";
+  @override String get cpPostSuccessfulText => "Post successfully created";
+  @override String get cpPostUnsuccessfulText => "Post creation failed. Please try again later";
 
   // settings page
   @override String get settingsPageTitle => "Settings";
