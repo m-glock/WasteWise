@@ -14,6 +14,7 @@ import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
 import '../../util/database_classes/item.dart';
 import '../../util/graphl_ql_queries.dart';
+import '../profile/search_history_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -97,8 +98,6 @@ class _SearchPageState extends State<SearchPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult result = await client.query(
       QueryOptions(
-        //TODO: check if still necessary after figuring cache out
-          fetchPolicy: FetchPolicy.networkOnly,
           document: gql(GraphQLQueries.itemDetailQuery),
           variables: {
             "languageCode": locale.languageCode,
@@ -118,8 +117,21 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             SearchBar(itemNames: DataHolder.itemNames),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 10, 40),
-              child: _barcodeScannerButton(),
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _barcodeScannerButton(),
+                  OutlinedButton(
+                    child: Text(Languages.of(context)!.searchHistoryPageTitle),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SearchHistoryPage()),
+                    ),
+                  ),
+                ],
+              ),
             ),
             languageCode == null || userId == null
                 ? const Center(

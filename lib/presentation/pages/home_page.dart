@@ -6,6 +6,7 @@ import 'package:recycling_app/presentation/pages/contact/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/discover_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/neighborhood_page.dart';
+import 'package:recycling_app/presentation/pages/profile/bookmark_page.dart';
 import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
@@ -17,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../i18n/locale_constant.dart';
 import '../util/graphl_ql_queries.dart';
 import 'imprint/imprint_page.dart';
-import 'notification_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -75,10 +75,10 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const NotificationPage()),
+                    builder: (context) => const BookmarkPage()),
               )
             },
-            icon: const Icon(FontAwesomeIcons.bell),
+            icon: const Icon(FontAwesomeIcons.bookmark),
           ),
           CustomIconButton(
             padding: const EdgeInsets.symmetric(horizontal: 7),
