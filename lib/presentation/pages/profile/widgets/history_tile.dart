@@ -48,7 +48,7 @@ class _HistoryTileState extends State<HistoryTile> {
       ),
     );
 
-    Item? item = Item.fromJson(result.data);
+    Item? item = Item.fromGraphQlData(result.data);
     if(item == null) throw Exception("No item found.");
 
     Navigator.push(

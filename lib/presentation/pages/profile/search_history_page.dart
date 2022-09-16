@@ -37,7 +37,7 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     for (dynamic element in searchHistoryData) {
       items
-          .add(await SearchHistoryItem.fromJson(element, client, languageCode));
+          .add(await SearchHistoryItem.fromGraphQlData(element, client, languageCode));
     }
 
     setState(() {

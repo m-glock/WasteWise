@@ -133,7 +133,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                       itemCount: forumEntries.length,
                       itemBuilder: (BuildContext context, int index) {
                         ForumEntry entry =
-                            ForumEntry.fromJson(forumEntries[index]);
+                            ForumEntry.fromGraphQLData(forumEntries[index]);
                         return ForumEntryWidget(forumEntry: entry);
                       },
                     ),

@@ -18,7 +18,7 @@ class Item {
       {this.synonyms, this.explanation, this.subcategory,
         this.bookmarked = false});
 
-  static Item? fromJson(Map<dynamic, dynamic>? data) {
+  static Item? fromGraphQlData(Map<dynamic, dynamic>? data) {
     if(data == null) return null;
 
     Map<dynamic, dynamic> item = data["getItem"];
@@ -50,7 +50,7 @@ class Item {
     }
 
     for (dynamic tip in itemTips) {
-      Tip newTip = Tip.fromJson(tip);
+      Tip newTip = Tip.fromGraphQlData(tip);
       if(newTip.tipTypeId == tipTypeById["Prevention"]){
         newItem.preventions.add(newTip);
       } else if(newTip.tipTypeId == tipTypeById["Separation"]){

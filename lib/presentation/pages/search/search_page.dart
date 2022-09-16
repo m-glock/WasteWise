@@ -105,7 +105,7 @@ class _SearchPageState extends State<SearchPage> {
             "userId": (await ParseUser.currentUser())?.objectId ?? "",
           }),
     );
-    return Item.fromJson(result.data);
+    return Item.fromGraphQlData(result.data);
   }
 
   @override

@@ -52,7 +52,7 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Item? item = Item.fromJson(result.data);
+    Item? item = Item.fromGraphQlData(result.data);
     if(item == null) throw Exception("No item found.");
 
     Navigator.push(
@@ -80,7 +80,7 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Tip tip = Tip.fromJson(result.data?["getTip"], bookmarked: true);
+    Tip tip = Tip.fromGraphQlData(result.data?["getTip"], bookmarked: true);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>

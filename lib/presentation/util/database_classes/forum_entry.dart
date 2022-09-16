@@ -13,7 +13,7 @@ class ForumEntry {
   ForumEntry(this.objectId, this.userName, this.userPictureUrl, this.type, this.createdAt,
       {this.linkId, this.questionText});
 
-  static ForumEntry fromJson(Map<String, dynamic> entry){
+  static ForumEntry fromGraphQLData(Map<String, dynamic> entry){
     return ForumEntry(
       entry["objectId"],
       entry["user_id"]["username"],

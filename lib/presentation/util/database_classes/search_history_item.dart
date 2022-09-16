@@ -14,7 +14,7 @@ class SearchHistoryItem {
   SearchHistoryItem(this.objectId, this.title, this.correctWasteBin,
       this.selectedCategory, this.createdAt);
 
-  static Future<SearchHistoryItem> fromJson(dynamic searchHistoryData,
+  static Future<SearchHistoryItem> fromGraphQlData(dynamic searchHistoryData,
       GraphQLClient client, String languageCode) async {
     WasteBinCategory correctCategory = DataHolder.categoriesById[
         searchHistoryData["item_id"]["subcategory_id"]["category_id"]

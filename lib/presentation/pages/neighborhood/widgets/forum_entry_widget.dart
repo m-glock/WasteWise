@@ -105,7 +105,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         variables: inputVariables,
       ),
     );
-    return Tip.fromJson(result.data?["getTip"]);
+    return Tip.fromGraphQlData(result.data?["getTip"]);
   }
 
   @override

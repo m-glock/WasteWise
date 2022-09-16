@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
             "userId": (await ParseUser.currentUser())?.objectId ?? "",
           }),
     );
-    Item? item = Item.fromJson(result.data);
+    Item? item = Item.fromGraphQlData(result.data);
     if(item == null) throw Exception("No item found.");
 
     if(!learnMore){

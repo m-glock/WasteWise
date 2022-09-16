@@ -98,7 +98,7 @@ class _ThreadPageState extends State<ThreadPage> {
                             itemCount: replyData.length,
                             itemBuilder: (BuildContext context, int index) {
                               Map<String, dynamic> example = replyData[index];
-                              ForumEntry forumEntry = ForumEntry.fromJson(example);
+                              ForumEntry forumEntry = ForumEntry.fromGraphQLData(example);
                               return Container(
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,

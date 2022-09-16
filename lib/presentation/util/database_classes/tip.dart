@@ -14,7 +14,7 @@ class Tip {
       this.imageUrl, this.short,
       {this.isBookmarked = false});
 
-  static Tip fromJson(Map<dynamic, dynamic> tip, {bool bookmarked = false}) {
+  static Tip fromGraphQlData(Map<dynamic, dynamic> tip, {bool bookmarked = false}) {
     return Tip(
         tip["tip_id"]["objectId"],
         tip["title"],

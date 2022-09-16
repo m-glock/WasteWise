@@ -136,7 +136,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                   //set tips
                   for (dynamic element in tips) {
                     tipList[element["tip_id"]["objectId"]] =
-                        Tip.fromJson(element);
+                        Tip.fromGraphQlData(element);
                   }
 
                   // set waste bin types
