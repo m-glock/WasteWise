@@ -34,6 +34,7 @@ class _UserPageState extends State<UserPage> {
             ? ProfileWidget(authenticated: _checkIfAuthenticated)
             : LoginWidget(authenticated: _checkIfAuthenticated),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 

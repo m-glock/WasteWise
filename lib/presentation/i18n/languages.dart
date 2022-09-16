@@ -50,10 +50,10 @@ abstract class Languages {
   List<String> get months;
 
   // registration/login page
-  String get usernameLabel;
-  String get emailLabel;
-  String get passwordLabel;
-  String get zipCodeLabel;
+  String get usernameHintText;
+  String get passwordHintText;
+  String get emailHintText;
+  String get zipCodeHintText;
   String get signupButtonText;
   String get loginButtonText;
   String get goToLoginButtonText;

@@ -48,10 +48,10 @@ class LanguageEn extends Languages {
   @override List<String> get months => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   // registration/login page
-  @override String get usernameLabel => "Username";
-  @override String get passwordLabel => "Password";
-  @override String get zipCodeLabel => "zip code (optional)";
-  @override String get emailLabel => "Email";
+  @override String get usernameHintText => "Username";
+  @override String get passwordHintText => "Password";
+  @override String get zipCodeHintText => "Zip code (optional)";
+  @override String get emailHintText => "Email";
   @override String get signupButtonText => "Sign Up";
   @override String get loginButtonText => "Log in";
   @override String get goToLoginButtonText => "Already registered? Log in";

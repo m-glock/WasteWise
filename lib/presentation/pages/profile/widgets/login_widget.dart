@@ -43,7 +43,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   controller: controllerUsername,
-                  label: Languages.of(context)!.usernameLabel,
+                  hintText: Languages.of(context)!.usernameHintText,
                   inputType: TextInputType.text),
             ),
             if (_signup) ...[
@@ -51,14 +51,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                 padding: const EdgeInsets.all(10),
                 child: TextInputWidget(
                     controller: controllerEmail,
-                    label: Languages.of(context)!.emailLabel,
+                    hintText: Languages.of(context)!.emailHintText,
                     inputType: TextInputType.emailAddress),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextInputWidget(
                     controller: controllerZipCode,
-                    label: Languages.of(context)!.zipCodeLabel,
+                    hintText: Languages.of(context)!.zipCodeHintText,
                     inputType: TextInputType.number),
               ),
             ],
@@ -66,8 +66,8 @@ class _LoginWidgetState extends State<LoginWidget> {
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   isPassword: true,
+                  hintText: Languages.of(context)!.passwordHintText,
                   controller: controllerPassword,
-                  label: Languages.of(context)!.passwordLabel,
                   inputType: TextInputType.text),
             ),
             ElevatedButton(
