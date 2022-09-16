@@ -109,18 +109,11 @@ class _MyAppState extends State<MyApp> {
               theme: ThemeData(
                 appBarTheme: const TopAppBarTheme(),
                 bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
-
                 elevatedButtonTheme: const AppElevatedButtonTheme(),
                 floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
                 outlinedButtonTheme: const AppOutlinedButtonTheme(),
                 textButtonTheme: AppTextButtonTheme(),
-                toggleButtonsTheme: const AppToggleButtonsTheme(),
-
                 colorScheme: const AppColorScheme(),
-
-                //TODO: add PageTransitionsTheme
-                //pageTransitionsTheme: const PageTransitionsTheme(),
-
                 textTheme: const AppTextTheme(),
               ),
               locale: _locale,

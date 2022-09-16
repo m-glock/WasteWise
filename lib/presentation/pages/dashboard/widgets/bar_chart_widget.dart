@@ -40,7 +40,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     }
 
     return SideTitleWidget(
-      child: Text(text, style: Theme.of(context).textTheme.bodyText1),
+      child: Text(text, style: Theme.of(context).textTheme.labelMedium),
       axisSide: meta.axisSide,
     );
   }

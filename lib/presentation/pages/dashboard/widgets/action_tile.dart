@@ -48,7 +48,10 @@ class _ActionTileState extends State<ActionTile> {
                   const Icon(FontAwesomeIcons.angleRight, size: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(Languages.of(context)!.tipTileButtonText),
+                    child: Text(
+                      Languages.of(context)!.tipTileButtonText,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               ),
