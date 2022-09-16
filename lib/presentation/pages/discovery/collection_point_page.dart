@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/comrade_dialog_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
@@ -30,6 +31,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   Map<CollectionPoint, Marker> filteredMarkers = {};
   String languageCode = "";
   String municipalityId = "";
+  String? chosenSubcategoryTitle;
 
   @override
   void initState() {
@@ -90,10 +92,11 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   }
 
   void _filterMarkers(String subcategoryTitle) {
+    chosenSubcategoryTitle = subcategoryTitle;
     setState(() {
       filteredMarkers.addAll(DataHolder.markers);
       filteredMarkers.removeWhere(
-              (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
+          (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
     });
   }
 
@@ -144,7 +147,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
             );
             DataHolder.markers[collectionPoint] = marker;
           }
-          if (filteredMarkers.isEmpty){
+          if (filteredMarkers.isEmpty) {
             filteredMarkers.addAll(DataHolder.markers);
           }
 
@@ -171,6 +174,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           for (dynamic element in availableSubcategories) {
             DataHolder.cpSubcategories.add(element["title"]);
           }
+          chosenSubcategoryTitle = DataHolder.cpSubcategories.first;
 
           // display when all data is available
           return Column(
@@ -193,17 +197,20 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
+        children: [
           FloatingActionButton(
             heroTag: 'btn1',
-            child: Icon(Icons.group),
-            onPressed: null,
+            child: const Icon(Icons.group),
+            onPressed: () => ComradeDialogWidget.showModal(
+                context, chosenSubcategoryTitle ?? ""),
           ),
-          Padding(padding: EdgeInsets.only(bottom: 10)),
+          const Padding(padding: EdgeInsets.only(bottom: 10)),
           FloatingActionButton(
             heroTag: 'btn2',
-            child: Icon(FontAwesomeIcons.filter),
-            onPressed: null,
+            child: const Icon(FontAwesomeIcons.filter),
+            onPressed: () => {
+              //TODO: implement filter
+            },
           ),
         ],
       ),

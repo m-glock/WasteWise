@@ -123,15 +123,29 @@ class LanguageEn extends Languages {
   @override String get routeButtonText => "Plan route";
   @override String get cpDetailItemsAccepted => "Accepted Items:";
   @override String get cpDetailsOpeningHours => "Opening hours:";
+  @override String get cpAlliesButtonShareText => "Search";
+  @override String get cpAlliesButtonCancelText => "Cancel";
+  @override String get cpAlliesButtonShareTitle => "Join forces";
+  @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the collection point? Find allies through the forum in your neighborhood and collect together. Choose what kind of item you are trying to collect and a post will be created in the forum.";
+  @override String get cpAllySuccessfulText => "Successfully started looking for allies";
+  @override String get cpAllyUnsuccessfulText => "Looking for allies failed. Please try again later";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";
   @override String get dropdownWasteBinLabel => "Waste bin type:";
   @override String get defaultDropdownItem => "All";
   @override String get emptyListText => "Nothing found";
+  @override String get tipShareSuccessfulText => "Tip successfully shared";
+  @override String get tipShareUnsuccessfulText => "Sharing tip failed. Please try again later";
 
   // neighborhood
   @override String get neighborhoodNotAuthenticatedText => "Only logged in users can access the neighborhood feed of the app. Please log in or register.";
+  @override String get notLoggedInErrorText => "You need to be logged in for this action";
+  @override String get cpPostSuccessfulText => "Post successfully created";
+  @override String get cpPostUnsuccessfulText => "Post creation failed. Please try again later";
+  @override String get threadReplyHintText => "Type a reply";
+  @override String get askQuestionHintText => "Ask a question";
+  @override String get threadPageTitle => "Thread";
 
   // settings page
   @override String get settingsPageTitle => "Settings";

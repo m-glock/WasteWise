@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 
 import '../../i18n/languages.dart';
 import '../../util/constants.dart';
@@ -11,9 +12,7 @@ import '../../util/graphl_ql_queries.dart';
 
 class TipDetailPage extends StatefulWidget {
   const TipDetailPage(
-      {Key? key,
-      required this.tip,
-      required this.updateBookmarkInParent})
+      {Key? key, required this.tip, required this.updateBookmarkInParent})
       : super(key: key);
 
   final Tip tip;
@@ -24,7 +23,6 @@ class TipDetailPage extends StatefulWidget {
 }
 
 class _TipDetailPageState extends State<TipDetailPage> {
-
   ParseUser? currentUser;
   late Image _image;
   bool _loading = true;
@@ -73,6 +71,40 @@ class _TipDetailPageState extends State<TipDetailPage> {
     }
   }
 
+  void _shareTipWithNeighborhood() async {
+    if(currentUser == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.notLoggedInErrorText),
+      ));
+    }
+
+    String forumTypeId = DataHolder.forumEntryTypesById.entries
+        .firstWhere((element) => element.value.typeName == "Share")
+        .key;
+    Map<String, dynamic> inputVariables = {
+      "userId": currentUser!.objectId,
+      "forumEntryTypeId": forumTypeId,
+      "linkId": widget.tip.objectId
+    };
+
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.createForumPost),
+        variables: inputVariables,
+      ),
+    );
+
+    String snackBarText =
+        result.hasException || !result.data?["createForumEntries"]
+            ? Languages.of(context)!.tipShareUnsuccessfulText
+            : Languages.of(context)!.tipShareSuccessfulText;
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(snackBarText),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,20 +128,21 @@ class _TipDetailPageState extends State<TipDetailPage> {
                       if (currentUser != null) ...[
                         widget.tip.isBookmarked
                             ? CustomIconButton(
-                                padding: const EdgeInsets.symmetric(horizontal: 7),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
                                 onPressed: _changeBookmarkStatus,
                                 icon:
                                     const Icon(FontAwesomeIcons.solidBookmark))
                             : CustomIconButton(
-                                padding: const EdgeInsets.symmetric(horizontal: 7),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
                                 onPressed: _changeBookmarkStatus,
                                 icon: const Icon(FontAwesomeIcons.bookmark),
                               ),
                       ],
                       CustomIconButton(
                           padding: const EdgeInsets.symmetric(horizontal: 7),
-                          onPressed: () => {},
-                          //TODO: open modal to share with neighborhood
+                          onPressed: () => _shareTipWithNeighborhood(),
                           icon: const Icon(FontAwesomeIcons.shareNodes)),
                     ],
                   ),

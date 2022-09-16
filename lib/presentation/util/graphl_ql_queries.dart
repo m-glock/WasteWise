@@ -1,5 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 
 import 'data_holder.dart';
@@ -82,6 +83,16 @@ class GraphQLQueries{
       getMunicipalities{
         objectId
         name
+      }
+      
+
+      getForumEntryTypes(languageCode: \$languageCode){
+        text
+        button_text
+        forum_entry_type_id{
+          objectId
+          type_name
+        }
       }
       
       amountOfSearchedItems(userId: \$userId)
@@ -339,6 +350,46 @@ class GraphQLQueries{
     }
   """;
 
+  static String getForumEntries = """
+    query GetForumEntries(\$municipalityId: String!){
+      getForumEntries(municipalityId: \$municipalityId){
+        objectId
+        createdAt
+        forum_entry_type_id{
+          objectId
+        }
+        user_id{
+          username
+          avatar_picture{
+            url
+          }
+        }
+        link_id
+        text
+      }
+    }
+  """;
+
+  static String getForumReplies = """
+    query GetForumEntryReplies(\$parentEntryId: String!){
+      getForumEntryReplies(parentEntryId: \$parentEntryId){
+        objectId
+        createdAt
+        forum_entry_type_id{
+          objectId
+        }
+        user_id{
+          username
+          avatar_picture{
+            url
+          }
+        }
+        link_id
+        text
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
       addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)
@@ -366,6 +417,18 @@ class GraphQLQueries{
   static String deleteBookmarkTipMutation = """
     mutation CreateObject(\$userId: String!, \$tipId: String!){
       deleteBookmarkedTip(userId: \$userId, tipId: \$tipId)
+    }
+  """;
+
+  static String createForumPost = """
+    mutation CreateForumEntries(\$userId: String!, \$forumEntryTypeId: String!, \$linkId: String, \$text: String, \$parentEntryId: String){
+      createForumEntries(
+        userId: \$userId, 
+        forumEntryTypeId: \$forumEntryTypeId, 
+        linkId: \$linkId,
+        text: \$text,
+        parentEntryId: \$parentEntryId
+      )
     }
   """;
 
@@ -508,6 +571,13 @@ class GraphQLQueries{
       for(String synonym in synonyms){
         DataHolder.itemNames[synonym.trim()] = element["item_id"]["objectId"];
       };
+    }
+
+    //get forum types
+    List<dynamic> forumEntryTypes = data?["getForumEntryTypes"];
+    for(dynamic entryType in forumEntryTypes){
+      ForumEntryType type = ForumEntryType.fromJson(entryType);
+      DataHolder.forumEntryTypesById[type.objectId] = type;
     }
 
     // set searched and rescued data amounts

@@ -125,15 +125,29 @@ abstract class Languages {
   String get routeButtonText;
   String get cpDetailItemsAccepted;
   String get cpDetailsOpeningHours;
+  String get cpAlliesButtonShareText;
+  String get cpAlliesButtonCancelText;
+  String get cpAlliesButtonShareTitle;
+  String get cpAlliesButtonShareExplanation;
+  String get cpAllySuccessfulText;
+  String get cpAllyUnsuccessfulText;
 
   // tips page
   String get dropdownTipTypeLabel;
   String get dropdownWasteBinLabel;
   String get defaultDropdownItem;
   String get emptyListText;
+  String get tipShareSuccessfulText;
+  String get tipShareUnsuccessfulText;
 
   // neighborhood
   String get neighborhoodNotAuthenticatedText;
+  String get notLoggedInErrorText;
+  String get cpPostSuccessfulText;
+  String get cpPostUnsuccessfulText;
+  String get threadReplyHintText;
+  String get askQuestionHintText;
+  String get threadPageTitle;
 
   // settings page
   String get settingsPageTitle;

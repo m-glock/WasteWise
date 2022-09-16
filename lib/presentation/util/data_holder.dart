@@ -1,4 +1,5 @@
 import 'package:flutter_map/flutter_map.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
@@ -14,6 +15,7 @@ class DataHolder{
   static final Map<CollectionPoint, Marker> markers = {};
   static final Set<String> cpSubcategories = {};
   static final Map<String, String> municipalitiesById = {};
+  static final Map<String, ForumEntryType> forumEntryTypesById = {};
   static int? amountOfSearchedItems;
   static int? amountOfRescuedItems;
 }
