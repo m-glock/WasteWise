@@ -28,6 +28,7 @@ abstract class Languages {
   String get municipalitySelectedNotFound;
   String get profileScreenTitle;
   String get profileScreenExplanation;
+  String get waitingForInitializationText;
 
   // bottom navigation
   String get homePageName;

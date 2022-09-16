@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
@@ -15,11 +11,7 @@ import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../i18n/locale_constant.dart';
-import '../util/graphl_ql_queries.dart';
 import 'imprint/imprint_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,10 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? languageCode;
-  String? municipalityId;
-  bool fileExists = false;
-  File? dataFile;
   int _selectedIndex = 0;
 
   final List<Widget> _pages = <Widget>[
@@ -46,49 +34,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _checkIfSavedDataExists();
-  }
-
-  void _checkIfSavedDataExists() async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    dataFile = File('${dir.path}/subcategories.json');
-
-    if(dataFile!.existsSync()) {
-      DataHolder.readDataFromFile(dataFile!);
-    } else {
-      await _getLanguageCodeAndMunicipality();
-    }
-
-    setState(() {
-      fileExists = dataFile!.existsSync();
-    });
-  }
-
-  Future<void> _getLanguageCodeAndMunicipality() async {
-    Locale locale = await getLocale();
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
-    //setState(() {
-      languageCode = locale.languageCode;
-      municipalityId = id ?? "";
-    //});
   }
 
   void _onItemTapped(int index) {
-    setState(
-      () {
-        _selectedIndex = index;
-      },
-    );
-  }
-
-  Widget _homePageWidget(){
-    return Padding(
-      padding: EdgeInsets.all(Constants.pagePadding),
-      child: Center(
-        child: _pages.elementAt(_selectedIndex),
-      ),
-    );
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -155,31 +106,12 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: fileExists
-          ? _homePageWidget()
-          : (languageCode == null || municipalityId == null)
-          ? const Center(child: CircularProgressIndicator())
-          : Query(
-              options: QueryOptions(
-                  document: gql(GraphQLQueries.initialQuery),
-                  variables: {
-                    "languageCode": languageCode,
-                    "municipalityId": municipalityId,
-                  }),
-              builder: (QueryResult result,
-                  {VoidCallback? refetch, FetchMore? fetchMore}) {
-                if (result.hasException) {
-                  return Text(result.exception.toString());
-                }
-                if (result.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                GraphQLQueries.initialDataExtraction(result.data);
-
-                return _homePageWidget();
-              },
-            ),
+      body: Padding(
+        padding: EdgeInsets.all(Constants.pagePadding),
+        child: Center(
+          child: _pages.elementAt(_selectedIndex),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedIconTheme: const IconThemeData(size: 30),

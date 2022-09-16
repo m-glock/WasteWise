@@ -25,6 +25,7 @@ class LanguageDe extends Languages {
   @override String get municipalitySelectedNotFound => "Etwas ist schiefgelaufen. Es wurden keine Mülleimer gefunden.";
   @override String get profileScreenTitle => "Profil erstellen";
   @override String get profileScreenExplanation => "Ein Profile ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
+  @override String get waitingForInitializationText => "Hab bitte einen Moment Gedult, während die App eingerichtete wird.";
 
   // bottom navigation
   @override String get homePageName => "Home";

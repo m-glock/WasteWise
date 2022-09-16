@@ -22,7 +22,7 @@ class DataHolder{
   static final Set<String> cpSubcategories = {};
   static final List<CollectionPointType> collectionPointTypes = [];
 
-  static void saveDataToFile() async {
+  static Future<void> saveDataToFile() async {
     Map<String, dynamic> jsonMap = {};
     jsonMap["Municipalities"] = DataHolder.municipalitiesById;
     jsonMap["Categories"] = DataHolder.categoriesById;
@@ -40,7 +40,7 @@ class DataHolder{
     await dataFile.writeAsString(json);
   }
 
-  static void readDataFromFile(File file) async {
+  static Future<void> readDataFromFile(File file) async {
     final json = await file.readAsString();
     Map<String, dynamic> jsonMap = jsonDecode(json);
     DataHolder.municipalitiesById.addAll(Map.from(jsonMap["Municipalities"]));

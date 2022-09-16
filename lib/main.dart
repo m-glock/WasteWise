@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
-import 'package:recycling_app/presentation/pages/home_page.dart';
+import 'package:recycling_app/presentation/pages/loading_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
 import 'package:recycling_app/presentation/themes/color_scheme.dart';
@@ -140,7 +140,7 @@ class _MyAppState extends State<MyApp> {
                 }
                 return supportedLocales.first;
               },
-              home: _introDone ? const HomePage() : const IntroductionPage(),
+              home: _introDone ? const LoadingPage() : const IntroductionPage(),
             ),
           );
   }
