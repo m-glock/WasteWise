@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -14,6 +16,7 @@ import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 void main() async {
   // initialize connection to backend
@@ -44,6 +47,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
   bool _introDone = false;
+  ValueNotifier<GraphQLClient>? _client;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -58,73 +62,86 @@ class _MyAppState extends State<MyApp> {
     // update intro done
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     bool done = _prefs.getBool(Constants.prefIntroDone) ?? false;
+    ValueNotifier<GraphQLClient> newClient = await _getClient();
 
     setState(() {
       _locale = locale;
       _introDone = done;
+      _client = newClient;
     });
     super.didChangeDependencies();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<ValueNotifier<GraphQLClient>> _getClient() async {
     final HttpLink httpLink = HttpLink(
       Constants.apiURL,
       defaultHeaders: {
         'X-Parse-Application-Id': Constants.kParseApplicationId,
         'X-Parse-Client-Key': Constants.kParseClientKey,
-      }, //getheaders()
+      },
     );
 
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
+    // initialize Hive and wrap the default box in a HiveStore
+    Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+    final store = await HiveStore.open(path: directory.path);
+    return ValueNotifier(
       GraphQLClient(
-        cache: GraphQLCache(), //TODO: check which Cache to use
+        defaultPolicies: DefaultPolicies(
+          query: Policies(
+            fetch: FetchPolicy.cacheAndNetwork,
+            cacheReread: CacheRereadPolicy.mergeOptimistic
+          )
+        ),
+        cache: GraphQLCache(store: store), //TODO: check which Cache to use
         link: httpLink,
       ),
     );
+  }
 
-    return GraphQLProvider(
-      client: client,
-      child: MaterialApp(
-        title: "RecyclingApp",
-        theme: ThemeData(
-          appBarTheme: const TopAppBarTheme(),
-          bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
+  @override
+  Widget build(BuildContext context) {
+    return _client == null
+        ? const Center(child: CircularProgressIndicator())
+        : GraphQLProvider(
+            client: _client,
+            child: MaterialApp(
+              title: "RecyclingApp",
+              theme: ThemeData(
+                appBarTheme: const TopAppBarTheme(),
+                bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
 
-          elevatedButtonTheme: const AppElevatedButtonTheme(),
-          floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
-          outlinedButtonTheme: const AppOutlinedButtonTheme(),
-          textButtonTheme: AppTextButtonTheme(),
-          toggleButtonsTheme: const AppToggleButtonsTheme(),
+                elevatedButtonTheme: const AppElevatedButtonTheme(),
+                floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
+                outlinedButtonTheme: const AppOutlinedButtonTheme(),
+                textButtonTheme: AppTextButtonTheme(),
+                toggleButtonsTheme: const AppToggleButtonsTheme(),
 
-          colorScheme: const AppColorScheme(),
+                colorScheme: const AppColorScheme(),
 
-          //TODO: add PageTransitionsTheme
-          //pageTransitionsTheme: const PageTransitionsTheme(),
+                //TODO: add PageTransitionsTheme
+                //pageTransitionsTheme: const PageTransitionsTheme(),
 
-          textTheme: const AppTextTheme(),
-        ),
-        locale: _locale,
-        supportedLocales: Constants.languages.keys,
-        localizationsDelegates: const [
-          AppLocalizationsDelegate(),
-          GlobalWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale?.languageCode &&
-                supportedLocale.countryCode == locale?.countryCode) {
-              return supportedLocale;
-            }
-          }
-          return supportedLocales.first;
-        },
-        home: _introDone
-            ? const HomePage()
-            : const IntroductionPage(),
-      ),
-    );
+                textTheme: const AppTextTheme(),
+              ),
+              locale: _locale,
+              supportedLocales: Constants.languages.keys,
+              localizationsDelegates: const [
+                AppLocalizationsDelegate(),
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+              localeResolutionCallback: (locale, supportedLocales) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale?.languageCode &&
+                      supportedLocale.countryCode == locale?.countryCode) {
+                    return supportedLocale;
+                  }
+                }
+                return supportedLocales.first;
+              },
+              home: _introDone ? const HomePage() : const IntroductionPage(),
+            ),
+          );
   }
 }
