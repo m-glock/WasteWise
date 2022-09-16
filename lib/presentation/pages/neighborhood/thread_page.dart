@@ -7,6 +7,7 @@ import 'package:recycling_app/presentation/util/database_classes/forum_entry.dar
 
 import '../../util/constants.dart';
 import '../../util/custom_icon_button.dart';
+import '../../util/data_holder.dart';
 import '../../util/graphl_ql_queries.dart';
 
 class ThreadPage extends StatefulWidget {
@@ -19,13 +20,16 @@ class ThreadPage extends StatefulWidget {
 }
 
 class _ThreadPageState extends State<ThreadPage> {
-  List<String> test = ["evfknse", "fvpwejvpesodc", "fwenpfciqwjed"];
   final TextEditingController controller = TextEditingController();
 
   void _createForumReply() async {
+    String forumTypeId = DataHolder.forumEntryTypesById.entries
+        .firstWhere((element) => element.value.typeName == "Question")
+        .key;
     Map<String, dynamic> inputVariables = {
       "userId": (await ParseUser.currentUser())?.objectId,
       "text": controller.text,
+      "forumEntryTypeId": forumTypeId,
       "parentEntryId": widget.parentForumEntry.objectId
     };
 
