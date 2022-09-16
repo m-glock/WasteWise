@@ -119,21 +119,12 @@ class _LoginWidgetState extends State<LoginWidget> {
     } else {
       final ParseUser user = ParseUser(username, password, null);
       response = await user.login();
-      _setACLsOnServer();
     }
 
     if (response.success) {
       widget.authenticated();
     } else {
       _showError(response.error!.message);
-    }
-  }
-
-  void _setACLsOnServer() async {
-    final ParseCloudFunction function = ParseCloudFunction('setUsersAcls');
-    final ParseResponse parseResponse = await function.execute();
-    if (parseResponse.success && parseResponse.result != null) {
-      debugPrint(parseResponse.result.toString());
     }
   }
 
