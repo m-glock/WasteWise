@@ -77,17 +77,21 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   }
 
   void _filterMarkers(String subcategoryTitle) {
-    chosenSubcategoryTitle = subcategoryTitle;
     filteredMarkers.clear();
     filteredMarkers.addAll(DataHolder.markers);
-    setState(() {
+    if(subcategoryTitle != Languages.of(context)!.cpDropdownDefault){
       filteredMarkers.removeWhere(
-          (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
+              (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
+    }
+    setState(() {
+      chosenSubcategoryTitle = subcategoryTitle;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<String> dropdownValues = DataHolder.cpSubcategories.toList();
+    dropdownValues.insert(0, Languages.of(context)!.cpDropdownDefault);
     return Scaffold(
       appBar: AppBar(
         title: Text(Languages.of(context)!.collectionPointsTitle),
@@ -97,7 +101,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: MapFilterDropdownWidget(
-              dropdownValues: DataHolder.cpSubcategories.toList(),
+              dropdownValues: dropdownValues,
               updateMarkersInParent: _filterMarkers,
             ),
           ),

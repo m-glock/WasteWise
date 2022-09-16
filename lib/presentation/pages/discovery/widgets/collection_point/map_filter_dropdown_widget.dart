@@ -23,7 +23,6 @@ class _MapFilterDropdownWidgetState extends State<MapFilterDropdownWidget> {
   @override
   void initState() {
     super.initState();
-    widget.dropdownValues.insert(0, "All");
     dropdownDefault = widget.dropdownValues.first;
   }
 

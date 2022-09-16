@@ -16,10 +16,10 @@ class CollectionPoint {
   final Contact contact;
   final Address address;
   final CollectionPointType collectionPointType;
-  final List<Subcategory> acceptedSubcategories = [];
+  final List<Subcategory> acceptedSubcategories;
 
   CollectionPoint(this.objectId, this.link, this.openingHours, this.contact,
-      this.address, this.collectionPointType);
+      this.address, this.collectionPointType, this.acceptedSubcategories);
 
   static CollectionPoint fromGraphQlData(dynamic collectionPointData) {
     String cpTypeId =
@@ -28,12 +28,14 @@ class CollectionPoint {
         .firstWhere((element) => element.objectId == cpTypeId);
 
     return CollectionPoint(
-        collectionPointData["objectId"],
-        collectionPointData["link"],
-        collectionPointData["opening_hours"],
-        Contact.fromGraphQlData(collectionPointData["contact_id"]),
-        Address.fromGraphQlData(collectionPointData["address_id"]),
-        cpType);
+      collectionPointData["objectId"],
+      collectionPointData["link"],
+      collectionPointData["opening_hours"],
+      Contact.fromGraphQlData(collectionPointData["contact_id"]),
+      Address.fromGraphQlData(collectionPointData["address_id"]),
+      cpType,
+      List.empty(growable: true),
+    );
   }
 
   factory CollectionPoint.fromJson(Map<String, dynamic> json) => _$CollectionPointFromJson(json);

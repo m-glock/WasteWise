@@ -45,6 +45,7 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
     Locale locale = Constants.languages.entries.firstWhere((element) => element.value == newValue).key;
     await setLocale(locale.languageCode);
     changeAppLanguage(context, locale.languageCode);
+    //TODO: update item names etc. which depend on language
     setState(() {
       valueLanguage = newValue;
     });
@@ -54,6 +55,7 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
     String newMunicipalityId = DataHolder.municipalitiesById.entries.firstWhere((element) => element.value == newValue).key;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(Constants.prefSelectedMunicipalityCode, newMunicipalityId);
+    //TODO: update dataholder according to municipality
     setState(() {
       valueMunicipality = newValue;
     });
