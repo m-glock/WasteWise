@@ -17,8 +17,6 @@ class DataHolder{
   static final Map<String, Subcategory> subcategoriesById = {};
   static final Map<String, String> itemNames = {};
   static final Map<String, ForumEntryType> forumEntryTypesById = {};
-  static int? amountOfSearchedItems;
-  static int? amountOfRescuedItems;
 
   static final List<CollectionPointType> collectionPointTypes = [];
   static final Map<CollectionPoint, Marker> markers = {};
@@ -31,8 +29,6 @@ class DataHolder{
     jsonMap["Subcategories"] = DataHolder.subcategoriesById;
     jsonMap["ItemNames"] = DataHolder.itemNames;
     jsonMap["ForumTypes"] = DataHolder.forumEntryTypesById;
-    jsonMap["amountOfSearchedItems"] = DataHolder.amountOfSearchedItems;
-    jsonMap["amountOfRescuedItems"] = DataHolder.amountOfRescuedItems;
 
     Directory directory = await getApplicationDocumentsDirectory();
     File dataFile = File('${directory.path}/subcategories.json');
@@ -56,7 +52,5 @@ class DataHolder{
       DataHolder.forumEntryTypesById[entry.key] = ForumEntryType.fromJson(entry.value);
     }
     DataHolder.itemNames.addAll(Map.from(jsonMap["ItemNames"]));
-    DataHolder.amountOfSearchedItems = jsonMap["amountOfSearchedItems"];
-    DataHolder.amountOfRescuedItems = jsonMap["amountOfRescuedItems"];
   }
 }

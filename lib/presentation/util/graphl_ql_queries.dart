@@ -95,7 +95,11 @@ class GraphQLQueries{
           type_name
         }
       }
-      
+    }
+  """;
+
+  static String recentlyAndOftenSearchedItemQuery = """
+    query GetCollectionPoints(\$userId: String!){
       amountOfSearchedItems(userId: \$userId)
       
       amountOfWronglySortedItems(userId: \$userId)
@@ -580,11 +584,6 @@ class GraphQLQueries{
       ForumEntryType type = ForumEntryType.fromGraphQlData(entryType);
       DataHolder.forumEntryTypesById[type.objectId] = type;
     }
-
-    // set searched and rescued data amounts
-    DataHolder.amountOfSearchedItems = data?["amountOfSearchedItems"];
-
-    DataHolder.amountOfRescuedItems =  data?["amountOfWronglySortedItems"];
 
     try{
       DataHolder.saveDataToFile();
