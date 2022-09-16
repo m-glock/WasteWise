@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'generated/forum_entry_type.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class ForumEntryType{
 
   final String objectId;
