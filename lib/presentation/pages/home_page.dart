@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
@@ -13,6 +16,7 @@ import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../i18n/locale_constant.dart';
@@ -30,7 +34,10 @@ class _HomePageState extends State<HomePage> {
   String? languageCode;
   String? municipalityId;
   String? userId;
+  bool fileExists = false;
+  File? dataFile;
   int _selectedIndex = 0;
+
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
     const SearchPage(),
@@ -41,19 +48,34 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _getLanguageCodeAndMunicipality();
+    _checkIfSavedDataExists();
   }
 
-  void _getLanguageCodeAndMunicipality() async {
+  void _checkIfSavedDataExists() async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    dataFile = File('${dir.path}/subcategories.json');
+
+    if(dataFile!.existsSync()) {
+      DataHolder.readDataFromFile(dataFile!);
+    } else {
+      await _getLanguageCodeAndMunicipality();
+    }
+
+    setState(() {
+      fileExists = dataFile!.existsSync();
+    });
+  }
+
+  Future<void> _getLanguageCodeAndMunicipality() async {
     Locale locale = await getLocale();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
     ParseUser? currentUser = await ParseUser.currentUser();
-    setState(() {
+    //setState(() {
       languageCode = locale.languageCode;
       municipalityId = id ?? "";
       userId = currentUser?.objectId ?? "";
-    });
+    //});
   }
 
   void _onItemTapped(int index) {
@@ -61,6 +83,15 @@ class _HomePageState extends State<HomePage> {
       () {
         _selectedIndex = index;
       },
+    );
+  }
+
+  Widget _homePageWidget(){
+    return Padding(
+      padding: EdgeInsets.all(Constants.pagePadding),
+      child: Center(
+        child: _pages.elementAt(_selectedIndex),
+      ),
     );
   }
 
@@ -128,7 +159,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: languageCode == null || municipalityId == null
+      body: fileExists
+          ? _homePageWidget()
+          : (languageCode == null || municipalityId == null)
           ? const Center(child: CircularProgressIndicator())
           : Query(
               options: QueryOptions(
@@ -149,12 +182,7 @@ class _HomePageState extends State<HomePage> {
 
                 GraphQLQueries.initialDataExtraction(result.data);
 
-                return Padding(
-                  padding: EdgeInsets.all(Constants.pagePadding),
-                  child: Center(
-                    child: _pages.elementAt(_selectedIndex),
-                  ),
-                );
+                return _homePageWidget();
               },
             ),
       bottomNavigationBar: BottomNavigationBar(

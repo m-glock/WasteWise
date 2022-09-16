@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
@@ -515,7 +516,7 @@ class GraphQLQueries{
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
     for (dynamic element in categories) {
-      WasteBinCategory category = WasteBinCategory.fromJson(element);
+      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element);
       wasteBinCategories[category.objectId] = category;
     }
 
@@ -524,7 +525,7 @@ class GraphQLQueries{
     for (dynamic element in categoryMyths) {
       String categoryId =
       element["category_myth_id"]["category_id"]["objectId"];
-      wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
+      wasteBinCategories[categoryId]?.myths.add(Myth.fromGraphQlData(element));
     }
 
     // get content for waste bin categories
@@ -548,18 +549,18 @@ class GraphQLQueries{
       String categoryId =
       element["category_cycle_id"]["category_id"]["objectId"];
       wasteBinCategories[categoryId]!.cycleSteps
-          .add(Cycle.fromJson(element));
+          .add(Cycle.fromGraphQLData(element));
     }
 
     // save waste bin categories
-    DataHolder.categories.addAll(wasteBinCategories);
+    DataHolder.categoriesById.addAll(wasteBinCategories);
 
     // get subcategories
     List<dynamic> subcategories = data?["getSubcategories"];
-    for(dynamic element in subcategories){
-      String subcategoryId = element["subcategory_id"]["objectId"];
-      DataHolder.subcategoriesById[subcategoryId] = Subcategory.fromJson(element);
-    }
+      for(dynamic element in subcategories){
+        String subcategoryId = element["subcategory_id"]["objectId"];
+        DataHolder.subcategoriesById[subcategoryId] = Subcategory.fromGraphQlData(element);
+      }
 
     //get item names
     List<dynamic> items = data?["getItemNames"];
@@ -576,7 +577,7 @@ class GraphQLQueries{
     //get forum types
     List<dynamic> forumEntryTypes = data?["getForumEntryTypes"];
     for(dynamic entryType in forumEntryTypes){
-      ForumEntryType type = ForumEntryType.fromJson(entryType);
+      ForumEntryType type = ForumEntryType.fromGraphQlData(entryType);
       DataHolder.forumEntryTypesById[type.objectId] = type;
     }
 
@@ -584,5 +585,11 @@ class GraphQLQueries{
     DataHolder.amountOfSearchedItems = data?["amountOfSearchedItems"];
 
     DataHolder.amountOfRescuedItems =  data?["amountOfWronglySortedItems"];
+
+    try{
+      DataHolder.saveDataToFile();
+    } catch(e){
+      debugPrint("Error saving data to file");
+    }
   }
 }

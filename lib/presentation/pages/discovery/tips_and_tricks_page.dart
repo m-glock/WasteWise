@@ -246,7 +246,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                         tipTypeDropdownOptions[tip.tipTypeId] ??
                                             "",
                                         ...tip.subcategories.map((cat) =>
-                                            DataHolder.categories[cat.parentId]!
+                                            DataHolder.categoriesById[cat.parentId]!
                                                 .title)
                                       ],
                                     );
