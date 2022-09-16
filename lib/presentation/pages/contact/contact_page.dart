@@ -16,12 +16,11 @@ class _ContactPageState extends State<ContactPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.contactPageName),
       ),
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: ContactFormWidget(),
-        ),
+      body: const Padding(
+        padding: EdgeInsets.all(20),
+        child: ContactFormWidget(),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }

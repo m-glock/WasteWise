@@ -26,6 +26,7 @@ class _ContactFormWidgetState extends State<ContactFormWidget> {
           TextFormField(
             decoration: InputDecoration(
               filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
               hintText: Languages.of(context)!.contactPageNameHintText,
               border: InputBorder.none,
             ),
@@ -40,6 +41,7 @@ class _ContactFormWidgetState extends State<ContactFormWidget> {
           TextFormField(
             decoration: InputDecoration(
               filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
               hintText: Languages.of(context)!.contactPageEmailHintText,
               border: InputBorder.none,
             ),
@@ -59,6 +61,7 @@ class _ContactFormWidgetState extends State<ContactFormWidget> {
             maxLines: 8,
             decoration: InputDecoration(
               filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
               hintText: Languages.of(context)!.contactPageContentHintText,
               border: InputBorder.none,
             ),
