@@ -71,13 +71,21 @@ class _HomePageState extends State<HomePage> {
         ],
         titleSpacing: 2.0,
       ),
-      //TODO: proper design
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: Column(
           children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 50),
+              child: Icon(Icons.recycling, size: 100), //TODO: logo?
+            ),
+            const Divider(thickness: 2.0),
             ListTile(
-              title: Text(Languages.of(context)!.imprintPageName),
+              leading: const Icon(FontAwesomeIcons.section),
+              title: Text(
+                Languages.of(context)!.imprintPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -86,7 +94,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text(Languages.of(context)!.contactPageName),
+              leading: const Icon(FontAwesomeIcons.envelope),
+              title: Text(
+                Languages.of(context)!.contactPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -95,7 +107,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text(Languages.of(context)!.settingsPageName),
+              leading: const Icon(FontAwesomeIcons.gear),
+              title: Text(
+                Languages.of(context)!.settingsPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,
