@@ -26,6 +26,7 @@ class LanguageEn extends Languages {
   @override String get municipalitySelectedNotFound => "Something went wrong. No waste bins found.";
   @override String get profileScreenTitle => "Create a profile";
   @override String get profileScreenExplanation => "A profile allows you to use the social forum of the app and to bookmark certain items or tips. The general information is still available without a profile and you can still create an account at a later date.";
+  @override String get waitingForInitializationText => "Please be patient for a moment while the app is being set up.";
 
   // bottom navigation
   @override String get homePageName => "Home";
@@ -129,6 +130,7 @@ class LanguageEn extends Languages {
   @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the collection point? Find allies through the forum in your neighborhood and collect together. Choose what kind of item you are trying to collect and a post will be created in the forum.";
   @override String get cpAllySuccessfulText => "Successfully started looking for allies";
   @override String get cpAllyUnsuccessfulText => "Looking for allies failed. Please try again later";
+  @override String get cpDropdownDefault => "All";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";

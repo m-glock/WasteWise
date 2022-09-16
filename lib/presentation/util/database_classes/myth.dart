@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'generated/myth.g.dart';
+
+@JsonSerializable()
 class Myth{
 
   final String question;
@@ -6,8 +11,12 @@ class Myth{
 
   Myth(this.question, this.answer, this.isCorrect);
 
-  static Myth fromJson(Map<dynamic, dynamic> myth){
+  static Myth fromGraphQlData(Map<dynamic, dynamic> myth){
     return Myth(myth["question"], myth["answer"],
         myth["category_myth_id"]["is_correct"]);
   }
+
+  factory Myth.fromJson(Map<String, dynamic> json) => _$MythFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MythToJson(this);
 }

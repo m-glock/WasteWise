@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_login_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
+import 'package:recycling_app/presentation/pages/loading_page.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,7 +80,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
               municipalityId
           );
         }
-        Route route = MaterialPageRoute(builder: (context) => const HomePage());
+        Route route = MaterialPageRoute(builder: (context) => const LoadingPage());
         Navigator.pushReplacement(context, route);
       },
       dotsDecorator: DotsDecorator(

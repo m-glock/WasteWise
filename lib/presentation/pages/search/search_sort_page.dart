@@ -46,7 +46,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     children: <Widget>[
-                      ...DataHolder.categories.values.map((category) {
+                      ...DataHolder.categoriesById.values.map((category) {
                         return SearchSortGridTile(
                           category: category,
                           isCorrect:

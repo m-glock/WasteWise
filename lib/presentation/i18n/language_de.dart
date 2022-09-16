@@ -25,6 +25,7 @@ class LanguageDe extends Languages {
   @override String get municipalitySelectedNotFound => "Etwas ist schiefgelaufen. Es wurden keine Mülleimer gefunden.";
   @override String get profileScreenTitle => "Profil erstellen";
   @override String get profileScreenExplanation => "Ein Profile ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
+  @override String get waitingForInitializationText => "Hab bitte einen Moment Gedult, während die App eingerichtete wird.";
 
   // bottom navigation
   @override String get homePageName => "Home";
@@ -128,6 +129,7 @@ class LanguageDe extends Languages {
   @override String get cpAlliesButtonShareExplanation => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt? Suche Mitstreiter in deiner Nachbarschaft und sammelt gemeinsam. Wähle die Art von Item, die gesammelt werden soll und ein entsprechender Post wird im Forum erstellt.";
   @override String get cpAllySuccessfulText => "Suche nach Mitstreitern erfolgreich gestartet";
   @override String get cpAllyUnsuccessfulText => "Suche nach Mitstreitern fehlgeschlagen. Bitte später erneut versuchen";
+  @override String get cpDropdownDefault => "Alle";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Art des Tipps:";

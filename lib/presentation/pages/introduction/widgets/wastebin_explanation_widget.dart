@@ -57,7 +57,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
         List<dynamic> categoryData = result.data?["getCategories"];
         List<WasteBinCategory> categories = [];
         for (dynamic element in categoryData) {
-          categories.add(WasteBinCategory.fromJson(element));
+          categories.add(WasteBinCategory.fromGraphQlData(element));
         }
 
         // display when all data is available

@@ -1,9 +1,14 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 
+import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'data_holder.dart';
+import 'database_classes/collection_point.dart';
+import 'database_classes/collection_point_type.dart';
 import 'database_classes/cycle.dart';
 import 'database_classes/myth.dart';
 import 'database_classes/waste_bin_category.dart';
@@ -11,7 +16,7 @@ import 'database_classes/waste_bin_category.dart';
 class GraphQLQueries{
 
   static String initialQuery = """
-    query GetContent(\$languageCode: String!, \$municipalityId: String!, \$userId: String!){
+    query GetContent(\$languageCode: String!, \$municipalityId: String!){
       getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         category_id{
@@ -95,14 +100,6 @@ class GraphQLQueries{
         }
       }
       
-      amountOfSearchedItems(userId: \$userId)
-      
-      amountOfWronglySortedItems(userId: \$userId)
-    }
-  """;
-
-  static String collectionPointQuery = """
-    query GetCollectionPoints(\$languageCode: String!, \$municipalityId: String!){
       getCollectionPoints(municipalityId: \$municipalityId){
         objectId
         opening_hours
@@ -147,6 +144,14 @@ class GraphQLQueries{
           objectId
         }
       }
+    }
+  """;
+
+  static String recentlyAndOftenSearchedItemQuery = """
+    query GetCollectionPoints(\$userId: String!){
+      amountOfSearchedItems(userId: \$userId)
+      
+      amountOfWronglySortedItems(userId: \$userId)
     }
   """;
 
@@ -515,7 +520,7 @@ class GraphQLQueries{
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
     for (dynamic element in categories) {
-      WasteBinCategory category = WasteBinCategory.fromJson(element);
+      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element);
       wasteBinCategories[category.objectId] = category;
     }
 
@@ -524,7 +529,7 @@ class GraphQLQueries{
     for (dynamic element in categoryMyths) {
       String categoryId =
       element["category_myth_id"]["category_id"]["objectId"];
-      wasteBinCategories[categoryId]?.myths.add(Myth.fromJson(element));
+      wasteBinCategories[categoryId]?.myths.add(Myth.fromGraphQlData(element));
     }
 
     // get content for waste bin categories
@@ -548,18 +553,18 @@ class GraphQLQueries{
       String categoryId =
       element["category_cycle_id"]["category_id"]["objectId"];
       wasteBinCategories[categoryId]!.cycleSteps
-          .add(Cycle.fromJson(element));
+          .add(Cycle.fromGraphQLData(element));
     }
 
     // save waste bin categories
-    DataHolder.categories.addAll(wasteBinCategories);
+    DataHolder.categoriesById.addAll(wasteBinCategories);
 
     // get subcategories
     List<dynamic> subcategories = data?["getSubcategories"];
-    for(dynamic element in subcategories){
-      String subcategoryId = element["subcategory_id"]["objectId"];
-      DataHolder.subcategoriesById[subcategoryId] = Subcategory.fromJson(element);
-    }
+      for(dynamic element in subcategories){
+        String subcategoryId = element["subcategory_id"]["objectId"];
+        DataHolder.subcategoriesById[subcategoryId] = Subcategory.fromGraphQlData(element);
+      }
 
     //get item names
     List<dynamic> items = data?["getItemNames"];
@@ -576,13 +581,63 @@ class GraphQLQueries{
     //get forum types
     List<dynamic> forumEntryTypes = data?["getForumEntryTypes"];
     for(dynamic entryType in forumEntryTypes){
-      ForumEntryType type = ForumEntryType.fromJson(entryType);
+      ForumEntryType type = ForumEntryType.fromGraphQlData(entryType);
       DataHolder.forumEntryTypesById[type.objectId] = type;
     }
 
-    // set searched and rescued data amounts
-    DataHolder.amountOfSearchedItems = data?["amountOfSearchedItems"];
+    // get collection point types
+    List<dynamic> collectionPointTypes = data?["getCollectionPointTypes"];
+    for (dynamic cpType in collectionPointTypes) {
+      DataHolder.collectionPointTypes
+          .add(CollectionPointType.fromGraphQLData(cpType));
+    }
 
-    DataHolder.amountOfRescuedItems =  data?["amountOfWronglySortedItems"];
+    // get collection points
+    List<dynamic> collectionPoints = data?["getCollectionPoints"];
+
+    // build markers for collection points
+    Map<String, CollectionPoint> cpByObjectId = {};
+    for (dynamic cp in collectionPoints) {
+      CollectionPoint collectionPoint = CollectionPoint.fromGraphQlData(cp);
+      cpByObjectId[collectionPoint.objectId] = collectionPoint;
+      Marker marker = Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.top),
+        width: 220,
+        height: 200,
+        point: collectionPoint.address.location,
+        builder: (ctx) =>
+            CustomMarkerWidget(collectionPoint: collectionPoint),
+      );
+      DataHolder.markers[collectionPoint] = marker;
+    }
+
+    // get accepted subcategories for all collection points
+    List<dynamic> subcategoriesOfCP =
+    data?["getSubcategoriesOfAllCollectionPoints"];
+    for (dynamic subcategoryCpPair in subcategoriesOfCP) {
+      String collectionPointObjectId =
+      subcategoryCpPair["collection_point_id"]["objectId"];
+      String subcategoryObjectId =
+      subcategoryCpPair["subcategory_id"]["objectId"];
+      Subcategory? subcategory =
+      DataHolder.subcategoriesById[subcategoryObjectId];
+      if (subcategory != null) {
+        cpByObjectId[collectionPointObjectId]
+            ?.acceptedSubcategories
+            .add(subcategory);
+      }
+    }
+
+    // get available subcategories for filter dropdown
+    List<dynamic> availableSubcategories = data?["getDistinctSubcategoriesForCP"];
+    for (dynamic element in availableSubcategories) {
+      DataHolder.cpSubcategories.add(element["title"]);
+    }
+
+    try{
+      DataHolder.saveDataToFile();
+    } catch(e){
+      debugPrint("Error saving data to file");
+    }
   }
 }

@@ -36,7 +36,7 @@ class Item {
     bool isBookmarked = data["getBookmarkStatusOfItem"] != null;
 
     Item newItem = Item(objectId, item["title"], item["material"],
-        DataHolder.categories[categoryId]!,
+        DataHolder.categoriesById[categoryId]!,
         synonyms: item["synonyms"],
         explanation: explanation,
         subcategory: subcategoryTitle,

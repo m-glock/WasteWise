@@ -1,24 +1,39 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'cycle.dart';
 import 'myth.dart';
 
+part 'generated/waste_bin_category.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class WasteBinCategory{
   final String title;
   final String objectId;
   final String pictogramUrl;
-  final List<Myth> myths = [];
-  final List<String> itemsBelong = [];
-  final List<String> itemsDontBelong = [];
-  final List<Cycle> cycleSteps = [];
+  final List<Myth> myths;
+  final List<String> itemsBelong;
+  final List<String> itemsDontBelong;
+  final List<Cycle> cycleSteps;
 
-  WasteBinCategory(this.title, this.objectId, this.pictogramUrl);
+  WasteBinCategory(this.title, this.objectId, this.pictogramUrl, this.myths,
+      this.cycleSteps, this.itemsBelong, this.itemsDontBelong);
 
-  static WasteBinCategory fromJson(dynamic category){
+  static WasteBinCategory fromGraphQlData(dynamic category) {
     return WasteBinCategory(
         category["title"],
         category["category_id"]["objectId"],
-        category["category_id"]["image_file"]["url"]
+        category["category_id"]["image_file"]["url"],
+        List.empty(growable: true),
+        List.empty(growable: true),
+        List.empty(growable: true),
+        List.empty(growable: true),
     );
   }
+
+  factory WasteBinCategory.fromJson(Map<String, dynamic> json) =>
+      _$WasteBinCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WasteBinCategoryToJson(this);
 
   @override
   bool operator == (Object other){
