@@ -9,15 +9,19 @@ import 'package:recycling_app/presentation/util/database_classes/search_history_
 import '../../../util/constants.dart';
 import '../../../util/database_classes/item.dart';
 import '../../../util/graphl_ql_queries.dart';
-import '../../search/item_detail_page.dart';
+import '../item_detail_page.dart';
 
 class HistoryTile extends StatefulWidget {
   const HistoryTile({
     Key? key,
     required this.item,
+    required this.languageCode,
+    required this.userId,
   }) : super(key: key);
 
   final SearchHistoryItem item;
+  final String languageCode;
+  final String userId;
 
   @override
   State<HistoryTile> createState() => _HistoryTileState();
@@ -31,11 +35,10 @@ class _HistoryTileState extends State<HistoryTile> {
   }
 
   void _openItemDetailPage() async {
-    Locale locale = await getLocale();
     Map<String, dynamic> inputVariables = {
-      "languageCode": locale.languageCode,
+      "languageCode": widget.languageCode,
       "itemObjectId": widget.item.objectId,
-      "userId": (await ParseUser.currentUser()).objectId!,
+      "userId": widget.userId,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -81,7 +84,7 @@ class _HistoryTileState extends State<HistoryTile> {
                       children: [
                         Text(
                           widget.item.title,
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.headline2,
                         ),
                         Text(
                           _getDateString(widget.item.createdAt),

@@ -14,7 +14,7 @@ import '../../i18n/locale_constant.dart';
 import '../../util/constants.dart';
 import '../../util/database_classes/item.dart';
 import '../../util/graphl_ql_queries.dart';
-import '../profile/search_history_page.dart';
+import 'search_history_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -116,14 +116,19 @@ class _SearchPageState extends State<SearchPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _barcodeScannerButton(),
-                  OutlinedButton(
-                    child: Text(Languages.of(context)!.searchHistoryPageTitle),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SearchHistoryPage()),
+                  if(userId != null && userId != "")
+                    OutlinedButton(
+                      child: Text(Languages.of(context)!.searchHistoryPageTitle),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchHistoryPage(
+                            userId: userId!,
+                            languageCode: languageCode!,
+                          )
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
