@@ -164,13 +164,16 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(Languages.of(context)!
-                                    .dropdownWasteBinLabel),
+                                Text(
+                                  Languages.of(context)!.dropdownWasteBinLabel,
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
                                 Row(
                                   children: [
                                     Expanded(
@@ -202,8 +205,10 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(Languages.of(context)!
-                                    .dropdownTipTypeLabel),
+                                Text(
+                                  Languages.of(context)!.dropdownTipTypeLabel,
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
                                 DropdownButton<String>(
                                   isExpanded: true,
                                   value: tipTypeDefault,
@@ -225,7 +230,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             ),
                           ),
                           CustomIconButton(
-                            padding: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10, bottom: 10),
                             onPressed: _setFilterValuesToDefault,
                             icon: const Icon(FontAwesomeIcons.xmark),
                           ),
@@ -238,6 +243,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                                 child:
                                     Text(Languages.of(context)!.emptyListText))
                             : ListView(
+                                shrinkWrap: true,
                                 children: [
                                   ...filteredTipList.map((tip) {
                                     return TipTile(

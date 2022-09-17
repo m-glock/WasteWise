@@ -70,7 +70,6 @@ class _TipTileState extends State<TipTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -107,7 +106,6 @@ class _TipTileState extends State<TipTile> {
                   );
                 },
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       child: Column(
@@ -116,7 +114,7 @@ class _TipTileState extends State<TipTile> {
                         children: [
                           Text(
                             widget.tip.title,
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 5)),
                           Row(children: [
