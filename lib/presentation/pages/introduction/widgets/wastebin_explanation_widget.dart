@@ -1,7 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../i18n/locale_constant.dart';
 import '../../../util/database_classes/waste_bin_category.dart';
@@ -36,6 +39,17 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
     });
   }
 
+  void _downloadCategoryPictograms(String urlString, String fileTitle) async {
+    Uri uri = Uri.parse(urlString);
+    http.Response response = await http.get(uri);
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+    String test = "${documentDirectory.path}/$fileTitle.png";
+    File file = File(test);
+    if(!file.existsSync()){
+      file.writeAsBytes(response.bodyBytes);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Query(
@@ -57,6 +71,10 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
         List<dynamic> categoryData = result.data?["getCategories"];
         List<WasteBinCategory> categories = [];
         for (dynamic element in categoryData) {
+          _downloadCategoryPictograms(
+              element["category_id"]["image_file"]["url"],
+              element["title"]
+          );
           categories.add(WasteBinCategory.fromGraphQlData(element));
         }
 
@@ -86,12 +104,11 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: category.pictogramUrl,
+                              Image.network(
+                                category.pictogramUrl,
                                 width: 50,
                                 height: 50,
-                                placeholder: (context, url) => const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                errorBuilder: (context, url, error) => const Icon(Icons.error),
                               ),
                               const Padding(
                                   padding: EdgeInsets.only(bottom: 10)),
