@@ -30,10 +30,10 @@ class _BookmarkPageState extends State<BookmarkPage> {
 
   void _getLanguageCodeAndUser() async {
     Locale locale = await getLocale();
-    ParseUser current = await ParseUser.currentUser();
+    ParseUser? current = await ParseUser.currentUser();
     setState(() {
       languageCode = locale.languageCode;
-      userId = current.objectId!;
+      userId = current?.objectId;
     });
   }
 

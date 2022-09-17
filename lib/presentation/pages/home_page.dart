@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/contact/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
@@ -23,6 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  ParseUser? current;
 
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
@@ -31,14 +33,18 @@ class _HomePageState extends State<HomePage> {
     const NeighborhoodPage()
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    ParseUser? currentUser = await ParseUser.currentUser();
+    setState(() {
+      current = currentUser;
     });
   }
 
@@ -48,16 +54,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(Constants.appTitle),
         actions: [
-          IconButton(
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const BookmarkPage()),
-              )
-            },
-            icon: const Icon(FontAwesomeIcons.bookmark),
-          ),
+          if (current != null)
+            IconButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BookmarkPage()),
+                )
+              },
+              icon: const Icon(FontAwesomeIcons.bookmark),
+            ),
           CustomIconButton(
             padding: const EdgeInsets.symmetric(horizontal: 7),
             onPressed: () => {
