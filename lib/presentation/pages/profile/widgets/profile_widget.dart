@@ -63,6 +63,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
+  //TODO: upload image or edit profile?
   @override
   Widget build(BuildContext context) {
     ParseFile? avatarPicture = current?.get("avatar_picture");
@@ -77,29 +78,29 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               borderRadius: BorderRadius.circular(size),
               child: avatarPicture != null
                   ? CachedNetworkImage(
-                imageUrl: avatarPicture.url!,
-                width: size,
-                height: size,
-              )
+                      imageUrl: avatarPicture.url!,
+                      width: size,
+                      height: size,
+                    )
                   : Container(
-                color: Colors.black12,
-                width: size,
-                height: size,
-                child: Icon(
-                  FontAwesomeIcons.user,
-                  size: MediaQuery.of(context).size.width / 3,
-                ),
-              ),
+                      color: Colors.black12,
+                      width: size,
+                      height: size,
+                      child: Icon(
+                        FontAwesomeIcons.user,
+                        size: MediaQuery.of(context).size.width / 3,
+                      ),
+                    ),
             ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           Text(
             current?.username ?? "",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 5)),
           Text(
             current?.get("zip_code") ?? "",
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           ElevatedButton(

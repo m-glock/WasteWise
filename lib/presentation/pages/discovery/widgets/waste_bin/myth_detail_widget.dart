@@ -37,7 +37,10 @@ class _MythDetailWidgetState extends State<MythDetailWidget> {
                 Expanded(
                   child: Text(
                     widget.myth.question,
-                    style: Theme.of(context).textTheme.headline3,
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.headline3!.fontSize,
+                      fontFamily: Theme.of(context).textTheme.headline3!.fontFamily,
+                    ),
                   ),
                 ),
               ],

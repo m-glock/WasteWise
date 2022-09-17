@@ -50,7 +50,7 @@ class _CycleWidgetState extends State<CycleWidget> {
                               const Padding(
                                   padding: EdgeInsets.only(bottom: 20)),
                               Text(element.title,
-                                  style: Theme.of(context).textTheme.headline3),
+                                  style: Theme.of(context).textTheme.headline1),
                               const Padding(
                                   padding: EdgeInsets.only(bottom: 20)),
                               Text(element.explanation,

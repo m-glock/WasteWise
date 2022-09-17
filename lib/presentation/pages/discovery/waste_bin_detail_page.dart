@@ -37,8 +37,10 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
                   labelColor: Theme.of(context).colorScheme.onPrimary,
                   unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
                   indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).colorScheme.primary),
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).colorScheme.primary.withAlpha(200),
+                  ),
+                  labelStyle: Theme.of(context).textTheme.headline2,
                   tabs: [
                     Tab(text: Languages.of(context)!.wasteBinContentLabel),
                     Tab(text: Languages.of(context)!.wasteBinCycleLabel),
