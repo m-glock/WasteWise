@@ -55,11 +55,11 @@ class ComradeDialogWidget {
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
             actions: [
-              TextButton(
+              OutlinedButton(
                 child: Text(Languages.of(context)!.cpAlliesButtonCancelText),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              TextButton(
+              ElevatedButton(
                 child: Text(Languages.of(context)!.cpAlliesButtonShareText),
                 onPressed: () =>
                     _searchForComrades(context, subcategoryDefault),
