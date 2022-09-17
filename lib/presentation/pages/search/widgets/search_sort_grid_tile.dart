@@ -61,7 +61,7 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           Text(
             widget.category.title,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.labelMedium,
           )
         ],
       ),

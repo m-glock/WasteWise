@@ -46,25 +46,22 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _barcodeScannerButton() {
-    return SizedBox(
-      width: 160,
-      child: ElevatedButton(
-        child: Row(
-          children: const [
-            Icon(FontAwesomeIcons.barcode, size: 12),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Text('Barcode Scanner'),
-            )
-          ],
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const BarcodeScanPage()),
-          );
-        },
+    return ElevatedButton(
+      child: Row(
+        children: const [
+          Icon(FontAwesomeIcons.barcode, size: 12),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text('Barcode Scanner'),
+          )
+        ],
       ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const BarcodeScanPage()),
+        );
+      },
     );
   }
 
@@ -73,14 +70,13 @@ class _SearchPageState extends State<SearchPage> {
         .map((entry) => InkWell(
               onTap: () {
                 _getItem(entry.value).then((item) {
-                  if(item == null) throw Exception("No item found.");
+                  if (item == null) throw Exception("No item found.");
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => learnMore ?? true
-                            ? SearchSortPage(item: item)
-                            : ItemDetailPage(item: item)
-                    ));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => learnMore ?? true
+                              ? SearchSortPage(item: item)
+                              : ItemDetailPage(item: item)));
                 });
               },
               child: Padding(
@@ -97,13 +93,11 @@ class _SearchPageState extends State<SearchPage> {
     Locale locale = await getLocale();
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult result = await client.query(
-      QueryOptions(
-          document: gql(GraphQLQueries.itemDetailQuery),
-          variables: {
-            "languageCode": locale.languageCode,
-            "itemObjectId": itemId,
-            "userId": (await ParseUser.currentUser())?.objectId ?? "",
-          }),
+      QueryOptions(document: gql(GraphQLQueries.itemDetailQuery), variables: {
+        "languageCode": locale.languageCode,
+        "itemObjectId": itemId,
+        "userId": (await ParseUser.currentUser())?.objectId ?? "",
+      }),
     );
     return Item.fromGraphQlData(result.data);
   }
@@ -133,6 +127,7 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 25)),
             languageCode == null || userId == null
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -169,14 +164,14 @@ class _SearchPageState extends State<SearchPage> {
                       Map<String, String> oftenSearched = {};
                       for (dynamic element in oftenSearchedData) {
                         oftenSearched[element["title"]] =
-                        element["item_id"]["objectId"];
+                            element["item_id"]["objectId"];
                       }
 
                       // display when all data is available
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if(recentlySearchedItems.isNotEmpty) ...[
+                          if (recentlySearchedItems.isNotEmpty) ...[
                             Text(Languages.of(context)!.recentlySearched,
                                 style: Theme.of(context).textTheme.headline3),
                             const Padding(padding: EdgeInsets.only(bottom: 15)),

@@ -109,9 +109,9 @@ class _MyAppState extends State<MyApp> {
               theme: ThemeData(
                 appBarTheme: const TopAppBarTheme(),
                 bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
-                elevatedButtonTheme: const AppElevatedButtonTheme(),
+                elevatedButtonTheme: AppElevatedButtonTheme(),
                 floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
-                outlinedButtonTheme: const AppOutlinedButtonTheme(),
+                outlinedButtonTheme: AppOutlinedButtonTheme(),
                 textButtonTheme: AppTextButtonTheme(),
                 colorScheme: const AppColorScheme(),
                 textTheme: const AppTextTheme(),

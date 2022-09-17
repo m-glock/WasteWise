@@ -24,6 +24,10 @@ class AppTextTheme extends TextTheme{
       fontFamily: "Asap",
       fontSize: 14.0,
     ),
+    bodyText2: const TextStyle(
+      fontFamily: "Asap",
+      fontSize: 16.0,
+    ),
     labelMedium: const TextStyle(
       fontFamily: "Asap",
       fontSize: 15.0,

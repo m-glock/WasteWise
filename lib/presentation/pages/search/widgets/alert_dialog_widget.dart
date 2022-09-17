@@ -61,9 +61,7 @@ class AlertDialogWidget {
               ],
             ),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            content: SizedBox(
-              height: 120,
-              child: Column(
+            content: Wrap(
                 children: [
                   Row(
                     children: [
@@ -78,26 +76,41 @@ class AlertDialogWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(right: 10)),
                       Expanded(
-                        child: Text(Languages.of(context)!.alertDialogPrompt +
-                            item.wasteBin.title),
+                        child: Text.rich(
+                          TextSpan(
+                            text: Languages.of(context)!.alertDialogPrompt,
+                            style: Theme.of(context).textTheme.bodyText2,
+                            children: [
+                              TextSpan(
+                                text: item.wasteBin.title,
+                                style: TextStyle(
+                                  fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                                  fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Expanded(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                     child: isCorrect
-                        ? Text(Languages.of(context)!
-                            .alertDialogCorrectExplanation)
+                        ? Text(
+                            Languages.of(context)!.alertDialogCorrectExplanation,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          )
                         : Text(
-                            Languages.of(context)!.alertDialogWrongExplanation),
+                        Languages.of(context)!.alertDialogWrongExplanation),
                   ),
                 ],
-              ),
             ),
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
             actions: [
-              TextButton(
+              OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonMoreInfo),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -109,7 +122,7 @@ class AlertDialogWidget {
                   );
                 },
               ),
-              TextButton(
+              OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonDismiss),
                 onPressed: () {
                   Navigator.of(context).pop();

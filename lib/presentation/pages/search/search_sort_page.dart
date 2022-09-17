@@ -39,7 +39,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       Languages.of(context)!.searchSortQuestion,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                   ),
                   GridView.count(

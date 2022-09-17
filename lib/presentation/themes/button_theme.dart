@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppElevatedButtonTheme extends ElevatedButtonThemeData{
 
-  //TODO
-  const AppElevatedButtonTheme() : super(
-
+  AppElevatedButtonTheme() : super(
+      style: ButtonStyle(
+        textStyle: MaterialStateProperty.all(
+            const TextStyle(fontWeight: FontWeight.bold)
+        ),
+        elevation: MaterialStateProperty.all(2),
+        shadowColor: MaterialStateProperty.all(Colors.black54)
+      )
   );
 
 }
@@ -20,9 +25,16 @@ class AppFloatingActionButtonTheme extends FloatingActionButtonThemeData{
 
 class AppOutlinedButtonTheme extends OutlinedButtonThemeData{
 
-  //TODO
-  const AppOutlinedButtonTheme() : super(
-
+  AppOutlinedButtonTheme() : super(
+      style: ButtonStyle(
+        textStyle: MaterialStateProperty.all(
+            const TextStyle(fontWeight: FontWeight.bold)
+        ),
+        backgroundColor: MaterialStateProperty.all(Colors.white),
+        elevation: MaterialStateProperty.all(2),
+        shadowColor: MaterialStateProperty.all(Colors.black54)
+        //side: MaterialStateProperty.all(BorderSide(color: Colors.blue)),
+      )
   );
 
 }

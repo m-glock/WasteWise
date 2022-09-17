@@ -35,8 +35,6 @@ class _SearchBarState extends State<SearchBar> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult result = await client.query(
       QueryOptions(
-        //TODO: check if still necessary after figuring cache out
-          fetchPolicy: FetchPolicy.networkOnly,
           document: gql(GraphQLQueries.itemDetailQuery),
           variables: {
             "languageCode": locale.languageCode,
@@ -101,7 +99,6 @@ class _SearchBarState extends State<SearchBar> {
                   hintText: Languages.of(context)!.searchBarHint,
                 ),
                 showCursor: false,
-                style: const TextStyle(fontSize: 15),
                 itemSorter: (String item1, String item2) {
                   return item1.compareTo(item2);
                 },
