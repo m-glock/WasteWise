@@ -25,6 +25,7 @@ class ItemDetailPage extends StatefulWidget {
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
   ParseUser? currentUser;
+  String bulletPoint = "\u2022 ";
 
   @override
   void initState() {
@@ -72,10 +73,11 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tip.title,
-                    style: const TextStyle(
+                    bulletPoint + tip.title,
+                    style: TextStyle(
                       decoration: TextDecoration.underline,
-                      fontSize: 16,
+                      fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                      fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily
                     ),
                   ),
                 ],
@@ -144,20 +146,36 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 ),
               ],
               const Padding(padding: EdgeInsets.only(bottom: 30)),
-              Text(
-                  Languages.of(context)!.itemDetailMaterialLabel +
-                      widget.item.material,
-                  style: Theme.of(context).textTheme.bodyText1),
+              Text.rich(
+                TextSpan(
+                  text: Languages.of(context)!.itemDetailMaterialLabel,
+                  style: Theme.of(context).textTheme.labelMedium,
+                  children: [
+                    TextSpan(
+                        text: widget.item.material,
+                        style: Theme.of(context).textTheme.bodyText1
+                    )
+                  ]
+                )
+              ),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
-              Text(
-                  Languages.of(context)!.itemDetailWasteBinLabel +
-                      widget.item.wasteBin.title,
-                  style: Theme.of(context).textTheme.bodyText1),
-              const Padding(padding: EdgeInsets.only(bottom: 30)),
+              Text.rich(
+                  TextSpan(
+                      text: Languages.of(context)!.itemDetailWasteBinLabel,
+                      style: Theme.of(context).textTheme.labelMedium,
+                      children: [
+                        TextSpan(
+                            text: widget.item.wasteBin.title,
+                            style: Theme.of(context).textTheme.bodyText1
+                        )
+                      ]
+                  )
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 40)),
               Text(
                   Languages.of(context)!.itemDetailMoreInfoLabel +
                       widget.item.subcategory!,
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.headline2),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               ItemDetailTile(
                 headerTitle: Languages.of(context)!.itemDetailExplanationLabel,

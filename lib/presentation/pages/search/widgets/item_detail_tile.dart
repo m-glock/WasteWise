@@ -29,7 +29,7 @@ class _ItemDetailTileState extends State<ItemDetailTile> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Text(
             widget.headerTitle,
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
         ),
         collapsed: const SizedBox.shrink(),

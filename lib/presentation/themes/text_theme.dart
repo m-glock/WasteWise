@@ -7,18 +7,19 @@ class AppTextTheme extends TextTheme{
       fontFamily: "Asap",
       fontSize: 18.0,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Colors.black87,
     ),
     headline2: const TextStyle(
       fontFamily: "Asap",
-      fontSize: 18.0,
-      fontStyle: FontStyle.italic,
+      fontSize: 17.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
     ),
     headline3: const TextStyle(
       fontFamily: "Asap",
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
-      color: Color.fromARGB(255, 84, 84, 84),
+      color: Colors.black87,
     ),
     bodyText1: const TextStyle(
       fontFamily: "Asap",
@@ -26,11 +27,12 @@ class AppTextTheme extends TextTheme{
     ),
     bodyText2: const TextStyle(
       fontFamily: "Asap",
-      fontSize: 16.0,
+      fontSize: 15.0,
     ),
     labelMedium: const TextStyle(
       fontFamily: "Asap",
       fontSize: 15.0,
+      fontWeight: FontWeight.bold,
     ),
     button: const TextStyle(
       fontFamily: "Asap",
