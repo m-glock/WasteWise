@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -66,31 +67,34 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...tipList.map((tip) => Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: InkWell(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    bulletPoint + tip.title,
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                      fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily
+        ...tipList.map(
+          (tip) => Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: InkWell(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bulletPoint + tip.title,
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize:
+                              Theme.of(context).textTheme.bodyText1!.fontSize,
+                          fontFamily: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .fontFamily),
                     ),
-                  ),
-                ],
-              ),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TipDetailPage(
-                      tip: tip,
-                      updateBookmarkInParent: () => {}),
+                  ],
                 ),
-              ),
-          )),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TipDetailPage(
+                        tip: tip, updateBookmarkInParent: () => {}),
+                  ),
+                ),
+              )),
         ),
       ],
     );
@@ -127,13 +131,10 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: CachedNetworkImage(
-                  imageUrl: widget.item.wasteBin.pictogramUrl,
+                child: Image.file(
+                  File(widget.item.wasteBin.imageFilePath),
                   width: MediaQuery.of(context).size.width / 2,
                   height: MediaQuery.of(context).size.width / 2,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               if (widget.item.synonyms != null) ...[
@@ -146,31 +147,23 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 ),
               ],
               const Padding(padding: EdgeInsets.only(bottom: 30)),
-              Text.rich(
-                TextSpan(
+              Text.rich(TextSpan(
                   text: Languages.of(context)!.itemDetailMaterialLabel,
                   style: Theme.of(context).textTheme.labelMedium,
                   children: [
                     TextSpan(
                         text: widget.item.material,
-                        style: Theme.of(context).textTheme.bodyText1
-                    )
-                  ]
-                )
-              ),
+                        style: Theme.of(context).textTheme.bodyText1)
+                  ])),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
-              Text.rich(
-                  TextSpan(
-                      text: Languages.of(context)!.itemDetailWasteBinLabel,
-                      style: Theme.of(context).textTheme.labelMedium,
-                      children: [
-                        TextSpan(
-                            text: widget.item.wasteBin.title,
-                            style: Theme.of(context).textTheme.bodyText1
-                        )
-                      ]
-                  )
-              ),
+              Text.rich(TextSpan(
+                  text: Languages.of(context)!.itemDetailWasteBinLabel,
+                  style: Theme.of(context).textTheme.labelMedium,
+                  children: [
+                    TextSpan(
+                        text: widget.item.wasteBin.title,
+                        style: Theme.of(context).textTheme.bodyText1)
+                  ])),
               const Padding(padding: EdgeInsets.only(bottom: 40)),
               Text(
                   Languages.of(context)!.itemDetailMoreInfoLabel +

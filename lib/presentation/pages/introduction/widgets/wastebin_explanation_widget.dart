@@ -25,6 +25,7 @@ class WasteBinExplanationScreen extends StatefulWidget {
 
 class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
   String languageCode = "";
+  List<WasteBinCategory> categories = [];
 
   @override
   void initState() {
@@ -39,92 +40,95 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
     });
   }
 
-  void _downloadCategoryPictograms(String urlString, String fileTitle) async {
-    Uri uri = Uri.parse(urlString);
-    http.Response response = await http.get(uri);
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String test = "${documentDirectory.path}/$fileTitle.png";
-    File file = File(test);
-    if(!file.existsSync()){
-      file.writeAsBytes(response.bodyBytes);
+  void _getCategories(dynamic categoryData) async {
+    List<WasteBinCategory> categoryList = [];
+    for (dynamic element in categoryData) {
+      Uri uri = Uri.parse(element["category_id"]["image_file"]["url"]);
+      http.Response response = await http.get(uri);
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String imagePath = "${documentDirectory.path}/${element["title"]}.png";
+      File file = File(imagePath);
+      if (!file.existsSync()) {
+        file.writeAsBytes(response.bodyBytes);
+      }
+      categoryList.add(WasteBinCategory.fromGraphQlData(element, imagePath));
     }
+
+    setState(() {
+      categories = categoryList;
+    });
+  }
+
+  Widget _getWidget() {
+    return Column(
+      children: [
+        Text(
+          Languages.of(context)!.municipalitySelectedTitle +
+              widget.municipalityName +
+              ":",
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            padding: const EdgeInsets.all(0),
+            childAspectRatio: 3 / 2,
+            children: [
+              ...categories.map((category) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.file(
+                      File(category.imageFilePath),
+                      width: 50,
+                      height: 50,
+                      errorBuilder: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 10)),
+                    Text(
+                      category.title,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  ],
+                );
+              }).toList(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(
-        document: gql(GraphQLQueries.categoryQuery),
-        variables: {
-          "languageCode": languageCode,
-          "municipalityId": widget.municipalityId,
-        },
-      ),
-      builder: (QueryResult result,
-          {VoidCallback? refetch, FetchMore? fetchMore}) {
-        if (result.hasException) return Text(result.exception.toString());
-        if (result.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return categories.isNotEmpty
+        ? _getWidget()
+        : Query(
+            options: QueryOptions(
+              document: gql(GraphQLQueries.categoryQuery),
+              variables: {
+                "languageCode": languageCode,
+                "municipalityId": widget.municipalityId,
+              },
+            ),
+            builder: (QueryResult result,
+                {VoidCallback? refetch, FetchMore? fetchMore}) {
+              if (result.hasException) return Text(result.exception.toString());
+              if (result.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-        // get municipalities for selection
-        List<dynamic> categoryData = result.data?["getCategories"];
-        List<WasteBinCategory> categories = [];
-        for (dynamic element in categoryData) {
-          _downloadCategoryPictograms(
-              element["category_id"]["image_file"]["url"],
-              element["title"]
+              // get categories to display
+              List<dynamic> categoryData = result.data?["getCategories"];
+              _getCategories(categoryData);
+
+              // display when all data is available
+              return _getWidget();
+            },
           );
-          categories.add(WasteBinCategory.fromGraphQlData(element));
-        }
-
-        // display when all data is available
-        return categories.isEmpty
-            ? Center(
-                child:
-                    Text(Languages.of(context)!.municipalitySelectedNotFound))
-            : Column(
-                children: [
-                  Text(
-                    Languages.of(context)!.municipalitySelectedTitle +
-                        widget.municipalityName +
-                        ":",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      padding: const EdgeInsets.all(0),
-                      childAspectRatio: 3 / 2,
-                      children: [
-                        ...categories.map((category) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.network(
-                                category.pictogramUrl,
-                                width: 50,
-                                height: 50,
-                                errorBuilder: (context, url, error) => const Icon(Icons.error),
-                              ),
-                              const Padding(
-                                  padding: EdgeInsets.only(bottom: 10)),
-                              Text(
-                                category.title,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              )
-                            ],
-                          );
-                        }).toList(),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-      },
-    );
   }
 }

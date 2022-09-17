@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -51,12 +52,10 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CachedNetworkImage(
-            imageUrl: widget.category.pictogramUrl,
+          Image.file(
+            File(widget.category.imageFilePath),
             width: 100,
             height: 100,
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           Text(

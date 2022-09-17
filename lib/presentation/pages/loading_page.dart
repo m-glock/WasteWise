@@ -59,7 +59,7 @@ class _LoadingPageState extends State<LoadingPage> {
             "municipalityId": id ??  "",
           }),
     );
-    GraphQLQueries.initialDataExtraction(result.data);
+    await GraphQLQueries.initialDataExtraction(result.data);
   }
 
   @override

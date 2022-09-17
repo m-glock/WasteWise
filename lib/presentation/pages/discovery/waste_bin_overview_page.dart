@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
@@ -28,12 +29,10 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: DiscoveryTile(
-                  leading: CachedNetworkImage(
-                    imageUrl: category.pictogramUrl,
+                  leading: Image.file(
+                    File(category.imageFilePath),
                     width: 50,
                     height: 50,
-                    placeholder: (context, url) => const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                   title: category.title,
                   subtitle: null,

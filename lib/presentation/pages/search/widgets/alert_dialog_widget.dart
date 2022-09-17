@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -66,12 +67,10 @@ class AlertDialogWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: CachedNetworkImage(
-                          imageUrl: item.wasteBin.pictogramUrl,
+                        child: Image.file(
+                          File(item.wasteBin.imageFilePath),
                           width: 80,
                           height: 80,
-                          placeholder: (context, url) => const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
                         ),
                       ),
                       const Padding(padding: EdgeInsets.only(right: 10)),

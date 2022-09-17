@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
+import 'package:http/http.dart' as http;
 
 import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'data_holder.dart';
@@ -509,7 +513,7 @@ class GraphQLQueries{
     return result.data?["deleteBookmarkedTip"] ?? false;
   }
 
-  static void initialDataExtraction(dynamic data){
+  static Future<void> initialDataExtraction(dynamic data) async {
     // get municipalities
     List<dynamic> municipalities = data?["getMunicipalities"];
     for(dynamic municipality in municipalities){
@@ -520,7 +524,16 @@ class GraphQLQueries{
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
     for (dynamic element in categories) {
-      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element);
+      Uri uri = Uri.parse(element["category_id"]["image_file"]["url"]);
+      http.Response response = await http.get(uri);
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String imagePath = "${documentDirectory.path}/${element["title"]}.png";
+      File file = File(imagePath);
+      if (!file.existsSync()) {
+        file.writeAsBytes(response.bodyBytes);
+      }
+
+      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element, imagePath);
       wasteBinCategories[category.objectId] = category;
     }
 
