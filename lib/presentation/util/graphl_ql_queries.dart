@@ -563,10 +563,20 @@ class GraphQLQueries{
     // get cycles for waste bin categories
     List<dynamic> categoryCycles = data?["getAllCategoryCycles"];
     for (dynamic element in categoryCycles) {
+      Uri uri = Uri.parse(element["category_cycle_id"]["image"]["url"]);
+      http.Response response = await http.get(uri);
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String fileName = "${element["category_cycle_id"]["objectId"]}_${element["title"]}";
+      String imagePath = "${documentDirectory.path}/$fileName.png";
+      File file = File(imagePath);
+      if (!file.existsSync()) {
+        file.writeAsBytes(response.bodyBytes);
+      }
+
       String categoryId =
       element["category_cycle_id"]["category_id"]["objectId"];
       wasteBinCategories[categoryId]!.cycleSteps
-          .add(Cycle.fromGraphQLData(element));
+          .add(Cycle.fromGraphQLData(element, imagePath));
     }
 
     // save waste bin categories

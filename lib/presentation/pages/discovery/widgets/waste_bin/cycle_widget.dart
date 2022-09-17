@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,7 @@ class _CycleWidgetState extends State<CycleWidget> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(element.imageUrl),
+                              Image.file(File(element.imagePath)),
                               const Padding(
                                   padding: EdgeInsets.only(bottom: 20)),
                               Text(element.title,
