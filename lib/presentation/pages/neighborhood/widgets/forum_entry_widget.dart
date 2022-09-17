@@ -128,6 +128,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
                 child: widget.forumEntry.userPictureUrl != null
                     ? CachedNetworkImage(
                         imageUrl: widget.forumEntry.userPictureUrl!,
+                        fit: BoxFit.fill,
                         width: pictureSize,
                         height: pictureSize,
                       )
@@ -149,11 +150,11 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
                 children: [
                   Text(
                     widget.forumEntry.userName,
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   Text(
                     getTimeframe(widget.forumEntry.createdAt),
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
               )
@@ -165,6 +166,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
             child: Text(
               widget.forumEntry.type.text.replaceFirst("\${}", postContent),
               textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           widget.showButton
@@ -181,7 +183,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
                     ],
                   ),
                 )
-              : const Padding(padding: EdgeInsets.only(bottom: 15)),
+              : const Padding(padding: EdgeInsets.only(bottom: 30)),
         ],
       ),
     );

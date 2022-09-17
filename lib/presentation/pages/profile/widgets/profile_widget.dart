@@ -79,6 +79,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               child: avatarPicture != null
                   ? CachedNetworkImage(
                       imageUrl: avatarPicture.url!,
+                      fit: BoxFit.fill,
                       width: size,
                       height: size,
                     )
