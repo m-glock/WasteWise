@@ -109,7 +109,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
             heroTag: 'btn1',
             child: const Icon(Icons.group),
             onPressed: () => ComradeDialogWidget.showModal(
-                context, chosenSubcategoryTitle ?? ""),
+                context, chosenSubcategoryTitle),
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           FloatingActionButton(

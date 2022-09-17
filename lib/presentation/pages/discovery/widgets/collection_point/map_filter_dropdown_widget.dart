@@ -30,7 +30,10 @@ class _MapFilterDropdownWidgetState extends State<MapFilterDropdownWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(Languages.of(context)!.filterLabelItemType),
+        Text(
+          Languages.of(context)!.filterLabelItemType,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
         const Padding(padding: EdgeInsets.only(right: 10)),
         Expanded(
           child: DropdownButton<String>(

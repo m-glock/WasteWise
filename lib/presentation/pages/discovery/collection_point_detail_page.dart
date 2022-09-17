@@ -19,15 +19,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
 
   List<Widget> _getFormattedOpeningHours() {
     List<String> openingHours = widget.collectionPoint.openingHours.split("|");
-    List<String> weekdays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ];
+    List<String> weekdays = Languages.of(context)!.weekdays;
     List<Widget> openingHoursWithDay = [];
 
     for (int i = 0; i < weekdays.length; i++) {
@@ -58,12 +50,29 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
                   padding: EdgeInsets.only(right: 10),
                   child: Icon(FontAwesomeIcons.locationDot, size: 25),
                 ),
-                Text(widget.collectionPoint.address.toString()),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        alignment: Alignment.centerLeft,
+                        height: 25,
+                        child: Text(
+                          Languages.of(context)!.copDetailsAddressTitle,
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                      ),
+                      Text(widget.collectionPoint.address.toString()),
+                    ],
+                  ),
+                ),
               ],
             ),
             const Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -86,8 +95,10 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                         margin: const EdgeInsets.only(bottom: 10),
                         alignment: Alignment.centerLeft,
                         height: 25,
-                        child:
-                            Text(Languages.of(context)!.cpDetailsOpeningHours),
+                        child: Text(
+                          Languages.of(context)!.cpDetailsOpeningHours,
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
                       ),
                       ..._getFormattedOpeningHours(),
                     ],
@@ -115,8 +126,10 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                         margin: const EdgeInsets.only(bottom: 10),
                         alignment: Alignment.centerLeft,
                         height: 25,
-                        child:
-                            Text(Languages.of(context)!.cpDetailItemsAccepted),
+                        child: Text(
+                          Languages.of(context)!.cpDetailItemsAccepted,
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
                       ),
                       ...widget.collectionPoint.acceptedSubcategories
                           .map((item) {

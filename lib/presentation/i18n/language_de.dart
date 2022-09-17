@@ -121,12 +121,14 @@ class LanguageDe extends Languages {
   @override String get filterLabelItemType => "Art des Items:";
   @override String get detailButtonText => "Details";
   @override String get routeButtonText => "Route planen";
+  @override String get copDetailsAddressTitle => "Address:";
   @override String get cpDetailItemsAccepted => "Angenommene Items:";
   @override String get cpDetailsOpeningHours => "Geöffnet:";
+  @override List<String> get weekdays => ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
   @override String get cpAlliesButtonShareText => "Suchen";
   @override String get cpAlliesButtonCancelText => "Abbrechen";
-  @override String get cpAlliesButtonShareTitle => "Schließt euch zusammen";
-  @override String get cpAlliesButtonShareExplanation => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt? Suche Mitstreiter in deiner Nachbarschaft und sammelt gemeinsam. Wähle die Art von Item, die gesammelt werden soll und ein entsprechender Post wird im Forum erstellt.";
+  @override String get cpAlliesButtonShareTitle => "Nicht genügend Items, damit sich der Weg zur Annahmestelle lohnt?";
+  @override String get cpAlliesButtonShareExplanation => "Suche Mitstreiter in deiner Nachbarschaft und sammelt gemeinsam.";
   @override String get cpAllySuccessfulText => "Suche nach Mitstreitern erfolgreich gestartet";
   @override String get cpAllyUnsuccessfulText => "Suche nach Mitstreitern fehlgeschlagen. Bitte später erneut versuchen";
   @override String get cpDropdownDefault => "Alle";

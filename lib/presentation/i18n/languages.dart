@@ -124,8 +124,10 @@ abstract class Languages {
   String get filterLabelItemType;
   String get detailButtonText;
   String get routeButtonText;
+  String get copDetailsAddressTitle;
   String get cpDetailItemsAccepted;
   String get cpDetailsOpeningHours;
+  List<String> get weekdays;
   String get cpAlliesButtonShareText;
   String get cpAlliesButtonCancelText;
   String get cpAlliesButtonShareTitle;

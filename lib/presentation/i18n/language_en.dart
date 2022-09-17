@@ -122,12 +122,14 @@ class LanguageEn extends Languages {
   @override String get filterLabelItemType => "Type of item:";
   @override String get detailButtonText => "Details";
   @override String get routeButtonText => "Plan route";
+  @override String get copDetailsAddressTitle => "Address:";
   @override String get cpDetailItemsAccepted => "Accepted Items:";
   @override String get cpDetailsOpeningHours => "Opening hours:";
+  @override List<String> get weekdays => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   @override String get cpAlliesButtonShareText => "Search";
   @override String get cpAlliesButtonCancelText => "Cancel";
-  @override String get cpAlliesButtonShareTitle => "Join forces";
-  @override String get cpAlliesButtonShareExplanation => "Not enough items to make it worth the trip to the collection point? Find allies through the forum in your neighborhood and collect together. Choose what kind of item you are trying to collect and a post will be created in the forum.";
+  @override String get cpAlliesButtonShareTitle => "Not enough items to make it worth the trip to the collection point?";
+  @override String get cpAlliesButtonShareExplanation => "Find allies in your neighborhood and collect together.";
   @override String get cpAllySuccessfulText => "Successfully started looking for allies";
   @override String get cpAllyUnsuccessfulText => "Looking for allies failed. Please try again later";
   @override String get cpDropdownDefault => "All";

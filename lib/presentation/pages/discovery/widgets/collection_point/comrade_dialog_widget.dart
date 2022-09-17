@@ -8,41 +8,49 @@ import '../../../../util/graphl_ql_queries.dart';
 
 class ComradeDialogWidget {
   static Future<void> showModal(
-      BuildContext context, String subcategoryTitle) async {
+      BuildContext context, String? subcategoryTitle) async {
     return showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
-        String subcategoryDefault = subcategoryTitle;
+        String subcategoryDefault = subcategoryTitle ?? DataHolder.cpSubcategories.first;
         return StatefulBuilder(builder:
             (BuildContext context, void Function(void Function()) setState) {
           return AlertDialog(
-            title: Text(Languages.of(context)!.cpAlliesButtonShareTitle),
-            contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            content: SizedBox(
-              height: 170,
-              child: Column(
+            title: Text(
+              Languages.of(context)!.cpAlliesButtonShareTitle,
+              style: Theme.of(context).textTheme.headline1,
+              textAlign: TextAlign.center,
+            ),
+            contentPadding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
+            content: Wrap(
                 children: [
-                  Text(Languages.of(context)!.cpAlliesButtonShareExplanation),
-                  const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: subcategoryDefault,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        subcategoryDefault = newValue!;
-                      });
-                    },
-                    items: DataHolder.cpSubcategories
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  )
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      Languages.of(context)!.cpAlliesButtonShareExplanation,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: subcategoryDefault,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          subcategoryDefault = newValue!;
+                        });
+                      },
+                      items: DataHolder.cpSubcategories
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ],
-              ),
             ),
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
