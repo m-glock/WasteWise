@@ -93,8 +93,10 @@ abstract class Languages {
   String get alertDialogPrompt;
   String get alertDialogButtonDismiss;
   String get alertDialogButtonMoreInfo;
-  String get barcodeAlertDialogTitle;
-  String get barcodeAlertDialogExplanation;
+  String get alertDialogNoItemTitle;
+  String get alertDialogNoItemExplanation;
+  String get alertDialogNoPackagingTitle;
+  String get alertDialogNoPackagingExplanation;
   String get barcodeAlertDialogButtonText;
 
   // item detail page

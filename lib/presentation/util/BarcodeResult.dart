@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/item.dart';
+import 'database_classes/barcode_item.dart';
 import 'database_classes/barcode_material.dart';
 
 class BarcodeResult {
   static List<int> binaryNumbers = [1, 2, 4, 8, 16];
   static List<String> materials = [];
 
-  static Item getItemFromBarcodeInfo(
+  static BarcodeItem getItemFromBarcodeInfo(
       String responseBody, Map<int, BarcodeMaterial> barcodeMaterials) {
     List<String> values = responseBody.split("\n");
     String name = values
@@ -18,14 +17,16 @@ class BarcodeResult {
         .split("=")[1];
 
     List<int> numbers = getValues(packNr);
-    if (numbers.length == 1) {
-      BarcodeMaterial material =
-          barcodeMaterials[numbers.first] ?? barcodeMaterials[0]!;
+    if (numbers.length <= 1) {
+      BarcodeMaterial? material = numbers.isEmpty ? null : barcodeMaterials[numbers.first];
 
-      return Item("", name, material.title, material.category);
+      return BarcodeItem(name, material: material?.title, wasteBin: material?.category);
     } else {
       //TODO: handle this
-      return Item("", "Unknown", "", DataHolder.categoriesById.values.first);
+      for(int number in numbers){
+
+      }
+      return BarcodeItem("Unknown", material: "", wasteBin: null);
     }
   }
 

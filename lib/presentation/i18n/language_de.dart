@@ -90,8 +90,10 @@ class LanguageDe extends Languages {
   @override String get alertDialogPrompt => "Dieses Item gehört in ";
   @override String get alertDialogButtonDismiss => "Verstanden";
   @override String get alertDialogButtonMoreInfo => "Mehr Info";
-  @override String get barcodeAlertDialogTitle => "Item nicht gefunden";
-  @override String get barcodeAlertDialogExplanation => "Leider wurde für den Barcode kein entsprechendes Item gefunden.";
+  @override String get alertDialogNoItemTitle => "Item nicht gefunden";
+  @override String get alertDialogNoItemExplanation => "Leider wurde für den Barcode kein entsprechendes Item gefunden.";
+  @override String get alertDialogNoPackagingTitle => "Keine Verpackungsinformationen";
+  @override String get alertDialogNoPackagingExplanation => "Dieses Item scheint keine Verpackung zu besitzen. Du kannst den Bereich 'Entdecken' prüfen und sehen, ob du dort Informationen findest, um den passenden Mülleimer zu bestimmen.";
   @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page

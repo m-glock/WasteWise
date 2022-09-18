@@ -91,8 +91,10 @@ class LanguageEn extends Languages {
   @override String get alertDialogPrompt => "This item belongs in the ";
   @override String get alertDialogButtonDismiss => "Understood";
   @override String get alertDialogButtonMoreInfo => "More Info";
-  @override String get barcodeAlertDialogTitle => "Item not found";
-  @override String get barcodeAlertDialogExplanation => "Unfortunately, there was no item associated with this barcode found.";
+  @override String get alertDialogNoItemTitle => "Item not found";
+  @override String get alertDialogNoItemExplanation => "Unfortunately, there was no item associated with this barcode found.";
+  @override String get alertDialogNoPackagingTitle => "No packaging info";
+  @override String get alertDialogNoPackagingExplanation => "This item does not seem to contain any packaging. You can check out the discovery section of the app to see if you can find more information about which bin this item might belong in.";
   @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page

@@ -42,7 +42,9 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
     Response response = await http.post(url);
 
     if (!response.body.contains("error=0")){
-      BarcodeNotFoundAlertWidget.showModal(context);
+      BarcodeNotFoundAlertWidget.showModal(context, true);
+    } else if(response.body.contains("pack=0")){
+      BarcodeNotFoundAlertWidget.showModal(context, false);
     } else {
       Navigator.push(
         context,
