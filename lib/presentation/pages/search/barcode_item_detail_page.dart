@@ -91,16 +91,18 @@ class _BarcodeItemDetailPageState extends State<BarcodeItemDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BarcodeItemWarningWidget(
-                          errorText: Languages.of(context)!.itemDetailBarcodeWarningText,
+                          errorText: Languages.of(context)!
+                              .itemDetailBarcodeWarningText,
                         ),
-                        const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                        const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10)),
                         Center(
-                                child: Image.file(
-                                  File(item.wasteBin!.imageFilePath),
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  height: MediaQuery.of(context).size.width / 2,
-                                ),
-                              ),
+                          child: Image.file(
+                            File(item.wasteBin[0].imageFilePath),
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: MediaQuery.of(context).size.width / 2,
+                          ),
+                        ),
                         const Padding(padding: EdgeInsets.only(bottom: 30)),
                         Text.rich(TextSpan(
                             text:
@@ -119,7 +121,9 @@ class _BarcodeItemDetailPageState extends State<BarcodeItemDetailPage> {
                             style: Theme.of(context).textTheme.labelMedium,
                             children: [
                               TextSpan(
-                                  text: item.wasteBin?.title,
+                                  text: item.wasteBin
+                                      .map((e) => e.title)
+                                      .join(", "),
                                   style: Theme.of(context).textTheme.bodyText1)
                             ],
                           ),

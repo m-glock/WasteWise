@@ -3,7 +3,7 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 class BarcodeItem {
   final String title;
   final String? material;
-  final WasteBinCategory? wasteBin;
+  final List<WasteBinCategory> wasteBin;
 
-  BarcodeItem(this.title, {this.material, this.wasteBin});
+  BarcodeItem(this.title, {this.material, required this.wasteBin});
 }

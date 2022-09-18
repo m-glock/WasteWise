@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 import 'database_classes/barcode_item.dart';
 import 'database_classes/barcode_material.dart';
 
@@ -18,15 +19,22 @@ class BarcodeResult {
 
     List<int> numbers = getValues(packNr);
     if (numbers.length <= 1) {
-      BarcodeMaterial? material = numbers.isEmpty ? null : barcodeMaterials[numbers.first];
+      BarcodeMaterial? material = numbers.isEmpty
+          ? null
+          : barcodeMaterials[numbers.first];
 
-      return BarcodeItem(name, material: material?.title, wasteBin: material?.category);
+      List<WasteBinCategory> wasteBins = material == null
+          ? []
+          : [material.category];
+      return BarcodeItem(name, material: material?.title, wasteBin: wasteBins);
     } else {
-      //TODO: handle this
-      for(int number in numbers){
-
-      }
-      return BarcodeItem("Unknown", material: "", wasteBin: null);
+      List<BarcodeMaterial?> materialNames =
+          numbers.map((number) => barcodeMaterials[number]).toList();
+      materialNames.removeWhere((e) => e == null);
+      String material = materialNames.map((e) => e!.title).join(", ");
+      List<WasteBinCategory> wasteBins =
+          materialNames.map((e) => e!.category).toList();
+      return BarcodeItem(name, material: material, wasteBin: wasteBins);
     }
   }
 

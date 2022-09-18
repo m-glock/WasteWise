@@ -93,7 +93,7 @@ class LanguageDe extends Languages {
   @override String get alertDialogNoItemTitle => "Item nicht gefunden";
   @override String get alertDialogNoItemExplanation => "Leider wurde für den Barcode kein entsprechendes Item gefunden.";
   @override String get alertDialogNoPackagingTitle => "Keine Verpackungsinformationen";
-  @override String get alertDialogNoPackagingExplanation => "Dieses Item scheint keine Verpackung zu besitzen. Du kannst den Bereich 'Entdecken' prüfen und sehen, ob du dort Informationen findest, um den passenden Mülleimer zu bestimmen.";
+  @override String get alertDialogNoPackagingExplanation => "Entweder besitzt das gesuchte Item keine Verpackung, oder es sind keine entsprechenden Daten in der Datenbank hinterlegt. \nDu kannst den Bereich 'Entdecken' prüfen und sehen, ob du dort Informationen findest, um den passenden Mülleimer zu bestimmen.";
   @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page
