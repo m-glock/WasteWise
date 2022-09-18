@@ -13,7 +13,6 @@ class AppColorScheme extends ColorScheme{
     primary: const Color.fromARGB(255, 120, 155, 96),
     tertiary: const Color.fromARGB(255, 197, 173, 125),
     error: const Color.fromARGB(255, 213, 76, 76),
-    onError: const Color.fromARGB(255, 248, 248, 248),
     onSurface: const Color.fromARGB(255, 50, 50, 50),
     onBackground: const Color.fromARGB(255, 50, 50, 50),
     brightness: Brightness.light,

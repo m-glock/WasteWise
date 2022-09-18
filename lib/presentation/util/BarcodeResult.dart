@@ -24,10 +24,10 @@ class BarcodeResult {
       BarcodeMaterial material =
           barcodeMaterials[numbers.first] ?? barcodeMaterials[0]!;
 
-      return Item(name, material.title, material.category, false);
+      return Item("", name, material.title, material.category);
     } else {
       //TODO: handle this
-      return Item("Unknown", "", DataHolder.categories.first, false);
+      return Item("", "Unknown", "", DataHolder.categoriesById.values.first);
     }
   }
 

@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_detail_widget.dart';
-import 'package:recycling_app/presentation/pages/search/widgets/item_detail_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -15,11 +13,11 @@ import '../../util/database_classes/tip.dart';
 import '../../util/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
-  const ItemDetailPage({Key? key, required this.item, this.updateBookmarkInParent, this.responseBody = ""})
+  const ItemDetailPage(
+      {Key? key, required this.item, this.updateBookmarkInParent})
       : super(key: key);
 
-  final Item? item;
-  final String responseBody;
+  final Item item;
   final Function? updateBookmarkInParent;
 
   @override

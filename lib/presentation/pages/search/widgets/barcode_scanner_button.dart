@@ -3,8 +3,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_detail_widget.dart';
 
 class BarcodeScannerButton extends StatefulWidget {
   const BarcodeScannerButton({Key? key}): super(key: key);
@@ -41,15 +41,13 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ItemDetailPage(item: null, responseBody: response.body)),
+      MaterialPageRoute(builder: (context) => BarcodeItemDetailPage(responseBody: response.body)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      child: ElevatedButton(
+    return ElevatedButton(
         child: Row(
           children: [
             const Icon(FontAwesomeIcons.barcode, size: 12),
@@ -60,7 +58,6 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
           ],
         ),
         onPressed: _scanBarcodeNormal,
-      ),
     );
   }
 }
