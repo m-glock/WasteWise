@@ -44,6 +44,8 @@ dependencies:
   carousel_indicator: ^1.0.6
   autocomplete_textfield: ^2.0.1
   introduction_screen: ^3.0.2
+  flutter_barcode_scanner: ^2.0.0
+  http: ^0.13.5
   cached_network_image: ^3.2.0
   fl_chart: ^0.55.1
   json_serializable: ^6.3.2

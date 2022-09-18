@@ -90,6 +90,11 @@ class LanguageDe extends Languages {
   @override String get alertDialogPrompt => "Dieses Item gehört in ";
   @override String get alertDialogButtonDismiss => "Verstanden";
   @override String get alertDialogButtonMoreInfo => "Mehr Info";
+  @override String get alertDialogNoItemTitle => "Item nicht gefunden";
+  @override String get alertDialogNoItemExplanation => "Leider wurde für den Barcode kein entsprechendes Item gefunden.";
+  @override String get alertDialogNoPackagingTitle => "Keine Verpackungsinformationen";
+  @override String get alertDialogNoPackagingExplanation => "Entweder besitzt das gesuchte Item keine Verpackung, oder es sind keine entsprechenden Daten in der Datenbank hinterlegt. \nDu kannst den Bereich 'Entdecken' prüfen und sehen, ob du dort Informationen findest, um den passenden Mülleimer zu bestimmen.";
+  @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
@@ -99,6 +104,8 @@ class LanguageDe extends Languages {
   @override String get itemDetailExplanationLabel => "Erklärung";
   @override String get itemDetailPreventionLabel => "Vermeidung";
   @override String get itemDetailTipsLabel => "Tipps";
+  @override String get itemDetailBarcodeWarningTitle => "Achtung";
+  @override String get itemDetailBarcodeWarningText => "Diese Informationen sind von einer offenen Datenbank übernommen (http://www.opengtindb.org). Keine Garantie für die Richtigkeit der Daten.";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";

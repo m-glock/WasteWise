@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_button.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/pages/search/barcode_scan_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,26 +42,6 @@ class _SearchPageState extends State<SearchPage> {
       userId = current?.objectId ?? "";
       learnMore = _prefs.getBool(Constants.prefLearnMore) ?? true;
     });
-  }
-
-  Widget _barcodeScannerButton() {
-    return ElevatedButton(
-      child: Row(
-        children: const [
-          Icon(FontAwesomeIcons.barcode, size: 12),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text('Barcode Scanner'),
-          )
-        ],
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const BarcodeScanPage()),
-        );
-      },
-    );
   }
 
   List<Widget> _getItemList(Map<String, String> namesAndIds) {
@@ -115,18 +94,18 @@ class _SearchPageState extends State<SearchPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _barcodeScannerButton(),
-                  if(userId != null && userId != "")
+                  const BarcodeScannerButton(),
+                  if (userId != null && userId != "")
                     OutlinedButton(
-                      child: Text(Languages.of(context)!.searchHistoryPageTitle),
+                      child:
+                          Text(Languages.of(context)!.searchHistoryPageTitle),
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SearchHistoryPage(
-                            userId: userId!,
-                            languageCode: languageCode!,
-                          )
-                        ),
+                            builder: (context) => SearchHistoryPage(
+                                  userId: userId!,
+                                  languageCode: languageCode!,
+                                )),
                       ),
                     ),
                 ],

@@ -91,6 +91,11 @@ class LanguageEn extends Languages {
   @override String get alertDialogPrompt => "This item belongs in the ";
   @override String get alertDialogButtonDismiss => "Understood";
   @override String get alertDialogButtonMoreInfo => "More Info";
+  @override String get alertDialogNoItemTitle => "Item not found";
+  @override String get alertDialogNoItemExplanation => "Unfortunately, there was no item associated with this barcode found.";
+  @override String get alertDialogNoPackagingTitle => "No packaging info";
+  @override String get alertDialogNoPackagingExplanation => "This either means that the item does not contain any packaging or that the information is not available in the database. \nYou can check out the discovery section of the app to see if you can find more information about which bin this item might belong in.";
+  @override String get barcodeAlertDialogButtonText => "Okay";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
@@ -100,6 +105,8 @@ class LanguageEn extends Languages {
   @override String get itemDetailExplanationLabel => "Explanation";
   @override String get itemDetailPreventionLabel => "Prevention";
   @override String get itemDetailTipsLabel => "Tips";
+  @override String get itemDetailBarcodeWarningTitle => "Warning";
+  @override String get itemDetailBarcodeWarningText => "This information comes from an open database (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Waste Bin Overview";

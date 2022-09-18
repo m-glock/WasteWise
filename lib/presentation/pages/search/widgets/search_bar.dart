@@ -79,7 +79,7 @@ class _SearchBarState extends State<SearchBar> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black45),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),

@@ -282,6 +282,20 @@ class GraphQLQueries{
     }
   """;
 
+  static String barcodeMaterialQuery = """
+  query GetBarcodeMaterials(\$languageCode: String!, \$municipalityId: String!){
+    getBarcodeMaterials(languageCode: \$languageCode, municipalityId: \$municipalityId){
+      title
+      barcode_material_id{
+        binary_value
+        category_id{
+          objectId
+        }
+      }
+    }
+  }
+  """;
+
   static String categoryQuery = """
     query GetContent(\$languageCode: String!, \$municipalityId: String!){
       getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
