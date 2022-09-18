@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
@@ -24,15 +25,14 @@ class _WasteBinOverviewPageState extends State<WasteBinOverviewPage> {
         padding: EdgeInsets.all(Constants.pagePadding),
         child: ListView(
           children: [
-            ...DataHolder.categories.map((category) {
+            ...DataHolder.categoriesById.values.map((category) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: DiscoveryTile(
-                  leading: SvgPicture.network(
-                    category.pictogramUrl,
+                  leading: Image.file(
+                    File(category.imageFilePath),
                     width: 50,
                     height: 50,
-                    color: category.color,
                   ),
                   title: category.title,
                   subtitle: null,

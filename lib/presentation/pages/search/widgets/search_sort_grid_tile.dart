@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
 import 'package:recycling_app/presentation/util/database_classes/item.dart';
+import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 
 import '../../../util/database_classes/waste_bin_category.dart';
 
@@ -22,8 +26,24 @@ class SearchSortGridTile extends StatefulWidget {
 }
 
 class _SearchSortGridTileState extends State<SearchSortGridTile> {
-  void _updateItemBookmarked() {
-    //TODO: update in DB
+
+  void _addToSearchHistory() async{
+    ParseUser? currentUser = await ParseUser.currentUser();
+    if(currentUser != null){
+      GraphQLClient client = GraphQLProvider.of(context).value;
+      await client.query(
+        QueryOptions(
+          fetchPolicy: FetchPolicy.networkOnly,
+          document: gql(GraphQLQueries.searchHistoryMutation),
+          variables: {
+            "itemId": widget.item.objectId,
+            "userId": currentUser.objectId,
+            "selectedCategoryId": widget.category.objectId,
+            "sortedCorrectly": widget.category == widget.item.wasteBin
+          },
+        ),
+      );
+    }
   }
 
   @override
@@ -32,23 +52,22 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SvgPicture.network(
-            widget.category.pictogramUrl,
-            color: widget.category.color,
+          Image.file(
+            File(widget.category.imageFilePath),
             width: 100,
             height: 100,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           Text(
             widget.category.title,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.labelMedium,
           )
         ],
       ),
       onTap: () {
-        //TODO: save sorting attempt in search history
+        _addToSearchHistory();
         AlertDialogWidget.showModal(
-            context, widget.item, widget.isCorrect, _updateItemBookmarked);
+            context, widget.item, widget.isCorrect);
       },
     );
   }

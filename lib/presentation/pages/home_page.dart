@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/contact_page.dart';
+import 'package:recycling_app/presentation/pages/contact/contact_page.dart';
 import 'package:recycling_app/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/discover_page.dart';
-import 'package:recycling_app/presentation/pages/imprint_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/neighborhood_page.dart';
-import 'package:recycling_app/presentation/pages/notification_page.dart';
+import 'package:recycling_app/presentation/pages/profile/bookmark_page.dart';
 import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
-import 'package:recycling_app/presentation/pages/settings_page.dart';
+import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+
+import 'imprint/imprint_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,38 +24,48 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  ParseUser? current;
+
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
     const SearchPage(),
     const DiscoverPage(),
-    const NeighborhoodPage(),
+    const NeighborhoodPage()
   ];
 
   void _onItemTapped(int index) {
-    setState(
-      () {
-        _selectedIndex = index;
-      },
-    );
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    ParseUser? currentUser = await ParseUser.currentUser();
+    setState(() {
+      current = currentUser;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text(Constants.appTitle),
         actions: [
-          IconButton(
-            onPressed: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationPage()),
-              )
-            },
-            icon: const Icon(FontAwesomeIcons.bell),
-          ),
-          IconButton(
+          if (current != null)
+            IconButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BookmarkPage()),
+                )
+              },
+              icon: const Icon(FontAwesomeIcons.bookmark),
+            ),
+          CustomIconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 7),
             onPressed: () => {
               Navigator.push(
                 context,
@@ -66,13 +77,21 @@ class _HomePageState extends State<HomePage> {
         ],
         titleSpacing: 2.0,
       ),
-      //TODO: proper design
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: Column(
           children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 50),
+              child: Icon(Icons.recycling, size: 100), //TODO: logo?
+            ),
+            const Divider(thickness: 2.0),
             ListTile(
-              title: Text(Languages.of(context)!.imprintPageName),
+              leading: const Icon(FontAwesomeIcons.section),
+              title: Text(
+                Languages.of(context)!.imprintPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -81,7 +100,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text(Languages.of(context)!.contactPageName),
+              leading: const Icon(FontAwesomeIcons.envelope),
+              title: Text(
+                Languages.of(context)!.contactPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -90,7 +113,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text(Languages.of(context)!.settingsPageName),
+              leading: const Icon(FontAwesomeIcons.gear),
+              title: Text(
+                Languages.of(context)!.settingsPageName,
+                style: Theme.of(context).textTheme.headline3,
+              ),
               onTap: () {
                 Navigator.push(
                   context,

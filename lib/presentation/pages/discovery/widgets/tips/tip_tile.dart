@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
+import '../../../../i18n/languages.dart';
 import '../../../../util/constants.dart';
 import '../../../../util/custom_icon_button.dart';
 import '../../../../util/database_classes/tip.dart';
+import '../../../../util/graphl_ql_queries.dart';
 
 class TipTile extends StatefulWidget {
   const TipTile({
     Key? key,
     required this.tip,
-    required this.tipNumber,
     required this.tags,
   }) : super(key: key);
 
   final Tip tip;
-  final int tipNumber;
   final List<String> tags;
 
   @override
@@ -23,8 +25,43 @@ class TipTile extends StatefulWidget {
 }
 
 class _TipTileState extends State<TipTile> {
-  void _bookmarkTip() {
-    //TODO: update in DB
+
+  ParseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      currentUser = current;
+    });
+  }
+
+  void _bookmarkTip() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    // remove or add the bookmark depending on the bookmark state
+    bool success = widget.tip.isBookmarked
+        ? await GraphQLQueries.removeTipBookmark(widget.tip.objectId, client)
+        : await GraphQLQueries.addTipBookmark(widget.tip.objectId, client);
+
+    // change bookmark status if DB entry was successful
+    // or notify user if not
+    if (success) {
+      setState(() {
+        widget.tip.isBookmarked = !widget.tip.isBookmarked;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(Languages.of(context)!.bookmarkingFailedText),
+      ));
+    }
+  }
+
+  void _updateBookmarkInWidget() {
     setState(() {
       widget.tip.isBookmarked = !widget.tip.isBookmarked;
     });
@@ -33,7 +70,6 @@ class _TipTileState extends State<TipTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -43,16 +79,18 @@ class _TipTileState extends State<TipTile> {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            widget.tip.isBookmarked
+            if(currentUser != null)
+              widget.tip.isBookmarked
                 ? CustomIconButton(
+                    padding: const EdgeInsets.only(right: 10),
                     onPressed: _bookmarkTip,
-                    icon: const Icon(Icons.bookmark),
+                    icon: const Icon(FontAwesomeIcons.solidBookmark),
                   )
                 : CustomIconButton(
+                    padding: const EdgeInsets.only(right: 10),
                     onPressed: _bookmarkTip,
-                    icon: const Icon(Icons.bookmark_border_outlined),
+                    icon: const Icon(FontAwesomeIcons.bookmark),
                   ),
-            const Padding(padding: EdgeInsets.only(right: 15)),
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -60,11 +98,14 @@ class _TipTileState extends State<TipTile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TipDetailPage(tip: widget.tip, tipNumber: widget.tipNumber,)),
+                      builder: (context) => TipDetailPage(
+                        tip: widget.tip,
+                        updateBookmarkInParent: _updateBookmarkInWidget,
+                      ),
+                    ),
                   );
                 },
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       child: Column(
@@ -73,7 +114,7 @@ class _TipTileState extends State<TipTile> {
                         children: [
                           Text(
                             widget.tip.title,
-                            style: Theme.of(context).textTheme.headline3,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 5)),
                           Row(children: [
@@ -93,8 +134,8 @@ class _TipTileState extends State<TipTile> {
                                         Theme.of(context).colorScheme.secondary,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                )),
-                          ])
+                                ),),
+                          ],)
                         ],
                       ),
                     ),

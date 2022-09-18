@@ -1,25 +1,46 @@
-import 'dart:ui';
-import '../hex_color.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 import 'cycle.dart';
 import 'myth.dart';
 
-class WasteBinCategory {
+part 'generated/waste_bin_category.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class WasteBinCategory{
   final String title;
   final String objectId;
-  final Color color;
-  final String pictogramUrl;
-  final List<Myth> myths = [];
-  final List<String> itemsBelong = [];
-  final List<String> itemsDontBelong = [];
-  final List<Cycle> cycleSteps = [];
+  final List<Myth> myths;
+  final List<String> itemsBelong;
+  final List<String> itemsDontBelong;
+  final List<Cycle> cycleSteps;
+  final String imageFilePath;
 
-  WasteBinCategory(this.title, this.objectId, this.color, this.pictogramUrl);
+  WasteBinCategory(this.title, this.objectId, this.myths,
+      this.cycleSteps, this.itemsBelong, this.itemsDontBelong, this.imageFilePath);
 
-  static WasteBinCategory fromJson(Map<dynamic, dynamic> category){
+  static WasteBinCategory fromGraphQlData(dynamic category, String imageFilePath) {
     return WasteBinCategory(
         category["title"],
         category["category_id"]["objectId"],
-        HexColor.fromHex(category["category_id"]["hex_color"]),
-        category["category_id"]["image_file"]["url"]);
+        List.empty(growable: true),
+        List.empty(growable: true),
+        List.empty(growable: true),
+        List.empty(growable: true),
+        imageFilePath
+    );
   }
+
+  factory WasteBinCategory.fromJson(Map<String, dynamic> json) =>
+      _$WasteBinCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WasteBinCategoryToJson(this);
+
+  @override
+  bool operator == (Object other){
+    return other is WasteBinCategory && objectId == other.objectId;
+  }
+
+  @override
+  int get hashCode => objectId.hashCode;
+
 }

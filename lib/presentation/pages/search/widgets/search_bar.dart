@@ -1,8 +1,17 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../i18n/locale_constant.dart';
+import '../../../util/constants.dart';
+import '../../../util/database_classes/item.dart';
+import '../../../util/graphl_ql_queries.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key, required this.itemNames}) : super(key: key);
@@ -16,13 +25,52 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   final GlobalKey<AutoCompleteTextFieldState<String>> _key = GlobalKey();
 
-  void _getItemInfo(String selected) {
+  void _getItemInfo(String selected) async {
+    // check if user wants sort page or not
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool? learnMore = _prefs.getBool(Constants.prefLearnMore) ?? true;
+
+    // get item info
+    Locale locale = await getLocale();
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult result = await client.query(
+      QueryOptions(
+          document: gql(GraphQLQueries.itemDetailQuery),
+          variables: {
+            "languageCode": locale.languageCode,
+            "itemObjectId": widget.itemNames[selected],
+            "userId": (await ParseUser.currentUser())?.objectId ?? "",
+          }),
+    );
+    Item? item = Item.fromGraphQlData(result.data);
+    if(item == null) throw Exception("No item found.");
+
+    if(!learnMore){
+      ParseUser? currentUser = await ParseUser.currentUser();
+      if(currentUser != null){
+        GraphQLClient client = GraphQLProvider.of(context).value;
+        await client.query(
+          QueryOptions(
+            fetchPolicy: FetchPolicy.networkOnly,
+            document: gql(GraphQLQueries.searchHistoryMutation),
+            variables: {
+              "itemId": item.objectId,
+              "userId": currentUser.objectId,
+              "selectedCategoryId": null,
+              "sortedCorrectly": null
+            },
+          ),
+        );
+      }
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => SearchSortPage(
-                itemObjectId: widget.itemNames[selected]!,
-              )),
+          builder: (context) => learnMore
+              ? SearchSortPage(item: item)
+              : ItemDetailPage(item: item)
+      ),
     );
   }
 
@@ -51,7 +99,6 @@ class _SearchBarState extends State<SearchBar> {
                   hintText: Languages.of(context)!.searchBarHint,
                 ),
                 showCursor: false,
-                style: const TextStyle(fontSize: 15),
                 itemSorter: (String item1, String item2) {
                   return item1.compareTo(item2);
                 },

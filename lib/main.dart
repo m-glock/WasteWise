@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
-import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
-import 'package:recycling_app/presentation/pages/home_page.dart';
+import 'package:recycling_app/presentation/pages/loading_page.dart';
 import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
 import 'package:recycling_app/presentation/themes/color_scheme.dart';
@@ -14,6 +15,8 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 void main() async {
   // initialize connection to backend
@@ -43,7 +46,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
-  bool introDone = false; //TODO
+  bool _introDone = false;
+  ValueNotifier<GraphQLClient>? _client;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -54,89 +58,83 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() async {
     // update language
-    getLocale().then((locale) {
-      setState(() {
-        _locale = locale;
-      });
+    Locale locale = await getLocale();
+    // update intro done
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool done = _prefs.getBool(Constants.prefIntroDone) ?? false;
+    ValueNotifier<GraphQLClient> newClient = await _getClient();
+
+    setState(() {
+      _locale = locale;
+      _introDone = done;
+      _client = newClient;
     });
     super.didChangeDependencies();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<ValueNotifier<GraphQLClient>> _getClient() async {
     final HttpLink httpLink = HttpLink(
       Constants.apiURL,
       defaultHeaders: {
         'X-Parse-Application-Id': Constants.kParseApplicationId,
         'X-Parse-Client-Key': Constants.kParseClientKey,
-      }, //getheaders()
+      },
     );
 
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
+    // initialize Hive and wrap the default box in a HiveStore
+    Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+    final store = await HiveStore.open(path: directory.path);
+    return ValueNotifier(
       GraphQLClient(
-        cache: GraphQLCache(), //TODO: check which Cache to use
+        defaultPolicies: DefaultPolicies(
+          query: Policies(
+            fetch: FetchPolicy.cacheAndNetwork,
+            cacheReread: CacheRereadPolicy.mergeOptimistic
+          )
+        ),
+        cache: GraphQLCache(store: store), //TODO: check which Cache to use
         link: httpLink,
       ),
     );
+  }
 
-    return GraphQLProvider(
-      client: client,
-      child: MaterialApp(
-        title: "RecyclingApp",
-        theme: ThemeData(
-          appBarTheme: const TopAppBarTheme(),
-          bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
-
-          elevatedButtonTheme: const AppElevatedButtonTheme(),
-          floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
-          outlinedButtonTheme: const AppOutlinedButtonTheme(),
-          textButtonTheme: AppTextButtonTheme(),
-          toggleButtonsTheme: const AppToggleButtonsTheme(),
-
-          colorScheme: const AppColorScheme(),
-
-          //TODO: add PageTransitionsTheme
-          //pageTransitionsTheme: const PageTransitionsTheme(),
-
-          textTheme: const AppTextTheme(),
-        ),
-        locale: _locale,
-        supportedLocales: Constants.languages.keys,
-        localizationsDelegates: const [
-          AppLocalizationsDelegate(),
-          GlobalWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale?.languageCode &&
-                supportedLocale.countryCode == locale?.countryCode) {
-              return supportedLocale;
-            }
-          }
-          return supportedLocales.first;
-        },
-        home: Query(
-          options: QueryOptions(document: gql(GraphQLQueries.initialQuery), variables: {
-            "languageCode": _locale?.languageCode,
-            "municipalityId": "PMJEteBu4m" //TODO get from user
-          }),
-          builder: (QueryResult result,
-              {VoidCallback? refetch, FetchMore? fetchMore}) {
-            if (result.hasException) return Text(result.exception.toString());
-            if (result.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            GraphQLQueries.initialDataExtraction(result.data);
-
-            return introDone
-                ? const HomePage(title: Constants.appTitle)
-                : const IntroductionPage();
-          },
-        ),
-      ),
-    );
+  @override
+  Widget build(BuildContext context) {
+    return _client == null
+        ? const Center(child: CircularProgressIndicator())
+        : GraphQLProvider(
+            client: _client,
+            child: MaterialApp(
+              title: "RecyclingApp",
+              theme: ThemeData(
+                appBarTheme: const TopAppBarTheme(),
+                bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
+                elevatedButtonTheme: AppElevatedButtonTheme(),
+                floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
+                outlinedButtonTheme: AppOutlinedButtonTheme(),
+                textButtonTheme: AppTextButtonTheme(),
+                colorScheme: const AppColorScheme(),
+                textTheme: const AppTextTheme(),
+              ),
+              locale: _locale,
+              supportedLocales: Constants.languages.keys,
+              localizationsDelegates: const [
+                AppLocalizationsDelegate(),
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+              localeResolutionCallback: (locale, supportedLocales) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale?.languageCode &&
+                      supportedLocale.countryCode == locale?.countryCode) {
+                    return supportedLocale;
+                  }
+                }
+                return supportedLocales.first;
+              },
+              home: _introDone ? const LoadingPage() : const IntroductionPage(),
+            ),
+          );
   }
 }

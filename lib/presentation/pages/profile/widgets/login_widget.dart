@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
+import '../../../util/constants.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key, required this.authenticated, this.onlySignup = false}) : super(key: key);
+  const LoginWidget(
+      {Key? key, required this.authenticated, this.onlySignup = false})
+      : super(key: key);
 
   final Function authenticated;
   final bool onlySignup;
@@ -18,6 +22,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController controllerUsername = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
+  final TextEditingController controllerZipCode = TextEditingController();
 
   late bool _signup;
 
@@ -38,23 +43,31 @@ class _LoginWidgetState extends State<LoginWidget> {
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   controller: controllerUsername,
-                  label: Languages.of(context)!.usernameLabel,
+                  hintText: Languages.of(context)!.usernameHintText,
                   inputType: TextInputType.text),
             ),
-            if(_signup)
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextInputWidget(
-                  controller: controllerEmail,
-                  label: Languages.of(context)!.emailLabel,
-                  inputType: TextInputType.emailAddress),
-            ),
+            if (_signup) ...[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextInputWidget(
+                    controller: controllerEmail,
+                    hintText: Languages.of(context)!.emailHintText,
+                    inputType: TextInputType.emailAddress),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: TextInputWidget(
+                    controller: controllerZipCode,
+                    hintText: Languages.of(context)!.zipCodeHintText,
+                    inputType: TextInputType.number),
+              ),
+            ],
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextInputWidget(
                   isPassword: true,
+                  hintText: Languages.of(context)!.passwordHintText,
                   controller: controllerPassword,
-                  label: Languages.of(context)!.passwordLabel,
                   inputType: TextInputType.text),
             ),
             ElevatedButton(
@@ -84,28 +97,34 @@ class _LoginWidgetState extends State<LoginWidget> {
     final String password = controllerPassword.text.trim();
 
     ParseResponse response;
-    if(_signup){
+    if (_signup) {
       final String email = controllerEmail.text.trim();
+      final String zipCode = controllerZipCode.text.trim();
+      //TODO: check if valid zip code for municipality
       final ParseUser user = ParseUser.createUser(username, password, email);
+
+      // set zip code and municipality
+      user.set("zip_code", zipCode);
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      String? municipalityId =
+          _prefs.getString(Constants.prefSelectedMunicipalityCode);
+      if (municipalityId != null) {
+        ParseObject municipality = ParseObject("Municipality");
+        municipality.set("objectId", municipalityId);
+        user.set("municipality_id", municipality);
+      }
+
+      // sign up
       response = await user.signUp();
     } else {
       final ParseUser user = ParseUser(username, password, null);
       response = await user.login();
-      _setACLsOnServer();
     }
 
     if (response.success) {
       widget.authenticated();
     } else {
       _showError(response.error!.message);
-    }
-  }
-
-  void _setACLsOnServer() async {
-    final ParseCloudFunction function = ParseCloudFunction('setUsersAcls');
-    final ParseResponse parseResponse = await function.execute();
-    if (parseResponse.success && parseResponse.result != null) {
-      debugPrint(parseResponse.result);
     }
   }
 

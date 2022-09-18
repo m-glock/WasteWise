@@ -19,15 +19,18 @@ class _DashboardPageState extends State<DashboardPage> {
       body: Center(
         child: Column(
           children: [
-            const DashboardTile(tileContent: OverviewTile()),
+            const DashboardTile(tileContent: ActionTile()),
             const Padding(padding: EdgeInsets.all(10)),
-            const DashboardTile(tileContent: ProgressTile()),
+            const DashboardTile(
+              tileContent: ProgressTile(),
+              onlyTitlePadding: true,
+            ),
             const Padding(padding: EdgeInsets.all(10)),
             Row(
               children: const [
-                Flexible(child: DashboardTile(tileContent: TextTile())),
+                Flexible(child: DashboardTile(tileContent: OverviewTile())),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                Flexible(child: DashboardTile(tileContent: ActionTile())),
+                Flexible(child: DashboardTile(tileContent: TextTile())),
               ],
             ),
           ],

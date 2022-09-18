@@ -10,7 +10,7 @@ class MapWidget extends StatefulWidget {
       {Key? key, required this.marker, required this.currentPosition})
       : super(key: key);
 
-  final Map<CollectionPoint?, Marker> marker;
+  final Map<CollectionPoint, Marker> marker;
   final LatLng currentPosition;
 
   @override
@@ -23,6 +23,11 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void initState() {
     super.initState();
+    _setMarkers();
+  }
+
+  void _setMarkers(){
+    if(markerList.isNotEmpty) markerList.clear();
     markerList.addAll(widget.marker.values);
     markerList.add(Marker(
       anchorPos: AnchorPos.align(AnchorAlign.top),
@@ -32,6 +37,12 @@ class _MapWidgetState extends State<MapWidget> {
       builder: (ctx) => const CustomMarkerWidget(
           collectionPoint: null, markerColor: Colors.redAccent),
     ));
+  }
+
+  @override
+  void didUpdateWidget(covariant MapWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _setMarkers();
   }
 
   @override

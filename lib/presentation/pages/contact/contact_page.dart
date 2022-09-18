@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-
-import '../util/constants.dart';
+import 'package:recycling_app/presentation/pages/contact/widgets/contact_form_widget.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -17,10 +16,11 @@ class _ContactPageState extends State<ContactPage> {
       appBar: AppBar(
         title: Text(Languages.of(context)!.contactPageName),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(Constants.pagePadding),
-        child: const Center(),
+      body: const Padding(
+        padding: EdgeInsets.all(20),
+        child: ContactFormWidget(),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }

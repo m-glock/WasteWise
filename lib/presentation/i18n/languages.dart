@@ -16,7 +16,6 @@ abstract class Languages {
   String get settingsPageName;
 
   // introduction
-  String get skipButtonText;
   String get nextButtonText;
   String get doneButtonText;
   String get languageScreenTitle;
@@ -25,8 +24,11 @@ abstract class Languages {
   String get purposeScreenExplanation;
   String get municipalityScreenTitle;
   String get municipalityScreenExplanation;
+  String get municipalitySelectedTitle;
+  String get municipalitySelectedNotFound;
   String get profileScreenTitle;
   String get profileScreenExplanation;
+  String get waitingForInitializationText;
 
   // bottom navigation
   String get homePageName;
@@ -38,21 +40,44 @@ abstract class Languages {
   String get tipTileTitle;
   String get tipTileButtonText;
   String get congratsTileTitle;
+  String get congratsTileFirstFragment;
+  String get congratsTileSecondFragment;
   String get overviewTileTitle;
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
   String get progressTileTitle;
+  String get progressTileRecycledLabel;
+  String get progressTileSavedLabel;
+  List<String> get months;
 
   // registration/login page
-  String get usernameLabel;
-  String get emailLabel;
-  String get passwordLabel;
+  String get usernameHintText;
+  String get passwordHintText;
+  String get emailHintText;
+  String get zipCodeHintText;
   String get signupButtonText;
   String get loginButtonText;
   String get goToLoginButtonText;
   String get goToSignupButtonText;
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
+
+  // profile page
+  String get profileRecycledItemsText;
+  String get profileSavedItemsText;
+  String get profileRankingText;
+  String get profileRankingPlaceText;
+  String get profileLogoutButtonText;
+
+  // search history page
+  String get searchHistoryPageTitle;
+
+  // bookmark and bookmark page
+  String get bookmarkPageTitle;
+  String get bookmarkingFailedText;
+  String get noBookmarksAvailableText;
+  String get itemBookmarkTagTitle;
+  String get tipBookmarkTagTitle;
 
   // search page
   String get searchBarHint;
@@ -75,6 +100,7 @@ abstract class Languages {
   // item detail page
   String get itemDetailMaterialLabel;
   String get itemDetailWasteBinLabel;
+  String get itemDetailSynonymsLabel;
   String get itemDetailMoreInfoLabel;
   String get itemDetailExplanationLabel;
   String get itemDetailTipsLabel;
@@ -103,15 +129,52 @@ abstract class Languages {
   String get filterLabelItemType;
   String get detailButtonText;
   String get routeButtonText;
+  String get copDetailsAddressTitle;
   String get cpDetailItemsAccepted;
   String get cpDetailsOpeningHours;
+  List<String> get weekdays;
+  String get cpAlliesButtonShareText;
+  String get cpAlliesButtonCancelText;
+  String get cpAlliesButtonShareTitle;
+  String get cpAlliesButtonShareExplanation;
+  String get cpAllySuccessfulText;
+  String get cpAllyUnsuccessfulText;
+  String get cpDropdownDefault;
 
   // tips page
   String get dropdownTipTypeLabel;
   String get dropdownWasteBinLabel;
   String get defaultDropdownItem;
   String get emptyListText;
+  String get tipShareSuccessfulText;
+  String get tipShareUnsuccessfulText;
 
   // neighborhood
   String get neighborhoodNotAuthenticatedText;
+  String get notLoggedInErrorText;
+  String get cpPostSuccessfulText;
+  String get cpPostUnsuccessfulText;
+  String get threadReplyHintText;
+  String get askQuestionHintText;
+  String get threadPageTitle;
+
+  // settings page
+  String get settingsPageTitle;
+  String get settingsPageLanguageSetting;
+  String get settingsPageMunicipalitySetting;
+  String get settingsPageLearnMoreSetting;
+  String get settingsPageAlertDialogTextStart;
+  String get settingsPageAlertDialogBulletPoints;
+  String get settingsPageAlertDialogTextEnd;
+
+  // contact page
+  String get contactPageIntroText;
+  String get contactPageGitHub;
+  String get contactPageNameHintText;
+  String get contactPageEmailHintText;
+  String get contactPageContentHintText;
+  String get contactPageSubmitButtonText;
+  String get contactPageImprintParagraphTitle;
+  String get contactPageValidationText;
+  String get contactPageEmailValidationText;
 }
