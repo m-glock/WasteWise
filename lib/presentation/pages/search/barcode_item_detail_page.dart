@@ -7,11 +7,11 @@ import 'package:recycling_app/presentation/util/database_classes/barcode_materia
 import 'package:recycling_app/presentation/util/database_classes/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../i18n/languages.dart';
-import '../../../i18n/locale_constant.dart';
-import '../../../util/BarcodeResult.dart';
-import '../../../util/data_holder.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../i18n/languages.dart';
+import '../../i18n/locale_constant.dart';
+import '../../util/BarcodeResult.dart';
+import '../../util/data_holder.dart';
+import '../../util/graphl_ql_queries.dart';
 
 class BarcodeItemDetailPage extends StatefulWidget {
   const BarcodeItemDetailPage({Key? key, required this.responseBody})
@@ -75,35 +75,8 @@ class _BarcodeItemDetailPageState extends State<BarcodeItemDetailPage> {
                 barcodeMaterials[material.binaryValue] = material;
               }
 
-              Item? item = BarcodeResult.getItemFromBarcodeInfo(
+              Item item = BarcodeResult.getItemFromBarcodeInfo(
                   widget.responseBody, barcodeMaterials);
-
-              // api has no data for this barcode
-              if (item == null) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title:
-                          Text(Languages.of(context)!.barcodeAlertDialogTitle),
-                      contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-                      content: Text(
-                          Languages.of(context)!.barcodeAlertDialogExplanation),
-                      actionsPadding:
-                          const EdgeInsets.symmetric(horizontal: 24),
-                      actions: [
-                        TextButton(
-                          child: Text(Languages.of(context)!
-                              .barcodeAlertDialogButtonText),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                      ],
-                    );
-                  },
-                );
-                //TODO
-                return const Center();
-              }
 
               // item object successfully created with barcode info
               return Scaffold(

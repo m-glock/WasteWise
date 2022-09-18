@@ -7,10 +7,8 @@ class BarcodeResult {
   static List<int> binaryNumbers = [1, 2, 4, 8, 16];
   static List<String> materials = [];
 
-  static Item? getItemFromBarcodeInfo(
+  static Item getItemFromBarcodeInfo(
       String responseBody, Map<int, BarcodeMaterial> barcodeMaterials) {
-    if (!responseBody.contains("error=0")) return null;
-
     List<String> values = responseBody.split("\n");
     String name = values
         .firstWhere((element) => element.startsWith("name"))

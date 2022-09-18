@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:http/http.dart' as http;
-import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_detail_widget.dart';
+import 'package:recycling_app/presentation/pages/search/barcode_item_detail_page.dart';
+
+import 'barcode_not_found_alert_widget.dart';
 
 class BarcodeScannerButton extends StatefulWidget {
   const BarcodeScannerButton({Key? key}): super(key: key);
@@ -39,10 +41,14 @@ class _BarcodeScannerButtonState extends State<BarcodeScannerButton> {
     Uri url = Uri.https("opengtindb.org", "/", params);
     Response response = await http.post(url);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BarcodeItemDetailPage(responseBody: response.body)),
-    );
+    if (!response.body.contains("error=0")){
+      BarcodeNotFoundAlertWidget.showModal(context);
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => BarcodeItemDetailPage(responseBody: response.body)),
+      );
+    }
   }
 
   @override
