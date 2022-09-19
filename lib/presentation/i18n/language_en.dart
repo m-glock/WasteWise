@@ -66,6 +66,7 @@ class LanguageEn extends Languages {
   @override String get profileRankingText => "Ranking in neighborhood:";
   @override String get profileRankingPlaceText => "place";
   @override String get profileLogoutButtonText => "Logout";
+  @override String get notAValidZipCode => " is not a valid zip code for your area.";
 
   // search history page
   @override String get searchHistoryPageTitle => "Search History";

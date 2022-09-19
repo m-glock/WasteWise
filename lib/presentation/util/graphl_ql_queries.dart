@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 import 'package:http/http.dart' as http;
+import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 
 import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'data_holder.dart';
@@ -146,6 +147,33 @@ class GraphQLQueries{
         }
         subcategory_id{
           objectId
+        }
+      }
+      
+      getZipCodes(municipalityId: \$municipalityId){
+        municipality_id{
+          objectId
+        }
+        zip_code
+        lat_lng{
+          latitude
+          longitude
+        }
+      }
+    }
+  """;
+
+  static String getZipCodes = """
+    query GetZipCodes(\$municipalityId: String!){
+      getZipCodes(municipalityId: \$municipalityId){
+        objectId
+        municipality_id{
+          objectId
+        }
+        zip_code
+        lat_lng{
+          latitude
+          longitude
         }
       }
     }
@@ -669,6 +697,15 @@ class GraphQLQueries{
     List<dynamic> availableSubcategories = data?["getDistinctSubcategoriesForCP"];
     for (dynamic element in availableSubcategories) {
       DataHolder.cpSubcategories.add(element["title"]);
+    }
+
+    // get zip codes for municipalities
+    if(DataHolder.zipCodesById.isNotEmpty){
+      List<dynamic> zipCodes = data?["getZipCodes"];
+      for (dynamic zipCodeData in zipCodes) {
+        ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
+        DataHolder.zipCodesById[zipCode.objectId] = zipCode;
+      }
     }
 
     try{

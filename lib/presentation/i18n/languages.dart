@@ -61,6 +61,7 @@ abstract class Languages {
   String get goToSignupButtonText;
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
+  String get notAValidZipCode;
 
   // profile page
   String get profileRecycledItemsText;

@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 
 import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'database_classes/collection_point.dart';
@@ -21,6 +22,7 @@ class DataHolder{
   static final Map<CollectionPoint, Marker> markers = {};
   static final Set<String> cpSubcategories = {};
   static final List<CollectionPointType> collectionPointTypes = [];
+  static final Map<String, ZipCode> zipCodesById = {};
 
   static Future<void> saveDataToFile() async {
     Map<String, dynamic> jsonMap = {};
@@ -32,6 +34,7 @@ class DataHolder{
     jsonMap["CollectionPointTypes"] = DataHolder.collectionPointTypes;
     jsonMap["CpSubcategories"] = DataHolder.cpSubcategories.toList();
     jsonMap["CollectionPoints"] = DataHolder.markers.keys.toList();
+    jsonMap["ZipCodes"] = DataHolder.zipCodesById;
 
     Directory directory = await getApplicationDocumentsDirectory();
     File dataFile = File('${directory.path}/subcategories.json');
@@ -70,6 +73,11 @@ class DataHolder{
     }
     for(dynamic element in jsonMap["CollectionPointTypes"]){
       DataHolder.collectionPointTypes.add(CollectionPointType.fromJson(element));
+    }
+
+    for(dynamic element in jsonMap["ZipCodes"]){
+      ZipCode zipCode = ZipCode.fromJson(element);
+      DataHolder.zipCodesById[zipCode.objectId] = zipCode;
     }
 
     DataHolder.itemNames.addAll(Map.from(jsonMap["ItemNames"]));

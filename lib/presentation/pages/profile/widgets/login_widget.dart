@@ -1,9 +1,15 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
 import '../../../util/constants.dart';
+import '../../../util/graphl_ql_queries.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -22,14 +28,46 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController controllerUsername = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
-  final TextEditingController controllerZipCode = TextEditingController();
-
+  final GlobalKey<AutoCompleteTextFieldState<ZipCode>> _key = GlobalKey();
+  List<ZipCode> zipCodeSuggestions = [];
+  ZipCode? _zipCode;
   late bool _signup;
 
   @override
   void initState() {
     super.initState();
     _signup = widget.onlySignup;
+    if (DataHolder.zipCodesById.isEmpty) {
+      _getZipCodes();
+    } else {
+      zipCodeSuggestions = DataHolder.zipCodesById.values.toList();
+    }
+  }
+
+  void _getZipCodes() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? municipalityId =
+        _prefs.getString(Constants.prefSelectedMunicipalityCode);
+    Map<String, dynamic> inputVariables = {
+      "municipalityId": municipalityId,
+    };
+
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(GraphQLQueries.getZipCodes),
+        variables: inputVariables,
+      ),
+    );
+
+    List<dynamic> zipCodes = result.data?["getZipCodes"];
+    for (dynamic zipCodeData in zipCodes) {
+      ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
+      DataHolder.zipCodesById[zipCode.objectId] = zipCode;
+    }
+    setState(() {
+      zipCodeSuggestions = DataHolder.zipCodesById.values.toList();
+    });
   }
 
   @override
@@ -56,10 +94,45 @@ class _LoginWidgetState extends State<LoginWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextInputWidget(
-                    controller: controllerZipCode,
+                child: AutoCompleteTextField<ZipCode>(
+                  clearOnSubmit: false,
+                  suggestions: zipCodeSuggestions,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.surface,
                     hintText: Languages.of(context)!.zipCodeHintText,
-                    inputType: TextInputType.number),
+                    border: InputBorder.none,
+                  ),
+                  itemSorter: (ZipCode item1, ZipCode item2) {
+                    return item1.compareTo(item2);
+                  },
+                  itemBuilder: (BuildContext context, ZipCode suggestion) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(suggestion.zipCode),
+                    );
+                  },
+                  textSubmitted: (String data) {
+                    ZipCode? selected = zipCodeSuggestions
+                        .firstWhereOrNull((element) => element.zipCode == data);
+                    if (selected != null) {
+                      _zipCode = selected;
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            data + Languages.of(context)!.notAValidZipCode,
+                        ),
+                      ));
+                    }
+                  },
+                  itemSubmitted: (ZipCode data) {
+                    _zipCode = data;
+                  },
+                  key: _key,
+                  itemFilter: (ZipCode suggestion, String query) {
+                    return suggestion.zipCode.startsWith(query.toLowerCase());
+                  },
+                ),
               ),
             ],
             Padding(
@@ -99,12 +172,10 @@ class _LoginWidgetState extends State<LoginWidget> {
     ParseResponse response;
     if (_signup) {
       final String email = controllerEmail.text.trim();
-      final String zipCode = controllerZipCode.text.trim();
-      //TODO: check if valid zip code for municipality
       final ParseUser user = ParseUser.createUser(username, password, email);
 
       // set zip code and municipality
-      user.set("zip_code", zipCode);
+      user.set("zip_code_id", _zipCode);
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       String? municipalityId =
           _prefs.getString(Constants.prefSelectedMunicipalityCode);

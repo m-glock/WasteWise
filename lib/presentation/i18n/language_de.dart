@@ -65,6 +65,7 @@ class LanguageDe extends Languages {
   @override String get profileRankingText => "Ranking in der Nachbarschaft:";
   @override String get profileRankingPlaceText => "Platz";
   @override String get profileLogoutButtonText => "Logout";
+  @override String get notAValidZipCode => " ist keine valide Postleitzahl für die ausgewählte Region.";
 
   // search history page
   @override String get searchHistoryPageTitle => "Suchverlauf";
