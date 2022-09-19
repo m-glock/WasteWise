@@ -15,19 +15,19 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool? _learnMore;
+  bool _learnMore = false;
 
   @override
   void initState() {
     super.initState();
-    if (_learnMore == null) _setLearnMore();
+    _setLearnMore();
   }
 
   void _setLearnMore() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     bool? prefLearnMore = _prefs.getBool(Constants.prefLearnMore);
     setState(() {
-      _learnMore = prefLearnMore;
+      _learnMore = prefLearnMore ?? true;
     });
   }
 
@@ -101,7 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 Switch(
-                  value: _learnMore ?? false,
+                  value: _learnMore,
                   activeColor: Colors.red,
                   onChanged: (bool value) => _updateLearnMore(value),
                 ),

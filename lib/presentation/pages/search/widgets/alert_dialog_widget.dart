@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,11 +7,15 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
+import 'package:recycling_app/presentation/pages/search/widgets/tip_dialog_widget.dart';
 
 import '../../../util/database_classes/item.dart';
+import '../../../util/database_classes/tip.dart';
 import '../../../util/graphl_ql_queries.dart';
 
 class AlertDialogWidget {
+  static Random rand = Random();
+
   static Future<void> showModal(
       BuildContext context, Item item, bool isCorrect) async {
     ParseUser? currentUser = await ParseUser.currentUser();
@@ -29,7 +34,7 @@ class AlertDialogWidget {
                 isCorrect
                     ? Text(Languages.of(context)!.alertDialogCorrectTitle)
                     : Text(Languages.of(context)!.alertDialogWrongTitle),
-                if(currentUser != null)
+                if (currentUser != null)
                   IconButton(
                     onPressed: () async {
                       GraphQLClient client = GraphQLProvider.of(context).value;
@@ -63,75 +68,88 @@ class AlertDialogWidget {
             ),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
             content: Wrap(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Image.file(
-                          File(item.wasteBin.imageFilePath),
-                          width: 80,
-                          height: 80,
-                        ),
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Image.file(
+                        File(item.wasteBin.imageFilePath),
+                        width: 80,
+                        height: 80,
                       ),
-                      const Padding(padding: EdgeInsets.only(right: 10)),
-                      Expanded(
-                        child: Text.rich(
-                          TextSpan(
-                            text: Languages.of(context)!.alertDialogPrompt,
-                            style: Theme.of(context).textTheme.bodyText2,
-                            children: [
-                              TextSpan(
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          text: Languages.of(context)!.alertDialogPrompt,
+                          style: Theme.of(context).textTheme.bodyText2,
+                          children: [
+                            TextSpan(
                                 text: item.wasteBin.title,
                                 style: TextStyle(
-                                  fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                                  fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .fontFamily,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .fontSize,
                                   fontWeight: FontWeight.bold,
-                                )
-                              )
-                            ],
-                          ),
+                                ))
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                    child: isCorrect
-                        ? Text(
-                            Languages.of(context)!.alertDialogCorrectExplanation,
-                            style: Theme.of(context).textTheme.bodyText2,
-                          )
-                        : Text(
-                        Languages.of(context)!.alertDialogWrongExplanation),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                  child: isCorrect
+                      ? Text(
+                          Languages.of(context)!.alertDialogCorrectExplanation,
+                          style: Theme.of(context).textTheme.bodyText2,
+                        )
+                      : Text(
+                          Languages.of(context)!.alertDialogWrongExplanation),
+                ),
+              ],
             ),
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actionsPadding: const EdgeInsets.symmetric(horizontal: 24),
             actions: [
               OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonMoreInfo),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ItemDetailPage(item: item)),
-                  );
-                },
+                onPressed: () => _pressedButton(context, item, false),
               ),
               OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonDismiss),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => _pressedButton(context, item, true),
               ),
             ],
           );
         });
       },
     );
+  }
+
+  static void _pressedButton(
+      BuildContext context, Item item, bool dismiss) async {
+    Navigator.of(context).pop();
+    int randomNumber = rand.nextInt(100);
+    if (randomNumber > 70) {
+      List<Tip> availableTips = [];
+      availableTips.addAll(item.tips);
+      availableTips.addAll(item.preventions);
+      Tip tip = availableTips.elementAt(rand.nextInt(availableTips.length));
+      TipDialogWidget.showModal(context, tip, item.subcategory!);
+    } else if (!dismiss) {
+      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
+      );
+    }
   }
 }

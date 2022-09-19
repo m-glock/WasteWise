@@ -95,6 +95,7 @@ class LanguageDe extends Languages {
   @override String get alertDialogNoPackagingTitle => "Keine Verpackungsinformationen";
   @override String get alertDialogNoPackagingExplanation => "Entweder besitzt das gesuchte Item keine Verpackung, oder es sind keine entsprechenden Daten in der Datenbank hinterlegt. \nDu kannst den Bereich 'Entdecken' prüfen und sehen, ob du dort Informationen findest, um den passenden Mülleimer zu bestimmen.";
   @override String get barcodeAlertDialogButtonText => "Okay";
+  @override String get aboutText => "Zum Thema ";
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
