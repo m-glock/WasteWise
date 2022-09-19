@@ -75,8 +75,8 @@ class DataHolder{
       DataHolder.collectionPointTypes.add(CollectionPointType.fromJson(element));
     }
 
-    for(dynamic element in jsonMap["ZipCodes"]){
-      ZipCode zipCode = ZipCode.fromJson(element);
+    for(dynamic entry in Map.from(jsonMap["ZipCodes"]).entries){
+      ZipCode zipCode = ZipCode.fromJson(entry.value);
       DataHolder.zipCodesById[zipCode.objectId] = zipCode;
     }
 

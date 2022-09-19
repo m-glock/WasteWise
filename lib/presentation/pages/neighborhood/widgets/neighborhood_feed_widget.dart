@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
+import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
@@ -10,6 +11,7 @@ import '../../../util/constants.dart';
 import '../../../util/custom_icon_button.dart';
 import '../../../util/data_holder.dart';
 import '../../../util/graphl_ql_queries.dart';
+import '../../../util/lat_lng_distance.dart';
 import 'forum_entry_widget.dart';
 
 class NeighborhoodFeedWidget extends StatefulWidget {
@@ -22,11 +24,26 @@ class NeighborhoodFeedWidget extends StatefulWidget {
 class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   String? municipalityId;
   final TextEditingController controller = TextEditingController();
+  List<String>? zipCodes;
 
   @override
   void initState() {
     super.initState();
+    _setNearbyZipCodes();
     _setMunicipality();
+  }
+
+  void _setNearbyZipCodes() async {
+    ParseUser current = await ParseUser.currentUser();
+    dynamic zipCodeId = current.get("zip_code_id").get("objectId");
+    ZipCode userZipCode = DataHolder.zipCodesById[zipCodeId]!;
+    List<String> nearbyZipCodes = getNearbyZipCodes(
+            DataHolder.zipCodesById.values.toList(), userZipCode.latLng)
+        .map((zipCode) => zipCode.zipCode)
+        .toList();
+    setState(() {
+      zipCodes = nearbyZipCodes;
+    });
   }
 
   void _setMunicipality() async {
@@ -73,13 +90,17 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return municipalityId == null
+    return municipalityId == null || zipCodes == null
         ? const Center(child: CircularProgressIndicator())
         : Query(
             options: QueryOptions(
-                fetchPolicy: FetchPolicy.networkOnly,
-                document: gql(GraphQLQueries.getForumEntries),
-                variables: {"municipalityId": municipalityId}),
+              fetchPolicy: FetchPolicy.networkOnly,
+              document: gql(GraphQLQueries.getForumEntries),
+              variables: {
+                "municipalityId": municipalityId,
+                "zipCodes": zipCodes,
+              },
+            ),
             builder: (QueryResult result,
                 {VoidCallback? refetch, FetchMore? fetchMore}) {
               if (result.hasException) {
@@ -112,7 +133,8 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                             autocorrect: false,
                             decoration: InputDecoration(
                               fillColor: Theme.of(context).colorScheme.surface,
-                              labelText: Languages.of(context)!.askQuestionHintText,
+                              labelText:
+                                  Languages.of(context)!.askQuestionHintText,
                               filled: true,
                               border: InputBorder.none,
                             ),

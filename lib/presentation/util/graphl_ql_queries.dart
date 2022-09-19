@@ -151,6 +151,7 @@ class GraphQLQueries{
       }
       
       getZipCodes(municipalityId: \$municipalityId){
+        objectId
         municipality_id{
           objectId
         }
@@ -402,8 +403,8 @@ class GraphQLQueries{
   """;
 
   static String getForumEntries = """
-    query GetForumEntries(\$municipalityId: String!){
-      getForumEntries(municipalityId: \$municipalityId){
+    query GetForumEntries(\$municipalityId: String!, \$zipCodes: [String!]!){
+      getForumEntries(municipalityId: \$municipalityId, zipCodes: \$zipCodes){
         objectId
         createdAt
         forum_entry_type_id{

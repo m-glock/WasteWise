@@ -173,10 +173,18 @@ class _LoginWidgetState extends State<LoginWidget> {
     if (_signup) {
       final String email = controllerEmail.text.trim();
       final ParseUser user = ParseUser.createUser(username, password, email);
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
 
       // set zip code and municipality
       user.set("zip_code_id", _zipCode);
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      if(_zipCode != null) {
+        _prefs.setString(
+            Constants.prefSelectedZipCode,
+            _zipCode!.zipCode
+        );
+      }
+
+      // set municipality
       String? municipalityId =
           _prefs.getString(Constants.prefSelectedMunicipalityCode);
       if (municipalityId != null) {

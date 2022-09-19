@@ -13,6 +13,7 @@ class Constants{
 
   //SharedPrefs
   static String prefSelectedMunicipalityCode = "SelectedMunicipality";
+  static String prefSelectedZipCode = "SelectedZipCode";
   static String prefIntroDone = "IntroDone";
   static String prefLearnMore = "LearnMore";
 

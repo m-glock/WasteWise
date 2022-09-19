@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
             cacheReread: CacheRereadPolicy.mergeOptimistic
           )
         ),
-        cache: GraphQLCache(store: store), //TODO: check which Cache to use
+        cache: GraphQLCache(store: store),
         link: httpLink,
       ),
     );
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
         : GraphQLProvider(
             client: _client,
             child: MaterialApp(
-              title: "RecyclingApp",
+              title: Constants.appTitle,
               theme: ThemeData(
                 appBarTheme: const TopAppBarTheme(),
                 bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
