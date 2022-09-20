@@ -40,6 +40,8 @@ abstract class Languages {
   String get tipTileTitle;
   String get tipTileButtonText;
   String get congratsTileTitle;
+  String get congratsTileDefaultTitle;
+  String get congratsTileDefaultText;
   String get congratsTileFirstFragment;
   String get congratsTileSecondFragment;
   String get overviewTileTitle;

@@ -442,6 +442,16 @@ class GraphQLQueries{
     }
   """;
 
+  static String compareInNeighborhood = """
+    query CompareInNeighborhood(\$userId: String!, \$municipalityId: String!, \$zipCodes: [String!]!){
+      compareInNeighborhood(
+        userId: \$userId, 
+        municipalityId: \$municipalityId, 
+        zipCodes: \$zipCodes
+      )
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
       addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)

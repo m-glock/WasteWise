@@ -38,6 +38,8 @@ class LanguageEn extends Languages {
   @override String get tipTileTitle => "Tip of the Day";
   @override String get tipTileButtonText => "More Info";
   @override String get congratsTileTitle => "Congratulation";
+  @override String get congratsTileDefaultTitle => "Keep going";
+  @override String get congratsTileDefaultText => "The more you learn, the easier it gets to find the correct waste bin.";
   @override String get congratsTileFirstFragment => "You are in the top  ";
   @override String get congratsTileSecondFragment => "  in your neighborhood.";
   @override String get overviewTileTitle => "Total";
