@@ -452,6 +452,25 @@ class GraphQLQueries{
     }
   """;
 
+  static String getRandomTip = """
+    query GetRandomTip(\$languageCode: String!){
+      getRandomTip(languageCode: \$languageCode){
+        title
+        explanation
+        short
+        tip_id{
+          objectId
+          image{
+            url
+          }
+          tip_type_id{
+            objectId
+          }
+        }
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
       addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)
