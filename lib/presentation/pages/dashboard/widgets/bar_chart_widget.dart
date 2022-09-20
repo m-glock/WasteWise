@@ -3,27 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
 class BarChartWidget extends StatefulWidget {
-  const BarChartWidget({Key? key}) : super(key: key);
+  const BarChartWidget({
+    Key? key,
+    required this.searchHistoryData
+  }) : super(key: key);
+
+  final List<dynamic> searchHistoryData;
 
   @override
   State<BarChartWidget> createState() => _BarChartWidgetState();
 }
 
-class Pair<T1, T2> {
-  final T1 a;
-  final T2 b;
+class ChartValuePair{
+  double searchedItemAmount;
+  double savedItemAmount;
 
-  Pair(this.a, this.b);
+  ChartValuePair(this.searchedItemAmount, this.savedItemAmount);
+
+  void incrementSearchedItemAmount() => searchedItemAmount++;
+  void incrementSavedItemAmount() => savedItemAmount++;
 }
 
 class _BarChartWidgetState extends State<BarChartWidget> {
-  //TODO: replace with actual values
-  List<Pair> barChartValues = [
-    Pair(15.0, 12.0),
-    Pair(11.0, 7.0),
-    Pair(5.0, 3.0),
-    Pair(5.0, 1.0)
-  ];
+  Map<int, ChartValuePair> barChartValues = {};
+
+  @override
+  initState(){
+    super.initState();
+    _prepareChartValues();
+  }
+
+  void _prepareChartValues(){
+    // fill with default values
+    Map<int, ChartValuePair> chartData = {};
+    int index = DateTime.now().month - 3;
+    for(int i = index; i <= DateTime.now().month; i++){
+      chartData[i] = ChartValuePair(0, 0);
+    }
+
+    for(dynamic element in widget.searchHistoryData){
+      DateTime searchHistoryDate = DateTime.parse(element["createdAt"]);
+      ChartValuePair valuePair = chartData[searchHistoryDate.month]!;
+      valuePair.incrementSearchedItemAmount();
+      if(!element["sorted_correctly"]) valuePair.incrementSavedItemAmount();
+    }
+
+    setState(() {
+      barChartValues = chartData;
+    });
+  }
 
   Widget _bottomTitles(double value, TitleMeta meta) {
     List<String> months = Languages.of(context)!.months;
@@ -47,10 +75,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
 
   Widget _leftTitles(double value, TitleMeta meta) {
     return SideTitleWidget(
-      child: Text(
-        meta.formattedValue,
-        //style: style,
-      ),
+      child: Text(meta.formattedValue),
       axisSide: meta.axisSide,
     );
   }
@@ -85,18 +110,18 @@ class _BarChartWidgetState extends State<BarChartWidget> {
           rightTitles: AxisTitles(sideTitles: null),
         ),
         barGroups: [
-          ...barChartValues.map(
+          ...barChartValues.values.map(
             (values) => BarChartGroupData(
               x: index++,
               barRods: [
                 BarChartRodData(
-                  toY: values.a,
+                  toY: values.searchedItemAmount,
                   width: 10,
                   borderRadius: const BorderRadius.all(Radius.circular(0)),
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 BarChartRodData(
-                  toY: values.b,
+                  toY: values.savedItemAmount,
                   width: 10,
                   borderRadius: const BorderRadius.all(Radius.circular(0)),
                   color: Theme.of(context).colorScheme.secondary,

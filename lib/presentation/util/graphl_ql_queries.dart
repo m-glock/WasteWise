@@ -471,6 +471,16 @@ class GraphQLQueries{
     }
   """;
 
+  static String getProgress = """
+    query GetProgress(\$userId: String!){
+      getProgress(userId: \$userId){
+        objectId
+        sorted_correctly
+        createdAt
+      }
+    }
+  """;
+
   static String searchHistoryMutation = """
     mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
       addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)
