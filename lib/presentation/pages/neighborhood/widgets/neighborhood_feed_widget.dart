@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
+import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
 import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,14 +24,22 @@ class NeighborhoodFeedWidget extends StatefulWidget {
 class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   final TextEditingController controller = TextEditingController();
   List<ForumEntryWidget> forumEntries = [];
+  Map<ForumEntryType, bool> forumEntryTypesSelected = {};
   String? municipalityId;
   List<String>? zipCodes;
 
   @override
   void initState() {
     super.initState();
+    _setFilter();
     _setNearbyZipCodes();
     _setMunicipality();
+  }
+
+  void _setFilter(){
+    for (ForumEntryType element in DataHolder.forumEntryTypesById.values) {
+      forumEntryTypesSelected[element] = false;
+    }
   }
 
   void _setNearbyZipCodes() async {
@@ -101,12 +109,31 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
 
   Widget _getWidget() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomIconButton(
-          onPressed: () => {}, //TODO: implement filter
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          icon: const Icon(FontAwesomeIcons.filter),
+        Text(
+          Languages.of(context)!.filterByText,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ...forumEntryTypesSelected.entries.map((entry) {
+              return Row(
+                children: [
+                  Checkbox(
+                    value: entry.value,
+                    onChanged: (bool? checked) {
+                      setState(() {
+                        forumEntryTypesSelected[entry.key] = checked!;
+                      });
+                    },
+                  ),
+                  Text(entry.key.title),
+                ],
+              );
+            }),
+          ],
         ),
         const Padding(padding: EdgeInsets.only(bottom: 10)),
         Container(

@@ -164,6 +164,7 @@ abstract class Languages {
   String get threadReplyHintText;
   String get askQuestionHintText;
   String get threadPageTitle;
+  String get filterByText;
 
   // settings page
   String get settingsPageTitle;

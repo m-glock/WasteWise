@@ -161,6 +161,7 @@ class LanguageDe extends Languages {
   @override String get threadReplyHintText => "Schreibe eine Antwort";
   @override String get askQuestionHintText => "Stelle eine Frage";
   @override String get threadPageTitle => "Diskussion";
+  @override String get filterByText => "Filtern nach:";
 
   // settings page
   @override String get settingsPageTitle => "Einstellungen";

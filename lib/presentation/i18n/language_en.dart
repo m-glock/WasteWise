@@ -162,6 +162,7 @@ class LanguageEn extends Languages {
   @override String get threadReplyHintText => "Type a reply";
   @override String get askQuestionHintText => "Ask a question";
   @override String get threadPageTitle => "Thread";
+  @override String get filterByText => "Filter by:";
 
   // settings page
   @override String get settingsPageTitle => "Settings";

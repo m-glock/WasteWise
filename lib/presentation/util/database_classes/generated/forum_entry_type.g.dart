@@ -12,6 +12,7 @@ ForumEntryType _$ForumEntryTypeFromJson(Map<String, dynamic> json) =>
       json['text'] as String,
       json['buttonText'] as String,
       json['typeName'] as String,
+      json['title'] as String,
     );
 
 Map<String, dynamic> _$ForumEntryTypeToJson(ForumEntryType instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$ForumEntryTypeToJson(ForumEntryType instance) =>
       'text': instance.text,
       'buttonText': instance.buttonText,
       'typeName': instance.typeName,
+      'title': instance.title,
     };

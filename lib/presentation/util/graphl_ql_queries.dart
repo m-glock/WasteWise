@@ -99,6 +99,7 @@ class GraphQLQueries{
       getForumEntryTypes(languageCode: \$languageCode){
         text
         button_text
+        title
         forum_entry_type_id{
           objectId
           type_name
