@@ -27,4 +27,9 @@ class User extends ChangeNotifier {
     notifyListeners();
     return response;
   }
+
+  void setUser(ParseUser user){
+    currentUser = user;
+    notifyListeners();
+  }
 }

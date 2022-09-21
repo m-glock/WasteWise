@@ -123,10 +123,9 @@ class _SearchBarState extends State<SearchBar> {
                 },
                 key: _key,
                 itemFilter: (String suggestion, String query) {
-                  //TODO contains?
                   return suggestion
                       .toLowerCase()
-                      .startsWith(query.toLowerCase());
+                      .contains(query.toLowerCase());
                 },
               ),
             ),
