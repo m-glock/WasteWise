@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
 import '../../../util/data_holder.dart';
+import '../../../util/database_classes/user.dart';
 import '../../../util/database_classes/zip_code.dart';
 import '../../../util/graphl_ql_queries.dart';
 import '../../../util/lat_lng_distance.dart';
@@ -18,26 +20,16 @@ class TextTile extends StatefulWidget {
 }
 
 class _TextTileState extends State<TextTile> {
-  String? userId;
   String? municipalityId;
   List<String> zipCodes = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _getValues();
-  }
-
-  void _getValues() async {
-    // get user
-    ParseUser? current = await ParseUser.currentUser();
-
+  void _getValues(ParseUser current) async {
     // get municipality id
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
 
     // get zip codes
-    String? zipCodeId = current?.get("zip_code_id").get("objectId");
+    String? zipCodeId = current.get("zip_code_id").get("objectId");
     List<String> nearbyZipCodes = [];
     if (zipCodeId != null) {
       ZipCode userZipCode = DataHolder.zipCodesById[zipCodeId]!;
@@ -49,7 +41,6 @@ class _TextTileState extends State<TextTile> {
 
     // update variables
     setState(() {
-      userId = current?.objectId;
       municipalityId = id;
       zipCodes.addAll(nearbyZipCodes);
     });
@@ -97,33 +88,38 @@ class _TextTileState extends State<TextTile> {
 
   @override
   Widget build(BuildContext context) {
-    return userId == null
-        ? _getWidget()
-        : municipalityId == null || zipCodes.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : Query(
-                options: QueryOptions(
-                  document: gql(GraphQLQueries.compareInNeighborhood),
-                  variables: {
-                    "userId": userId,
-                    "municipalityId": municipalityId,
-                    "zipCodes": zipCodes
-                  },
-                ),
-                builder: (QueryResult result,
-                    {VoidCallback? refetch, FetchMore? fetchMore}) {
-                  if (result.hasException) {
-                    return Text(result.exception.toString());
-                  }
-                  if (result.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+    return Consumer<User>(builder: (BuildContext context, User user, child) {
+      if(user.currentUser == null){
+         return _getWidget();
+      } else if (municipalityId == null || zipCodes.isEmpty) {
+        _getValues(user.currentUser!);
+        return const Center(child: CircularProgressIndicator());
+      } else {
+        return Query(
+          options: QueryOptions(
+            document: gql(GraphQLQueries.compareInNeighborhood),
+            variables: {
+              "userId": user.currentUser!.objectId,
+              "municipalityId": municipalityId,
+              "zipCodes": zipCodes
+            },
+          ),
+          builder: (QueryResult result,
+              {VoidCallback? refetch, FetchMore? fetchMore}) {
+            if (result.hasException) {
+              return Text(result.exception.toString());
+            }
+            if (result.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                  double? percentage = result.data?["compareInNeighborhood"];
+            double? percentage = result.data?["compareInNeighborhood"];
 
-                  // display when all data is available
-                  return _getWidget(percentage: percentage);
-                },
-              );
+            // display when all data is available
+            return _getWidget(percentage: percentage);
+          },
+        );
+      }
+    });
   }
 }

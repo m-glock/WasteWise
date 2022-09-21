@@ -50,6 +50,7 @@ class _ProgressTileState extends State<ProgressTile> {
                     children: [
                       Expanded(
                         child: BarChartWidget(
+                          key: ValueKey(searchHistoryData),
                           searchHistoryData: searchHistoryData,
                         ),
                       ),
