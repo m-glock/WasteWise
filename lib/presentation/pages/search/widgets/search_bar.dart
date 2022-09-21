@@ -113,7 +113,6 @@ class _SearchBarState extends State<SearchBar> {
                     _getItemInfo(data);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //TODO: Snackbar or modal?
                       content:
                           Text(Languages.of(context)!.searchBarItemNotExist),
                     ));
