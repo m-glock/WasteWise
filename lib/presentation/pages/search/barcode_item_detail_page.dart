@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
-import '../../util/BarcodeResult.dart';
+import '../../util/barcode_result.dart';
 import '../../util/data_holder.dart';
 import '../../util/database_classes/barcode_item.dart';
 import '../../util/graphl_ql_queries.dart';
