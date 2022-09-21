@@ -3,7 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/user.dart';
 import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -194,10 +196,10 @@ class _LoginWidgetState extends State<LoginWidget> {
       }
 
       // sign up
-      response = await user.signUp();
+      response = await Provider.of<User>(context, listen: false).signup(user);
     } else {
       final ParseUser user = ParseUser(username, password, null);
-      response = await user.login();
+      response = await Provider.of<User>(context, listen: false).login(user);
     }
 
     if (response.success) {

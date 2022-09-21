@@ -60,6 +60,7 @@ class LanguageDe extends Languages {
   @override String get goToSignupButtonText => "Noch kein Konto? Zur Registrierung";
   @override String get errorDialogTitle => "Etwas ist schief gelaufen";
   @override String get registrationDialogCloseButtonText => "Okay";
+  @override String get logoutFailedText => "Etwas ist schief gelaufen. Logout konnte nicht durchgeführt werden.";
 
   // profile page
   @override String get profileRecycledItemsText => "Anzahl der recycelten Items:";

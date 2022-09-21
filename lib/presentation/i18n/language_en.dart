@@ -61,6 +61,7 @@ class LanguageEn extends Languages {
   @override String get goToSignupButtonText => "Not registered yet? Sign up";
   @override String get errorDialogTitle => "Something went wrong";
   @override String get registrationDialogCloseButtonText => "Okay";
+  @override String get logoutFailedText => "Something went wrong. Logout was not successful.";
 
   // profile page
   @override String get profileRecycledItemsText => "Amount of recycled items:";

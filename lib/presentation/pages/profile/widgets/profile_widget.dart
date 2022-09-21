@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 
 import '../../../i18n/languages.dart';
+import '../../../util/database_classes/user.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget(
@@ -34,12 +36,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   void _logout() async {
-    ParseResponse response = await current!.logout();
+    ParseResponse? response =
+        await Provider.of<User>(context, listen: false).logout();
 
-    if (response.success) {
+    if (response?.success ?? false) {
       widget.authenticated();
     } else {
-      _showError(response.error!.message);
+      _showError(response?.error?.message
+          ?? Languages.of(context)!.logoutFailedText);
     }
   }
 

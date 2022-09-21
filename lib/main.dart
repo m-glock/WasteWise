@@ -15,8 +15,10 @@ import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart'
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/presentation/util/database_classes/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:provider/provider.dart';
 
 void main() async {
   // initialize connection to backend
@@ -29,7 +31,11 @@ void main() async {
       clientKey: keyClientKey, autoSendSessionId: true);
 
   // start app
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider<User>(
+      create: (context) => User(),
+      child: const MyApp(),
+    ));
 }
 
 class MyApp extends StatefulWidget {
