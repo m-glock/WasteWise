@@ -14,7 +14,6 @@ class OverviewTile extends StatefulWidget {
 }
 
 class _OverviewTileState extends State<OverviewTile> {
-
   Widget _richText(int amount, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
@@ -50,8 +49,10 @@ class _OverviewTileState extends State<OverviewTile> {
             }
 
             // get municipalities for selection
-            int amountOfSearchedItems = result.data?["amountOfSearchedItems"] ?? 0;
-            int amountOfRescuedItems = result.data?["amountOfRescuedItems"] ?? 0;
+            int amountOfSearchedItems =
+                result.data?["amountOfSearchedItems"] ?? 0;
+            int amountOfRescuedItems =
+                result.data?["amountOfRescuedItems"] ?? 0;
 
             // display when all data is available
             return Flexible(
