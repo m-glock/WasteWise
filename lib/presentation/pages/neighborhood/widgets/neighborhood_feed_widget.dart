@@ -22,8 +22,9 @@ class NeighborhoodFeedWidget extends StatefulWidget {
 }
 
 class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
-  String? municipalityId;
   final TextEditingController controller = TextEditingController();
+  List<ForumEntryWidget> forumEntries = [];
+  String? municipalityId;
   List<String>? zipCodes;
 
   @override
@@ -73,96 +74,117 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
       ),
     );
 
-    String snackBarText =
-        result.hasException || !result.data?["createForumEntries"]
-            ? Languages.of(context)!.cpPostUnsuccessfulText
-            : Languages.of(context)!.cpPostSuccessfulText;
+    Map<String, dynamic>? forumEntryData = result.data?["createForumEntries"];
+
+    String snackBarText = result.hasException || forumEntryData == null
+        ? Languages.of(context)!.cpPostUnsuccessfulText
+        : Languages.of(context)!.cpPostSuccessfulText;
+
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    if (forumEntryData != null) {
+      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumEntryData);
+      setState(() {
+        forumEntries.insert(0, ForumEntryWidget(
+            key: ValueKey(forumEntry.objectId),
+            forumEntry: forumEntry
+        ));
+      });
+    }
 
     setState(() {
       controller.text = "";
     });
-
-    FocusManager.instance.primaryFocus?.unfocus();
-
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(snackBarText)));
   }
 
+  Widget _getWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        CustomIconButton(
+          onPressed: () => {}, //TODO: implement filter
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          icon: const Icon(FontAwesomeIcons.filter),
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        Container(
+          color: Theme.of(context).colorScheme.surface,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    fillColor: Theme.of(context).colorScheme.surface,
+                    labelText: Languages.of(context)!.askQuestionHintText,
+                    filled: true,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              CustomIconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 3),
+                icon: const Icon(Icons.send),
+                onPressed: () => _createForumPost(),
+              ),
+            ],
+          ),
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: forumEntries.length,
+            itemBuilder: (BuildContext context, int index) {
+              return forumEntries[index];
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return municipalityId == null || zipCodes == null
-        ? const Center(child: CircularProgressIndicator())
-        : Query(
-            options: QueryOptions(
-              fetchPolicy: FetchPolicy.networkOnly,
-              document: gql(GraphQLQueries.getForumEntries),
-              variables: {
-                "municipalityId": municipalityId,
-                "zipCodes": zipCodes,
-              },
-            ),
-            builder: (QueryResult result,
-                {VoidCallback? refetch, FetchMore? fetchMore}) {
-              if (result.hasException) {
-                return Text(result.exception.toString());
-              }
-              if (result.isLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
+    return forumEntries.isNotEmpty
+        ? _getWidget()
+        : municipalityId == null || zipCodes == null
+            ? const Center(child: CircularProgressIndicator())
+            : Query(
+                options: QueryOptions(
+                  fetchPolicy: FetchPolicy.networkOnly,
+                  document: gql(GraphQLQueries.getForumEntries),
+                  variables: {
+                    "municipalityId": municipalityId,
+                    "zipCodes": zipCodes,
+                  },
+                ),
+                builder: (QueryResult result,
+                    {VoidCallback? refetch, FetchMore? fetchMore}) {
+                  if (result.hasException) {
+                    return Text(result.exception.toString());
+                  }
+                  if (result.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-              List<dynamic> forumEntries = result.data?["getForumEntries"];
+                  List<dynamic> forumEntryData =
+                      result.data?["getForumEntries"];
+                  for (dynamic element in forumEntryData) {
+                    ForumEntry entry = ForumEntry.fromGraphQLData(element);
+                    forumEntries.add(ForumEntryWidget(
+                        key: ValueKey(entry.objectId),
+                        forumEntry: entry
+                    ));
+                  }
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CustomIconButton(
-                    onPressed: () => {},
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    icon: const Icon(FontAwesomeIcons.filter),
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Container(
-                    color: Theme.of(context).colorScheme.surface,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: controller,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              fillColor: Theme.of(context).colorScheme.surface,
-                              labelText:
-                                  Languages.of(context)!.askQuestionHintText,
-                              filled: true,
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                        CustomIconButton(
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          icon: const Icon(Icons.send),
-                          onPressed: () => _createForumPost(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(bottom: 10)),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: forumEntries.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        ForumEntry entry =
-                            ForumEntry.fromGraphQLData(forumEntries[index]);
-                        return ForumEntryWidget(forumEntry: entry);
-                      },
-                    ),
-                  ),
-                ],
+                  return _getWidget();
+                },
               );
-            },
-          );
   }
 }
