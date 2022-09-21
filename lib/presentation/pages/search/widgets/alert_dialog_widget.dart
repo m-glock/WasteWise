@@ -121,11 +121,11 @@ class AlertDialogWidget {
             actions: [
               OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonMoreInfo),
-                onPressed: () => _pressedButton(context, item, false),
+                onPressed: () => _pressedButton(context, item, true),
               ),
               OutlinedButton(
                 child: Text(Languages.of(context)!.alertDialogButtonDismiss),
-                onPressed: () => _pressedButton(context, item, true),
+                onPressed: () => _pressedButton(context, item, false),
               ),
             ],
           );
@@ -135,21 +135,25 @@ class AlertDialogWidget {
   }
 
   static void _pressedButton(
-      BuildContext context, Item item, bool dismiss) async {
+      BuildContext context, Item item, bool moreInfo) async {
     Navigator.of(context).pop();
     int randomNumber = rand.nextInt(100);
-    if (randomNumber > 70) {
+    if (randomNumber > 70 && !moreInfo) {
       List<Tip> availableTips = [];
       availableTips.addAll(item.tips);
       availableTips.addAll(item.preventions);
       Tip tip = availableTips.elementAt(rand.nextInt(availableTips.length));
       TipDialogWidget.showModal(context, tip, item.subcategory!);
-    } else if (!dismiss) {
+    } else if(!moreInfo){
       Navigator.of(context).pop();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
-      );
+    } else {
+      Navigator.of(context).pop();
+      if (moreInfo){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ItemDetailPage(item: item)),
+        );
+      }
     }
   }
 }
