@@ -6,11 +6,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
 import 'package:recycling_app/presentation/pages/loading_page.dart';
-import 'package:recycling_app/presentation/themes/appbar_theme.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
 import 'package:recycling_app/presentation/themes/color_scheme.dart';
-import 'package:recycling_app/presentation/themes/navigationbar_theme.dart'
-    as navbar;
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
@@ -113,10 +110,7 @@ class _MyAppState extends State<MyApp> {
             child: MaterialApp(
               title: Constants.appTitle,
               theme: ThemeData(
-                appBarTheme: const TopAppBarTheme(),
-                bottomNavigationBarTheme: const navbar.NavigationBarTheme(),
                 elevatedButtonTheme: AppElevatedButtonTheme(),
-                floatingActionButtonTheme: const AppFloatingActionButtonTheme(),
                 outlinedButtonTheme: AppOutlinedButtonTheme(),
                 textButtonTheme: AppTextButtonTheme(),
                 colorScheme: const AppColorScheme(),

@@ -14,15 +14,6 @@ class AppElevatedButtonTheme extends ElevatedButtonThemeData{
 
 }
 
-class AppFloatingActionButtonTheme extends FloatingActionButtonThemeData{
-
-  //TODO
-  const AppFloatingActionButtonTheme() : super(
-
-  );
-
-}
-
 class AppOutlinedButtonTheme extends OutlinedButtonThemeData{
 
   AppOutlinedButtonTheme() : super(
@@ -33,7 +24,6 @@ class AppOutlinedButtonTheme extends OutlinedButtonThemeData{
         backgroundColor: MaterialStateProperty.all(Colors.white),
         elevation: MaterialStateProperty.all(2),
         shadowColor: MaterialStateProperty.all(Colors.black54)
-        //side: MaterialStateProperty.all(BorderSide(color: Colors.blue)),
       )
   );
 
