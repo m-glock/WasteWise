@@ -38,7 +38,11 @@ class DataHolder{
 
     Directory directory = await getApplicationDocumentsDirectory();
     File dataFile = File('${directory.path}/subcategories.json');
-    await dataFile.create();
+    if(dataFile.existsSync()){
+      await dataFile.writeAsString("");
+    } else {
+      await dataFile.create();
+    }
     String json = jsonEncode(jsonMap);
     await dataFile.writeAsString(json);
   }

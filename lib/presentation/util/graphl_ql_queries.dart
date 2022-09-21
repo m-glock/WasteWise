@@ -676,6 +676,7 @@ class GraphQLQueries{
     }
 
     // save waste bin categories
+    DataHolder.categoriesById.clear();
     DataHolder.categoriesById.addAll(wasteBinCategories);
 
     // get subcategories
@@ -706,6 +707,7 @@ class GraphQLQueries{
 
     // get collection point types
     List<dynamic> collectionPointTypes = data?["getCollectionPointTypes"];
+    DataHolder.collectionPointTypes.clear();
     for (dynamic cpType in collectionPointTypes) {
       DataHolder.collectionPointTypes
           .add(CollectionPointType.fromGraphQLData(cpType));
@@ -749,6 +751,7 @@ class GraphQLQueries{
 
     // get available subcategories for filter dropdown
     List<dynamic> availableSubcategories = data?["getDistinctSubcategoriesForCP"];
+    DataHolder.cpSubcategories.clear();
     for (dynamic element in availableSubcategories) {
       DataHolder.cpSubcategories.add(element["title"]);
     }

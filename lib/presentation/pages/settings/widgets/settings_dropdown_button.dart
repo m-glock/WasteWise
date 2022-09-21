@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../util/constants.dart';
+import '../../../util/graphl_ql_queries.dart';
 
 class SettingsDropdownButton extends StatefulWidget{
-  const SettingsDropdownButton({Key? key, required this.isLanguageButton}) : super(key: key);
+  const SettingsDropdownButton({
+    Key? key,
+    required this.isLanguageButton,
+    required this.loading
+  }) : super(key: key);
 
   final bool isLanguageButton;
+  final Function(bool show) loading;
 
   @override
   State<StatefulWidget> createState() => _SettingsDropdownButtonState();
@@ -42,23 +49,50 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
   }
 
   void _updateLanguage(String newValue) async {
+    // get new language data from backend
+    widget.loading(true);
+
     Locale locale = Constants.languages.entries.firstWhere((element) => element.value == newValue).key;
+    await _getNewData(locale: locale);
     await setLocale(locale.languageCode);
     changeAppLanguage(context, locale.languageCode);
-    //TODO: update item names etc. which depend on language
+
+    widget.loading(false);
     setState(() {
       valueLanguage = newValue;
     });
   }
 
   void _updateMunicipality(String newValue) async {
+    widget.loading(true);
+
     String newMunicipalityId = DataHolder.municipalitiesById.entries.firstWhere((element) => element.value == newValue).key;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(Constants.prefSelectedMunicipalityCode, newMunicipalityId);
-    //TODO: update dataholder according to municipality
+    await _getNewData(municipalityId: newMunicipalityId);
+
+    widget.loading(false);
     setState(() {
       valueMunicipality = newValue;
     });
+  }
+
+  Future<void> _getNewData({Locale? locale, String? municipalityId}) async {
+    locale ??= await getLocale();
+    if(municipalityId == null){
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      municipalityId = _prefs.getString(Constants.prefSelectedMunicipalityCode);
+    }
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult result = await client.query(
+      QueryOptions(
+          document: gql(GraphQLQueries.initialQuery),
+          variables: {
+            "languageCode": locale.languageCode,
+            "municipalityId": municipalityId ??  "",
+          }),
+    );
+    await GraphQLQueries.initialDataExtraction(result.data);
   }
 
   DropdownMenuItem<String> _getDropdownMenuItem(String name){
