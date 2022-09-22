@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
@@ -13,6 +14,8 @@ import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import '../util/database_classes/user.dart';
 import 'imprint/imprint_page.dart';
@@ -37,6 +40,36 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+    //tz.setLocalLocation(tz.getLocation(timeZoneName));
+    _startScheduledNotification();
+  }
+
+  void _startScheduledNotification() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+    const InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: null,
+        macOS: null,
+        linux: null);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    const AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+        'repeating channel id', 'repeating channel name',
+        channelDescription: 'repeating description');
+    const NotificationDetails notificationDetails =
+    NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.periodicallyShow(0, 'repeating title',
+        'repeating body', RepeatInterval.everyMinute, notificationDetails,
+        androidAllowWhileIdle: true);
   }
 
   @override
