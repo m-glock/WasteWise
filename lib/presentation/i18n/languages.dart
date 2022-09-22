@@ -150,8 +150,9 @@ abstract class Languages {
 
   // tips page
   String get dropdownTipTypeLabel;
+  String get defaultTipTypeDropdownItem;
   String get dropdownWasteBinLabel;
-  String get defaultDropdownItem;
+  String get defaultCategoryDropdownItem;
   String get emptyListText;
   String get tipShareSuccessfulText;
   String get tipShareUnsuccessfulText;

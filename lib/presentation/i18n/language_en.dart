@@ -148,8 +148,9 @@ class LanguageEn extends Languages {
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";
+  @override String get defaultTipTypeDropdownItem => "All types";
   @override String get dropdownWasteBinLabel => "Waste bin type:";
-  @override String get defaultDropdownItem => "All";
+  @override String get defaultCategoryDropdownItem => "All waste bins";
   @override String get emptyListText => "Nothing found";
   @override String get tipShareSuccessfulText => "Tip successfully shared";
   @override String get tipShareUnsuccessfulText => "Sharing tip failed. Please try again later";

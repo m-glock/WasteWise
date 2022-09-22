@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_filter_dropdown.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
-import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
 
 import '../../i18n/locale_constant.dart';
@@ -21,12 +21,12 @@ class TipsAndTricksPage extends StatefulWidget {
 }
 
 class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
-  Map<String, String> wasteBinDropdownOptions = {};
-  Map<String, String> tipTypeDropdownOptions = {};
-  String? wasteBinDefault;
-  String? tipTypeDefault;
   Map<String, Tip> tipList = {};
   List<Tip> filteredTipList = [];
+  Map<String, String> tipTypeOptions = {};
+  Map<String, String> wasteBinOptions = {};
+  String? filterTipTypeId;
+  String? filterCategoryId;
   String? languageCode;
   String? userId;
 
@@ -45,44 +45,104 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
     });
   }
 
-  void _setFilterValuesToDefault() {
+  void _filterTips(String selected, bool isWasteBinFilter) {
+    if (isWasteBinFilter) {
+      filterCategoryId =
+          selected != Languages.of(context)!.defaultCategoryDropdownItem
+              ? wasteBinOptions[selected]
+              : null;
+    } else {
+      filterTipTypeId =
+          selected != Languages.of(context)!.defaultTipTypeDropdownItem
+              ? tipTypeOptions[selected]
+              : null;
+    }
+
+    List<Tip> filtered;
+    if (filterCategoryId == null && filterTipTypeId == null) {
+      // no filter set, show all tips
+      filtered = tipList.values.toList();
+    } else if (filterTipTypeId == null && filterCategoryId != null) {
+      // only category filter set
+      filtered = tipList.values
+          .where((tip) => tip.subcategories
+              .map((e) => e.parentId)
+              .contains(filterCategoryId))
+          .toList();
+    } else if (filterTipTypeId != null && filterCategoryId == null) {
+      // only type filter set
+      filtered = tipList.values
+          .where((tip) => tip.tipTypeId == filterTipTypeId)
+          .toList();
+    } else {
+      // both filter set
+      filtered = tipList.values
+          .where((tip) =>
+              tip.tipTypeId == filterTipTypeId &&
+              tip.subcategories
+                  .map((e) => e.parentId)
+                  .contains(filterCategoryId))
+          .toList();
+    }
+
     setState(() {
-      wasteBinDefault = Languages.of(context)!.defaultDropdownItem;
-      tipTypeDefault = Languages.of(context)!.defaultDropdownItem;
-      filteredTipList = tipList.values.toList();
+      filteredTipList = filtered;
     });
   }
 
-  void _applyTipTypeFilter(String newValue) {
-    tipTypeDefault = newValue;
-    String tipTypeId = tipTypeDropdownOptions.keys
-        .where((key) => tipTypeDropdownOptions[key] == newValue)
-        .first;
-    if (tipTypeDefault == Languages.of(context)!.defaultDropdownItem) {
-      filteredTipList =
-          tipList.values.where((tip) => tip.tipTypeId == tipTypeId).toList();
-    } else {
-      filteredTipList =
-          filteredTipList.where((tip) => tip.tipTypeId == tipTypeId).toList();
-    }
-  }
-
-  void _applyCategoryFilter(String newValue) {
-    wasteBinDefault = newValue;
-    String wasteBinId = wasteBinDropdownOptions.keys
-        .where((key) => wasteBinDropdownOptions[key] == newValue)
-        .first;
-    if (tipTypeDefault == Languages.of(context)!.defaultDropdownItem) {
-      filteredTipList = tipList.values
-          .where((tip) => tip.subcategories
-              .any((subcategory) => subcategory.parentId == wasteBinId))
-          .toList();
-    } else {
-      filteredTipList = filteredTipList
-          .where((tip) => tip.subcategories
-              .any((subcategory) => subcategory.parentId == wasteBinId))
-          .toList();
-    }
+  Widget _getWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: TipFilterDropdown(
+                filterOptions: wasteBinOptions.keys.toList(),
+                defaultFilterValue:
+                    Languages.of(context)!.defaultCategoryDropdownItem,
+                isWasteBinType: true,
+                filterTipList: _filterTips,
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(right: 10)),
+            Expanded(
+              child: TipFilterDropdown(
+                filterOptions: tipTypeOptions.keys.toList(),
+                defaultFilterValue:
+                    Languages.of(context)!.defaultTipTypeDropdownItem,
+                isWasteBinType: false,
+                filterTipList: _filterTips,
+              ),
+            ),
+          ],
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        Expanded(
+          child: filteredTipList.isEmpty
+              ? Center(child: Text(Languages.of(context)!.emptyListText))
+              : ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ...filteredTipList.map((tip) {
+                      return TipTile(
+                        tip: tip,
+                        tags: [
+                          tipTypeOptions.entries
+                              .firstWhere(
+                                  (element) => element.value == tip.tipTypeId)
+                              .key,
+                          ...tip.subcategories.map((cat) =>
+                              DataHolder.categoriesById[cat.parentId]!.title)
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -93,177 +153,72 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
-        child: languageCode == null || userId == null
-            ? const Center(child: CircularProgressIndicator())
-            : Query(
-                options: QueryOptions(
-                    fetchPolicy: FetchPolicy.networkOnly,
-                    document: gql(GraphQLQueries.tipListQuery),
-                    variables: {
-                      "languageCode": languageCode,
-                      "userId": userId
-                    }),
-                builder: (QueryResult result,
-                    {VoidCallback? refetch, FetchMore? fetchMore}) {
-                  if (result.hasException) {
-                    return Text(result.exception.toString());
-                  }
-                  if (result.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+        child: wasteBinOptions.isNotEmpty && tipTypeOptions.isNotEmpty
+            ? _getWidget()
+            : languageCode == null || userId == null
+                ? const Center(child: CircularProgressIndicator())
+                : Query(
+                    options: QueryOptions(
+                        document: gql(GraphQLQueries.tipListQuery),
+                        variables: {
+                          "languageCode": languageCode,
+                          "userId": userId
+                        }),
+                    builder: (QueryResult result,
+                        {VoidCallback? refetch, FetchMore? fetchMore}) {
+                      if (result.hasException) {
+                        return Text(result.exception.toString());
+                      }
+                      if (result.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
-                  // set dropdown default values
-                  String defaultDropdownItem =
-                      Languages.of(context)!.defaultDropdownItem;
-                  wasteBinDefault ??= defaultDropdownItem;
-                  tipTypeDefault ??= defaultDropdownItem;
-                  wasteBinDropdownOptions["default"] ??= defaultDropdownItem;
-                  tipTypeDropdownOptions["default"] ??= defaultDropdownItem;
+                      //set tips
+                      List<dynamic> tipData = result.data?["getTips"];
+                      for (dynamic element in tipData) {
+                        tipList[element["tip_id"]["objectId"]] =
+                            Tip.fromGraphQlData(element);
+                      }
+                      filteredTipList = tipList.values.toList();
 
-                  // get data
-                  List<dynamic> tipTypes = result.data?["getTipTypes"];
-                  List<dynamic> tips = result.data?["getTips"];
-                  List<dynamic> tipBookmarks = result.data?["getTipBookmarks"];
-                  List<dynamic> tipSubcategories =
-                      result.data?["getTipSubcategories"];
+                      // set bookmarks
+                      List<dynamic> tipBookmarkData =
+                          result.data?["getTipBookmarks"];
+                      for (dynamic element in tipBookmarkData) {
+                        tipList[element["tip_id"]["objectId"]]?.isBookmarked =
+                            true;
+                      }
 
-                  // set tip types
-                  for (dynamic element in tipTypes) {
-                    tipTypeDropdownOptions[element["tip_type_id"]["objectId"]] =
-                        element["title"];
-                  }
+                      // set tip types
+                      List<dynamic> tipTypeData = result.data?["getTipTypes"];
+                      tipTypeOptions[Languages.of(context)!
+                          .defaultTipTypeDropdownItem] = "default";
+                      for (dynamic element in tipTypeData) {
+                        tipTypeOptions[element["title"]] =
+                            element["tip_type_id"]["objectId"];
+                      }
 
-                  //set tips
-                  for (dynamic element in tips) {
-                    tipList[element["tip_id"]["objectId"]] =
-                        Tip.fromGraphQlData(element);
-                  }
+                      // add subcategories to tips
+                      List<dynamic> tipSubcategoryData =
+                          result.data?["getTipSubcategories"];
+                      for (dynamic element in tipSubcategoryData) {
+                        Tip tip = tipList[element["tip_id"]["objectId"]]!;
+                        Subcategory subcategory = DataHolder.subcategoriesById[
+                            element["subcategory_id"]["objectId"]]!;
+                        tip.subcategories.add(subcategory);
+                      }
 
-                  // set waste bin types
-                  for (dynamic element in tipSubcategories) {
-                    Tip? tip = tipList[element["tip_id"]["objectId"]];
-                    Subcategory? subcategory = DataHolder.subcategoriesById[
-                        element["subcategory_id"]["objectId"]];
-                    if (subcategory != null) {
-                      tip?.subcategories.add(subcategory);
-                    }
-                  }
+                      // set waste bin types
+                      for (MapEntry<String, WasteBinCategory> entry
+                          in DataHolder.categoriesById.entries) {
+                        wasteBinOptions[entry.value.title] = entry.key;
+                      }
+                      wasteBinOptions[Languages.of(context)!
+                          .defaultCategoryDropdownItem] = "default";
 
-                  // set bookmarks
-                  for (dynamic element in tipBookmarks) {
-                    tipList[element["tip_id"]["objectId"]]?.isBookmarked = true;
-                  }
-
-                  if (filteredTipList.isEmpty &&
-                      tipTypeDefault == defaultDropdownItem &&
-                      tipTypeDefault == defaultDropdownItem) {
-                    filteredTipList = tipList.values.toList();
-                  }
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  Languages.of(context)!.dropdownWasteBinLabel,
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        value: wasteBinDefault,
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            _applyCategoryFilter(newValue!);
-                                          });
-                                        },
-                                        items: wasteBinDropdownOptions.values
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.only(right: 10)),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  Languages.of(context)!.dropdownTipTypeLabel,
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                                DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: tipTypeDefault,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _applyTipTypeFilter(newValue!);
-                                    });
-                                  },
-                                  items: tipTypeDropdownOptions.values
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          CustomIconButton(
-                            padding: const EdgeInsets.only(right: 10, bottom: 10),
-                            onPressed: _setFilterValuesToDefault,
-                            icon: const Icon(FontAwesomeIcons.xmark),
-                          ),
-                        ],
-                      ),
-                      const Padding(padding: EdgeInsets.only(bottom: 10)),
-                      Expanded(
-                        child: filteredTipList.isEmpty
-                            ? Center(
-                                child:
-                                    Text(Languages.of(context)!.emptyListText))
-                            : ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  ...filteredTipList.map((tip) {
-                                    return TipTile(
-                                      tip: tip,
-                                      tags: [
-                                        tipTypeDropdownOptions[tip.tipTypeId] ??
-                                            "",
-                                        ...tip.subcategories.map((cat) =>
-                                            DataHolder.categoriesById[cat.parentId]!
-                                                .title)
-                                      ],
-                                    );
-                                  }),
-                                ],
-                              ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                      return _getWidget();
+                    },
+                  ),
       ),
     );
   }

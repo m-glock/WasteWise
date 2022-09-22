@@ -245,8 +245,9 @@ class GraphQLQueries{
       getTipTypes(languageCode: \$languageCode){
         title
         tip_type_id{
-          color
           objectId
+          color
+          default_label
         }
       }
       
