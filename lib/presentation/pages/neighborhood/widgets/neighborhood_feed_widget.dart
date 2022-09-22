@@ -24,6 +24,7 @@ class NeighborhoodFeedWidget extends StatefulWidget {
 class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   final TextEditingController controller = TextEditingController();
   List<ForumEntryWidget> forumEntries = [];
+  List<ForumEntryWidget> filteredForumEntries = [];
   Map<ForumEntryType, bool> forumEntryTypesSelected = {};
   String? municipalityId;
   List<String>? zipCodes;
@@ -36,7 +37,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     _setMunicipality();
   }
 
-  void _setFilter(){
+  void _setFilter() {
     for (ForumEntryType element in DataHolder.forumEntryTypesById.values) {
       forumEntryTypesSelected[element] = false;
     }
@@ -93,10 +94,10 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     if (forumEntryData != null) {
       ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumEntryData);
       setState(() {
-        forumEntries.insert(0, ForumEntryWidget(
-            key: ValueKey(forumEntry.objectId),
-            forumEntry: forumEntry
-        ));
+        forumEntries.insert(
+            0,
+            ForumEntryWidget(
+                key: ValueKey(forumEntry.objectId), forumEntry: forumEntry));
       });
     }
 
@@ -105,6 +106,26 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     });
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(snackBarText)));
+  }
+
+  void _filterFeed(ForumEntryType type, bool checked) {
+    forumEntryTypesSelected[type] = checked;
+
+    List<String> selectedTypes = forumEntryTypesSelected.entries
+        .where((element) => element.value)
+        .map((e) => e.key.typeName)
+        .toList();
+
+    List<ForumEntryWidget> filtered = selectedTypes.isEmpty
+        ? forumEntries
+        : forumEntries
+            .where((element) =>
+                selectedTypes.contains(element.forumEntry.type.typeName))
+            .toList();
+
+    setState(() {
+      filteredForumEntries = filtered;
+    });
   }
 
   Widget _getWidget() {
@@ -124,9 +145,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                   Checkbox(
                     value: entry.value,
                     onChanged: (bool? checked) {
-                      setState(() {
-                        forumEntryTypesSelected[entry.key] = checked!;
-                      });
+                      _filterFeed(entry.key, checked!);
                     },
                   ),
                   Text(entry.key.title),
@@ -166,9 +185,9 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: forumEntries.length,
+            itemCount: filteredForumEntries.length,
             itemBuilder: (BuildContext context, int index) {
-              return forumEntries[index];
+              return filteredForumEntries[index];
             },
           ),
         ),
@@ -205,10 +224,9 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                   for (dynamic element in forumEntryData) {
                     ForumEntry entry = ForumEntry.fromGraphQLData(element);
                     forumEntries.add(ForumEntryWidget(
-                        key: ValueKey(entry.objectId),
-                        forumEntry: entry
-                    ));
+                        key: ValueKey(entry.objectId), forumEntry: entry));
                   }
+                  filteredForumEntries = forumEntries;
 
                   return _getWidget();
                 },
