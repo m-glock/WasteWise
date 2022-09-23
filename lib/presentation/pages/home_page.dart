@@ -14,8 +14,9 @@ import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import '../util/set_up_scheduled_notification.dart';
+import '../util/notification_service.dart';
 
 import '../util/database_classes/user.dart';
 import 'imprint/imprint_page.dart';
@@ -29,7 +30,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  NotificationService notificationService = NotificationService();
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
     const SearchPage(),
@@ -40,27 +40,35 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // initialize scheduled notifications
-    tz.initializeTimeZones();
-    notificationService
-        .init(notificationTapBackground)
-        .then((value) => notificationService.startSchedule(context));
+    _setUser();
+    _startScheduledNotifications();
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-
-    // get current user
+  void _setUser() async {
     ParseUser? currentUser = await ParseUser.currentUser();
     if (currentUser != null) {
       Provider.of<User>(context, listen: false).setUser(currentUser);
     }
   }
 
+  void _startScheduledNotifications() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
+
+    if(learnMore){
+      // initialize scheduled notifications
+      tz.initializeTimeZones();
+      NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
+      notificationService
+          .init(notificationTapBackground)
+          .then((value) => notificationService.startSchedule(context));
+    }
+  }
+
   @pragma('vm:entry-point')
   void notificationTapBackground(
       NotificationResponse notificationResponse) async {
+    NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
     int? id = notificationResponse.id;
     switch (id) {
       case 0:
