@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/settings/widgets/settings_dropdown_button.dart';
 import 'package:recycling_app/presentation/pages/settings/widgets/learn_more_alert_dialog.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:recycling_app/presentation/util/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
@@ -28,13 +30,20 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     bool? prefLearnMore = _prefs.getBool(Constants.prefLearnMore);
     setState(() {
-      _learnMore = prefLearnMore ?? true;
+      _learnMore = prefLearnMore ?? false;
     });
   }
 
   void _updateLearnMore(bool value) async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setBool(Constants.prefLearnMore, value);
+    NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
+    if(value) {
+      notificationService.startSchedule(context);
+    } else {
+      notificationService.stopSchedule();
+    }
+
     setState(() {
       _learnMore = value;
     });
