@@ -113,10 +113,10 @@ class _TextTileState extends State<TextTile> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            double? percentage = result.data?["compareInNeighborhood"];
+            int? percentage = result.data?["compareInNeighborhood"];
 
             // display when all data is available
-            return _getWidget(percentage: percentage);
+            return _getWidget(percentage: percentage?.toDouble());
           },
         );
       }
