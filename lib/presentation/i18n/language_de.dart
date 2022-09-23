@@ -186,4 +186,13 @@ class LanguageDe extends Languages {
   @override String get contactPageImprintParagraphTitle => "Angaben gemäß § 5 TMG";
   @override String get contactPageValidationText => "Darf nicht leer sein.";
   @override String get contactPageEmailValidationText => "Keine valide E-Mail Adresse";
+
+  // notifications
+  @override String get notificationItemTitle => "Stelle dich einer Herausforderung";
+  @override String get notificationItemBody => "Prüfe dein Wissen und versuche den richtigen Mülleimer für ein neues Item zu finden.";
+  @override String get notificationTipTitle => "Wusstest du schon...";
+  @override String get notificationTipBody => "Lerne mehr darüber, wie du dein Recyclingverhalten verbessern kannst.";
+  @override String get notificationSortTitle => "Erinnerst du dich...";
+  @override String get notificationSortBody => "Prüfe dein Wissen über ein kürzlich falsch einsortiertes Item.";
+  @override String get notificationNotLoggedIn => "Bitte logge dich ein, um Zugriff auf deinen Suchverlauf zu bekommen.";
 }

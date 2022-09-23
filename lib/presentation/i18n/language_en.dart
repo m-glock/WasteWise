@@ -186,4 +186,13 @@ class LanguageEn extends Languages {
   @override String get contactPageImprintParagraphTitle => "Information according to § 5 TMG";
   @override String get contactPageValidationText => "Cannot be empty";
   @override String get contactPageEmailValidationText => "Not a valid email";
+
+  // notifications
+  @override String get notificationItemTitle => "Meet a challenge";
+  @override String get notificationItemBody => "Check your knowledge and try to correctly sort a new item.";
+  @override String get notificationTipTitle => "Did you know...";
+  @override String get notificationTipBody => "Find out more about how you could improve your recycling behavior.";
+  @override String get notificationSortTitle => "Do you remember...";
+  @override String get notificationSortBody => "Check your knowledge about a recently wrongly sorted item.";
+  @override String get notificationNotLoggedIn => "Please log in to get access to your search history.";
 }

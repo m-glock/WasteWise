@@ -15,7 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import '../util/set_up_scheduled_notification.dart';
 
 import '../util/database_classes/user.dart';
 import 'imprint/imprint_page.dart';
@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  NotificationService notificationService = NotificationService();
   final List<Widget> _pages = <Widget>[
     const DashboardPage(),
     const SearchPage(),
@@ -36,49 +37,53 @@ class _HomePageState extends State<HomePage> {
     const NeighborhoodPage()
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
+    // initialize scheduled notifications
     tz.initializeTimeZones();
-    //tz.setLocalLocation(tz.getLocation(timeZoneName));
-    _startScheduledNotification();
-  }
-
-  void _startScheduledNotification() async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
-    const InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: null,
-        macOS: null,
-        linux: null);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-        'repeating channel id', 'repeating channel name',
-        channelDescription: 'repeating description');
-    const NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.periodicallyShow(0, 'repeating title',
-        'repeating body', RepeatInterval.everyMinute, notificationDetails,
-        androidAllowWhileIdle: true);
+    notificationService
+        .init(notificationTapBackground)
+        .then((value) => notificationService.startSchedule(context));
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+
+    // get current user
     ParseUser? currentUser = await ParseUser.currentUser();
     if (currentUser != null) {
       Provider.of<User>(context, listen: false).setUser(currentUser);
     }
+  }
+
+  @pragma('vm:entry-point')
+  void notificationTapBackground(
+      NotificationResponse notificationResponse) async {
+    int? id = notificationResponse.id;
+    switch (id) {
+      case 0:
+        notificationService.openTipPage(context);
+        break;
+      case 1:
+        notificationService.openSortScreen(context, false);
+        break;
+      case 2:
+        if (Provider.of<User>(context, listen: false).currentUser == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(Languages.of(context)!.notificationNotLoggedIn)));
+        } else {
+          notificationService.openSortScreen(context, true);
+        }
+        break;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
