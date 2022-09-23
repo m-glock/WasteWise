@@ -55,13 +55,12 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
 
+    tz.initializeTimeZones();
+    NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
+    await notificationService.init(notificationTapBackground, context);
+
     if(learnMore){
-      // initialize scheduled notifications
-      tz.initializeTimeZones();
-      NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
-      notificationService
-          .init(notificationTapBackground)
-          .then((value) => notificationService.startSchedule(context));
+      notificationService.startSchedule();
     }
   }
 
@@ -72,17 +71,17 @@ class _HomePageState extends State<HomePage> {
     int? id = notificationResponse.id;
     switch (id) {
       case 0:
-        notificationService.openTipPage(context);
+        notificationService.openTipPage();
         break;
       case 1:
-        notificationService.openSortScreen(context, false);
+        notificationService.openSortScreen(false);
         break;
       case 2:
         if (Provider.of<User>(context, listen: false).currentUser == null) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(Languages.of(context)!.notificationNotLoggedIn)));
         } else {
-          notificationService.openSortScreen(context, true);
+          notificationService.openSortScreen(true);
         }
         break;
     }

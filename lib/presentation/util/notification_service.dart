@@ -20,10 +20,15 @@ import 'notification_type.dart';
 class NotificationService {
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
   NotificationDetails? _notificationDetails;
+  BuildContext? context;
 
   Future<void> init(
-      Function(NotificationResponse) notificationTapBackground) async {
+      Function(NotificationResponse) notificationTapBackground,
+      BuildContext context,
+  ) async {
     // initialize plugin
+    this.context = context;
+
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon'); //TODO get app icon
@@ -46,24 +51,24 @@ class NotificationService {
         NotificationDetails(android: androidNotificationDetails);
   }
 
-  void startSchedule(BuildContext context) async {
+  void startSchedule() async {
     int weekday = DateTime.now().weekday;
     if (weekday == 1) {
       // new tip
-      startScheduledNotification(NotificationType.tip.index, context);
+      startScheduledNotification(NotificationType.tip.index);
     } else if (weekday == 3) {
       // new item
-      startScheduledNotification(NotificationType.item.index, context);
+      startScheduledNotification(NotificationType.item.index);
     } else if (weekday == 5 &&
-        Provider.of<User>(context, listen: false).currentUser != null) {
+        Provider.of<User>(context!, listen: false).currentUser != null) {
       // wrongly sorted item, only start this scheduled notification if user is
       // logged in, otherwise there is no search history available
-      startScheduledNotification(NotificationType.wronglySorted.index, context);
+      startScheduledNotification(NotificationType.wronglySorted.index);
     }
   }
 
-  void startWronglySortedNotification(BuildContext context){
-    startScheduledNotification(NotificationType.wronglySorted.index, context);
+  void startWronglySortedNotification(){
+    startScheduledNotification(NotificationType.wronglySorted.index);
   }
 
   void stopWronglySortedNotification() {
@@ -76,7 +81,7 @@ class NotificationService {
     _flutterLocalNotificationsPlugin!.cancelAll();
   }
 
-  void startScheduledNotification(int id, BuildContext context) async {
+  void startScheduledNotification(int id) async {
     if (_flutterLocalNotificationsPlugin == null ||
         _notificationDetails == null) {
       return;
@@ -85,16 +90,16 @@ class NotificationService {
     String body;
     switch (id) {
       case 1:
-        title = Languages.of(context)!.notificationItemTitle;
-        body = Languages.of(context)!.notificationItemBody;
+        title = Languages.of(context!)!.notificationItemTitle;
+        body = Languages.of(context!)!.notificationItemBody;
         break;
       case 2:
-        title = Languages.of(context)!.notificationSortTitle;
-        body = Languages.of(context)!.notificationSortBody;
+        title = Languages.of(context!)!.notificationSortTitle;
+        body = Languages.of(context!)!.notificationSortBody;
         break;
       default:
-        title = Languages.of(context)!.notificationTipTitle;
-        body = Languages.of(context)!.notificationTipBody;
+        title = Languages.of(context!)!.notificationTipTitle;
+        body = Languages.of(context!)!.notificationTipBody;
         break;
     }
     await _flutterLocalNotificationsPlugin!.periodicallyShow(
@@ -102,8 +107,8 @@ class NotificationService {
         androidAllowWhileIdle: true);
   }
 
-  void openTipPage(BuildContext context) async {
-    GraphQLClient client = GraphQLProvider.of(context).value;
+  void openTipPage() async {
+    GraphQLClient client = GraphQLProvider.of(context!).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
@@ -114,20 +119,20 @@ class NotificationService {
 
     Tip tip = Tip.fromGraphQlData(result.data?["getRandomTip"]);
     Navigator.push(
-        context,
+        context!,
         MaterialPageRoute(
             builder: (context) =>
                 TipDetailPage(tip: tip, updateBookmarkInParent: () => {})));
   }
 
-  void openSortScreen(BuildContext context, bool wronglySorted) async {
+  void openSortScreen(bool wronglySorted) async {
     QueryResult<Object?> result;
     String userId =
-        Provider.of<User>(context, listen: false).currentUser?.objectId ?? "";
+        Provider.of<User>(context!, listen: false).currentUser?.objectId ?? "";
     String itemId;
     if (wronglySorted) {
       // get recently wrongly sorted item
-      GraphQLClient client = GraphQLProvider.of(context).value;
+      GraphQLClient client = GraphQLProvider.of(context!).value;
       result = await client.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
@@ -150,7 +155,7 @@ class NotificationService {
       "itemObjectId": itemId,
       "userId": userId,
     };
-    GraphQLClient client = GraphQLProvider.of(context).value;
+    GraphQLClient client = GraphQLProvider.of(context!).value;
     result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
@@ -161,7 +166,7 @@ class NotificationService {
 
     Item item = Item.fromGraphQlData(result.data)!;
 
-    Navigator.push(context,
+    Navigator.push(context!,
         MaterialPageRoute(builder: (context) => SearchSortPage(item: item)));
   }
 }

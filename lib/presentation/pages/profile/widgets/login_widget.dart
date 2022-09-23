@@ -209,7 +209,7 @@ class _LoginWidgetState extends State<LoginWidget> {
       bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
       if(learnMore){
         Provider.of<NotificationService>(context, listen: false)
-            .startWronglySortedNotification(context);
+            .startWronglySortedNotification();
       }
     } else {
       _showError(response.error!.message);

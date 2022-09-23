@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
     await _prefs.setBool(Constants.prefLearnMore, value);
     NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
     if(value) {
-      notificationService.startSchedule(context);
+      notificationService.startSchedule();
     } else {
       notificationService.stopSchedule();
     }
