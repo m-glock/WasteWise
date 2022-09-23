@@ -62,9 +62,18 @@ class NotificationService {
     }
   }
 
-  void stopSchedule() async {
+  void startWronglySortedNotification(BuildContext context){
+    startScheduledNotification(NotificationType.wronglySorted.index, context);
+  }
+
+  void stopWronglySortedNotification() {
     if (_flutterLocalNotificationsPlugin == null) return;
-    await _flutterLocalNotificationsPlugin!.cancelAll();
+    _flutterLocalNotificationsPlugin!.cancel(NotificationType.wronglySorted.index);
+  }
+
+  void stopSchedule() {
+    if (_flutterLocalNotificationsPlugin == null) return;
+    _flutterLocalNotificationsPlugin!.cancelAll();
   }
 
   void startScheduledNotification(int id, BuildContext context) async {
