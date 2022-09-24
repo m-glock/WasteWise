@@ -56,7 +56,7 @@ class _MapWidgetState extends State<MapWidget> {
     return FlutterMap(
       options: MapOptions(
         center: widget.currentPosition,
-        zoom: 13,
+        zoom: 11,
         onTap: (_, __) => _popupLayerController.hideAllPopups(),
       ),
       children: [
