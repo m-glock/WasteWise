@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../i18n/languages.dart';
 import '../../../../util/database_classes/myth.dart';
 
-class MythDetailWidget extends StatefulWidget {
+class MythDetailWidget extends StatelessWidget {
   const MythDetailWidget({Key? key, required this.myth}) : super(key: key);
 
   final Myth myth;
 
-  @override
-  State<MythDetailWidget> createState() => _MythDetailWidgetState();
-}
+  void _openLink() async {
+    Uri uri = Uri.parse(myth.sourceUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $uri';
+    }
+  }
 
-class _MythDetailWidgetState extends State<MythDetailWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +41,7 @@ class _MythDetailWidgetState extends State<MythDetailWidget> {
                 const Padding(padding: EdgeInsets.only(right: 10)),
                 Expanded(
                   child: Text(
-                    widget.myth.question,
+                    myth.question,
                     style: TextStyle(
                       fontSize: Theme.of(context).textTheme.headline3!.fontSize,
                       fontFamily: Theme.of(context).textTheme.headline3!.fontFamily,
@@ -53,18 +58,35 @@ class _MythDetailWidgetState extends State<MythDetailWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(FontAwesomeIcons.exclamation, size: 30),
-                const Padding(padding: EdgeInsets.only(right: 10)),
+                const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          widget.myth.isCorrect
+                          myth.isCorrect
                               ? Languages.of(context)!.wasteBinMythCorrect
                               : Languages.of(context)!.wasteBinMythIncorrect,
                           style: Theme.of(context).textTheme.headline3),
-                      const Padding(padding: EdgeInsets.only(bottom: 5)),
-                      Text(widget.myth.answer),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                      Text(myth.answer),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                      Row(
+                        children: [
+                          const Icon(FontAwesomeIcons.link, size: 20),
+                          const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                          InkWell(
+                            onTap: _openLink,
+                            child: Text(
+                              myth.sourceName,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

@@ -51,6 +51,8 @@ class GraphQLQueries{
       	    hex_color
     	    }
     	    is_correct
+    	    source_link
+    	    source_name
         }
       }
       
@@ -67,6 +69,7 @@ class GraphQLQueries{
       getAllCategoryCycles(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
         explanation
+        additional_info
         category_cycle_id{
           position
           image{
@@ -663,14 +666,18 @@ class GraphQLQueries{
     // get cycles for waste bin categories
     List<dynamic> categoryCycles = data?["getAllCategoryCycles"];
     for (dynamic element in categoryCycles) {
-      Uri uri = Uri.parse(element["category_cycle_id"]["image"]["url"]);
-      http.Response response = await http.get(uri);
-      Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String fileName = "${element["category_cycle_id"]["objectId"]}_${element["title"]}";
-      String imagePath = "${documentDirectory.path}/$fileName.png";
-      File file = File(imagePath);
-      if (!file.existsSync()) {
-        file.writeAsBytes(response.bodyBytes);
+      String? uriString = element["category_cycle_id"]["image"]?["url"];
+      String? imagePath;
+      if(uriString != null){
+        Uri uri = Uri.parse(uriString);
+        http.Response response = await http.get(uri);
+        Directory documentDirectory = await getApplicationDocumentsDirectory();
+        String fileName = "${element["category_cycle_id"]["objectId"]}_${element["title"]}";
+        imagePath = "${documentDirectory.path}/$fileName.png";
+        File file = File(imagePath);
+        if (!file.existsSync()) {
+          file.writeAsBytes(response.bodyBytes);
+        }
       }
 
       String categoryId =
