@@ -23,6 +23,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
     List<Widget> openingHoursWithDay = [];
 
     for (int i = 0; i < weekdays.length; i++) {
+      String openingHoursOnDay = openingHours.elementAt(i);
       openingHoursWithDay.add(Padding(
         padding: const EdgeInsets.only(bottom: 5),
         child: Row(
@@ -30,7 +31,10 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
           children: [
             Text(weekdays.elementAt(i)),
             Expanded(
-              child: Text(openingHours.elementAt(i), textAlign: TextAlign.end),
+              child: Text(openingHoursOnDay != "closed"
+                  ? openingHoursOnDay
+                  : Languages.of(context)!.cpOpeningHoursClosed,
+                  textAlign: TextAlign.end),
             ),
           ],
         ),
@@ -54,7 +58,7 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
               children: [
                 const Padding(
                   padding: EdgeInsets.only(right: 10),
-                  child: Icon(FontAwesomeIcons.locationDot, size: 25),
+                  child: Icon(Icons.location_on, size: 25),
                 ),
                 Expanded(
                   child: Column(
