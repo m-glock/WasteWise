@@ -145,6 +145,8 @@ class LanguageDe extends Languages {
   @override String get cpAllyUnsuccessfulText => "Suche nach Mitstreitern fehlgeschlagen. Bitte später erneut versuchen";
   @override String get cpDropdownDefault => "Alle";
   @override String get cpOpeningHoursClosed => "geschlossen";
+  @override String get cpWithHazardousMaterial => "mit Schadstoffannahmestelle";
+  @override String get cpWithSecondHand => "Nimmt gebrauchte Waren an";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Art des Tipps:";

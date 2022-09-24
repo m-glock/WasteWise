@@ -31,9 +31,10 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
           children: [
             Text(weekdays.elementAt(i)),
             Expanded(
-              child: Text(openingHoursOnDay != "closed"
-                  ? openingHoursOnDay
-                  : Languages.of(context)!.cpOpeningHoursClosed,
+              child: Text(
+                  openingHoursOnDay != "closed"
+                      ? openingHoursOnDay
+                      : Languages.of(context)!.cpOpeningHoursClosed,
                   textAlign: TextAlign.end),
             ),
           ],
@@ -53,6 +54,41 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
         padding: const EdgeInsets.fromLTRB(20, 20, 30, 20),
         child: Column(
           children: [
+            if (widget.collectionPoint.withHazardousMaterials)
+              Container(
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                    Text(Languages.of(context)!.cpWithHazardousMaterial),
+                  ],
+                ),
+              ),
+            if (widget.collectionPoint.withSecondHand)
+              Container(
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check),
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                    Expanded(
+                      child: Text(Languages.of(context)!.cpWithSecondHand),
+                    ),
+                  ],
+                ),
+              ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

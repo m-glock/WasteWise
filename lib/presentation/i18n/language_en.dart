@@ -146,6 +146,8 @@ class LanguageEn extends Languages {
   @override String get cpAllyUnsuccessfulText => "Looking for allies failed. Please try again later";
   @override String get cpDropdownDefault => "All";
   @override String get cpOpeningHoursClosed => "closed";
+  @override String get cpWithHazardousMaterial => "Accepts hazardous waste";
+  @override String get cpWithSecondHand => "Accepts second hand goods";
 
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";
