@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -10,7 +10,6 @@ import 'package:recycling_app/presentation/util/database_classes/subcategory.dar
 import 'package:http/http.dart' as http;
 import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 
-import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'data_holder.dart';
 import 'database_classes/collection_point.dart';
 import 'database_classes/collection_point_type.dart';
@@ -723,19 +722,19 @@ class GraphQLQueries{
 
     // build markers for collection points
     Map<String, CollectionPoint> cpByObjectId = {};
+    if(DataHolder.markers.isNotEmpty) DataHolder.markers.clear();
     for (dynamic cp in collectionPoints) {
       CollectionPoint collectionPoint = CollectionPoint.fromGraphQlData(cp);
       cpByObjectId[collectionPoint.objectId] = collectionPoint;
       Marker marker = Marker(
+        key: ValueKey(collectionPoint.objectId),
         anchorPos: AnchorPos.align(AnchorAlign.top),
-        width: 220,
-        height: 200,
+        width: 35,
+        height: 35,
         point: collectionPoint.address.location,
-        rotate: true,
-        builder: (ctx) =>
-            CustomMarkerWidget(collectionPoint: collectionPoint),
+        builder: (ctx) => const Icon(Icons.location_on, size: 35,),
       );
-      DataHolder.markers[collectionPoint] = marker;
+      DataHolder.markers[marker] = collectionPoint;
     }
 
     // get accepted subcategories for all collection points

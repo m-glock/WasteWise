@@ -147,6 +147,7 @@ abstract class Languages {
   String get cpAllySuccessfulText;
   String get cpAllyUnsuccessfulText;
   String get cpDropdownDefault;
+  String get cpOpeningHoursClosed;
 
   // tips page
   String get dropdownTipTypeLabel;

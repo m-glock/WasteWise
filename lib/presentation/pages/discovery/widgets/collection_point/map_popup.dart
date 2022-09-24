@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 import '../../../../i18n/languages.dart';
-import '../../../../util/database_classes/collection_point.dart';
 import '../../../../util/constants.dart';
+import '../../../../util/database_classes/collection_point.dart';
 import '../../collection_point_detail_page.dart';
 
-class MapMarkerPopupWidget extends StatefulWidget {
-  const MapMarkerPopupWidget({Key? key, required this.collectionPoint})
+class MapPopup extends StatefulWidget {
+  const MapPopup(this.marker, this.collectionPoint, {Key? key})
       : super(key: key);
 
+  final Marker marker;
   final CollectionPoint collectionPoint;
 
   @override
-  State<MapMarkerPopupWidget> createState() => _MapMarkerPopupWidgetState();
+  State<StatefulWidget> createState() => _MapPopupState();
 }
 
-class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
+class _MapPopupState extends State<MapPopup> {
+
   void _openGoogleMapsForRoute() {
     MapsLauncher.launchCoordinates(
         widget.collectionPoint.address.location.latitude,
@@ -27,6 +30,7 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 230,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: Constants.tileBorderRadius,
@@ -84,4 +88,5 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
       ),
     );
   }
+
 }

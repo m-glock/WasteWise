@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../util/database_classes/collection_point.dart';
-import 'custom_marker.dart';
+import 'map_popup.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget(
       {Key? key, required this.marker, required this.currentPosition})
       : super(key: key);
 
-  final Map<CollectionPoint, Marker> marker;
+  final Map<Marker, CollectionPoint> marker;
   final LatLng currentPosition;
 
   @override
@@ -19,6 +21,7 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   List<Marker> markerList = [];
+  final PopupController _popupLayerController = PopupController();
 
   @override
   void initState() {
@@ -28,14 +31,17 @@ class _MapWidgetState extends State<MapWidget> {
 
   void _setMarkers(){
     if(markerList.isNotEmpty) markerList.clear();
-    markerList.addAll(widget.marker.values);
+    markerList.addAll(widget.marker.keys);
     markerList.add(Marker(
-      anchorPos: AnchorPos.align(AnchorAlign.top),
-      width: 220,
-      height: 200,
+      width: 35,
+      height: 35,
       point: widget.currentPosition,
-      builder: (ctx) => const CustomMarkerWidget(
-          collectionPoint: null, markerColor: Colors.redAccent),
+      builder: (ctx) => const Icon(
+        Icons.location_on,
+        size: 35,
+        color: Color.fromARGB(255, 220, 79, 37),
+      ),
+      anchorPos: AnchorPos.align(AnchorAlign.top),
     ));
   }
 
@@ -51,14 +57,26 @@ class _MapWidgetState extends State<MapWidget> {
       options: MapOptions(
         center: widget.currentPosition,
         zoom: 13,
+        onTap: (_, __) => _popupLayerController.hideAllPopups(),
       ),
-      layers: [
-        TileLayerOptions(
-          urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          subdomains: ['a', 'b', 'c'],
-          userAgentPackageName: 'com.glock.recyclingapp',
+      children: [
+        TileLayerWidget(
+            options: TileLayerOptions(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: ['a', 'b', 'c'],
+              userAgentPackageName: 'com.glock.recyclingapp',
+            ),
         ),
-        MarkerLayerOptions(markers: markerList),
+        PopupMarkerLayerWidget(
+          options: PopupMarkerLayerOptions(
+            popupController: _popupLayerController,
+            markers: markerList,
+            markerRotateAlignment:
+              PopupMarkerLayerOptions.rotationAlignmentFor(AnchorAlign.top),
+            popupBuilder: (BuildContext context, Marker marker) =>
+              MapPopup(marker, widget.marker[marker]!),
+          ),
+        ),
       ],
       nonRotatedChildren: [
         AttributionWidget.defaultWidget(

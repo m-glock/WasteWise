@@ -21,7 +21,7 @@ class CollectionPointPage extends StatefulWidget {
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
   LatLng currentPosition = LatLng(52.5200, 13.4050);
-  Map<CollectionPoint, Marker> filteredMarkers = {};
+  Map<Marker, CollectionPoint> filteredMarkers = {};
   String? chosenSubcategoryTitle;
 
   @override
@@ -70,7 +70,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
     filteredMarkers.addAll(DataHolder.markers);
     if(subcategoryTitle != Languages.of(context)!.cpDropdownDefault){
       filteredMarkers.removeWhere(
-              (key, value) => !key.containsSubcategoryTitle(subcategoryTitle));
+              (key, value) => !value.containsSubcategoryTitle(subcategoryTitle));
     }
     setState(() {
       chosenSubcategoryTitle = subcategoryTitle;

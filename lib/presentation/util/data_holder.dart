@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
@@ -8,7 +9,6 @@ import 'package:recycling_app/presentation/util/database_classes/subcategory.dar
 import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 
-import '../pages/discovery/widgets/collection_point/custom_marker.dart';
 import 'database_classes/collection_point.dart';
 import 'database_classes/collection_point_type.dart';
 
@@ -19,7 +19,7 @@ class DataHolder{
   static final Map<String, Subcategory> subcategoriesById = {};
   static final Map<String, String> itemNames = {};
   static final Map<String, ForumEntryType> forumEntryTypesById = {};
-  static final Map<CollectionPoint, Marker> markers = {};
+  static final Map<Marker, CollectionPoint> markers = {};
   static final Set<String> cpSubcategories = {};
   static final List<CollectionPointType> collectionPointTypes = [];
   static final Map<String, ZipCode> zipCodesById = {};
@@ -33,7 +33,7 @@ class DataHolder{
     jsonMap["ForumTypes"] = DataHolder.forumEntryTypesById;
     jsonMap["CollectionPointTypes"] = DataHolder.collectionPointTypes;
     jsonMap["CpSubcategories"] = DataHolder.cpSubcategories.toList();
-    jsonMap["CollectionPoints"] = DataHolder.markers.keys.toList();
+    jsonMap["CollectionPoints"] = DataHolder.markers.values.toList();
     jsonMap["ZipCodes"] = DataHolder.zipCodesById;
 
     Directory directory = await getApplicationDocumentsDirectory();
@@ -63,14 +63,15 @@ class DataHolder{
     }
     for (dynamic collectionPoint in jsonMap["CollectionPoints"]){
       CollectionPoint cp = CollectionPoint.fromJson(collectionPoint);
-      DataHolder.markers[cp] = Marker(
+      Marker marker = Marker(
+        key: ValueKey(cp.objectId),
         anchorPos: AnchorPos.align(AnchorAlign.top),
-        width: 220,
-        height: 200,
+        width: 35,
+        height: 35,
         point: cp.address.location,
-        builder: (ctx) =>
-            CustomMarkerWidget(collectionPoint: cp),
+        builder: (ctx) => const Icon(Icons.location_on, size: 35,),
       );
+      DataHolder.markers[marker] = cp;
     }
     for(dynamic element in jsonMap["CpSubcategories"]){
       DataHolder.cpSubcategories.add(element);
