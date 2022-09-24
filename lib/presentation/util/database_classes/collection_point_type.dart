@@ -7,13 +7,15 @@ class CollectionPointType{
 
   final String objectId;
   final String title;
+  final String link;
 
-  CollectionPointType(this.objectId, this.title);
+  CollectionPointType(this.objectId, this.title, this.link);
 
   static CollectionPointType fromGraphQLData(dynamic collectionPointData){
     return CollectionPointType(
       collectionPointData["collection_point_type_id"]["objectId"],
       collectionPointData["title"],
+      collectionPointData["collection_point_type_id"]["link"],
     );
   }
 

@@ -6,16 +6,19 @@ part 'generated/contact.g.dart';
 class Contact{
 
   final String phone;
-  final String fax;
-  final String email;
+  final String? fax;
+  final String? email;
+  final String? website;
 
-  Contact(this.phone, this.fax, this.email);
+  Contact(this.phone, {this.fax, this.email, this.website});
 
   static Contact fromGraphQlData(dynamic contactData){
     return Contact(
         contactData["phone"],
-        contactData["fax"],
-        contactData["email"]);
+        fax: contactData["fax"],
+        email: contactData["email"],
+        website: contactData["website"],
+    );
   }
 
   factory Contact.fromJson(Map<String, dynamic> json) => _$ContactFromJson(json);

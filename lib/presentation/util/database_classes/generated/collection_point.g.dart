@@ -15,6 +15,8 @@ CollectionPoint _$CollectionPointFromJson(Map<String, dynamic> json) =>
       Address.fromJson(json['address'] as Map<String, dynamic>),
       CollectionPointType.fromJson(
           json['collectionPointType'] as Map<String, dynamic>),
+      json['withHazardousMaterials'] as bool,
+      json['withSecondHand'] as bool,
       (json['acceptedSubcategories'] as List<dynamic>)
           .map((e) => Subcategory.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -28,6 +30,8 @@ Map<String, dynamic> _$CollectionPointToJson(CollectionPoint instance) =>
       'contact': instance.contact.toJson(),
       'address': instance.address.toJson(),
       'collectionPointType': instance.collectionPointType.toJson(),
+      'withHazardousMaterials': instance.withHazardousMaterials,
+      'withSecondHand': instance.withSecondHand,
       'acceptedSubcategories':
           instance.acceptedSubcategories.map((e) => e.toJson()).toList(),
     };

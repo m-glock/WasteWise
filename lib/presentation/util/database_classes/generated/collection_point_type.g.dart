@@ -10,6 +10,7 @@ CollectionPointType _$CollectionPointTypeFromJson(Map<String, dynamic> json) =>
     CollectionPointType(
       json['objectId'] as String,
       json['title'] as String,
+      json['link'] as String,
     );
 
 Map<String, dynamic> _$CollectionPointTypeToJson(
@@ -17,4 +18,5 @@ Map<String, dynamic> _$CollectionPointTypeToJson(
     <String, dynamic>{
       'objectId': instance.objectId,
       'title': instance.title,
+      'link': instance.link,
     };

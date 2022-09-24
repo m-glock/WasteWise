@@ -109,11 +109,13 @@ class GraphQLQueries{
       getCollectionPoints(municipalityId: \$municipalityId){
         objectId
         opening_hours
-        link
+        hazardous_materials
+        second_hand
         contact_id{
           phone
           fax
           email
+          website
         }
         address_id{
           street
@@ -139,6 +141,7 @@ class GraphQLQueries{
         title
         collection_point_type_id{
           objectId
+          link
         }
       }
       
@@ -182,7 +185,7 @@ class GraphQLQueries{
   """;
 
   static String recentlyAndOftenSearchedItemQuery = """
-    query GetCollectionPoints(\$userId: String!){
+    query GetSearchedAndWronglySortedItems(\$userId: String!){
       amountOfSearchedItems(userId: \$userId)
       
       amountOfWronglySortedItems(userId: \$userId)

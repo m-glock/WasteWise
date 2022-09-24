@@ -16,10 +16,13 @@ class CollectionPoint {
   final Contact contact;
   final Address address;
   final CollectionPointType collectionPointType;
+  final bool withHazardousMaterials;
+  final bool withSecondHand;
   final List<Subcategory> acceptedSubcategories;
 
   CollectionPoint(this.objectId, this.link, this.openingHours, this.contact,
-      this.address, this.collectionPointType, this.acceptedSubcategories);
+      this.address, this.collectionPointType, this.withHazardousMaterials,
+      this.withSecondHand, this.acceptedSubcategories);
 
   static CollectionPoint fromGraphQlData(dynamic collectionPointData) {
     String cpTypeId =
@@ -34,6 +37,8 @@ class CollectionPoint {
       Contact.fromGraphQlData(collectionPointData["contact_id"]),
       Address.fromGraphQlData(collectionPointData["address_id"]),
       cpType,
+      collectionPointData["hazardous_materials"],
+      collectionPointData["second_hand"],
       List.empty(growable: true),
     );
   }
