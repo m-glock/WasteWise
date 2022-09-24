@@ -731,6 +731,7 @@ class GraphQLQueries{
         width: 220,
         height: 200,
         point: collectionPoint.address.location,
+        rotate: true,
         builder: (ctx) =>
             CustomMarkerWidget(collectionPoint: collectionPoint),
       );

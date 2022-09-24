@@ -39,44 +39,48 @@ class _MapMarkerPopupWidgetState extends State<MapMarkerPopupWidget> {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Text(
-              widget.collectionPoint.collectionPointType.title,
-              style: Theme.of(context).textTheme.headline3,
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 5)),
-            Text(
-              widget.collectionPoint.address.toString(),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 5)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      child: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
               children: [
-                OutlinedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CollectionPointDetailPage(
-                            collectionPoint: widget.collectionPoint),
-                      ),
-                    )
-                  },
-                  child: Text(Languages.of(context)!.detailButtonText),
+                Text(
+                  widget.collectionPoint.collectionPointType.title,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
-                const Padding(padding: EdgeInsets.only(right: 5)),
-                OutlinedButton(
-                  onPressed: _openGoogleMapsForRoute,
-                  child: Text(Languages.of(context)!.routeButtonText),
+                const Padding(padding: EdgeInsets.only(bottom: 5)),
+                Text(
+                  widget.collectionPoint.address.toString(),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
+                const Padding(padding: EdgeInsets.only(bottom: 5)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CollectionPointDetailPage(
+                                collectionPoint: widget.collectionPoint),
+                          ),
+                        )
+                      },
+                      child: Text(Languages.of(context)!.detailButtonText),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 5)),
+                    OutlinedButton(
+                      onPressed: _openGoogleMapsForRoute,
+                      child: Text(Languages.of(context)!.routeButtonText),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

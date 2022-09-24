@@ -30,8 +30,10 @@ class _CustomMarkerWidgetState extends State<CustomMarkerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Wrap(
+      runAlignment: WrapAlignment.end,
+      alignment: WrapAlignment.center,
+      //mainAxisAlignment: MainAxisAlignment.end,
       //alignment: AlignmentDirectional.bottomCenter,
       children: [
         if (showPopup && widget.collectionPoint != null) _popup(),
