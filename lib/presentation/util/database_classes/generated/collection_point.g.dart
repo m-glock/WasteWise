@@ -9,7 +9,6 @@ part of '../collection_point.dart';
 CollectionPoint _$CollectionPointFromJson(Map<String, dynamic> json) =>
     CollectionPoint(
       json['objectId'] as String,
-      json['link'] as String,
       json['openingHours'] as String,
       Contact.fromJson(json['contact'] as Map<String, dynamic>),
       Address.fromJson(json['address'] as Map<String, dynamic>),
@@ -25,7 +24,6 @@ CollectionPoint _$CollectionPointFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CollectionPointToJson(CollectionPoint instance) =>
     <String, dynamic>{
       'objectId': instance.objectId,
-      'link': instance.link,
       'openingHours': instance.openingHours,
       'contact': instance.contact.toJson(),
       'address': instance.address.toJson(),

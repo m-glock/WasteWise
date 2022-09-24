@@ -11,7 +11,6 @@ part 'generated/collection_point.g.dart';
 @JsonSerializable(explicitToJson: true)
 class CollectionPoint {
   final String objectId;
-  final String link;
   final String openingHours;
   final Contact contact;
   final Address address;
@@ -20,7 +19,7 @@ class CollectionPoint {
   final bool withSecondHand;
   final List<Subcategory> acceptedSubcategories;
 
-  CollectionPoint(this.objectId, this.link, this.openingHours, this.contact,
+  CollectionPoint(this.objectId, this.openingHours, this.contact,
       this.address, this.collectionPointType, this.withHazardousMaterials,
       this.withSecondHand, this.acceptedSubcategories);
 
@@ -32,7 +31,6 @@ class CollectionPoint {
 
     return CollectionPoint(
       collectionPointData["objectId"],
-      collectionPointData["link"],
       collectionPointData["opening_hours"],
       Contact.fromGraphQlData(collectionPointData["contact_id"]),
       Address.fromGraphQlData(collectionPointData["address_id"]),
