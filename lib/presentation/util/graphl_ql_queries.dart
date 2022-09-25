@@ -57,7 +57,7 @@ class GraphQLQueries{
       }
       
       getAllCategoryContent(languageCode: \$languageCode, municipalityId: \$municipalityId){
-        title
+        item_list
         category_content_id{
           does_belong
           category_id{
@@ -655,11 +655,15 @@ class GraphQLQueries{
       String categoryId =
       element["category_content_id"]["category_id"]["objectId"];
       if (element["category_content_id"]["does_belong"]) {
-        wasteBinCategories[categoryId]?.itemsBelong
-            .add(element["title"]);
+        for(String item in element["item_list"]["items"]){
+          wasteBinCategories[categoryId]?.itemsBelong
+              .add(item);
+        }
       } else {
-        wasteBinCategories[categoryId]?.itemsDontBelong
-            .add(element["title"]);
+        for(String item in element["item_list"]["items"]){
+          wasteBinCategories[categoryId]?.itemsDontBelong
+              .add(item);
+        }
       }
     }
 
