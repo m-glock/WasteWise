@@ -7,24 +7,24 @@ import 'package:recycling_app/presentation/util/database_classes/waste_bin_categ
 
 import '../../util/constants.dart';
 
-class WasteBinDetailPage extends StatefulWidget {
-  const WasteBinDetailPage({Key? key, required this.wasteBin})
-      : super(key: key);
+class WasteBinDetailPage extends StatelessWidget {
 
   final WasteBinCategory wasteBin;
+  int controllerLength = 1;
 
-  @override
-  State<WasteBinDetailPage> createState() => _WasteBinDetailPageState();
-}
+  WasteBinDetailPage({Key? key, required this.wasteBin})
+      : super(key: key){
+    if(wasteBin.cycleSteps.isNotEmpty) controllerLength++;
+    if(wasteBin.myths.isNotEmpty) controllerLength++;
+  }
 
-class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: controllerLength,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.wasteBin.title),
+          title: Text(wasteBin.title),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(
@@ -43,8 +43,10 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
                   labelStyle: Theme.of(context).textTheme.headline2,
                   tabs: [
                     Tab(text: Languages.of(context)!.wasteBinContentLabel),
-                    Tab(text: Languages.of(context)!.wasteBinCycleLabel),
-                    Tab(text: Languages.of(context)!.wasteBinMythLabel),
+                    if(wasteBin.cycleSteps.isNotEmpty)
+                      Tab(text: Languages.of(context)!.wasteBinCycleLabel),
+                    if(wasteBin.myths.isNotEmpty)
+                      Tab(text: Languages.of(context)!.wasteBinMythLabel),
                   ],
                 ),
               ),
@@ -54,16 +56,18 @@ class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child:
-                          ContentWidget(category: widget.wasteBin),
+                          ContentWidget(category: wasteBin),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: CycleWidget(category: widget.wasteBin),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: MythWidget(category: widget.wasteBin),
-                    ),
+                    if(wasteBin.cycleSteps.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: CycleWidget(category: wasteBin),
+                      ),
+                    if(wasteBin.myths.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: MythWidget(category: wasteBin),
+                      ),
                   ],
                 ),
               ),
