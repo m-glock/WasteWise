@@ -115,7 +115,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         )
                       : ListView(
                           children: [
-                            //TODO: how to sort them?
                             ...bookmarkedItems.entries.map((element) {
                               return BookmarkedTile(
                                 title: element.value,

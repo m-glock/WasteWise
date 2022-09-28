@@ -94,11 +94,7 @@ class _ActionTileState extends State<ActionTile> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              TipDetailPage(
-                                  tip: tip,
-                                  updateBookmarkInParent: () => {},
-                              ),
+                        builder: (context) => TipDetailPage(tip: tip),
                       ),
                     );
                   },
