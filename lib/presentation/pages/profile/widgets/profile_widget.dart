@@ -67,7 +67,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  //TODO: upload image or edit profile?
   @override
   Widget build(BuildContext context) {
     ParseFile? avatarPicture = current?.get("avatar_picture");

@@ -12,11 +12,11 @@ import '../../util/graphl_ql_queries.dart';
 
 class TipDetailPage extends StatefulWidget {
   const TipDetailPage(
-      {Key? key, required this.tip, required this.updateBookmarkInParent})
+      {Key? key, required this.tip, this.updateBookmarkInParent})
       : super(key: key);
 
   final Tip tip;
-  final Function updateBookmarkInParent;
+  final Function? updateBookmarkInParent;
 
   @override
   State<TipDetailPage> createState() => _TipDetailPageState();
@@ -62,7 +62,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
     if (success) {
       setState(() {
         widget.tip.isBookmarked = !widget.tip.isBookmarked;
-        widget.updateBookmarkInParent();
+        if(widget.updateBookmarkInParent != null){
+          widget.updateBookmarkInParent!();
+        }
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
