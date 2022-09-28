@@ -10,71 +10,77 @@ import '../../util/constants.dart';
 class WasteBinDetailPage extends StatelessWidget {
 
   final WasteBinCategory wasteBin;
-  int controllerLength = 1;
 
-  WasteBinDetailPage({Key? key, required this.wasteBin})
-      : super(key: key){
-    if(wasteBin.cycleSteps.isNotEmpty) controllerLength++;
-    if(wasteBin.myths.isNotEmpty) controllerLength++;
-  }
+  WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: controllerLength,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(wasteBin.title),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Constants.pagePadding, vertical: 30),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40,
-                child: TabBar(
-                  labelColor: Theme.of(context).colorScheme.onPrimary,
-                  unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Theme.of(context).colorScheme.primary.withAlpha(200),
-                  ),
-                  labelStyle: Theme.of(context).textTheme.headline2,
-                  tabs: [
-                    Tab(text: Languages.of(context)!.wasteBinContentLabel),
-                    if(wasteBin.cycleSteps.isNotEmpty)
-                      Tab(text: Languages.of(context)!.wasteBinCycleLabel),
-                    if(wasteBin.myths.isNotEmpty)
-                      Tab(text: Languages.of(context)!.wasteBinMythLabel),
-                  ],
-                ),
+    return wasteBin.cycleSteps.isEmpty && wasteBin.myths.isEmpty
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(wasteBin.title),
+            ),
+            body: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: ContentWidget(category: wasteBin),
               ),
-              Expanded(
-                child: TabBarView(
+          )
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(wasteBin.title),
+              ),
+              body: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: Constants.pagePadding, vertical: 30),
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child:
-                          ContentWidget(category: wasteBin),
+                    SizedBox(
+                      height: 40,
+                      child: TabBar(
+                        labelColor: Theme.of(context).colorScheme.onPrimary,
+                        unselectedLabelColor:
+                            Theme.of(context).colorScheme.onSurface,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withAlpha(200),
+                        ),
+                        labelStyle: Theme.of(context).textTheme.headline2,
+                        tabs: [
+                          Tab(
+                              text:
+                                  Languages.of(context)!.wasteBinContentLabel),
+                          Tab(text: Languages.of(context)!.wasteBinCycleLabel),
+                          Tab(text: Languages.of(context)!.wasteBinMythLabel),
+                        ],
+                      ),
                     ),
-                    if(wasteBin.cycleSteps.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: CycleWidget(category: wasteBin),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ContentWidget(category: wasteBin),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0),
+                            child: CycleWidget(category: wasteBin),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: MythWidget(category: wasteBin),
+                          ),
+                        ],
                       ),
-                    if(wasteBin.myths.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: MythWidget(category: wasteBin),
-                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
