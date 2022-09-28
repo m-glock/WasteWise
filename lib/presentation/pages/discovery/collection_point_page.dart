@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/comrade_dialog_widget.dart';
@@ -102,24 +101,10 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            heroTag: 'btn1',
-            child: const Icon(Icons.group),
-            onPressed: () => ComradeDialogWidget.showModal(
-                context, chosenSubcategoryTitle),
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 10)),
-          FloatingActionButton(
-            heroTag: 'btn2',
-            child: const Icon(FontAwesomeIcons.filter),
-            onPressed: () => {
-              //TODO: implement filter
-            },
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.group),
+        onPressed: () =>
+            ComradeDialogWidget.showModal(context, chosenSubcategoryTitle),
       ),
     );
   }
