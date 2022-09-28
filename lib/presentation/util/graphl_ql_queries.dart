@@ -772,7 +772,7 @@ class GraphQLQueries{
     }
 
     // get zip codes for municipalities
-    if(DataHolder.zipCodesById.isNotEmpty){
+    if(DataHolder.zipCodesById.isEmpty){
       List<dynamic> zipCodes = data?["getZipCodes"];
       for (dynamic zipCodeData in zipCodes) {
         ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
