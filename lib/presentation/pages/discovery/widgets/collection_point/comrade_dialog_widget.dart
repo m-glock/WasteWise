@@ -28,7 +28,7 @@ class ComradeDialogWidget {
                     padding: const EdgeInsets.only(top: 20),
                     child: Text(
                       Languages.of(context)!.cpAlliesButtonShareExplanation,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
                   Padding(
@@ -101,7 +101,7 @@ class ComradeDialogWidget {
     );
 
     String snackBarText =
-        result.hasException || !result.data?["createForumEntries"]
+        result.hasException || result.data?["createForumEntries"] == null
             ? Languages.of(context)!.cpAllyUnsuccessfulText
             : Languages.of(context)!.cpAllySuccessfulText;
 

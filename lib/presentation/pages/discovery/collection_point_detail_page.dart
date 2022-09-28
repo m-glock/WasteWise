@@ -50,139 +50,141 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
       appBar: AppBar(
         title: Text(widget.collectionPoint.collectionPointType.title),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 30, 20),
-        child: Column(
-          children: [
-            if (widget.collectionPoint.withHazardousMaterials)
-              Container(
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withAlpha(50),
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 30, 20),
+          child: Column(
+            children: [
+              if (widget.collectionPoint.withHazardousMaterials)
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.check),
+                      const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                      Text(Languages.of(context)!.cpWithHazardousMaterial),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                    Text(Languages.of(context)!.cpWithHazardousMaterial),
-                  ],
+              if (widget.collectionPoint.withSecondHand)
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.check),
+                      const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                      Expanded(
+                        child: Text(Languages.of(context)!.cpWithSecondHand),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            if (widget.collectionPoint.withSecondHand)
-              Container(
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withAlpha(50),
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.check),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                    Expanded(
-                      child: Text(Languages.of(context)!.cpWithSecondHand),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(Icons.location_on, size: 25),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          alignment: Alignment.centerLeft,
+                          height: 25,
+                          child: Text(
+                            Languages.of(context)!.copDetailsAddressTitle,
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                        ),
+                        Text(widget.collectionPoint.address.toString()),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Icon(Icons.location_on, size: 25),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        alignment: Alignment.centerLeft,
-                        height: 25,
-                        child: Text(
-                          Languages.of(context)!.copDetailsAddressTitle,
-                          style: Theme.of(context).textTheme.headline3,
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: const [
+                        Icon(FontAwesomeIcons.clock, size: 25),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          alignment: Alignment.centerLeft,
+                          height: 25,
+                          child: Text(
+                            Languages.of(context)!.cpDetailsOpeningHours,
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
                         ),
-                      ),
-                      Text(widget.collectionPoint.address.toString()),
-                    ],
+                        ..._getFormattedOpeningHours(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 20)),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: const [
-                      Icon(FontAwesomeIcons.clock, size: 25),
-                    ],
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(bottom: 20)),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: const [
+                        Icon(Icons.assignment_turned_in_outlined, size: 25),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        alignment: Alignment.centerLeft,
-                        height: 25,
-                        child: Text(
-                          Languages.of(context)!.cpDetailsOpeningHours,
-                          style: Theme.of(context).textTheme.headline3,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          alignment: Alignment.centerLeft,
+                          height: 25,
+                          child: Text(
+                            Languages.of(context)!.cpDetailItemsAccepted,
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
                         ),
-                      ),
-                      ..._getFormattedOpeningHours(),
-                    ],
+                        ...widget.collectionPoint.acceptedSubcategories
+                            .map((item) {
+                          return Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: Text("$bulletPoint ${item.title}"));
+                        }).toList()
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 20)),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.assignment_turned_in_outlined, size: 25),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        alignment: Alignment.centerLeft,
-                        height: 25,
-                        child: Text(
-                          Languages.of(context)!.cpDetailItemsAccepted,
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
-                      ),
-                      ...widget.collectionPoint.acceptedSubcategories
-                          .map((item) {
-                        return Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Text("$bulletPoint ${item.title}"));
-                      }).toList()
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

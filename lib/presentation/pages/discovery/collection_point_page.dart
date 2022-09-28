@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/comrade_dialog_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
@@ -22,16 +23,25 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   LatLng currentPosition = LatLng(52.5200, 13.4050);
   Map<Marker, CollectionPoint> filteredMarkers = {};
   String? chosenSubcategoryTitle;
+  bool loggedIn = false;
 
   @override
   void initState() {
     super.initState();
     _determinePosition();
     _getValues();
+    _checkIfLoggedIn();
   }
 
   void _getValues(){
     filteredMarkers = Map.of(DataHolder.markers);
+  }
+
+  void _checkIfLoggedIn() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      loggedIn = current != null;
+    });
   }
 
   void _determinePosition() async {
@@ -101,11 +111,12 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: loggedIn ? FloatingActionButton(
         child: const Icon(Icons.group),
         onPressed: () =>
             ComradeDialogWidget.showModal(context, chosenSubcategoryTitle),
-      ),
+      )
+      : null,
     );
   }
 }

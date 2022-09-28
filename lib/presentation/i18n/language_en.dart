@@ -137,7 +137,7 @@ class LanguageEn extends Languages {
   @override String get wasteBinMythIncorrect => "Not correct!";
 
   // collection point page
-  @override String get filterLabelItemType => "Type of item:";
+  @override String get filterLabelItemType => "Type:";
   @override String get detailButtonText => "Details";
   @override String get routeButtonText => "Plan route";
   @override String get copDetailsAddressTitle => "Address:";
