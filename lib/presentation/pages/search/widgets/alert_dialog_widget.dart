@@ -82,7 +82,8 @@ class AlertDialogWidget {
                     Expanded(
                       child: Text.rich(
                         TextSpan(
-                          text: Languages.of(context)!.alertDialogPrompt,
+                          text: "${Languages.of(context)!.alertDialogPrompt} "
+                              "${item.wasteBin.article ?? ""} ",
                           style: Theme.of(context).textTheme.bodyText2,
                           children: [
                             TextSpan(

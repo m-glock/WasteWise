@@ -45,7 +45,7 @@ class LanguageEn extends Languages {
   // dashboard
   @override String get tipTileTitle => "Tip of the Day";
   @override String get tipTileButtonText => "More Info";
-  @override String get congratsTileTitle => "Congratulation";
+  @override String get congratsTileTitle => "Well done!";
   @override String get congratsTileDefaultTitle => "Keep going";
   @override String get congratsTileDefaultText => "The more you learn, the easier it gets to find the correct waste bin.";
   @override String get congratsTileFirstFragment => "You are in the top  ";
@@ -123,7 +123,7 @@ class LanguageEn extends Languages {
   @override String get tipsAndTricksTitle => "Tips and Tricks";
   @override String get tipsAndTricksSubtitle => "waste prevention, sorting, and more";
   @override String get collectionPointsTitle => "Collection Points";
-  @override String get collectionPointsSubtitle => "recycling yard and more";
+  @override String get collectionPointsSubtitle => "recycling yards";
 
   // waste bin pages
   @override String get wasteBinContentLabel => "Content";
@@ -131,6 +131,8 @@ class LanguageEn extends Languages {
   @override String get wasteBinMythLabel => "Myths";
   @override String get wasteBinNoContentLabel => "Does not belong in there:";
   @override String get wasteBinYesContentLabel => "Does belong in there:";
+  @override String get wasteBinShowMoreLabel => "more";
+  @override String get wasteBinShowLessLabel => "less";
   @override String get wasteBinMythCorrect => "Correct!";
   @override String get wasteBinMythIncorrect => "Not correct!";
 

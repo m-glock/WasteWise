@@ -23,6 +23,7 @@ class GraphQLQueries{
     query GetContent(\$languageCode: String!, \$municipalityId: String!){
       getCategories(languageCode: \$languageCode, municipalityId: \$municipalityId){
         title
+        article
         category_id{
           objectId
           image_file{
@@ -239,7 +240,7 @@ class GraphQLQueries{
   """;
 
   static String tipListQuery = """
-    query GetCategories(\$languageCode: String!, \$userId: String){
+    query GetTips(\$languageCode: String!, \$userId: String){
       getTipTypes(languageCode: \$languageCode){
         title
         tip_type_id{

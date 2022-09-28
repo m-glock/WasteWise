@@ -51,7 +51,7 @@ class _DiscoveryTileState extends State<DiscoveryTile> {
                     children: [
                       Text(
                         widget.title,
-                        style: Theme.of(context).textTheme.headline1,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 5)),
                       if(widget.subtitle != null)

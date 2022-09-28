@@ -25,7 +25,7 @@ class _OverviewTileState extends State<OverviewTile> {
             fontWeight: FontWeight.bold,
           ),
           children: <TextSpan>[
-            TextSpan(text: text, style: Theme.of(context).textTheme.bodyText1),
+            TextSpan(text: text, style: Theme.of(context).textTheme.bodyText2),
           ],
         ),
       ),

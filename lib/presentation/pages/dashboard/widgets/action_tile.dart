@@ -72,7 +72,7 @@ class _ActionTileState extends State<ActionTile> {
               Expanded(
                 child: Text(
                   tip.short,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               Flexible(

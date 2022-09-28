@@ -133,6 +133,8 @@ abstract class Languages {
   String get wasteBinMythLabel;
   String get wasteBinYesContentLabel;
   String get wasteBinNoContentLabel;
+  String get wasteBinShowMoreLabel;
+  String get wasteBinShowLessLabel;
   String get wasteBinMythCorrect;
   String get wasteBinMythIncorrect;
 

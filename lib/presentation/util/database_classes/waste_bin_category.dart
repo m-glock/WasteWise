@@ -8,6 +8,7 @@ part 'generated/waste_bin_category.g.dart';
 @JsonSerializable(explicitToJson: true)
 class WasteBinCategory{
   final String title;
+  final String? article;
   final String objectId;
   final List<Myth> myths;
   final List<String> itemsBelong;
@@ -16,7 +17,7 @@ class WasteBinCategory{
   final String imageFilePath;
 
   WasteBinCategory(this.title, this.objectId, this.myths,
-      this.cycleSteps, this.itemsBelong, this.itemsDontBelong, this.imageFilePath);
+      this.cycleSteps, this.itemsBelong, this.itemsDontBelong, this.imageFilePath, {this.article});
 
   static WasteBinCategory fromGraphQlData(dynamic category, String imageFilePath) {
     return WasteBinCategory(
@@ -26,7 +27,8 @@ class WasteBinCategory{
         List.empty(growable: true),
         List.empty(growable: true),
         List.empty(growable: true),
-        imageFilePath
+        imageFilePath,
+        article: category["article"]
     );
   }
 

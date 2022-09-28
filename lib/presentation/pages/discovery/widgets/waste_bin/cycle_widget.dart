@@ -50,7 +50,7 @@ class _CycleWidgetState extends State<CycleWidget> {
                         style: Theme.of(context).textTheme.headline1),
                     const Padding(padding: EdgeInsets.only(bottom: 20)),
                     Text(element.explanation,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyText2),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 25)),
                     if (element.additionalInfo != null)
                       Container(
@@ -69,7 +69,7 @@ class _CycleWidgetState extends State<CycleWidget> {
                             Expanded(
                               child: Text(
                                 element.additionalInfo!,
-                                style: Theme.of(context).textTheme.bodyText1,
+                                style: Theme.of(context).textTheme.bodyText2,
                               ),
                             ),
                           ],

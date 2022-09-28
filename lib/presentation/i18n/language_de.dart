@@ -44,7 +44,7 @@ class LanguageDe extends Languages {
   // dashboard
   @override String get tipTileTitle => "Tipp des Tages";
   @override String get tipTileButtonText => "Mehr erfahren";
-  @override String get congratsTileTitle => "Glückwunsch";
+  @override String get congratsTileTitle => "Glückwunsch!";
   @override String get congratsTileDefaultTitle => "Weiter so";
   @override String get congratsTileDefaultText => "Je mehr du lernst, desto einfacher ist es die richtige Tonne zu finden.";
   @override String get congratsTileFirstFragment => "Du bist in den Top  ";
@@ -107,7 +107,7 @@ class LanguageDe extends Languages {
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
-  @override String get itemDetailWasteBinLabel => "Tonne: ";
+  @override String get itemDetailWasteBinLabel => "Mülltonne: ";
   @override String get itemDetailSynonymsLabel => "Alternative Begriffe: ";
   @override String get itemDetailMoreInfoLabel => "Mehr Informationen über ";
   @override String get itemDetailExplanationLabel => "Erklärung";
@@ -122,7 +122,7 @@ class LanguageDe extends Languages {
   @override String get tipsAndTricksTitle => "Tipps und Tricks";
   @override String get tipsAndTricksSubtitle => "Müllvemreidung, Trennung, etc.";
   @override String get collectionPointsTitle => "Sammelstellen";
-  @override String get collectionPointsSubtitle => "Recyclinghof, Altkleidercontainer, etc.";
+  @override String get collectionPointsSubtitle => "Recyclinghöfe";
 
   // waste bin pages
   @override String get wasteBinContentLabel => "Inhalt";
@@ -130,6 +130,8 @@ class LanguageDe extends Languages {
   @override String get wasteBinMythLabel => "Mythen";
   @override String get wasteBinNoContentLabel => "Das gehört rein:";
   @override String get wasteBinYesContentLabel => "Das gehört nicht rein:";
+  @override String get wasteBinShowMoreLabel => "mehr";
+  @override String get wasteBinShowLessLabel => "weniger";
   @override String get wasteBinMythCorrect => "Stimmt!";
   @override String get wasteBinMythIncorrect => "Stimmt nicht!";
 
