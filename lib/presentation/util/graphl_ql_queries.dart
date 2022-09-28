@@ -199,7 +199,6 @@ class GraphQLQueries{
       getItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
         title
         explanation
-        material
         synonyms
         item_id{
           objectId

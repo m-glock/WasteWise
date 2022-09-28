@@ -7,14 +7,13 @@ class Item {
   final String title;
   final String? synonyms;
   final String? explanation;
-  final String material;
   final String? subcategory;
   final WasteBinCategory wasteBin;
   final List<Tip> tips = [];
   final List<Tip> preventions = [];
   bool bookmarked;
 
-  Item(this.objectId, this.title, this.material, this.wasteBin,
+  Item(this.objectId, this.title, this.wasteBin,
       {this.synonyms, this.explanation, this.subcategory,
         this.bookmarked = false});
 
@@ -35,7 +34,7 @@ class Item {
     String subcategoryTitle = subcategoryData["title"];
     bool isBookmarked = data["getBookmarkStatusOfItem"] != null;
 
-    Item newItem = Item(objectId, item["title"], item["material"],
+    Item newItem = Item(objectId, item["title"],
         DataHolder.categoriesById[categoryId]!,
         synonyms: item["synonyms"],
         explanation: explanation,
