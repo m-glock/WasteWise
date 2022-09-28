@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
@@ -83,9 +84,13 @@ class _HomePageState extends State<HomePage> {
           width: MediaQuery.of(context).size.width / 1.5,
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 50),
-                child: Icon(Icons.recycling, size: 100), //TODO: logo?
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child:  SvgPicture.asset(
+                  "assets/icons/logo.svg",
+                  width: 150,
+                  height: 150,
+                ),
               ),
               const Divider(thickness: 2.0),
               ListTile(

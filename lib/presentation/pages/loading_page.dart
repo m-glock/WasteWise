@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
@@ -71,7 +72,12 @@ class _LoadingPageState extends State<LoadingPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //TODO: add logo or image
+              SvgPicture.asset(
+                "assets/icons/logo.svg",
+                width: 170,
+                height: 170,
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               Text(
                 Languages.of(context)!.waitingForInitializationText,
                 style: Theme.of(context).textTheme.headline1,
