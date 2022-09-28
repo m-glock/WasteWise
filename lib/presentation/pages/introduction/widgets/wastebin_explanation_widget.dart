@@ -62,11 +62,8 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
   Widget _getWidget() {
     return Column(
       children: [
-        Text(
-          Languages.of(context)!.municipalitySelectedTitle +
-              widget.municipalityName +
-              ":",
-          style: Theme.of(context).textTheme.bodyText1,
+        Text("${Languages.of(context)!.municipalitySelectedTitle} ${widget.municipalityName}:",
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         const Padding(padding: EdgeInsets.only(bottom: 10)),
         Padding(
@@ -74,7 +71,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
           child: GridView.count(
             shrinkWrap: true,
             crossAxisCount: 2,
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(5),
             childAspectRatio: 3 / 2,
             children: [
               ...categories.map((category) {

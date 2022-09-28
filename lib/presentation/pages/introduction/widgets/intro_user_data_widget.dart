@@ -33,9 +33,9 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           Text(
             Languages.of(context)!.municipalityScreenExplanation,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
-          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          const Padding(padding: EdgeInsets.only(bottom: 10)),
           DropdownButton<String>(
             isExpanded: true,
             value: municipalityDefault,

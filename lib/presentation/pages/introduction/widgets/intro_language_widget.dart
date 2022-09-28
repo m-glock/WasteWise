@@ -22,35 +22,43 @@ class _LanguageIntroScreenState extends State<LanguageIntroScreen> {
 
   void _setLanguage(String newValue) async {
     setState(() {
-      Locale locale = Constants.languages.entries.where((entry) => entry.value == newValue).first.key;
+      Locale locale = Constants
+          .languages.entries
+          .where((entry) => entry.value == newValue)
+          .first.key;
       changeAppLanguage(context, locale.languageCode);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //image,
-        Text(Languages.of(context)!.languageScreenExplanation, style: Theme.of(context).textTheme.bodyText1,),
-        const Padding(padding: EdgeInsets.only(bottom: 10)),
-        DropdownButton<String>(
-          isExpanded: true,
-          value: languageDefault,
-          onChanged: (String? newValue) {
-            languageDefault = newValue!;
-            _setLanguage(newValue);
-          },
-          items: Constants.languages.values
-              .map<DropdownMenuItem<String>>(
-                  (String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-        ),
-      ],
+    return Center(
+      child: Column(
+        children: [
+          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          Text(
+            Languages.of(context)!.languageScreenExplanation,
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 30)),
+          DropdownButton<String>(
+            isExpanded: true,
+            value: languageDefault,
+            onChanged: (String? newValue) {
+              languageDefault = newValue!;
+              _setLanguage(newValue);
+            },
+            items: Constants.languages.values
+                .map<DropdownMenuItem<String>>(
+                    (String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+          ),
+        ],
+      ),
     );
   }
 }

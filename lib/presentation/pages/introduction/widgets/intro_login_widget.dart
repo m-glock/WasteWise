@@ -25,7 +25,7 @@ class _IntroLoginWidgetState extends State<IntroLoginWidget> {
   @override
   Widget build(BuildContext context) {
     return _isAuthenticated
-        ? ProfileWidget(authenticated: _checkIfAuthenticated, introView: true,)
-        : LoginWidget(authenticated: _checkIfAuthenticated);
+        ? ProfileWidget(authenticated: _checkIfAuthenticated, introView: true)
+        : LoginWidget(authenticated: _checkIfAuthenticated, onlySignup: true);
   }
 }

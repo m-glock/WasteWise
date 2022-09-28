@@ -18,10 +18,17 @@ abstract class Languages {
   // introduction
   String get nextButtonText;
   String get doneButtonText;
+  String get backButtonText;
   String get languageScreenTitle;
   String get languageScreenExplanation;
   String get purposeScreenTitle;
+  String get purposeScreenQ1;
+  String get purposeScreenQ2;
+  String get purposeScreenQ3;
   String get purposeScreenExplanation;
+  String get learningModeScreenTitle;
+  String get learningModeScreenExplanation;
+  String get learningModeScreenLabel;
   String get municipalityScreenTitle;
   String get municipalityScreenExplanation;
   String get municipalitySelectedTitle;

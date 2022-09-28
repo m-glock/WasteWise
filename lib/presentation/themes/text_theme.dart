@@ -5,7 +5,7 @@ class AppTextTheme extends TextTheme{
   const AppTextTheme() : super(
     headline1: const TextStyle(
       fontFamily: "Asap",
-      fontSize: 18.0,
+      fontSize: 20.0,
       fontWeight: FontWeight.bold,
       color: Colors.black87,
     ),
@@ -27,7 +27,7 @@ class AppTextTheme extends TextTheme{
     ),
     bodyText2: const TextStyle(
       fontFamily: "Asap",
-      fontSize: 15.0,
+      fontSize: 16.0,
     ),
     labelMedium: const TextStyle(
       fontFamily: "Asap",

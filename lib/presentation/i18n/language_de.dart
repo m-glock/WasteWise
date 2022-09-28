@@ -15,17 +15,24 @@ class LanguageDe extends Languages {
   // introduction
   @override String get doneButtonText => "Fertig";
   @override String get nextButtonText => "Weiter";
+  @override String get backButtonText => "Zurück";
   @override String get languageScreenTitle => "Sprache auswählen";
-  @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie jederzeit in den Einstellungen ändern";
-  @override String get purposeScreenTitle => "Ziel der App";
-  @override String get purposeScreenExplanation => "Jede Gemeinde in Deutschland hat ihre eigenen Regeln und kann sich in manchen Fällen auch in der Auswahl der Mülltonnen von anderen unterscheiden. Bitte teile uns mit, in welcher Region du wohst damit die App entsprechend darauf angepasst werdem kann."; //TODO
+  @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie später jederzeit in deinen Einstellungen ändern";
+  @override String get purposeScreenTitle => "Das Ziel";
+  @override String get purposeScreenQ1 => "Was darf ich eigentlich alles in die Biotonne werfen?";
+  @override String get purposeScreenQ2 => "Warum wird Müll getrennt und was passiert dann damit?";
+  @override String get purposeScreenQ3 => "Und in welche Mülltonne gehört eigentlich Spiegelglas?";
+  @override String get purposeScreenExplanation => "${Constants.appTitle} ist dafür da, um dir diese Fragen zu beantworten! \n\nDas Ziel der App ist es, über Mülltrennung und Recycling aufzuklären und bei der korrekten Entsorgung des Mülls zu unterstützen. Somit können Gegenstände vor dem falschen Mülleimer gerettet und korrekt recycelt werden.";
+  @override String get learningModeScreenTitle => "Lernmodus";
+  @override String get learningModeScreenExplanation => "Wenn du dein Wissen prüfen und mehr Informationen erhalten möchtest, kannst du den Lernmodus einschalten. Fragen, Tipps und Herausforderung helfen dir dann dabei, mehr über das Thema zu lernen. Der Modus kann jederzeit in den Einstellungen (de)aktiviert werden.";
+  @override String get learningModeScreenLabel => "Lernmodus aktivieren";
   @override String get municipalityScreenTitle => "Region auswählen";
-  @override String get municipalityScreenExplanation => "Deine Region bestimmt gewisse Regeln bei der Mülltrennung und die vorhanden Mülleimer. Die unten dargestellten Piktogramme werden an verschiedenen Stellen in der App genutzt, um die entsprechenden Mülleimer darzustellen.";
-  @override String get municipalitySelectedTitle => "Region ";
-  @override String get municipalitySelectedNotFound => "Etwas ist schiefgelaufen. Es wurden keine Mülleimer gefunden.";
+  @override String get municipalityScreenExplanation => "Deine Region bestimmt spezielle Regeln bei der Mülltrennung und die vorhanden Mülleimer. Die unten dargestellten Piktogramme werden an verschiedenen Stellen in der App genutzt, um die entsprechenden Mülleimer zu symbolisieren.";
+  @override String get municipalitySelectedTitle => "Region";
+  @override String get municipalitySelectedNotFound => "Etwas ist schiefgelaufen. Es wurden keine passenden Mülleimer gefunden.";
   @override String get profileScreenTitle => "Profil erstellen";
-  @override String get profileScreenExplanation => "Ein Profile ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
-  @override String get waitingForInitializationText => "Hab bitte einen Moment Gedult, während die App eingerichtete wird.";
+  @override String get profileScreenExplanation => "Ein Profil ermöglicht es dir das soziale Forum der App zu nutzen und Items und Tipps zu favorisieren. Die allgemeinen Informationen sind auch ohne Registrierung zugänglich und du kannst dich jederzeit nachträglich noch registrieren.";
+  @override String get waitingForInitializationText => "Habe bitte einen Moment Gedult, während die App eingerichtete wird.";
 
   // bottom navigation
   @override String get homePageName => "Home";
