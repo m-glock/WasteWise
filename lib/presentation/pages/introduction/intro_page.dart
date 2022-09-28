@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
@@ -10,6 +11,7 @@ import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../util/constants.dart';
+import '../../util/graphl_ql_queries.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({Key? key}) : super(key: key);
@@ -19,6 +21,34 @@ class IntroductionPage extends StatefulWidget {
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if(DataHolder.municipalitiesById.isEmpty){
+      _setDefaultMunicipality();
+    }
+  }
+
+  void _setDefaultMunicipality() async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(document: gql(GraphQLQueries.municipalityQuery)),
+    );
+
+    List<dynamic> municipalities = result.data?["getMunicipalities"];
+    for(dynamic municipality in municipalities){
+      DataHolder.municipalitiesById[municipality["objectId"]] = municipality["name"];
+    }
+
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? municipalityId = DataHolder.municipalitiesById.entries.first.key;
+    await _prefs.setString(
+        Constants.prefSelectedMunicipalityCode,
+        municipalityId
+    );
+  }
+
   PageDecoration _getPageDecoration() {
     return PageDecoration(
       titleTextStyle: Theme.of(context).textTheme.headline2!,
@@ -69,17 +99,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
       ],
       onDone: () async {
         await _setIntroDone();
-        SharedPreferences _prefs = await SharedPreferences.getInstance();
-        bool municipalityNotSet =
-            _prefs.getString(Constants.prefSelectedMunicipalityCode) == null;
-        if(municipalityNotSet){
-          String? municipalityId =
-              DataHolder.municipalitiesById.entries.first.key;
-          await _prefs.setString(
-              Constants.prefSelectedMunicipalityCode,
-              municipalityId
-          );
-        }
         Route route = MaterialPageRoute(builder: (context) => const LoadingPage());
         Navigator.pushReplacement(context, route);
       },

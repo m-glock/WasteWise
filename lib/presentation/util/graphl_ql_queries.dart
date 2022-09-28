@@ -91,12 +91,6 @@ class GraphQLQueries{
           }
         }
       }
-      
-      getMunicipalities{
-        objectId
-        name
-      }
-      
 
       getForumEntryTypes(languageCode: \$languageCode){
         text
@@ -616,12 +610,6 @@ class GraphQLQueries{
   }
 
   static Future<void> initialDataExtraction(dynamic data) async {
-    // get municipalities
-    List<dynamic> municipalities = data?["getMunicipalities"];
-    for(dynamic municipality in municipalities){
-      DataHolder.municipalitiesById[municipality["objectId"]] = municipality["name"];
-    }
-
     // get waste bin categories
     List<dynamic> categories = data?["getCategories"];
     Map<String, WasteBinCategory> wasteBinCategories = {};

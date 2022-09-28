@@ -12,18 +12,18 @@ class LanguageIntroScreen extends StatefulWidget {
 }
 
 class _LanguageIntroScreenState extends State<LanguageIntroScreen> {
-  String? languageDefault;
+  String languageDefault = Constants.languages.values.first;
 
   @override
   void initState() {
     super.initState();
-    _getLanguageCode();
+    _setLanguage(languageDefault);
   }
 
-  void _getLanguageCode() async {
-    Locale locale = await getLocale();
+  void _setLanguage(String newValue) async {
     setState(() {
-      languageDefault = Constants.languages[locale];
+      Locale locale = Constants.languages.entries.where((entry) => entry.value == newValue).first.key;
+      changeAppLanguage(context, locale.languageCode);
     });
   }
 
@@ -38,11 +38,8 @@ class _LanguageIntroScreenState extends State<LanguageIntroScreen> {
           isExpanded: true,
           value: languageDefault,
           onChanged: (String? newValue) {
-            setState(() {
-              languageDefault = newValue!;
-              Locale locale = Constants.languages.entries.where((entry) => entry.value == newValue).first.key;
-              changeAppLanguage(context, locale.languageCode);
-            });
+            languageDefault = newValue!;
+            _setLanguage(newValue);
           },
           items: Constants.languages.values
               .map<DropdownMenuItem<String>>(
