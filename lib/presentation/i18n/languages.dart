@@ -20,6 +20,7 @@ abstract class Languages {
   String get doneButtonText;
   String get backButtonText;
   String get languageScreenTitle;
+  String get languageScreenWelcomeText;
   String get languageScreenExplanation;
   String get purposeScreenTitle;
   String get purposeScreenQ1;
@@ -74,10 +75,6 @@ abstract class Languages {
   String get logoutFailedText;
 
   // profile page
-  String get profileRecycledItemsText;
-  String get profileSavedItemsText;
-  String get profileRankingText;
-  String get profileRankingPlaceText;
   String get profileLogoutButtonText;
 
   // search history page

@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../util/constants.dart';
 
-class DashboardTile extends StatefulWidget {
+class DashboardTile extends StatelessWidget {
   const DashboardTile({Key? key, required this.tileContent, this.onlyTitlePadding = false}) : super(key: key);
 
   final Widget tileContent;
   final bool onlyTitlePadding;
-
-  @override
-  State<DashboardTile> createState() => _DashboardTileState();
-}
-
-class _DashboardTileState extends State<DashboardTile> {
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +17,12 @@ class _DashboardTileState extends State<DashboardTile> {
           borderRadius: Constants.tileBorderRadius,
       ),
       child: Padding(
-        padding: widget.onlyTitlePadding
+        padding: onlyTitlePadding
             ? const EdgeInsets.only(top: 20, right: 20)
             : const EdgeInsets.all(20),
         child: Row(
           children: [
-            widget.tileContent,
+            tileContent,
           ],
         ),
       ),

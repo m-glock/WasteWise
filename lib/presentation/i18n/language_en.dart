@@ -18,7 +18,8 @@ class LanguageEn extends Languages {
   @override String get nextButtonText => "Next";
   @override String get backButtonText => "Back";
   @override String get languageScreenTitle => "Choose language";
-  @override String get languageScreenExplanation => "Welcome to ${Constants.appTitle}. Please choose the language for the app. You can always change it later on in the settings.";
+  @override String get languageScreenWelcomeText => "Welcome to ${Constants.appTitle}";
+  @override String get languageScreenExplanation => "Please choose the language for the app. You can always change it later on in the settings.";
   @override String get purposeScreenTitle => "The purpose";
   @override String get purposeScreenQ1 => "What can I throw into the organic waste garbage can?";
   @override String get purposeScreenQ2 => "Why is waste separated and what happens to it?";
@@ -69,14 +70,10 @@ class LanguageEn extends Languages {
   @override String get errorDialogTitle => "Something went wrong";
   @override String get registrationDialogCloseButtonText => "Okay";
   @override String get logoutFailedText => "Something went wrong. Logout was not successful.";
+  @override String get notAValidZipCode => " is not a valid zip code for your area.";
 
   // profile page
-  @override String get profileRecycledItemsText => "Amount of recycled items:";
-  @override String get profileSavedItemsText => "Amount of saved items:";
-  @override String get profileRankingText => "Ranking in neighborhood:";
-  @override String get profileRankingPlaceText => "place";
   @override String get profileLogoutButtonText => "Logout";
-  @override String get notAValidZipCode => " is not a valid zip code for your area.";
 
   // search history page
   @override String get searchHistoryPageTitle => "Search History";

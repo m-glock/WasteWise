@@ -17,7 +17,8 @@ class LanguageDe extends Languages {
   @override String get nextButtonText => "Weiter";
   @override String get backButtonText => "Zurück";
   @override String get languageScreenTitle => "Sprache auswählen";
-  @override String get languageScreenExplanation => "Willkommen bei ${Constants.appTitle}. Bitte wähle deine Sprache aus. Du kannst sie später jederzeit in deinen Einstellungen ändern";
+  @override String get languageScreenWelcomeText => "Willkommen bei ${Constants.appTitle}";
+  @override String get languageScreenExplanation => "Bitte wähle deine Sprache aus. Du kannst sie später jederzeit in deinen Einstellungen ändern";
   @override String get purposeScreenTitle => "Das Ziel";
   @override String get purposeScreenQ1 => "Was darf ich eigentlich alles in die Biotonne werfen?";
   @override String get purposeScreenQ2 => "Warum wird Müll getrennt und was passiert dann damit?";
@@ -68,14 +69,10 @@ class LanguageDe extends Languages {
   @override String get errorDialogTitle => "Etwas ist schief gelaufen";
   @override String get registrationDialogCloseButtonText => "Okay";
   @override String get logoutFailedText => "Etwas ist schief gelaufen. Logout konnte nicht durchgeführt werden.";
+  @override String get notAValidZipCode => " ist keine valide Postleitzahl für die ausgewählte Region.";
 
   // profile page
-  @override String get profileRecycledItemsText => "Anzahl der recycelten Items:";
-  @override String get profileSavedItemsText => "Anzahl der geretteten Items:";
-  @override String get profileRankingText => "Ranking in der Nachbarschaft:";
-  @override String get profileRankingPlaceText => "Platz";
   @override String get profileLogoutButtonText => "Logout";
-  @override String get notAValidZipCode => " ist keine valide Postleitzahl für die ausgewählte Region.";
 
   // search history page
   @override String get searchHistoryPageTitle => "Suchverlauf";

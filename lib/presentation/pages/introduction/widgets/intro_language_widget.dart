@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
 import '../../../i18n/locale_constant.dart';
@@ -35,6 +36,17 @@ class _LanguageIntroScreenState extends State<LanguageIntroScreen> {
     return Center(
       child: Column(
         children: [
+          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          SvgPicture.asset(
+            "assets/icons/logo.svg",
+            width: 150,
+            height: 150,
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          Text(
+            Languages.of(context)!.languageScreenWelcomeText,
+            style: Theme.of(context).textTheme.headline3,
+          ),
           const Padding(padding: EdgeInsets.only(bottom: 20)),
           Text(
             Languages.of(context)!.languageScreenExplanation,
