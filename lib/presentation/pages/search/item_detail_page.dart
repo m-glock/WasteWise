@@ -90,8 +90,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TipDetailPage(
-                        tip: tip, updateBookmarkInParent: () => {}),
+                    builder: (context) => TipDetailPage(tip: tip),
                   ),
                 ),
               )),
@@ -147,15 +146,6 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 ),
               ],
               const Padding(padding: EdgeInsets.only(bottom: 30)),
-              Text.rich(TextSpan(
-                  text: Languages.of(context)!.itemDetailMaterialLabel,
-                  style: Theme.of(context).textTheme.labelMedium,
-                  children: [
-                    TextSpan(
-                        text: widget.item.material,
-                        style: Theme.of(context).textTheme.bodyText1)
-                  ])),
-              const Padding(padding: EdgeInsets.only(bottom: 10)),
               Text.rich(TextSpan(
                   text: Languages.of(context)!.itemDetailWasteBinLabel,
                   style: Theme.of(context).textTheme.labelMedium,
