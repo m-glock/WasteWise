@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../util/constants.dart';
 
 class DashboardTile extends StatelessWidget {
-  const DashboardTile({Key? key, required this.tileContent, this.onlyTitlePadding = false}) : super(key: key);
+  const DashboardTile({
+    Key? key,
+    required this.tileContent,
+    this.padding = const EdgeInsets.all(20)}) : super(key: key);
 
   final Widget tileContent;
-  final bool onlyTitlePadding;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +20,7 @@ class DashboardTile extends StatelessWidget {
           borderRadius: Constants.tileBorderRadius,
       ),
       child: Padding(
-        padding: onlyTitlePadding
-            ? const EdgeInsets.only(top: 20, right: 20)
-            : const EdgeInsets.all(20),
+        padding: padding,
         child: Row(
           children: [
             tileContent,
