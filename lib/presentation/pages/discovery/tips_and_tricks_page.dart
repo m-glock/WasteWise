@@ -91,6 +91,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
   }
 
   Widget _getWidget() {
+    for (Tip tip in filteredTipList) {
+      tip.subcategories.map((cat) => DataHolder.categoriesById[cat.parentId]!.title).toSet();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -128,13 +131,13 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                     ...filteredTipList.map((tip) {
                       return TipTile(
                         tip: tip,
-                        tags: [
-                          tipTypeOptions.entries
-                              .firstWhere(
-                                  (element) => element.value == tip.tipTypeId)
-                              .key,
+                        tipTypeTag: tipTypeOptions.entries
+                            .firstWhere(
+                                (element) => element.value == tip.tipTypeId)
+                            .key,
+                        wasteBinTags: [
                           ...tip.subcategories.map((cat) =>
-                              DataHolder.categoriesById[cat.parentId]!.title)
+                          DataHolder.categoriesById[cat.parentId]!.title).toSet()
                         ],
                       );
                     }),

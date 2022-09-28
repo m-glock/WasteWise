@@ -14,18 +14,19 @@ class TipTile extends StatefulWidget {
   const TipTile({
     Key? key,
     required this.tip,
-    required this.tags,
+    required this.tipTypeTag,
+    required this.wasteBinTags,
   }) : super(key: key);
 
   final Tip tip;
-  final List<String> tags;
+  final String tipTypeTag;
+  final List<String> wasteBinTags;
 
   @override
   State<TipTile> createState() => _TipTileState();
 }
 
 class _TipTileState extends State<TipTile> {
-
   ParseUser? currentUser;
 
   @override
@@ -67,6 +68,29 @@ class _TipTileState extends State<TipTile> {
     });
   }
 
+  Widget _getTagRow(List<String> tags) {
+    return Row(
+      children: [
+        ...tags.map(
+              (tagName) => Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            margin: const EdgeInsets.only(right: 5),
+            child: Text(
+              tagName,
+              style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSecondary),
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary.withAlpha(180),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,18 +103,18 @@ class _TipTileState extends State<TipTile> {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            if(currentUser != null)
+            if (currentUser != null)
               widget.tip.isBookmarked
-                ? CustomIconButton(
-                    padding: const EdgeInsets.only(right: 10),
-                    onPressed: _bookmarkTip,
-                    icon: const Icon(FontAwesomeIcons.solidBookmark),
-                  )
-                : CustomIconButton(
-                    padding: const EdgeInsets.only(right: 10),
-                    onPressed: _bookmarkTip,
-                    icon: const Icon(FontAwesomeIcons.bookmark),
-                  ),
+                  ? CustomIconButton(
+                      padding: const EdgeInsets.only(right: 10),
+                      onPressed: _bookmarkTip,
+                      icon: const Icon(FontAwesomeIcons.solidBookmark),
+                    )
+                  : CustomIconButton(
+                      padding: const EdgeInsets.only(right: 10),
+                      onPressed: _bookmarkTip,
+                      icon: const Icon(FontAwesomeIcons.bookmark),
+                    ),
             Expanded(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
@@ -114,28 +138,27 @@ class _TipTileState extends State<TipTile> {
                         children: [
                           Text(
                             widget.tip.title,
-                            style: Theme.of(context).textTheme.headline2,
+                            style: Theme.of(context).textTheme.headline3,
                           ),
                           const Padding(padding: EdgeInsets.only(bottom: 5)),
-                          Row(children: [
-                            ...widget.tags.map((tagName) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
-                                  margin: const EdgeInsets.only(right: 5),
-                                  child: Text(
-                                    tagName,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),),
-                          ],)
+                          if(widget.wasteBinTags.length > 1)
+                            Column(
+                              children: [
+                                _getTagRow([
+                                  widget.tipTypeTag,
+                                  widget.wasteBinTags.first
+                                ]),
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+                                _getTagRow([
+                                  ...widget.wasteBinTags.sublist(1)
+                                ]),
+                              ],
+                            )
+                          else
+                          _getTagRow([
+                            widget.tipTypeTag,
+                            widget.wasteBinTags.first
+                          ]),
                         ],
                       ),
                     ),
