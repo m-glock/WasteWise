@@ -195,4 +195,13 @@ abstract class Languages {
   String get contactPageImprintParagraphTitle;
   String get contactPageValidationText;
   String get contactPageEmailValidationText;
+
+  // notifications
+  String get notificationItemTitle;
+  String get notificationItemBody;
+  String get notificationTipTitle;
+  String get notificationTipBody;
+  String get notificationSortTitle;
+  String get notificationSortBody;
+  String get notificationNotLoggedIn;
 }

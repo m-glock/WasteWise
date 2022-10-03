@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/util/data_holder.dart';
 import 'package:recycling_app/presentation/util/database_classes/user.dart';
 import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
+import 'package:recycling_app/presentation/util/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
@@ -172,10 +173,10 @@ class _LoginWidgetState extends State<LoginWidget> {
     final String password = controllerPassword.text.trim();
 
     ParseResponse response;
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
     if (_signup) {
       final String email = controllerEmail.text.trim();
       final ParseUser user = ParseUser.createUser(username, password, email);
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
 
       // set zip code and municipality
       user.set("zip_code_id", _zipCode);
@@ -198,12 +199,18 @@ class _LoginWidgetState extends State<LoginWidget> {
       // sign up
       response = await Provider.of<User>(context, listen: false).signup(user);
     } else {
+      // login
       final ParseUser user = ParseUser(username, password, null);
       response = await Provider.of<User>(context, listen: false).login(user);
     }
 
     if (response.success) {
       widget.authenticated();
+      bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
+      if(learnMore){
+        Provider.of<NotificationService>(context, listen: false)
+            .startWronglySortedNotification();
+      }
     } else {
       _showError(response.error!.message);
     }

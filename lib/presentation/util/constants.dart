@@ -22,6 +22,11 @@ class Constants{
   static const String kParseApplicationId = "tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh";
   static const String kParseClientKey = "YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW";
 
+  // scheduled notification
+  static String channelId = "ScheduledRecyclingAppNotification";
+  static String channelName = "RecyclingAppNotification";
+  static String channelDescription = "channel used for recycling app notification about tips and items.";
+
   // UI elements
   static double pagePadding = 15;
   static BorderRadius tileBorderRadius = const BorderRadius.all(Radius.circular(20));

@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../i18n/languages.dart';
+import '../../../util/constants.dart';
 import '../../../util/database_classes/user.dart';
+import '../../../util/notification_service.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget(
@@ -41,6 +44,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
     if (response?.success ?? false) {
       widget.authenticated();
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
+      if(learnMore){
+        Provider.of<NotificationService>(context, listen: false)
+            .stopWronglySortedNotification();
+      }
     } else {
       _showError(response?.error?.message
           ?? Languages.of(context)!.logoutFailedText);

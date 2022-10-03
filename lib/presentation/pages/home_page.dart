@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
@@ -14,6 +15,9 @@ import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import '../util/notification_service.dart';
 
 import '../util/database_classes/user.dart';
 import 'imprint/imprint_page.dart';
@@ -34,19 +38,60 @@ class _HomePageState extends State<HomePage> {
     const NeighborhoodPage()
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _setUser();
+    _startScheduledNotifications();
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
+  void _setUser() async {
     ParseUser? currentUser = await ParseUser.currentUser();
     if (currentUser != null) {
       Provider.of<User>(context, listen: false).setUser(currentUser);
     }
+  }
+
+  void _startScheduledNotifications() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    bool learnMore = _prefs.getBool(Constants.prefLearnMore) ?? false;
+
+    tz.initializeTimeZones();
+    NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
+    await notificationService.init(notificationTapBackground, context);
+
+    if(learnMore){
+      notificationService.startSchedule();
+    }
+  }
+
+  @pragma('vm:entry-point')
+  void notificationTapBackground(
+      NotificationResponse notificationResponse) async {
+    NotificationService notificationService = Provider.of<NotificationService>(context, listen: false);
+    int? id = notificationResponse.id;
+    switch (id) {
+      case 0:
+        notificationService.openTipPage();
+        break;
+      case 1:
+        notificationService.openSortScreen(false);
+        break;
+      case 2:
+        if (Provider.of<User>(context, listen: false).currentUser == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(Languages.of(context)!.notificationNotLoggedIn)));
+        } else {
+          notificationService.openSortScreen(true);
+        }
+        break;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override

@@ -13,6 +13,7 @@ import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
 import 'package:recycling_app/presentation/util/constants.dart';
 import 'package:recycling_app/presentation/util/database_classes/user.dart';
+import 'package:recycling_app/presentation/util/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:provider/provider.dart';
@@ -29,10 +30,14 @@ void main() async {
 
   // start app
   runApp(
-    ChangeNotifierProvider<User>(
-      create: (context) => User(),
-      child: const MyApp(),
-    ));
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<User>(create: (_) => User()),
+          Provider<NotificationService>(create: (_) => NotificationService()),
+        ],
+        child: const MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatefulWidget {
