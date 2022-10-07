@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/i18n/locale_constant.dart';
+import 'package:recycling_app/logic/database_access/queries/tip_queries.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
 import '../../../../logic/database_access/queries/item_queries.dart';
@@ -11,7 +10,6 @@ import '../../../../model_classes/tip.dart';
 import '../../../general_widgets/custom_icon_button.dart';
 import '../../../i18n/languages.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../search/item_detail_page.dart';
 
 class BookmarkedTile extends StatefulWidget {
@@ -48,22 +46,7 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
   }
 
   void _openTipDetailPage() async {
-    Locale locale = await getLocale();
-    Map<String, dynamic> inputVariables = {
-      "languageCode": locale.languageCode,
-      "tipId": widget.objectId,
-    };
-
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.tipDetailQuery),
-        variables: inputVariables,
-      ),
-    );
-
-    Tip tip = Tip.fromGraphQlData(result.data?["getTip"], bookmarked: true);
+    Tip tip = await TipQueries.getTipDetails(context, widget.objectId);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>

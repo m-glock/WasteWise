@@ -19,13 +19,13 @@ class SearchQueries{
     }
   """;
 
-  static String getRecentlyWronglySortedItem = """
+  static String recentlyWronglySortedItemQuery = """
     query GetRecentlyWronglySortedItem(\$userId: String!){
       getRecentlyWronglySortedItem(userId: \$userId)
     }
   """;
 
-  static String getRecentlyAndOftenSearched = """
+  static String recentlyAndOftenSearchedItemsQuery = """
     query RecentlySearched(\$languageCode: String!, \$userId: String){
       recentlySearched(languageCode: \$languageCode, userId: \$userId){
         title
@@ -43,7 +43,7 @@ class SearchQueries{
     }
   """;
 
-  static String recentlyAndOftenSearchedItemQuery = """
+  static String searchedAndWronglySortedItemsQuery = """
     query GetSearchedAndWronglySortedItems(\$userId: String!){
       amountOfSearchedItems(userId: \$userId)
       

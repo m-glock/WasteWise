@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 
 import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class OverviewTile extends StatefulWidget {
   const OverviewTile({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _OverviewTileState extends State<OverviewTile> {
       builder: (BuildContext context, User user, child) {
         return Query(
           options: QueryOptions(
-            document: gql(GraphQLQueries.recentlyAndOftenSearchedItemQuery),
+            document: gql(SearchQueries.searchedAndWronglySortedItemsQuery),
             variables: {"userId": user.currentUser?.objectId ?? ""},
           ),
           builder: (QueryResult result,

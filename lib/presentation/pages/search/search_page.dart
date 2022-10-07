@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_button.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
@@ -14,7 +15,6 @@ import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 import 'search_history_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -107,7 +107,7 @@ class _SearchPageState extends State<SearchPage> {
                   : Query(
                       options: QueryOptions(
                         document:
-                            gql(GraphQLQueries.getRecentlyAndOftenSearched),
+                            gql(SearchQueries.recentlyAndOftenSearchedItemsQuery),
                         variables: {
                           "languageCode": languageCode,
                           "userId": user.currentUser?.objectId ?? "",

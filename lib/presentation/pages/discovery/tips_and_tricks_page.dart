@@ -6,7 +6,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_filter_dropdown.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
 
-import '../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../logic/database_access/queries/tip_queries.dart';
 import '../../../logic/services/data_service.dart';
 import '../../../model_classes/tip.dart';
 import '../../../model_classes/waste_bin_category.dart';
@@ -164,7 +164,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                 ? const Center(child: CircularProgressIndicator())
                 : Query(
                     options: QueryOptions(
-                        document: gql(GraphQLQueries.tipListQuery),
+                        document: gql(TipQueries.tipListQuery),
                         variables: {
                           "languageCode": languageCode,
                           "userId": userId

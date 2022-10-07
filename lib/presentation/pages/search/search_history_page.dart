@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/history_tile.dart';
 
@@ -50,7 +51,7 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
       ),
       body: Query(
         options: QueryOptions(
-          document: gql(GraphQLQueries.searchHistoryQuery),
+          document: gql(SearchQueries.searchHistoryQuery),
           variables: {
             "languageCode": widget.languageCode,
             "userId": widget.userId,

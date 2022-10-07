@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/tip_queries.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/thread_page.dart';
 
@@ -12,7 +13,6 @@ import '../../../../model_classes/tip.dart';
 import '../../../i18n/locale_constant.dart';
 import '../../../../logic/util/constants.dart';
 import '../../../../model_classes/subcategory.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/util/time_duration.dart';
 
 class ForumEntryWidget extends StatefulWidget {
@@ -102,7 +102,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     QueryResult<Object?> result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.tipDetailQuery),
+        document: gql(TipQueries.tipDetailQuery),
         variables: inputVariables,
       ),
     );
