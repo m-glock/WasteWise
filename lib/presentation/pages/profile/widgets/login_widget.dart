@@ -1,9 +1,9 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/logic/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,7 +12,6 @@ import '../../../../logic/util/user.dart';
 import '../../../../model_classes/zip_code.dart';
 import '../../../i18n/languages.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -49,23 +48,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   void _getZipCodes() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String? municipalityId =
-        _prefs.getString(Constants.prefSelectedMunicipalityCode);
-    Map<String, dynamic> inputVariables = {
-      "municipalityId": municipalityId,
-    };
-
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        document: gql(GraphQLQueries.getZipCodes),
-        variables: inputVariables,
-      ),
-    );
-
     DataService dataService = Provider.of<DataService>(context, listen: false);
-    List<dynamic> zipCodes = result.data?["getZipCodes"];
+    List<ZipCode> zipCodes = await GeneralQueries.getZipCodes(context);
     for (dynamic zipCodeData in zipCodes) {
       ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
       dataService.zipCodesById[zipCode.objectId] = zipCode;

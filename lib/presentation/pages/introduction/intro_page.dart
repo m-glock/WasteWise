@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
@@ -32,17 +32,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
   }
 
   void _setDefaultMunicipality() async {
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(document: gql(GraphQLQueries.municipalityQuery)),
-    );
-
     DataService dataService = Provider.of<DataService>(context, listen: false);
-    List<dynamic> municipalities = result.data?["getMunicipalities"];
-    for (dynamic municipality in municipalities) {
-      dataService.municipalitiesById[municipality["objectId"]] =
-          municipality["name"];
-    }
+    await GeneralQueries.getMunicipality(context, dataService);
 
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? municipalityId = dataService.municipalitiesById.entries.first.key;

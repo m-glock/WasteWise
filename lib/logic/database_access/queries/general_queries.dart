@@ -1,3 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../model_classes/zip_code.dart';
+import '../../services/data_service.dart';
+import '../../util/constants.dart';
+
 class GeneralQueries{
 
   static String initialQuery = """
@@ -146,7 +154,7 @@ class GeneralQueries{
     }
   """;
 
-  static String getZipCodes = """
+  static String zipCodeQuery = """
     query GetZipCodes(\$municipalityId: String!){
       getZipCodes(municipalityId: \$municipalityId){
         objectId
@@ -184,5 +192,38 @@ class GeneralQueries{
       }
     }
   """;
+
+  static Future<List<ZipCode>> getZipCodes(BuildContext context) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    String? municipalityId =
+    _prefs.getString(Constants.prefSelectedMunicipalityCode);
+    Map<String, dynamic> inputVariables = {
+      "municipalityId": municipalityId,
+    };
+
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        document: gql(zipCodeQuery),
+        variables: inputVariables,
+      ),
+    );
+
+    return result.data?["getZipCodes"];
+  }
+
+  static Future<void> getMunicipality(
+      BuildContext context, DataService dataService) async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(document: gql(municipalityQuery)),
+    );
+
+    List<dynamic> municipalities = result.data?["getMunicipalities"];
+    for (dynamic municipality in municipalities) {
+      dataService.municipalitiesById[municipality["objectId"]] =
+      municipality["name"];
+    }
+  }
 
 }

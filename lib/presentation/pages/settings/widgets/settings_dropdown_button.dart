@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/database_access/queries/general_queries.dart';
 import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class SettingsDropdownButton extends StatefulWidget{
   const SettingsDropdownButton({
@@ -89,7 +89,7 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult result = await client.query(
       QueryOptions(
-          document: gql(GraphQLQueries.initialQuery),
+          document: gql(GeneralQueries.initialQuery),
           variables: {
             "languageCode": locale.languageCode,
             "municipalityId": municipalityId ??  "",

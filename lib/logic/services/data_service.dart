@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model_classes/collection_point.dart';
@@ -17,7 +18,6 @@ import '../../model_classes/subcategory.dart';
 import '../../model_classes/waste_bin_category.dart';
 import '../../model_classes/zip_code.dart';
 import '../../presentation/i18n/locale_constant.dart';
-import '../database_access/graphl_ql_queries.dart';
 import '../util/constants.dart';
 
 class DataService{
@@ -51,7 +51,7 @@ class DataService{
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult result = await client.query(
       QueryOptions(
-          document: gql(GraphQLQueries.initialQuery),
+          document: gql(GeneralQueries.initialQuery),
           variables: {
             "languageCode": locale.languageCode,
             "municipalityId": id ??  "",

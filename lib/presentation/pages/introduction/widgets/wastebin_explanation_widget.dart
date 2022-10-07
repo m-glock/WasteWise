@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../model_classes/waste_bin_category.dart';
 import '../../../i18n/locale_constant.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class WasteBinExplanationScreen extends StatefulWidget {
   const WasteBinExplanationScreen(
@@ -106,7 +106,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
         ? _getWidget()
         : Query(
             options: QueryOptions(
-              document: gql(GraphQLQueries.categoryQuery),
+              document: gql(GeneralQueries.categoryQuery),
               variables: {
                 "languageCode": languageCode,
                 "municipalityId": widget.municipalityId,
