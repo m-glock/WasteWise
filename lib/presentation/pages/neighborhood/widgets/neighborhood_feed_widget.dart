@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../logic/database_access/queries/neighborhood_queries.dart';
 import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/forum_entry.dart';
 import '../../../../model_classes/forum_entry_type.dart';
@@ -209,7 +210,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
             : Query(
                 options: QueryOptions(
                   fetchPolicy: FetchPolicy.networkOnly,
-                  document: gql(GraphQLQueries.getForumEntries),
+                  document: gql(NeighborhoodQueries.forumEntriesQuery),
                   variables: {
                     "municipalityId": municipalityId,
                     "zipCodes": zipCodes,

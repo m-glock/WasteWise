@@ -1,7 +1,6 @@
 class NeighborhoodQueries{
 
-
-  static String getForumEntries = """
+  static String forumEntriesQuery = """
     query GetForumEntries(\$municipalityId: String!, \$zipCodes: [String!]!){
       getForumEntries(municipalityId: \$municipalityId, zipCodes: \$zipCodes){
         objectId
@@ -21,7 +20,7 @@ class NeighborhoodQueries{
     }
   """;
 
-  static String getForumReplies = """
+  static String forumRepliesQuery = """
     query GetForumEntryReplies(\$parentEntryId: String!){
       getForumEntryReplies(parentEntryId: \$parentEntryId){
         objectId
