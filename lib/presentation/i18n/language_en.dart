@@ -23,15 +23,15 @@ class LanguageEn extends Languages {
   @override String get purposeScreenTitle => "The purpose";
   @override String get purposeScreenQ1 => "What can I throw into the organic waste garbage can?";
   @override String get purposeScreenQ2 => "Why is waste separated and what happens to it?";
-  @override String get purposeScreenQ3 => "And in which waste bin does mirror glass actually belong?";
+  @override String get purposeScreenQ3 => "And in which garbage bin does mirror glass actually belong?";
   @override String get purposeScreenExplanation => "${Constants.appTitle} is here to answer these questions for you! \n\nThe goal of the app is to educate about waste separation and recycling and to assist in the correct disposal of waste. Thus, items can be saved from the wrong trash can and recycled correctly.";
   @override String get learningModeScreenTitle => "Learning mode";
   @override String get learningModeScreenExplanation => "If you want to test your knowledge and get more information, you can turn on the learning mode. Questions, tips and challenges will help you learn more about the topic. The mode can be (de)activated at any time in the settings.";
   @override String get learningModeScreenLabel => "Activate learning mode";
   @override String get municipalityScreenTitle => "Choose municipality";
-  @override String get municipalityScreenExplanation => "Your region will determine certain waste separation rules and available waste bins. The pictograms below will appear in various places of the app to depict these waste bins.";
+  @override String get municipalityScreenExplanation => "Your region will determine certain waste separation rules and available garbage bins. The pictograms below will appear in various places of the app to depict these waste bins.";
   @override String get municipalitySelectedTitle => "Region";
-  @override String get municipalitySelectedNotFound => "Something went wrong. No waste bins were found.";
+  @override String get municipalitySelectedNotFound => "Something went wrong. No garbage bins were found.";
   @override String get profileScreenTitle => "Create a profile";
   @override String get profileScreenExplanation => "A profile allows you to use the social forum of the app and to bookmark items and tips. The general information is still available without a profile and you can create an account at any time.";
   @override String get waitingForInitializationText => "Please be patient for a moment while the app is being set up.";
@@ -47,7 +47,7 @@ class LanguageEn extends Languages {
   @override String get tipTileButtonText => "More Info";
   @override String get congratsTileTitle => "Well done!";
   @override String get congratsTileDefaultTitle => "Keep going";
-  @override String get congratsTileDefaultText => "The more you learn, the easier it gets to find the correct waste bin.";
+  @override String get congratsTileDefaultText => "The more you learn, the easier it gets to find the correct garbage bin.";
   @override String get congratsTileFirstFragment => "You are in the top  ";
   @override String get congratsTileSecondFragment => "  in your neighborhood.";
   @override String get overviewTileTitle => "Total";
@@ -91,7 +91,7 @@ class LanguageEn extends Languages {
   @override String get searchBarHint => "Search";
   @override String get searchBarItemNotExist => "This item is unknown";
   @override String get barcodeButtonText => "Barcode Scanner";
-  @override String get searchSortQuestion => "In which waste bin would you put it?";
+  @override String get searchSortQuestion => "In which garbage bin would you put it?";
   @override String get alertDialogCorrectTitle => "Congratulation!";
   @override String get alertDialogCorrectExplanation => "By properly disposing of this item, you have ensured that it can be recycled correctly.";
   @override String get alertDialogWrongTitle => "Unfortunately wrong!";
@@ -108,7 +108,7 @@ class LanguageEn extends Languages {
 
   // item detail page
   @override String get itemDetailMaterialLabel => "Material: ";
-  @override String get itemDetailWasteBinLabel => "Waste bin: ";
+  @override String get itemDetailWasteBinLabel => "Garbage bin: ";
   @override String get itemDetailSynonymsLabel => "Alternative terms: ";
   @override String get itemDetailMoreInfoLabel => "More Information about ";
   @override String get itemDetailExplanationLabel => "Explanation";
@@ -118,7 +118,7 @@ class LanguageEn extends Languages {
   @override String get itemDetailBarcodeWarningText => "This information comes from an open database (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
-  @override String get wasteBinOverviewTitle => "Waste Bin Overview";
+  @override String get wasteBinOverviewTitle => "Garbage Bin Overview";
   @override String get wasteBinOverviewSubtitle => "content, cycle, myths";
   @override String get tipsAndTricksTitle => "Tips and Tricks";
   @override String get tipsAndTricksSubtitle => "waste prevention, sorting, and more";
@@ -158,8 +158,8 @@ class LanguageEn extends Languages {
   // tips page
   @override String get dropdownTipTypeLabel => "Tip type:";
   @override String get defaultTipTypeDropdownItem => "All types";
-  @override String get dropdownWasteBinLabel => "Waste bin type:";
-  @override String get defaultCategoryDropdownItem => "All waste bins";
+  @override String get dropdownWasteBinLabel => "Garbage bin type:";
+  @override String get defaultCategoryDropdownItem => "All Garbage bins";
   @override String get emptyListText => "Nothing found";
   @override String get tipShareSuccessfulText => "Tip successfully shared";
   @override String get tipShareUnsuccessfulText => "Sharing tip failed. Please try again later";
