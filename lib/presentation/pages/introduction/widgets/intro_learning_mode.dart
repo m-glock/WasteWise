@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LearnModeIntroScreen extends StatefulWidget {

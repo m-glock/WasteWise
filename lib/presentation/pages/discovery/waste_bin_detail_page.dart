@@ -3,15 +3,15 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_widget.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
 
-import '../../util/constants.dart';
+import '../../../model_classes/waste_bin_category.dart';
+import '../../../logic/util/constants.dart';
 
 class WasteBinDetailPage extends StatelessWidget {
 
   final WasteBinCategory wasteBin;
 
-  WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
+  const WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

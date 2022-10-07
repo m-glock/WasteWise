@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
-import 'database_classes/barcode_item.dart';
-import 'database_classes/barcode_material.dart';
+import 'package:recycling_app/logic/util/barcode_item.dart';
+import '../model_classes/waste_bin_category.dart';
+import '../model_classes/barcode_material.dart';
 
 class BarcodeResult {
   static List<int> binaryNumbers = [1, 2, 4, 8, 16];

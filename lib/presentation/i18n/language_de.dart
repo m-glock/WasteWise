@@ -1,4 +1,4 @@
-import '../util/constants.dart';
+import '../../logic/util/constants.dart';
 import 'languages.dart';
 
 class LanguageDe extends Languages {

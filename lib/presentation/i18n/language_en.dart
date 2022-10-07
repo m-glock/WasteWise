@@ -1,4 +1,4 @@
-import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 
 import 'languages.dart';
 
@@ -102,7 +102,7 @@ class LanguageEn extends Languages {
   @override String get alertDialogNoItemTitle => "Item not found";
   @override String get alertDialogNoItemExplanation => "Unfortunately, there was no item associated with this barcode found.";
   @override String get alertDialogNoPackagingTitle => "No packaging info";
-  @override String get alertDialogNoPackagingExplanation => "This either means that the item does not contain any packaging or that the information is not available in the database. \nYou can check out the discovery section of the app to see if you can find more information about which bin this item might belong in.";
+  @override String get alertDialogNoPackagingExplanation => "This either means that the item does not contain any packaging or that the information is not available in the logic. \nYou can check out the discovery section of the app to see if you can find more information about which bin this item might belong in.";
   @override String get barcodeAlertDialogButtonText => "Okay";
   @override String get aboutText => "About ";
 
@@ -115,7 +115,7 @@ class LanguageEn extends Languages {
   @override String get itemDetailPreventionLabel => "Prevention";
   @override String get itemDetailTipsLabel => "Tips";
   @override String get itemDetailBarcodeWarningTitle => "Warning";
-  @override String get itemDetailBarcodeWarningText => "This information comes from an open database (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
+  @override String get itemDetailBarcodeWarningText => "This information comes from an open logic (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
   @override String get wasteBinOverviewTitle => "Garbage Bin Overview";

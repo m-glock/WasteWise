@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
-import 'package:recycling_app/presentation/util/database_classes/item.dart';
-import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
+import 'package:recycling_app/logic/database_access/graphl_ql_queries.dart';
 
-import '../../../util/database_classes/waste_bin_category.dart';
+import '../../../../model_classes/item.dart';
+import '../../../../model_classes/waste_bin_category.dart';
 
 class SearchSortGridTile extends StatefulWidget {
   const SearchSortGridTile(

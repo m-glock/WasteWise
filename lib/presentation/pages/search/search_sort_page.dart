@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_sort_grid_tile.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/util/constants.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
-import '../../util/database_classes/item.dart';
 
 class SearchSortPage extends StatefulWidget {
   const SearchSortPage(

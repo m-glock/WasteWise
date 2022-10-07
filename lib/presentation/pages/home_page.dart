@@ -13,13 +13,13 @@ import 'package:recycling_app/presentation/pages/profile/user_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_page.dart';
 import 'package:recycling_app/presentation/pages/settings/settings_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
-import 'package:recycling_app/presentation/util/custom_icon_button.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import '../util/notification_service.dart';
+import '../../logic/services/notification_service.dart';
 
-import '../util/database_classes/user.dart';
+import '../../logic/util/user.dart';
+import '../general_widgets/custom_icon_button.dart';
 import 'imprint/imprint_page.dart';
 
 class HomePage extends StatefulWidget {

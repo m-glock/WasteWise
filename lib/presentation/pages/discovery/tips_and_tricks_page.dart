@@ -4,14 +4,14 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_filter_dropdown.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
-import 'package:recycling_app/presentation/util/graphl_ql_queries.dart';
+import 'package:recycling_app/logic/data_holder.dart';
+import 'package:recycling_app/logic/database_access/graphl_ql_queries.dart';
 
+import '../../../model_classes/tip.dart';
+import '../../../model_classes/waste_bin_category.dart';
 import '../../i18n/locale_constant.dart';
-import '../../util/constants.dart';
-import '../../util/database_classes/subcategory.dart';
-import '../../util/database_classes/tip.dart';
+import '../../../logic/util/constants.dart';
+import '../../../model_classes/subcategory.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
   const TipsAndTricksPage({Key? key}) : super(key: key);

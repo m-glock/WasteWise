@@ -5,10 +5,10 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../util/constants.dart';
-import '../../../util/database_classes/user.dart';
-import '../../../util/notification_service.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/services/notification_service.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget(

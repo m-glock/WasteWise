@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
 import '../../../i18n/locale_constant.dart';
-import '../../../util/constants.dart';
+import '../../../../logic/util/constants.dart';
 
 class LanguageIntroScreen extends StatefulWidget {
   const LanguageIntroScreen({Key? key}) : super(key: key);

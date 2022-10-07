@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/history_tile.dart';
-import 'package:recycling_app/presentation/util/database_classes/search_history_item.dart';
 
-import '../../util/constants.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../model_classes/search_history_item.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryPage extends StatefulWidget {
   const SearchHistoryPage({

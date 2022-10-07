@@ -4,16 +4,16 @@ import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/util/user.dart';
+import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
-import '../../util/constants.dart';
-import '../../util/database_classes/item.dart';
-import '../../util/database_classes/user.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 import 'search_history_page.dart';
 
 class SearchPage extends StatefulWidget {

@@ -6,6 +6,7 @@ part of '../address.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+
 Address _$AddressFromJson(Map<String, dynamic> json) => Address(
       json['street'] as String,
       json['number'] as String,

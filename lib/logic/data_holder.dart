@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
-import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
-import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
+import 'package:recycling_app/model_classes/subcategory.dart';
 
-import 'database_classes/collection_point.dart';
-import 'database_classes/collection_point_type.dart';
+import '../model_classes/collection_point.dart';
+import '../model_classes/collection_point_type.dart';
+import '../model_classes/forum_entry_type.dart';
+import '../model_classes/waste_bin_category.dart';
+import '../model_classes/zip_code.dart';
 
 class DataHolder{
 

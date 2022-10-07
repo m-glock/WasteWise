@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../util/constants.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class SettingsDropdownButton extends StatefulWidget{
   const SettingsDropdownButton({

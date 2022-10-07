@@ -9,9 +9,9 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/tip_dialog_widget.dart';
 
-import '../../../util/database_classes/item.dart';
-import '../../../util/database_classes/tip.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../model_classes/item.dart';
+import '../../../../model_classes/tip.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class AlertDialogWidget {
   static Random rand = Random();

@@ -6,9 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../model_classes/waste_bin_category.dart';
 import '../../../i18n/locale_constant.dart';
-import '../../../util/database_classes/waste_bin_category.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class WasteBinExplanationScreen extends StatefulWidget {
   const WasteBinExplanationScreen(

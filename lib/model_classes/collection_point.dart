@@ -1,10 +1,10 @@
-import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
+import 'package:recycling_app/model_classes/subcategory.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../data_holder.dart';
-import 'address.dart';
+import '../../../model_classes/address.dart';
+import '../logic/data_holder.dart';
+import '../../../model_classes/contact.dart';
 import 'collection_point_type.dart';
-import 'contact.dart';
 
 part 'generated/collection_point.g.dart';
 

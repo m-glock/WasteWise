@@ -8,11 +8,11 @@ import 'package:recycling_app/presentation/pages/introduction/widgets/intro_lear
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_login_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 import 'package:recycling_app/presentation/pages/loading_page.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../util/constants.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({Key? key}) : super(key: key);

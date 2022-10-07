@@ -3,8 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
-import '../../../../util/data_holder.dart';
-import '../../../../util/graphl_ql_queries.dart';
+import '../../../../../logic/data_holder.dart';
+import '../../../../../logic/database_access/graphl_ql_queries.dart';
 
 class ComradeDialogWidget {
   static Future<void> showModal(

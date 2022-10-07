@@ -9,9 +9,9 @@ import 'package:recycling_app/presentation/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../i18n/locale_constant.dart';
-import '../util/constants.dart';
-import '../util/data_holder.dart';
-import '../util/graphl_ql_queries.dart';
+import '../../logic/util/constants.dart';
+import '../../logic/data_holder.dart';
+import '../../logic/database_access/graphl_ql_queries.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/user.dart';
-import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
-import 'package:recycling_app/presentation/util/notification_service.dart';
+import 'package:recycling_app/logic/data_holder.dart';
+import 'package:recycling_app/logic/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/util/user.dart';
+import '../../../../model_classes/zip_code.dart';
 import '../../../i18n/languages.dart';
-import '../../../util/constants.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {

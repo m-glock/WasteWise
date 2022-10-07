@@ -5,8 +5,8 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/bookmarked_tile.dart';
 
 import '../../i18n/locale_constant.dart';
-import '../../util/constants.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
   }
 
   void _removeBookmark(String objectId, bool isItem) async {
-    // remove from database
+    // remove from logic
     GraphQLClient client = GraphQLProvider.of(context).value;
     bool success = isItem
         ? await GraphQLQueries.removeItemBookmark(objectId, client)

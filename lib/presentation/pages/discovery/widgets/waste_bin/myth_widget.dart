@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_detail_widget.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+
+import '../../../../../model_classes/waste_bin_category.dart';
 
 class MythWidget extends StatefulWidget {
   const MythWidget({Key? key, required this.category}) : super(key: key);

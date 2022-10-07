@@ -4,7 +4,7 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../util/database_classes/collection_point.dart';
+import '../../../../../model_classes/collection_point.dart';
 import 'map_popup.dart';
 
 class MapWidget extends StatefulWidget {

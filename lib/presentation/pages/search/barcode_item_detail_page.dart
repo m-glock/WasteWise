@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_warning_widget.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
-import 'package:recycling_app/presentation/util/database_classes/barcode_material.dart';
+import 'package:recycling_app/logic/util/constants.dart';
+import 'package:recycling_app/model_classes/barcode_material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/util/barcode_item.dart';
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
-import '../../util/barcode_result.dart';
-import '../../util/data_holder.dart';
-import '../../util/database_classes/barcode_item.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../logic/barcode_result.dart';
+import '../../../logic/data_holder.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class BarcodeItemDetailPage extends StatefulWidget {
   const BarcodeItemDetailPage({Key? key, required this.responseBody})

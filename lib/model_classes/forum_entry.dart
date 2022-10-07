@@ -1,4 +1,5 @@
-import '../data_holder.dart';
+
+import '../logic/data_holder.dart';
 import 'forum_entry_type.dart';
 
 class ForumEntry {

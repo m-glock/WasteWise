@@ -1,4 +1,4 @@
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/model_classes/waste_bin_category.dart';
 
 class BarcodeMaterial{
 

@@ -3,10 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 
+import '../../../../model_classes/tip.dart';
 import '../../../i18n/languages.dart';
 import '../../../icons/custom_icons.dart';
-import '../../../util/database_classes/tip.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../discovery/tip_detail_page.dart';
 
 class ActionTile extends StatefulWidget {

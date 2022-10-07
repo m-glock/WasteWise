@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:recycling_app/presentation/util/database_classes/search_history_item.dart';
 
-import '../../../util/constants.dart';
-import '../../../util/database_classes/item.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../model_classes/item.dart';
+import '../../../../model_classes/search_history_item.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../item_detail_page.dart';
 
 class HistoryTile extends StatefulWidget {

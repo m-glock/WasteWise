@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/wastebin_explanation_widget.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../util/data_holder.dart';
+import '../../../../logic/data_holder.dart';
 
 class UserDataIntroScreen extends StatefulWidget {
   const UserDataIntroScreen({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/tip.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/model_classes/tip.dart';
+import 'package:recycling_app/model_classes/waste_bin_category.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 
 class Item {
   final String objectId;

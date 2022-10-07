@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/util/custom_icon_button.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../model_classes/tip.dart';
+import '../../general_widgets/custom_icon_button.dart';
 import '../../i18n/languages.dart';
-import '../../util/constants.dart';
-import '../../util/database_classes/tip.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class TipDetailPage extends StatefulWidget {
   const TipDetailPage(

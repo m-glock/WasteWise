@@ -11,12 +11,13 @@ import 'package:recycling_app/presentation/themes/color_scheme.dart';
 import 'package:recycling_app/presentation/i18n/app_localizations_delegate.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/themes/text_theme.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
-import 'package:recycling_app/presentation/util/database_classes/user.dart';
-import 'package:recycling_app/presentation/util/notification_service.dart';
+import 'package:recycling_app/logic/util/constants.dart';
+import 'package:recycling_app/logic/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:provider/provider.dart';
+
+import 'logic/util/user.dart';
 
 void main() async {
   // initialize connection to backend

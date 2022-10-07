@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/neighborhood_feed_widget.dart';
 
-import '../../util/database_classes/user.dart';
+import '../../../logic/util/user.dart';
 
 class NeighborhoodPage extends StatefulWidget {
   const NeighborhoodPage({Key? key}) : super(key: key);

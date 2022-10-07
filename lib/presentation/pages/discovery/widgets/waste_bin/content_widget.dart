@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_list_widget.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+
+import '../../../../../model_classes/waste_bin_category.dart';
 
 class ContentWidget extends StatelessWidget {
   const ContentWidget({Key? key, required this.category}) : super(key: key);

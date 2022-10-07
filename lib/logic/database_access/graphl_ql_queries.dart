@@ -5,17 +5,17 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
-import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
+import 'package:recycling_app/model_classes/subcategory.dart';
 import 'package:http/http.dart' as http;
-import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 
-import 'data_holder.dart';
-import 'database_classes/collection_point.dart';
-import 'database_classes/collection_point_type.dart';
-import 'database_classes/cycle.dart';
-import 'database_classes/myth.dart';
-import 'database_classes/waste_bin_category.dart';
+import '../../model_classes/collection_point.dart';
+import '../../model_classes/collection_point_type.dart';
+import '../../model_classes/cycle.dart';
+import '../../model_classes/forum_entry_type.dart';
+import '../../model_classes/myth.dart';
+import '../../model_classes/waste_bin_category.dart';
+import '../../model_classes/zip_code.dart';
+import '../data_holder.dart';
 
 class GraphQLQueries{
 

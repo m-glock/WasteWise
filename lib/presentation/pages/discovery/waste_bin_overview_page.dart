@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_detail_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/discovery_tile.dart';
-import '../../util/constants.dart';
+import '../../../logic/util/constants.dart';
 
 class WasteBinOverviewPage extends StatefulWidget {
   const WasteBinOverviewPage({Key? key}) : super(key: key);

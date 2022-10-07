@@ -6,16 +6,16 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 
-import '../i18n/locale_constant.dart';
-import '../pages/search/search_sort_page.dart';
-import 'data_holder.dart';
-import 'database_classes/item.dart';
-import 'database_classes/tip.dart';
-import 'database_classes/user.dart';
-import 'graphl_ql_queries.dart';
-import 'notification_type.dart';
+import '../util/user.dart';
+import '../../model_classes/item.dart';
+import '../../model_classes/tip.dart';
+import '../../presentation/i18n/locale_constant.dart';
+import '../../presentation/pages/search/search_sort_page.dart';
+import '../data_holder.dart';
+import '../database_access/graphl_ql_queries.dart';
+import '../util/notification_type.dart';
 
 class NotificationService {
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -103,7 +103,7 @@ class NotificationService {
         break;
     }
     await _flutterLocalNotificationsPlugin!.periodicallyShow(
-        id, title, body, RepeatInterval.everyMinute, _notificationDetails!,
+        id, title, body, RepeatInterval.everyMinute, _notificationDetails!, //TODO change that for final commit
         androidAllowWhileIdle: true);
   }
 

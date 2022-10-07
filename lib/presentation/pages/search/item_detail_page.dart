@@ -8,9 +8,9 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 
-import '../../util/database_classes/item.dart';
-import '../../util/database_classes/tip.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../model_classes/item.dart';
+import '../../../model_classes/tip.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(

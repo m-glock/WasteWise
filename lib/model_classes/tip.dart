@@ -1,4 +1,4 @@
-import 'package:recycling_app/presentation/util/database_classes/subcategory.dart';
+import 'package:recycling_app/model_classes/subcategory.dart';
 
 class Tip {
   final String objectId;

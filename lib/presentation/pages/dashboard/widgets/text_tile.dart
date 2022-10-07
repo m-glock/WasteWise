@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
-import 'package:recycling_app/presentation/util/constants.dart';
+import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/util/user.dart';
+import '../../../../model_classes/zip_code.dart';
 import '../../../i18n/languages.dart';
-import '../../../util/data_holder.dart';
-import '../../../util/database_classes/user.dart';
-import '../../../util/database_classes/zip_code.dart';
-import '../../../util/graphl_ql_queries.dart';
-import '../../../util/lat_lng_distance.dart';
+import '../../../../logic/data_holder.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../logic/util/lat_lng_distance.dart';
 
 class TextTile extends StatefulWidget {
   const TextTile({Key? key}) : super(key: key);

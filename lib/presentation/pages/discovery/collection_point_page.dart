@@ -7,10 +7,10 @@ import 'package:recycling_app/presentation/pages/discovery/widgets/collection_po
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
 
-import 'package:recycling_app/presentation/util/data_holder.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../util/database_classes/collection_point.dart';
+import '../../../model_classes/collection_point.dart';
 
 class CollectionPointPage extends StatefulWidget {
   const CollectionPointPage({Key? key}) : super(key: key);

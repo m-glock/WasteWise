@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry_type.dart';
-import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../model_classes/forum_entry.dart';
+import '../../../../model_classes/forum_entry_type.dart';
+import '../../../../model_classes/zip_code.dart';
+import '../../../general_widgets/custom_icon_button.dart';
 import '../../../i18n/languages.dart';
-import '../../../util/constants.dart';
-import '../../../util/custom_icon_button.dart';
-import '../../../util/data_holder.dart';
-import '../../../util/graphl_ql_queries.dart';
-import '../../../util/lat_lng_distance.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/data_holder.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../logic/util/lat_lng_distance.dart';
 import 'forum_entry_widget.dart';
 
 class NeighborhoodFeedWidget extends StatefulWidget {

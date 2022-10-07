@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/util/database_classes/collection_point.dart';
+
+import '../../../model_classes/collection_point.dart';
 
 class CollectionPointDetailPage extends StatefulWidget {
   const CollectionPointDetailPage({Key? key, required this.collectionPoint})

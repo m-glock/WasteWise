@@ -3,8 +3,8 @@ import 'package:expandable/expandable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../model_classes/myth.dart';
 import '../../../../i18n/languages.dart';
-import '../../../../util/database_classes/myth.dart';
 
 class MythDetailWidget extends StatelessWidget {
   const MythDetailWidget({Key? key, required this.myth}) : super(key: key);

@@ -3,12 +3,12 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/forum_entry_widget.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
 
-import '../../util/constants.dart';
-import '../../util/custom_icon_button.dart';
-import '../../util/data_holder.dart';
-import '../../util/graphl_ql_queries.dart';
+import '../../../model_classes/forum_entry.dart';
+import '../../../logic/util/constants.dart';
+import '../../../logic/data_holder.dart';
+import '../../../logic/database_access/graphl_ql_queries.dart';
+import '../../general_widgets/custom_icon_button.dart';
 
 class ThreadPage extends StatefulWidget {
   const ThreadPage({Key? key, required this.parentForumEntry}) : super(key: key);

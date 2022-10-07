@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/settings/widgets/settings_dropdown_button.dart';
 import 'package:recycling_app/presentation/pages/settings/widgets/learn_more_alert_dialog.dart';
-import 'package:recycling_app/presentation/util/custom_icon_button.dart';
-import 'package:recycling_app/presentation/util/notification_service.dart';
+import 'package:recycling_app/logic/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../util/constants.dart';
+import '../../../logic/util/constants.dart';
+import '../../general_widgets/custom_icon_button.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);

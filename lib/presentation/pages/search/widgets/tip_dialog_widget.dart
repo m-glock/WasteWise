@@ -3,8 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
+import '../../../../model_classes/tip.dart';
 import '../../../icons/custom_icons.dart';
-import '../../../util/database_classes/tip.dart';
 
 class TipDialogWidget {
   static Future<void> showModal(

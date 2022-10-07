@@ -4,7 +4,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 
-import '../../util/constants.dart';
+import '../../../logic/util/constants.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);

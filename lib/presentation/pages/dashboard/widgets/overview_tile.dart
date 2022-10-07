@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../util/database_classes/user.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class OverviewTile extends StatefulWidget {
   const OverviewTile({Key? key}) : super(key: key);

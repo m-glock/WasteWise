@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
+import '../../../../../model_classes/collection_point.dart';
 import '../../../../i18n/languages.dart';
-import '../../../../util/constants.dart';
-import '../../../../util/database_classes/collection_point.dart';
+import '../../../../../logic/util/constants.dart';
 import '../../collection_point_detail_page.dart';
 
 class MapPopup extends StatefulWidget {

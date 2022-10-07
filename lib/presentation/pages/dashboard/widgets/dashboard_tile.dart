@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../util/constants.dart';
+import '../../../../logic/util/constants.dart';
 
 class DashboardTile extends StatelessWidget {
   const DashboardTile({

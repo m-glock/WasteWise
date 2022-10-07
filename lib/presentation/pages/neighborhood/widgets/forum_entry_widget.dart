@@ -4,15 +4,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/thread_page.dart';
-import 'package:recycling_app/presentation/util/data_holder.dart';
-import 'package:recycling_app/presentation/util/database_classes/forum_entry.dart';
+import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../../model_classes/forum_entry.dart';
+import '../../../../model_classes/tip.dart';
 import '../../../i18n/locale_constant.dart';
-import '../../../util/constants.dart';
-import '../../../util/database_classes/subcategory.dart';
-import '../../../util/database_classes/tip.dart';
-import '../../../util/graphl_ql_queries.dart';
-import '../../../util/time_duration.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../model_classes/subcategory.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../logic/util/time_duration.dart';
 
 class ForumEntryWidget extends StatefulWidget {
   const ForumEntryWidget(

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:latlong2/latlong.dart';
-import 'package:recycling_app/presentation/util/database_classes/zip_code.dart';
+import '../../model_classes/zip_code.dart';
 
 double _calculateDistance(LatLng one, LatLng two){
   var p = 0.017453292519943295;

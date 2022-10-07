@@ -8,10 +8,10 @@ import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../model_classes/item.dart';
 import '../../../i18n/locale_constant.dart';
-import '../../../util/constants.dart';
-import '../../../util/database_classes/item.dart';
-import '../../../util/graphl_ql_queries.dart';
+import '../../../../logic/util/constants.dart';
+import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key, required this.itemNames}) : super(key: key);

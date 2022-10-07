@@ -1,8 +1,8 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:recycling_app/presentation/util/database_classes/waste_bin_category.dart';
+import 'package:recycling_app/model_classes/waste_bin_category.dart';
 
-import '../data_holder.dart';
-import '../graphl_ql_queries.dart';
+import '../logic/data_holder.dart';
+import '../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryItem {
   final String objectId;
