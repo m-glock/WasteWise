@@ -10,7 +10,6 @@ import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/user.dart';
 import '../../../../model_classes/zip_code.dart';
 import '../../../i18n/languages.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/util/lat_lng_distance.dart';
 
 class TextTile extends StatefulWidget {
