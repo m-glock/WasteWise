@@ -8,7 +8,7 @@
 
    <application
        android:name="androidx.multidex.MultiDexApplication"
-        android:label="recycling_app"
+        android:label="WasteWise"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

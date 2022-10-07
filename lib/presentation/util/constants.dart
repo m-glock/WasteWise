@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Constants{
 
   // App title
-  static const String appTitle = "RecyclingApp";
+  static const String appTitle = "WasteWise";
 
   // intro screen
   static Map<Locale, String> languages = {
