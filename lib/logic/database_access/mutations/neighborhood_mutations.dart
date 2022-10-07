@@ -1,6 +1,6 @@
 class NeighborhoodMutations{
 
-  static String createForumPost = """
+  static String createForumPostMutation = """
     mutation CreateForumEntries(\$userId: String!, \$forumEntryTypeId: String!, \$linkId: String, \$text: String, \$parentEntryId: String){
       createForumEntries(
         userId: \$userId, 
@@ -25,4 +25,5 @@ class NeighborhoodMutations{
       }
     }
   """;
+
 }

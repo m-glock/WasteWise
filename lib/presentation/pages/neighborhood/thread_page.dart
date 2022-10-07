@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/neighborhood_mutations.dart';
 import 'package:recycling_app/logic/database_access/queries/neighborhood_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/forum_entry_widget.dart';
@@ -9,7 +10,6 @@ import 'package:recycling_app/presentation/pages/neighborhood/widgets/forum_entr
 import '../../../logic/services/data_service.dart';
 import '../../../model_classes/forum_entry.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 import '../../general_widgets/custom_icon_button.dart';
 
 class ThreadPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _ThreadPageState extends State<ThreadPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );

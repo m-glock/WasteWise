@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/neighborhood_mutations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/database_access/queries/neighborhood_queries.dart';
 import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/forum_entry.dart';
@@ -84,7 +84,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );
