@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/database_access/mutations/bookmark_mutations.dart';
+import 'package:recycling_app/logic/database_access/queries/bookmark_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/bookmarked_tile.dart';
 
 import '../../i18n/locale_constant.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -41,8 +42,8 @@ class _BookmarkPageState extends State<BookmarkPage> {
     // remove from logic
     GraphQLClient client = GraphQLProvider.of(context).value;
     bool success = isItem
-        ? await GraphQLQueries.removeItemBookmark(objectId, client)
-        : await GraphQLQueries.removeTipBookmark(objectId, client);
+        ? await BookmarkMutations.removeItemBookmark(objectId, client)
+        : await BookmarkMutations.removeTipBookmark(objectId, client);
 
     //remove from display list
     if (success) {
@@ -71,7 +72,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           ? const Center(child: CircularProgressIndicator())
           : Query(
               options: QueryOptions(
-                document: gql(GraphQLQueries.bookmarkedItemsQuery),
+                document: gql(BookmarkQueries.bookmarkedItemsQuery),
                 variables: {
                   "languageCode": languageCode,
                   "userId": userId,
