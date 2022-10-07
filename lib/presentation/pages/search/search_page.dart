@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_button.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
@@ -41,7 +42,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((entry) => InkWell(
               onTap: () {
                 _getItem(entry.value).then((item) {
-                  if (item == null) throw Exception("No item found.");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -59,21 +59,12 @@ class _SearchPageState extends State<SearchPage> {
         .toList();
   }
 
-  Future<Item?> _getItem(String itemId) async {
-    // get item info
-    Locale locale = await getLocale();
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult result = await client.query(
-      QueryOptions(document: gql(GraphQLQueries.itemDetailQuery), variables: {
-        "languageCode": locale.languageCode,
-        "itemObjectId": itemId,
-        "userId":
-            Provider.of<User>(context, listen: false).currentUser?.objectId ??
-                "",
-      }),
+  Future<Item> _getItem(String itemId) async {
+    return await ItemQueries.getItemDetails(
+        context,
+        itemId,
+        Provider.of<User>(context, listen: false).currentUser?.objectId ?? ""
     );
-    DataService dataService = Provider.of<DataService>(context, listen: false);
-    return Item.fromGraphQlData(result.data, dataService);
   }
 
   @override

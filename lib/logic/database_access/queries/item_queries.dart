@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../../../model_classes/item.dart';
+import '../../../presentation/i18n/locale_constant.dart';
+import '../../services/data_service.dart';
 
 class ItemQueries{
 
@@ -67,7 +72,7 @@ class ItemQueries{
   }
   """;
 
-  static String getItemNameQuery = """
+  static String itemNameQuery = """
     query GetItemName(\$languageCode: String!, \$itemId: String){
       getItemName(languageCode: \$languageCode, itemId: \$itemId){
         title
@@ -80,7 +85,7 @@ class ItemQueries{
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object> result = await client.query(
       QueryOptions(
-        document: gql(getItemNameQuery),
+        document: gql(itemNameQuery),
         variables: {
           "languageCode": languageCode,
           "itemId": itemObjectId,
@@ -89,5 +94,26 @@ class ItemQueries{
     );
 
     return result.data?["getItemName"]["title"];
+  }
+
+  static Future<Item> getItemDetails(
+      BuildContext context, String itemId, String userId) async {
+
+    Map<String, dynamic> inputVariables = {
+      "languageCode": (await getLocale()).languageCode,
+      "itemObjectId": itemId,
+      "userId": userId,
+    };
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: gql(itemDetailQuery),
+        variables: inputVariables,
+      ),
+    );
+
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    return Item.fromGraphQlData(result.data, dataService)!;
   }
 }

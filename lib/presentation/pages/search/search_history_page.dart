@@ -7,7 +7,6 @@ import 'package:recycling_app/presentation/pages/search/widgets/history_tile.dar
 import '../../../logic/services/data_service.dart';
 import '../../../model_classes/search_history_item.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryPage extends StatefulWidget {
   const SearchHistoryPage({
@@ -33,7 +32,7 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
     for (dynamic element in searchHistoryData) {
       items.add(
           await SearchHistoryItem.fromGraphQlData(
-              element, client, widget.languageCode, dataService
+              element, client, widget.languageCode, dataService, context
           )
       );
     }

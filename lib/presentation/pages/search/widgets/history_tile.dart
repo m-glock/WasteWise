@@ -3,14 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
 
-import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/item.dart';
 import '../../../../model_classes/search_history_item.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../item_detail_page.dart';
 
 class HistoryTile extends StatefulWidget {
@@ -37,24 +34,8 @@ class _HistoryTileState extends State<HistoryTile> {
   }
 
   void _openItemDetailPage() async {
-    Map<String, dynamic> inputVariables = {
-      "languageCode": widget.languageCode,
-      "itemObjectId": widget.item.objectId,
-      "userId": widget.userId,
-    };
-
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.itemDetailQuery),
-        variables: inputVariables,
-      ),
-    );
-
-    DataService dataService = Provider.of<DataService>(context, listen: false);
-    Item? item = Item.fromGraphQlData(result.data, dataService);
-    if(item == null) throw Exception("No item found.");
+    Item item = await ItemQueries.getItemDetails(
+        context, widget.item.objectId, widget.userId);
 
     Navigator.push(
       context,

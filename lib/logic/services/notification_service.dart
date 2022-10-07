@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/logic/util/constants.dart';
@@ -151,23 +152,7 @@ class NotificationService {
       itemId = itemData.value;
     }
 
-    Map<String, dynamic> inputVariables = {
-      "languageCode": (await getLocale()).languageCode,
-      "itemObjectId": itemId,
-      "userId": userId,
-    };
-    GraphQLClient client = GraphQLProvider.of(context!).value;
-    result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.itemDetailQuery),
-        variables: inputVariables,
-      ),
-    );
-
-    DataService dataService = Provider.of<DataService>(context!, listen: false);
-    Item item = Item.fromGraphQlData(result.data, dataService)!;
-
+    Item item = await ItemQueries.getItemDetails(context!, itemId, userId);
     Navigator.push(context!,
         MaterialPageRoute(builder: (context) => SearchSortPage(item: item)));
   }
