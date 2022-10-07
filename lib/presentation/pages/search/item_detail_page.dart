@@ -167,16 +167,20 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 15)),
-              ItemDetailTile(
-                headerTitle: Languages.of(context)!.itemDetailTipsLabel,
-                expandedWidget: _getTipLinks(false),
-              ),
-              const Padding(padding: EdgeInsets.only(bottom: 15)),
-              ItemDetailTile(
-                headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
-                expandedWidget: _getTipLinks(true),
-              ),
+              if(widget.item.tips.isNotEmpty) ...[
+                const Padding(padding: EdgeInsets.only(bottom: 15)),
+                ItemDetailTile(
+                  headerTitle: Languages.of(context)!.itemDetailTipsLabel,
+                  expandedWidget: _getTipLinks(false),
+                ),
+              ],
+              if(widget.item.preventions.isNotEmpty) ...[
+                const Padding(padding: EdgeInsets.only(bottom: 15)),
+                ItemDetailTile(
+                  headerTitle: Languages.of(context)!.itemDetailPreventionLabel,
+                  expandedWidget: _getTipLinks(true),
+                ),
+              ],
             ],
           ),
         ),
