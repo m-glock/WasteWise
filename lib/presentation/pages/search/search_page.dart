@@ -4,10 +4,10 @@ import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../logic/util/user.dart';
 import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
@@ -72,7 +72,8 @@ class _SearchPageState extends State<SearchPage> {
                 "",
       }),
     );
-    return Item.fromGraphQlData(result.data);
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    return Item.fromGraphQlData(result.data, dataService);
   }
 
   @override
@@ -84,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SearchBar(itemNames: DataHolder.itemNames),
+              SearchBar(itemNames: Provider.of<DataService>(context, listen: false).itemNames),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(

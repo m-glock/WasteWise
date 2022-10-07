@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/constants.dart';
 import '../../../../logic/database_access/graphl_ql_queries.dart';
 
@@ -44,7 +45,8 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     String? currentMunicipalityId = _prefs.getString(Constants.prefSelectedMunicipalityCode);
     setState(() {
-      valueMunicipality = DataHolder.municipalitiesById[currentMunicipalityId]!;
+      valueMunicipality = Provider.of<DataService>(context, listen: false)
+          .municipalitiesById[currentMunicipalityId]!;
     });
   }
 
@@ -66,7 +68,8 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
   void _updateMunicipality(String newValue) async {
     widget.loading(true);
 
-    String newMunicipalityId = DataHolder.municipalitiesById.entries.firstWhere((element) => element.value == newValue).key;
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String newMunicipalityId = dataService.municipalitiesById.entries.firstWhere((element) => element.value == newValue).key;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(Constants.prefSelectedMunicipalityCode, newMunicipalityId);
     await _getNewData(municipalityId: newMunicipalityId);
@@ -92,7 +95,8 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
             "municipalityId": municipalityId ??  "",
           }),
     );
-    await GraphQLQueries.initialDataExtraction(result.data);
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    await dataService.initialDataExtraction(result.data);
   }
 
   DropdownMenuItem<String> _getDropdownMenuItem(String name){
@@ -109,7 +113,8 @@ class _SettingsDropdownButtonState extends State<SettingsDropdownButton>{
   Widget build(BuildContext context) {
     List<String> dropdownValues = widget.isLanguageButton
         ? Constants.languages.values.toList()
-        : DataHolder.municipalitiesById.values.toList();
+        : Provider.of<DataService>(context, listen: false)
+              .municipalitiesById.values.toList();
 
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(

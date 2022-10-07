@@ -13,9 +13,9 @@ import '../../model_classes/item.dart';
 import '../../model_classes/tip.dart';
 import '../../presentation/i18n/locale_constant.dart';
 import '../../presentation/pages/search/search_sort_page.dart';
-import '../data_holder.dart';
 import '../database_access/graphl_ql_queries.dart';
 import '../util/notification_type.dart';
+import 'data_service.dart';
 
 class NotificationService {
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -144,9 +144,10 @@ class NotificationService {
     } else {
       // get random item
       Random rand = Random();
-      int index = rand.nextInt(DataHolder.itemNames.length);
+      DataService dataService = Provider.of<DataService>(context!, listen: false);
+      int index = rand.nextInt(dataService.itemNames.length);
       MapEntry<String, String> itemData =
-          DataHolder.itemNames.entries.elementAt(index);
+          dataService.itemNames.entries.elementAt(index);
       itemId = itemData.value;
     }
 
@@ -164,7 +165,8 @@ class NotificationService {
       ),
     );
 
-    Item item = Item.fromGraphQlData(result.data)!;
+    DataService dataService = Provider.of<DataService>(context!, listen: false);
+    Item item = Item.fromGraphQlData(result.data, dataService)!;
 
     Navigator.push(context!,
         MaterialPageRoute(builder: (context) => SearchSortPage(item: item)));

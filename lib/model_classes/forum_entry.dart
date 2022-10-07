@@ -1,5 +1,5 @@
+import 'package:recycling_app/logic/services/data_service.dart';
 
-import '../logic/data_holder.dart';
 import 'forum_entry_type.dart';
 
 class ForumEntry {
@@ -14,12 +14,12 @@ class ForumEntry {
   ForumEntry(this.objectId, this.userName, this.userPictureUrl, this.type, this.createdAt,
       {this.linkId, this.questionText});
 
-  static ForumEntry fromGraphQLData(Map<String, dynamic> entry){
+  static ForumEntry fromGraphQLData(Map<String, dynamic> entry, DataService dataService){
     return ForumEntry(
       entry["objectId"],
       entry["user_id"]["username"],
       entry["user_id"]["avatar_picture"]?["url"],
-      DataHolder.forumEntryTypesById[entry["forum_entry_type_id"]["objectId"]]!,
+      dataService.forumEntryTypesById[entry["forum_entry_type_id"]["objectId"]]!,
       DateTime.parse(entry["createdAt"]),
       linkId: entry["link_id"],
       questionText: entry["text"],

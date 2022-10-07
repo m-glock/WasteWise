@@ -2,17 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_item_warning_widget.dart';
 import 'package:recycling_app/logic/util/constants.dart';
 import 'package:recycling_app/model_classes/barcode_material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../logic/services/data_service.dart';
 import '../../../logic/util/barcode_item.dart';
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
 import '../../../logic/barcode_result.dart';
-import '../../../logic/data_holder.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class BarcodeItemDetailPage extends StatefulWidget {
   const BarcodeItemDetailPage({Key? key, required this.responseBody})
@@ -63,6 +64,7 @@ class _BarcodeItemDetailPageState extends State<BarcodeItemDetailPage> {
               }
 
               // get barcode materials
+              DataService dataService = Provider.of<DataService>(context, listen: false);
               List<dynamic> barcodeMaterialData =
                   result.data?["getBarcodeMaterials"];
               Map<int, BarcodeMaterial> barcodeMaterials = {};
@@ -72,7 +74,7 @@ class _BarcodeItemDetailPageState extends State<BarcodeItemDetailPage> {
                 BarcodeMaterial material = BarcodeMaterial(
                     element["title"],
                     element["barcode_material_id"]["binary_value"],
-                    DataHolder.categoriesById[categoryId]!);
+                    dataService.categoriesById[categoryId]!);
                 barcodeMaterials[material.binaryValue] = material;
               }
 

@@ -2,10 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/thread_page.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/forum_entry.dart';
 import '../../../../model_classes/tip.dart';
 import '../../../i18n/locale_constant.dart';
@@ -61,8 +62,9 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
   }
 
   Future<String> _getSubcategory() async {
+    DataService dataService = Provider.of<DataService>(context, listen: false);
     Subcategory subcategory =
-        DataHolder.subcategoriesById[widget.forumEntry.linkId]!;
+        dataService.subcategoriesById[widget.forumEntry.linkId]!;
     return "\"${subcategory.title}\"";
   }
 

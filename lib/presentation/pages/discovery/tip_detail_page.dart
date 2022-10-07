@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/logic/data_holder.dart';
+import 'package:provider/provider.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/tip.dart';
 import '../../general_widgets/custom_icon_button.dart';
 import '../../i18n/languages.dart';
@@ -80,7 +81,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
       ));
     }
 
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Share")
         .key;
     Map<String, dynamic> inputVariables = {

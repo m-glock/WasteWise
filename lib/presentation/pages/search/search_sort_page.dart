@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_sort_grid_tile.dart';
 import 'package:recycling_app/logic/util/constants.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
 
@@ -46,7 +47,7 @@ class _SearchSortPageState extends State<SearchSortPage> {
                     shrinkWrap: true,
                     crossAxisCount: 2,
                     children: <Widget>[
-                      ...DataHolder.categoriesById.values.map((category) {
+                      ...Provider.of<DataService>(context, listen: false).categoriesById.values.map((category) {
                         return SearchSortGridTile(
                           category: category,
                           isCorrect:

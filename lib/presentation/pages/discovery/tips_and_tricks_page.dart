@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_filter_dropdown.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/tips/tip_tile.dart';
-import 'package:recycling_app/logic/data_holder.dart';
-import 'package:recycling_app/logic/database_access/graphl_ql_queries.dart';
 
+import '../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/tip.dart';
 import '../../../model_classes/waste_bin_category.dart';
 import '../../i18n/locale_constant.dart';
@@ -92,7 +93,8 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
 
   Widget _getWidget() {
     for (Tip tip in filteredTipList) {
-      tip.subcategories.map((cat) => DataHolder.categoriesById[cat.parentId]!.title).toSet();
+      DataService dataService = Provider.of<DataService>(context, listen: false);
+      tip.subcategories.map((cat) => dataService.categoriesById[cat.parentId]!.title).toSet();
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -137,7 +139,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             .key,
                         wasteBinTags: [
                           ...tip.subcategories.map((cat) =>
-                          DataHolder.categoriesById[cat.parentId]!.title).toSet()
+                          Provider.of<DataService>(context, listen: false).categoriesById[cat.parentId]!.title).toSet()
                         ],
                       );
                     }),
@@ -202,18 +204,19 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       }
 
                       // add subcategories to tips
+                      DataService dataService = Provider.of<DataService>(context, listen: false);
                       List<dynamic> tipSubcategoryData =
                           result.data?["getTipSubcategories"];
                       for (dynamic element in tipSubcategoryData) {
                         Tip tip = tipList[element["tip_id"]["objectId"]]!;
-                        Subcategory subcategory = DataHolder.subcategoriesById[
+                        Subcategory subcategory = dataService.subcategoriesById[
                             element["subcategory_id"]["objectId"]]!;
                         tip.subcategories.add(subcategory);
                       }
 
                       // set waste bin types
                       for (MapEntry<String, WasteBinCategory> entry
-                          in DataHolder.categoriesById.entries) {
+                          in dataService.categoriesById.entries) {
                         wasteBinOptions[entry.value.title] = entry.key;
                       }
                       wasteBinOptions[Languages.of(context)!

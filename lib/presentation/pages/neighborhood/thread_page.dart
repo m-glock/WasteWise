@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/forum_entry_widget.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/forum_entry.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/data_holder.dart';
 import '../../../logic/database_access/graphl_ql_queries.dart';
 import '../../general_widgets/custom_icon_button.dart';
 
@@ -24,7 +25,8 @@ class _ThreadPageState extends State<ThreadPage> {
   List<ForumEntryWidget> replies = [];
 
   void _createForumReply() async {
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Question")
         .key;
     Map<String, dynamic> inputVariables = {
@@ -52,7 +54,7 @@ class _ThreadPageState extends State<ThreadPage> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (forumReplyData != null) {
-      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumReplyData);
+      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumReplyData, dataService);
       setState(() {
         replies.add(ForumEntryWidget(
           key: ValueKey(forumEntry.objectId),
@@ -158,8 +160,9 @@ class _ThreadPageState extends State<ThreadPage> {
           }
 
           List<dynamic> replyData = result.data?["getForumEntryReplies"];
+          DataService dataService = Provider.of<DataService>(context, listen: false);
           for (dynamic element in replyData) {
-            ForumEntry entry = ForumEntry.fromGraphQLData(element);
+            ForumEntry entry = ForumEntry.fromGraphQLData(element, dataService);
             replies.add(ForumEntryWidget(
               key: ValueKey(entry.objectId),
               forumEntry: entry,

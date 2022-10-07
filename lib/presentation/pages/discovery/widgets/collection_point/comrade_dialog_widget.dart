@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 
-import '../../../../../logic/data_holder.dart';
 import '../../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../../logic/services/data_service.dart';
 
 class ComradeDialogWidget {
   static Future<void> showModal(
@@ -12,7 +13,8 @@ class ComradeDialogWidget {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        String subcategoryDefault = subcategoryTitle ?? DataHolder.cpSubcategories.first;
+        DataService dataService = Provider.of<DataService>(context, listen: false);
+        String subcategoryDefault = subcategoryTitle ?? dataService.cpSubcategories.first;
         return StatefulBuilder(builder:
             (BuildContext context, void Function(void Function()) setState) {
           return AlertDialog(
@@ -41,7 +43,7 @@ class ComradeDialogWidget {
                           subcategoryDefault = newValue!;
                         });
                       },
-                      items: DataHolder.cpSubcategories
+                      items: dataService.cpSubcategories
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -80,10 +82,11 @@ class ComradeDialogWidget {
       ));
     }
 
-    String subcategoryId = DataHolder.subcategoriesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String subcategoryId = dataService.subcategoriesById.entries
         .firstWhere((element) => element.value.title == subcategoryTitle)
         .key;
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Ally")
         .key;
     Map<String, dynamic> inputVariables = {

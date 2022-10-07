@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/item.dart';
 import '../../../../model_classes/tip.dart';
 import '../../../general_widgets/custom_icon_button.dart';
@@ -52,7 +54,8 @@ class _BookmarkedTileState extends State<BookmarkedTile> {
       ),
     );
 
-    Item? item = Item.fromGraphQlData(result.data);
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    Item? item = Item.fromGraphQlData(result.data, dataService);
     if(item == null) throw Exception("No item found.");
 
     Navigator.push(

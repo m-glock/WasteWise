@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/database_access/graphl_ql_queries.dart';
+import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/forum_entry.dart';
 import '../../../../model_classes/forum_entry_type.dart';
 import '../../../../model_classes/zip_code.dart';
 import '../../../general_widgets/custom_icon_button.dart';
 import '../../../i18n/languages.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/data_holder.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/util/lat_lng_distance.dart';
 import 'forum_entry_widget.dart';
 
@@ -38,7 +39,8 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   }
 
   void _setFilter() {
-    for (ForumEntryType element in DataHolder.forumEntryTypesById.values) {
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    for (ForumEntryType element in dataService.forumEntryTypesById.values) {
       forumEntryTypesSelected[element] = false;
     }
   }
@@ -46,9 +48,11 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   void _setNearbyZipCodes() async {
     ParseUser current = await ParseUser.currentUser();
     dynamic zipCodeId = current.get("zip_code_id").get("objectId");
-    ZipCode userZipCode = DataHolder.zipCodesById[zipCodeId]!;
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+
+    ZipCode userZipCode = dataService.zipCodesById[zipCodeId]!;
     List<String> nearbyZipCodes = getNearbyZipCodes(
-            DataHolder.zipCodesById.values.toList(), userZipCode.latLng)
+            dataService.zipCodesById.values.toList(), userZipCode.latLng)
         .map((zipCode) => zipCode.zipCode)
         .toList();
     setState(() {
@@ -66,7 +70,8 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
   }
 
   void _createForumPost() async {
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Question")
         .key;
     Map<String, dynamic> inputVariables = {
@@ -92,7 +97,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (forumEntryData != null) {
-      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumEntryData);
+      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumEntryData, dataService);
       setState(() {
         forumEntries.insert(
             0,
@@ -219,10 +224,11 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
+                  DataService dataService = Provider.of<DataService>(context, listen: false);
                   List<dynamic> forumEntryData =
                       result.data?["getForumEntries"];
                   for (dynamic element in forumEntryData) {
-                    ForumEntry entry = ForumEntry.fromGraphQLData(element);
+                    ForumEntry entry = ForumEntry.fromGraphQLData(element, dataService);
                     forumEntries.add(ForumEntryWidget(
                         key: ValueKey(entry.objectId), forumEntry: entry));
                   }

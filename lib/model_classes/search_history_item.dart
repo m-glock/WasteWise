@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/logic/services/data_service.dart';
 import 'package:recycling_app/model_classes/waste_bin_category.dart';
 
-import '../logic/data_holder.dart';
 import '../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryItem {
@@ -15,8 +15,8 @@ class SearchHistoryItem {
       this.selectedCategory, this.createdAt);
 
   static Future<SearchHistoryItem> fromGraphQlData(dynamic searchHistoryData,
-      GraphQLClient client, String languageCode) async {
-    WasteBinCategory correctCategory = DataHolder.categoriesById[
+      GraphQLClient client, String languageCode, DataService dataService) async {
+    WasteBinCategory correctCategory = dataService.categoriesById[
         searchHistoryData["item_id"]["subcategory_id"]["category_id"]
             ["objectId"]]!;
 
@@ -35,7 +35,7 @@ class SearchHistoryItem {
         searchHistoryData["item_id"]["objectId"],
         result.data?["getItemName"]["title"],
         correctCategory,
-        DataHolder
+        dataService
             .categoriesById[searchHistoryData["selected_category_id"]["objectId"]]!,
         temp);
   }

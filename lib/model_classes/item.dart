@@ -1,6 +1,7 @@
 import 'package:recycling_app/model_classes/tip.dart';
 import 'package:recycling_app/model_classes/waste_bin_category.dart';
-import 'package:recycling_app/logic/data_holder.dart';
+
+import '../logic/services/data_service.dart';
 
 class Item {
   final String objectId;
@@ -17,7 +18,7 @@ class Item {
       {this.synonyms, this.explanation, this.subcategory,
         this.bookmarked = false});
 
-  static Item? fromGraphQlData(Map<dynamic, dynamic>? data) {
+  static Item? fromGraphQlData(Map<dynamic, dynamic>? data, DataService dataService) {
     if(data == null) return null;
 
     Map<dynamic, dynamic> item = data["getItem"];
@@ -35,7 +36,7 @@ class Item {
     bool isBookmarked = data["getBookmarkStatusOfItem"] != null;
 
     Item newItem = Item(objectId, item["title"],
-        DataHolder.categoriesById[categoryId]!,
+        dataService.categoriesById[categoryId]!,
         synonyms: item["synonyms"],
         explanation: explanation,
         subcategory: subcategoryTitle,

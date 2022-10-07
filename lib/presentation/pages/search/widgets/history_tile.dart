@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/item.dart';
 import '../../../../model_classes/search_history_item.dart';
 import '../../../../logic/util/constants.dart';
@@ -50,7 +52,8 @@ class _HistoryTileState extends State<HistoryTile> {
       ),
     );
 
-    Item? item = Item.fromGraphQlData(result.data);
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    Item? item = Item.fromGraphQlData(result.data, dataService);
     if(item == null) throw Exception("No item found.");
 
     Navigator.push(
