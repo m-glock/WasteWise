@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
 import 'package:recycling_app/presentation/i18n/locale_constant.dart';
 
 import '../../../../model_classes/tip.dart';
 import '../../../i18n/languages.dart';
 import '../../../icons/custom_icons.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../discovery/tip_detail_page.dart';
 
 class ActionTile extends StatefulWidget {
@@ -37,7 +37,7 @@ class _ActionTileState extends State<ActionTile> {
     return languageCode == null ? const Center(child: CircularProgressIndicator()) : Query(
       options: QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
-        document: gql(GraphQLQueries.getRandomTip),
+        document: gql(DashboardQueries.randomTipQuery),
         variables: {"languageCode": languageCode},
       ),
       builder: (QueryResult result,

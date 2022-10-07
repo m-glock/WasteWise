@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
 
 import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import 'bar_chart_widget.dart';
 
 class ProgressTile extends StatefulWidget {
@@ -20,7 +20,7 @@ class _ProgressTileState extends State<ProgressTile> {
     return Consumer<User>(builder: (BuildContext context, User user, child) {
       return Query(
         options: QueryOptions(
-          document: gql(GraphQLQueries.getProgress),
+          document: gql(DashboardQueries.progressQuery),
           variables: {"userId": user.currentUser?.objectId ?? ""},
         ),
         builder: (QueryResult result,

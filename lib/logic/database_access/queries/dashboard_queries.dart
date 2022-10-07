@@ -1,6 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+import '../../../model_classes/tip.dart';
+import '../../../presentation/i18n/locale_constant.dart';
+
 class DashboardQueries{
 
-  static String compareInNeighborhood = """
+  static String compareInNeighborhoodQuery = """
     query CompareInNeighborhood(\$userId: String!, \$municipalityId: String!, \$zipCodes: [String!]!){
       compareInNeighborhood(
         userId: \$userId, 
@@ -10,7 +16,7 @@ class DashboardQueries{
     }
   """;
 
-  static String getRandomTip = """
+  static String randomTipQuery = """
     query GetRandomTip(\$languageCode: String!){
       getRandomTip(languageCode: \$languageCode){
         title
@@ -29,7 +35,7 @@ class DashboardQueries{
     }
   """;
 
-  static String getProgress = """
+  static String progressQuery = """
     query GetProgress(\$userId: String!){
       getProgress(userId: \$userId){
         objectId
@@ -38,5 +44,18 @@ class DashboardQueries{
       }
     }
   """;
+
+  static Future<Tip> getRandomTip(BuildContext context) async {
+    GraphQLClient client = GraphQLProvider.of(context).value;
+    QueryResult<Object?> result = await client.query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.noCache,
+        document: gql(randomTipQuery),
+        variables: {"languageCode": (await getLocale()).languageCode},
+      ),
+    );
+
+    return Tip.fromGraphQlData(result.data?["getRandomTip"]);
+  }
 
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
 import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
@@ -12,7 +13,6 @@ import 'package:recycling_app/logic/util/constants.dart';
 import '../util/user.dart';
 import '../../model_classes/item.dart';
 import '../../model_classes/tip.dart';
-import '../../presentation/i18n/locale_constant.dart';
 import '../../presentation/pages/search/search_sort_page.dart';
 import '../database_access/graphl_ql_queries.dart';
 import '../util/notification_type.dart';
@@ -109,16 +109,7 @@ class NotificationService {
   }
 
   void openTipPage() async {
-    GraphQLClient client = GraphQLProvider.of(context!).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.noCache,
-        document: gql(GraphQLQueries.getRandomTip),
-        variables: {"languageCode": (await getLocale()).languageCode},
-      ),
-    );
-
-    Tip tip = Tip.fromGraphQlData(result.data?["getRandomTip"]);
+    Tip tip = await DashboardQueries.getRandomTip(context!);
     Navigator.push(
         context!,
         MaterialPageRoute(

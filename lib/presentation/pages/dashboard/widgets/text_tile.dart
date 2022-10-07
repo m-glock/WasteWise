@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
 import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,7 +99,7 @@ class _TextTileState extends State<TextTile> {
       } else {
         return Query(
           options: QueryOptions(
-            document: gql(GraphQLQueries.compareInNeighborhood),
+            document: gql(DashboardQueries.compareInNeighborhoodQuery),
             variables: {
               "userId": user.currentUser!.objectId,
               "municipalityId": municipalityId,
