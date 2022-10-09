@@ -17,6 +17,8 @@ class CollectionPointDetailPage extends StatefulWidget {
 
 class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
   String bulletPoint = "\u2022 ";
+  int range = 5;
+
 
   List<Widget> _getFormattedOpeningHours() {
     List<String> openingHours = widget.collectionPoint.openingHours.split("|");
@@ -173,12 +175,29 @@ class _CollectionPointDetailPageState extends State<CollectionPointDetailPage> {
                             style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
-                        ...widget.collectionPoint.acceptedSubcategories
+                        ...widget.collectionPoint.acceptedSubcategories.getRange(0, range)
                             .map((item) {
                           return Padding(
                               padding: const EdgeInsets.only(bottom: 5),
                               child: Text("$bulletPoint ${item.title}"));
-                        }).toList()
+                        }).toList(),
+                        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              child: Text(range < widget.collectionPoint.acceptedSubcategories.length
+                                  ? Languages.of(context)!.wasteBinShowMoreLabel
+                                  : Languages.of(context)!.wasteBinShowLessLabel,
+                              ),
+                              onPressed: () => setState(() {
+                                range = range == widget.collectionPoint.acceptedSubcategories.length
+                                    ? 5
+                                    : widget.collectionPoint.acceptedSubcategories.length;
+                              }),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
