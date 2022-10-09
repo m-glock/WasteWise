@@ -14,7 +14,9 @@ import '../../../logic/util/constants.dart';
 import '../../../model_classes/subcategory.dart';
 
 class TipsAndTricksPage extends StatefulWidget {
-  const TipsAndTricksPage({Key? key}) : super(key: key);
+  const TipsAndTricksPage({Key? key, this.category}) : super(key: key);
+
+  final WasteBinCategory? category;
 
   @override
   State<TipsAndTricksPage> createState() => _TipsAndTricksPageState();
@@ -103,8 +105,9 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
             Expanded(
               child: TipFilterDropdown(
                 filterOptions: wasteBinOptions.keys.toList(),
-                defaultFilterValue:
-                    Languages.of(context)!.defaultCategoryDropdownItem,
+                defaultFilterValue: widget.category != null
+                    ? widget.category!.title
+                    : Languages.of(context)!.defaultCategoryDropdownItem,
                 isWasteBinType: true,
                 filterTipList: _filterTips,
               ),
@@ -182,7 +185,6 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                         tipList[element["tip_id"]["objectId"]] =
                             Tip.fromGraphQlData(element);
                       }
-                      filteredTipList = tipList.values.toList();
 
                       // set bookmarks
                       List<dynamic> tipBookmarkData =
@@ -218,6 +220,18 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       }
                       wasteBinOptions[Languages.of(context)!
                           .defaultCategoryDropdownItem] = "default";
+
+                      // set filtered list if needed
+                      if(widget.category != null){
+                        filteredTipList = tipList.values
+                            .where((tip) => tip.subcategories
+                            .map((e) => e.parentId)
+                            .contains(widget.category!.objectId))
+                            .toList();
+
+                      } else {
+                        filteredTipList = tipList.values.toList();
+                      }
 
                       return _getWidget();
                     },

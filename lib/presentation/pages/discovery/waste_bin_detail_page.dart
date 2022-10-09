@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/general_widgets/custom_icon_button.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/tips_and_tricks_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/cycle_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_widget.dart';
 
 import '../../../model_classes/waste_bin_category.dart';
 import '../../../logic/util/constants.dart';
+import '../../icons/custom_icons.dart';
 
 class WasteBinDetailPage extends StatelessWidget {
 
@@ -30,6 +33,19 @@ class WasteBinDetailPage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 title: Text(wasteBin.title),
+                actions: [
+                  CustomIconButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              TipsAndTricksPage(category: wasteBin),
+                        ),
+                      ),
+                      icon: const Icon(CustomIcons.lightbulb, size: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                  )
+                ],
               ),
               body: Padding(
                 padding: EdgeInsets.symmetric(
