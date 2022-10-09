@@ -20,9 +20,8 @@ class LanguageDe extends Languages {
   @override String get languageScreenWelcomeText => "Willkommen bei ${Constants.appTitle}";
   @override String get languageScreenExplanation => "Bitte wähle deine Sprache aus. Du kannst sie später jederzeit in deinen Einstellungen ändern";
   @override String get purposeScreenTitle => "Das Ziel";
-  @override String get purposeScreenQ1 => "Was darf ich eigentlich alles in die Biotonne werfen?";
-  @override String get purposeScreenQ2 => "Warum wird Müll getrennt und was passiert dann damit?";
-  @override String get purposeScreenQ3 => "Und in welche Mülltonne gehört eigentlich Spiegelglas?";
+  @override String get purposeScreenQ1 => "Warum wird Müll getrennt und was passiert dann damit?";
+  @override String get purposeScreenQ2 => "Und in welche Mülltonne gehört eigentlich Spiegelglas?";
   @override String get purposeScreenExplanation => "${Constants.appTitle} ist dafür da, um dir diese Fragen zu beantworten! \n\nDas Ziel der App ist es, über Mülltrennung und Recycling aufzuklären und bei der korrekten Entsorgung des Mülls zu unterstützen. Somit können Gegenstände vor dem falschen Mülleimer gerettet und korrekt recycelt werden.";
   @override String get learningModeScreenTitle => "Lernmodus";
   @override String get learningModeScreenExplanation => "Wenn du dein Wissen prüfen und mehr Informationen erhalten möchtest, kannst du den Lernmodus einschalten. Fragen, Tipps und Herausforderung helfen dir dann dabei, mehr über das Thema zu lernen. Der Modus kann jederzeit in den Einstellungen (de)aktiviert werden.";

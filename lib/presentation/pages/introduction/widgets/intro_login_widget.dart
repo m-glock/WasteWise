@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 
 class IntroLoginWidget extends StatefulWidget {
-  const IntroLoginWidget({Key? key}): super(key: key);
+  const IntroLoginWidget({Key? key}) : super(key: key);
 
   @override
-  State<IntroLoginWidget> createState() =>
-      _IntroLoginWidgetState();
+  State<IntroLoginWidget> createState() => _IntroLoginWidgetState();
 }
 
 class _IntroLoginWidgetState extends State<IntroLoginWidget> {
-
   bool _isAuthenticated = false;
 
   void _checkIfAuthenticated() async {
@@ -26,6 +25,15 @@ class _IntroLoginWidgetState extends State<IntroLoginWidget> {
   Widget build(BuildContext context) {
     return _isAuthenticated
         ? ProfileWidget(authenticated: _checkIfAuthenticated, introView: true)
-        : LoginWidget(authenticated: _checkIfAuthenticated, onlySignup: true);
+        : Column(
+            children: [
+              Text(
+                Languages.of(context)!.profileScreenExplanation,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              LoginWidget(
+                  authenticated: _checkIfAuthenticated, onlySignup: true),
+            ],
+          );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,11 +38,16 @@ class _LearnModeIntroScreenState extends State<LearnModeIntroScreen> {
     return Column(
       children: [
         const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        SvgPicture.asset(
+          "assets/images/knowledge-icon.svg",
+          width: 170,
+        ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 15)),
         Text(
           Languages.of(context)!.learningModeScreenExplanation,
           style: Theme.of(context).textTheme.bodyText2,
         ),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
         Row(
           children: [
             Checkbox(

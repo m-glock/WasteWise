@@ -21,9 +21,8 @@ class LanguageEn extends Languages {
   @override String get languageScreenWelcomeText => "Welcome to ${Constants.appTitle}";
   @override String get languageScreenExplanation => "Please choose the language for the app. You can always change it later on in the settings.";
   @override String get purposeScreenTitle => "The purpose";
-  @override String get purposeScreenQ1 => "What can I throw into the organic waste garbage can?";
-  @override String get purposeScreenQ2 => "Why is waste separated and what happens to it?";
-  @override String get purposeScreenQ3 => "And in which garbage bin does mirror glass actually belong?";
+  @override String get purposeScreenQ1 => "Why is waste separated and what happens to it?";
+  @override String get purposeScreenQ2 => "In which garbage bin does mirror glass actually belong?";
   @override String get purposeScreenExplanation => "${Constants.appTitle} is here to answer these questions for you! \n\nThe goal of the app is to educate about waste separation and recycling and to assist in the correct disposal of waste. Thus, items can be saved from the wrong trash can and recycled correctly.";
   @override String get learningModeScreenTitle => "Learning mode";
   @override String get learningModeScreenExplanation => "If you want to test your knowledge and get more information, you can turn on the learning mode. Questions, tips and challenges will help you learn more about the topic. The mode can be (de)activated at any time in the settings.";

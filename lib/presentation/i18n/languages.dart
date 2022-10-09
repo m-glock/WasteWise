@@ -25,7 +25,6 @@ abstract class Languages {
   String get purposeScreenTitle;
   String get purposeScreenQ1;
   String get purposeScreenQ2;
-  String get purposeScreenQ3;
   String get purposeScreenExplanation;
   String get learningModeScreenTitle;
   String get learningModeScreenExplanation;
