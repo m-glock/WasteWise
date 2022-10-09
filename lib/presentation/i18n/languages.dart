@@ -55,6 +55,9 @@ abstract class Languages {
   String get overviewTileTitle;
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
+  String get overviewTileShareText;
+  String get overviewShareSuccessful;
+  String get overviewShareUnsuccessful;
   String get progressTileTitle;
   String get progressTileRecycledLabel;
   String get progressTileSavedLabel;

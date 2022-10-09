@@ -64,7 +64,7 @@ class _TextTileState extends State<TextTile> {
               : Text.rich(
                   TextSpan(
                     text: Languages.of(context)!.congratsTileFirstFragment,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
                       TextSpan(
                         text: "${((percentage / 10).round() * 10).toString()}%",
@@ -76,7 +76,7 @@ class _TextTileState extends State<TextTile> {
                       TextSpan(
                           text:
                               Languages.of(context)!.congratsTileSecondFragment,
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyText2),
                     ],
                   ),
                   textAlign: TextAlign.center,

@@ -53,6 +53,9 @@ class LanguageEn extends Languages {
   @override String get overviewTileTitle => "Total";
   @override String get overviewTileRecycledText => "  items searched";
   @override String get overviewTileSavedText => "  items saved";
+  @override String get overviewTileShareText => "Share";
+  @override String get overviewShareSuccessful => "Progress successfully shared with the neighborhood.";
+  @override String get overviewShareUnsuccessful => "Sharing progress with the neighborhood failed.";
   @override String get progressTileTitle => "Progress";
   @override String get progressTileRecycledLabel => "Recycled";
   @override String get progressTileSavedLabel => "Saved";

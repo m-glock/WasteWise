@@ -52,6 +52,9 @@ class LanguageDe extends Languages {
   @override String get overviewTileTitle => "Insgesamt";
   @override String get overviewTileRecycledText => " Items recycelt";
   @override String get overviewTileSavedText => " Items gerettet";
+  @override String get overviewTileShareText => "Teilen";
+  @override String get overviewShareSuccessful => "Fortschritt erfolgreich mit der Nachbarschaft geteilt.";
+  @override String get overviewShareUnsuccessful => "Fortschritt mit der Nachbarschaft teilen ist fehlgeschlagen.";
   @override String get progressTileTitle => "Fortschritt";
   @override String get progressTileRecycledLabel => "Recycelt";
   @override String get progressTileSavedLabel => "Gerettet";
