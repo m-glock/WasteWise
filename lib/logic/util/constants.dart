@@ -18,7 +18,8 @@ class Constants{
   static String prefLearnMore = "LearnMore";
 
   // GraphQL setup
-  static String apiURL= "https://parseapi.back4app.com/graphql";
+  static const String apiURL= "https://parseapi.back4app.com/graphql";
+  static const String parseServURL = "https://parseapi.back4app.com";
   static const String kParseApplicationId = "tqa1Cgvy94m9L6i7tFTMPXMVYANwy4qELWhzf5Nh";
   static const String kParseClientKey = "YveWcquaobxddd2VALkC37Oej5MXCNO9kUcKevuW";
 

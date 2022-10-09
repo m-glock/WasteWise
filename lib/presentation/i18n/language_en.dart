@@ -118,7 +118,7 @@ class LanguageEn extends Languages {
   @override String get itemDetailBarcodeWarningText => "This information comes from an open logic (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
-  @override String get wasteBinOverviewTitle => "Garbage Bin Overview";
+  @override String get wasteBinOverviewTitle => "Garbage Cans";
   @override String get wasteBinOverviewSubtitle => "content, cycle, myths";
   @override String get tipsAndTricksTitle => "Tips and Tricks";
   @override String get tipsAndTricksSubtitle => "waste prevention, sorting, and more";

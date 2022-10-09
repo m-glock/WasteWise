@@ -117,7 +117,7 @@ class LanguageDe extends Languages {
   @override String get itemDetailBarcodeWarningText => "Diese Informationen sind von einer offenen Datenbank übernommen (http://www.opengtindb.org). Keine Garantie für die Richtigkeit der Daten.";
 
   // discovery page
-  @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
+  @override String get wasteBinOverviewTitle => "Mülltonnen";
   @override String get wasteBinOverviewSubtitle => "Inhalt, Kreislauf, Mythen";
   @override String get tipsAndTricksTitle => "Tipps und Tricks";
   @override String get tipsAndTricksSubtitle => "Müllvemreidung, Trennung, etc.";

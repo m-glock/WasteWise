@@ -24,7 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String keyApplicationId = Constants.kParseApplicationId;
   String keyClientKey = Constants.kParseClientKey;
-  const keyParseServerUrl = 'https://parseapi.back4app.com';
+  const keyParseServerUrl = Constants.parseServURL;
 
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
