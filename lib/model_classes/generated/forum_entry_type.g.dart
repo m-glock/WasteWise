@@ -10,7 +10,7 @@ ForumEntryType _$ForumEntryTypeFromJson(Map<String, dynamic> json) =>
     ForumEntryType(
       json['objectId'] as String,
       json['text'] as String,
-      json['buttonText'] as String,
+      json['buttonText'] as String?,
       json['typeName'] as String,
       json['title'] as String,
     );
