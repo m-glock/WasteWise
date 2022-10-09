@@ -43,13 +43,16 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     switch (forumEntryType) {
       case "Share":
         tip = await _getTip();
-        content = tip!.title;
+        content = "\"${tip!.title}\"";
         break;
       case "Ally":
         content = await _getSubcategory();
         break;
       case "Question":
         content = "\n${widget.forumEntry.questionText}";
+        break;
+      case "Progress":
+        content = "${widget.forumEntry.questionText}";
         break;
       default:
         throw Exception("Database error: entry type of forum post "
@@ -165,10 +168,10 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
             child: Text(
               widget.forumEntry.type.text.replaceFirst("\${}", postContent),
               textAlign: TextAlign.start,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
-          widget.showButton
+          widget.showButton && widget.forumEntry.type.buttonText != null
               ? TextButton(
                   onPressed: () => _buttonPressed(),
                   child: Row(
@@ -176,7 +179,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(widget.forumEntry.type.buttonText),
+                        child: Text(widget.forumEntry.type.buttonText!),
                       ),
                       const Icon(FontAwesomeIcons.angleRight, size: 12),
                     ],
