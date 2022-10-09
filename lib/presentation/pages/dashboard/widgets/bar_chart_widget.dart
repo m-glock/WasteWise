@@ -68,16 +68,16 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     // get labels for previous four months
     switch (value.toInt()) {
       case 0:
-        text = months[(currentMonth - 5) % months.length];
-        break;
-      case 1:
         text = months[(currentMonth - 4) % months.length];
         break;
-      case 2:
+      case 1:
         text = months[(currentMonth - 3) % months.length];
         break;
-      case 3:
+      case 2:
         text = months[(currentMonth - 2) % months.length];
+        break;
+      case 3:
+        text = months[(currentMonth - 1) % months.length];
         break;
       default:
         text = '';
