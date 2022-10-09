@@ -79,10 +79,10 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       style: TextStyle(
                           decoration: TextDecoration.underline,
                           fontSize:
-                              Theme.of(context).textTheme.bodyText1!.fontSize,
+                              Theme.of(context).textTheme.bodyText2!.fontSize,
                           fontFamily: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyText2!
                               .fontFamily),
                     ),
                   ],
@@ -142,7 +142,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   child: Text(
                       Languages.of(context)!.itemDetailSynonymsLabel +
                           widget.item.synonyms!,
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyText2),
                 ),
               ],
               const Padding(padding: EdgeInsets.only(bottom: 30)),
@@ -152,7 +152,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   children: [
                     TextSpan(
                         text: widget.item.wasteBin.title,
-                        style: Theme.of(context).textTheme.bodyText1)
+                        style: Theme.of(context).textTheme.bodyText2)
                   ])),
               const Padding(padding: EdgeInsets.only(bottom: 40)),
               Text(
@@ -164,7 +164,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                 headerTitle: Languages.of(context)!.itemDetailExplanationLabel,
                 expandedWidget: Text(
                   widget.item.explanation!,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
               if(widget.item.tips.isNotEmpty) ...[

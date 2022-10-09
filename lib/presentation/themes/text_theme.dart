@@ -31,7 +31,7 @@ class AppTextTheme extends TextTheme{
     ),
     labelMedium: const TextStyle(
       fontFamily: "Asap",
-      fontSize: 15.0,
+      fontSize: 16.0,
       fontWeight: FontWeight.bold,
     ),
     button: const TextStyle(

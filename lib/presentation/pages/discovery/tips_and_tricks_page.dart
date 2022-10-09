@@ -228,7 +228,7 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                             .map((e) => e.parentId)
                             .contains(widget.category!.objectId))
                             .toList();
-
+                        filterCategoryId = widget.category!.objectId;
                       } else {
                         filteredTipList = tipList.values.toList();
                       }
