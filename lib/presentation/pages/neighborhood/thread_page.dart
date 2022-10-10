@@ -57,7 +57,7 @@ class _ThreadPageState extends State<ThreadPage> {
         replies.add(ForumEntryWidget(
           key: ValueKey(forumEntry.objectId),
           forumEntry: forumEntry,
-          showButton: false,
+          isRootEntry: false,
         ));
       });
     }
@@ -80,7 +80,7 @@ class _ThreadPageState extends State<ThreadPage> {
                   children: [
                     ForumEntryWidget(
                       forumEntry: widget.parentForumEntry,
-                      showButton: false,
+                      isRootEntry: false,
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
                     ListView.builder(
@@ -163,7 +163,7 @@ class _ThreadPageState extends State<ThreadPage> {
             replies.add(ForumEntryWidget(
               key: ValueKey(entry.objectId),
               forumEntry: entry,
-              showButton: false,
+              isRootEntry: false,
             ));
           }
 

@@ -13,14 +13,15 @@ import '../../../../logic/util/constants.dart';
 import '../../../../model_classes/subcategory.dart';
 import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/util/time_duration.dart';
+import '../../../icons/custom_icons.dart';
 
 class ForumEntryWidget extends StatefulWidget {
   const ForumEntryWidget(
-      {Key? key, required this.forumEntry, this.showButton = true})
+      {Key? key, required this.forumEntry, this.isRootEntry = true})
       : super(key: key);
 
   final ForumEntry forumEntry;
-  final bool showButton;
+  final bool isRootEntry;
 
   @override
   State<ForumEntryWidget> createState() => _ForumEntryWidgetState();
@@ -110,6 +111,22 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     return Tip.fromGraphQlData(result.data?["getTip"]);
   }
 
+  Widget _getIcon(){
+    switch(widget.forumEntry.type.typeName){
+      case "Share":
+        return const Icon(CustomIcons.lightbulb);
+      case "Ally":
+        return const Icon(Icons.group);
+      case "Question":
+        return const Icon(Icons.question_answer_rounded);
+      case "Progress":
+        return const Icon(Icons.celebration_rounded);
+      default:
+        throw Exception("Database error: entry type of forum post "
+            "could not be detected.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,42 +141,49 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(pictureSize),
-                child: widget.forumEntry.userPictureUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: widget.forumEntry.userPictureUrl!,
-                        fit: BoxFit.fill,
-                        width: pictureSize,
-                        height: pictureSize,
-                      )
-                    : Container(
-                        color: Colors.black12,
-                        width: pictureSize,
-                        height: pictureSize,
-                        child: const Icon(
-                          FontAwesomeIcons.user,
-                          size: 10,
-                        ),
-                      ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    widget.forumEntry.userName,
-                    style: Theme.of(context).textTheme.headline2,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(pictureSize),
+                    child: widget.forumEntry.userPictureUrl != null
+                        ? CachedNetworkImage(
+                      imageUrl: widget.forumEntry.userPictureUrl!,
+                      fit: BoxFit.fill,
+                      width: pictureSize,
+                      height: pictureSize,
+                    )
+                        : Container(
+                      color: Colors.black12,
+                      width: pictureSize,
+                      height: pictureSize,
+                      child: const Icon(
+                        FontAwesomeIcons.user,
+                        size: 10,
+                      ),
+                    ),
                   ),
-                  Text(
-                    getTimeframe(widget.forumEntry.createdAt),
-                    style: Theme.of(context).textTheme.bodyText1,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.forumEntry.userName,
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                      Text(
+                        getTimeframe(widget.forumEntry.createdAt),
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ],
                   ),
                 ],
-              )
+              ),
+              if(widget.isRootEntry) _getIcon(),
             ],
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
@@ -171,7 +195,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
-          widget.showButton && widget.forumEntry.type.buttonText != null
+          widget.isRootEntry && widget.forumEntry.type.buttonText != null
               ? TextButton(
                   onPressed: () => _buttonPressed(),
                   child: Row(
