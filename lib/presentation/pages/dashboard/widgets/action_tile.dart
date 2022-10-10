@@ -44,7 +44,7 @@ class _ActionTileState extends State<ActionTile> {
           {VoidCallback? refetch, FetchMore? fetchMore}) {
         if (result.hasException) return Text(result.exception.toString());
         if (result.isLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center();
         }
 
         // get municipalities for selection
