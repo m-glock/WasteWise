@@ -21,9 +21,8 @@ class LanguageEn extends Languages {
   @override String get languageScreenWelcomeText => "Welcome to ${Constants.appTitle}";
   @override String get languageScreenExplanation => "Please choose the language for the app. You can always change it later on in the settings.";
   @override String get purposeScreenTitle => "The purpose";
-  @override String get purposeScreenQ1 => "What can I throw into the organic waste garbage can?";
-  @override String get purposeScreenQ2 => "Why is waste separated and what happens to it?";
-  @override String get purposeScreenQ3 => "And in which garbage bin does mirror glass actually belong?";
+  @override String get purposeScreenQ1 => "Why is waste separated and what happens to it?";
+  @override String get purposeScreenQ2 => "In which garbage bin does mirror glass actually belong?";
   @override String get purposeScreenExplanation => "${Constants.appTitle} is here to answer these questions for you! \n\nThe goal of the app is to educate about waste separation and recycling and to assist in the correct disposal of waste. Thus, items can be saved from the wrong trash can and recycled correctly.";
   @override String get learningModeScreenTitle => "Learning mode";
   @override String get learningModeScreenExplanation => "If you want to test your knowledge and get more information, you can turn on the learning mode. Questions, tips and challenges will help you learn more about the topic. The mode can be (de)activated at any time in the settings.";
@@ -53,6 +52,9 @@ class LanguageEn extends Languages {
   @override String get overviewTileTitle => "Total";
   @override String get overviewTileRecycledText => "  items searched";
   @override String get overviewTileSavedText => "  items saved";
+  @override String get overviewTileShareText => "Share";
+  @override String get overviewShareSuccessful => "Progress successfully shared with the neighborhood.";
+  @override String get overviewShareUnsuccessful => "Sharing progress with the neighborhood failed.";
   @override String get progressTileTitle => "Progress";
   @override String get progressTileRecycledLabel => "Recycled";
   @override String get progressTileSavedLabel => "Saved";
@@ -118,7 +120,7 @@ class LanguageEn extends Languages {
   @override String get itemDetailBarcodeWarningText => "This information comes from an open logic (http://www.opengtindb.org). No guarantee for the accuracy of the data.";
 
   // discovery page
-  @override String get wasteBinOverviewTitle => "Garbage Bin Overview";
+  @override String get wasteBinOverviewTitle => "Garbage Cans";
   @override String get wasteBinOverviewSubtitle => "content, cycle, myths";
   @override String get tipsAndTricksTitle => "Tips and Tricks";
   @override String get tipsAndTricksSubtitle => "waste prevention, sorting, and more";
@@ -192,9 +194,15 @@ class LanguageEn extends Languages {
   @override String get contactPageEmailHintText => "Email";
   @override String get contactPageContentHintText => "Content";
   @override String get contactPageSubmitButtonText => "Submit";
-  @override String get contactPageImprintParagraphTitle => "Information according to § 5 TMG";
   @override String get contactPageValidationText => "Cannot be empty";
   @override String get contactPageEmailValidationText => "Not a valid email";
+
+  // imprint
+  @override String get imprintParagraphTitle => "Information according to § 5 TMG";
+  @override String get legalNotes => "Legal notes";
+  @override String get liabilityTitle => "Liability";
+  @override String get liabilityText => "The information displayed in the app has been carefully selected and prepared according to the information provided by trenntstadt-berlin.de, bsr.de, and berlin-recycling.de. However, no responsibility is taken for the accuracy, completeness and timeliness.";
+  @override String get iconsTitle => "Icons";
 
   // notifications
   @override String get notificationItemTitle => "Meet a challenge";

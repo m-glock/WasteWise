@@ -74,7 +74,7 @@ class _MapWidgetState extends State<MapWidget> {
             markerRotateAlignment:
               PopupMarkerLayerOptions.rotationAlignmentFor(AnchorAlign.top),
             popupBuilder: (BuildContext context, Marker marker) =>
-              MapPopup(marker, widget.marker[marker]!),
+              MapPopup(marker, widget.marker[marker]),
           ),
         ),
       ],

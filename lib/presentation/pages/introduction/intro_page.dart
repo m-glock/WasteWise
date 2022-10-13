@@ -115,7 +115,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
         spacing: const EdgeInsets.symmetric(horizontal: 4),
         color: Theme.of(context).colorScheme.surface,
         activeColor: Theme.of(context).colorScheme.primary,
-        activeSize: const Size(22.0, 10.0),
+        activeSize: const Size(20.0, 10.0),
         activeShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
         ),

@@ -25,7 +25,6 @@ abstract class Languages {
   String get purposeScreenTitle;
   String get purposeScreenQ1;
   String get purposeScreenQ2;
-  String get purposeScreenQ3;
   String get purposeScreenExplanation;
   String get learningModeScreenTitle;
   String get learningModeScreenExplanation;
@@ -55,6 +54,9 @@ abstract class Languages {
   String get overviewTileTitle;
   String get overviewTileRecycledText;
   String get overviewTileSavedText;
+  String get overviewTileShareText;
+  String get overviewShareSuccessful;
+  String get overviewShareUnsuccessful;
   String get progressTileTitle;
   String get progressTileRecycledLabel;
   String get progressTileSavedLabel;
@@ -192,9 +194,15 @@ abstract class Languages {
   String get contactPageEmailHintText;
   String get contactPageContentHintText;
   String get contactPageSubmitButtonText;
-  String get contactPageImprintParagraphTitle;
   String get contactPageValidationText;
   String get contactPageEmailValidationText;
+
+  //imprint page
+  String get imprintParagraphTitle;
+  String get legalNotes;
+  String get liabilityTitle;
+  String get liabilityText;
+  String get iconsTitle;
 
   // notifications
   String get notificationItemTitle;

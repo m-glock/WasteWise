@@ -20,9 +20,8 @@ class LanguageDe extends Languages {
   @override String get languageScreenWelcomeText => "Willkommen bei ${Constants.appTitle}";
   @override String get languageScreenExplanation => "Bitte wähle deine Sprache aus. Du kannst sie später jederzeit in deinen Einstellungen ändern";
   @override String get purposeScreenTitle => "Das Ziel";
-  @override String get purposeScreenQ1 => "Was darf ich eigentlich alles in die Biotonne werfen?";
-  @override String get purposeScreenQ2 => "Warum wird Müll getrennt und was passiert dann damit?";
-  @override String get purposeScreenQ3 => "Und in welche Mülltonne gehört eigentlich Spiegelglas?";
+  @override String get purposeScreenQ1 => "Warum wird Müll getrennt und was passiert dann damit?";
+  @override String get purposeScreenQ2 => "Und in welche Mülltonne gehört eigentlich Spiegelglas?";
   @override String get purposeScreenExplanation => "${Constants.appTitle} ist dafür da, um dir diese Fragen zu beantworten! \n\nDas Ziel der App ist es, über Mülltrennung und Recycling aufzuklären und bei der korrekten Entsorgung des Mülls zu unterstützen. Somit können Gegenstände vor dem falschen Mülleimer gerettet und korrekt recycelt werden.";
   @override String get learningModeScreenTitle => "Lernmodus";
   @override String get learningModeScreenExplanation => "Wenn du dein Wissen prüfen und mehr Informationen erhalten möchtest, kannst du den Lernmodus einschalten. Fragen, Tipps und Herausforderung helfen dir dann dabei, mehr über das Thema zu lernen. Der Modus kann jederzeit in den Einstellungen (de)aktiviert werden.";
@@ -52,6 +51,9 @@ class LanguageDe extends Languages {
   @override String get overviewTileTitle => "Insgesamt";
   @override String get overviewTileRecycledText => " Items recycelt";
   @override String get overviewTileSavedText => " Items gerettet";
+  @override String get overviewTileShareText => "Teilen";
+  @override String get overviewShareSuccessful => "Fortschritt erfolgreich mit der Nachbarschaft geteilt.";
+  @override String get overviewShareUnsuccessful => "Fortschritt mit der Nachbarschaft teilen ist fehlgeschlagen.";
   @override String get progressTileTitle => "Fortschritt";
   @override String get progressTileRecycledLabel => "Recycelt";
   @override String get progressTileSavedLabel => "Gerettet";
@@ -94,7 +96,7 @@ class LanguageDe extends Languages {
   @override String get alertDialogCorrectTitle => "Glückwunsch!";
   @override String get alertDialogCorrectExplanation => "Durch das richtige Entsorgen dieses Items hast du dafür gesorgt, dass es korrekt recycelt werden kann.";
   @override String get alertDialogWrongTitle => "Leider daneben!";
-  @override String get alertDialogWrongExplanation => "Gut, dass du das in der App geprüpft hast. Somit hast du dafür gesortgt, dass der Gegenstand korrekt entsogt und recycelt werden kann.";
+  @override String get alertDialogWrongExplanation => "Gut, dass du das in der App geprüft hast. Somit hast du dafür gesortgt, dass der Gegenstand korrekt entsogt und recycelt werden kann.";
   @override String get alertDialogPrompt => "Dieses Item gehört in ";
   @override String get alertDialogButtonDismiss => "Verstanden";
   @override String get alertDialogButtonMoreInfo => "Mehr Info";
@@ -117,7 +119,7 @@ class LanguageDe extends Languages {
   @override String get itemDetailBarcodeWarningText => "Diese Informationen sind von einer offenen Datenbank übernommen (http://www.opengtindb.org). Keine Garantie für die Richtigkeit der Daten.";
 
   // discovery page
-  @override String get wasteBinOverviewTitle => "Mülleimer Übersicht";
+  @override String get wasteBinOverviewTitle => "Mülltonnen";
   @override String get wasteBinOverviewSubtitle => "Inhalt, Kreislauf, Mythen";
   @override String get tipsAndTricksTitle => "Tipps und Tricks";
   @override String get tipsAndTricksSubtitle => "Müllvemreidung, Trennung, etc.";
@@ -192,9 +194,15 @@ class LanguageDe extends Languages {
   @override String get contactPageEmailHintText => "E-Mail";
   @override String get contactPageContentHintText => "Inhalt";
   @override String get contactPageSubmitButtonText => "Abschicken";
-  @override String get contactPageImprintParagraphTitle => "Angaben gemäß § 5 TMG";
   @override String get contactPageValidationText => "Darf nicht leer sein.";
   @override String get contactPageEmailValidationText => "Keine valide E-Mail Adresse";
+
+  // imprint
+  @override String get imprintParagraphTitle => "Angaben gemäß § 5 TMG";
+  @override String get legalNotes => "Rechtliche Hinweise";
+  @override String get liabilityTitle => "Haftung";
+  @override String get liabilityText => "Die in der App angezeigten Informationen sind sorgfältig ausgewählt und wurden entsprechend der Informationen von trenntstadt-berlin.de, bsr.de, und berlin-recycling.de aufbereitet. Jedoch wird keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität übernommen.";
+  @override String get iconsTitle => "Icons";
 
   // notifications
   @override String get notificationItemTitle => "Stelle dich einer Herausforderung";

@@ -65,7 +65,7 @@ class _TextTileState extends State<TextTile> {
               : Text.rich(
                   TextSpan(
                     text: Languages.of(context)!.congratsTileFirstFragment,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
                       TextSpan(
                         text: "${((percentage / 10).round() * 10).toString()}%",
@@ -77,7 +77,7 @@ class _TextTileState extends State<TextTile> {
                       TextSpan(
                           text:
                               Languages.of(context)!.congratsTileSecondFragment,
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyText2),
                     ],
                   ),
                   textAlign: TextAlign.center,
@@ -111,10 +111,10 @@ class _TextTileState extends State<TextTile> {
               return Text(result.exception.toString());
             }
             if (result.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center();
             }
 
-            int? percentage = result.data?["compareInNeighborhood"];
+            num? percentage = result.data?["compareInNeighborhood"];
 
             // display when all data is available
             return _getWidget(percentage: percentage?.toDouble());

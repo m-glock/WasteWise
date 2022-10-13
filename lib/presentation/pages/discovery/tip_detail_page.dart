@@ -28,11 +28,13 @@ class _TipDetailPageState extends State<TipDetailPage> {
   ParseUser? currentUser;
   late Image _image;
   bool _loading = true;
+  bool _isBookmarked = false;
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+    _isBookmarked = widget.tip.isBookmarked;
     _image = Image.network(widget.tip.imageUrl);
     _image.image
         .resolve(const ImageConfiguration())
@@ -62,8 +64,9 @@ class _TipDetailPageState extends State<TipDetailPage> {
     // change bookmark status if DB entry was successful
     // or notify user if not
     if (success) {
+      widget.tip.isBookmarked = !widget.tip.isBookmarked;
       setState(() {
-        widget.tip.isBookmarked = !widget.tip.isBookmarked;
+        _isBookmarked = !_isBookmarked;
         if(widget.updateBookmarkInParent != null){
           widget.updateBookmarkInParent!();
         }
@@ -101,7 +104,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     );
 
     String snackBarText =
-        result.hasException || !result.data?["createForumEntries"]
+        result.hasException || result.data?["createForumEntries"] == null
             ? Languages.of(context)!.tipShareUnsuccessfulText
             : Languages.of(context)!.tipShareSuccessfulText;
 
@@ -131,7 +134,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
                             style: Theme.of(context).textTheme.headline1),
                       ),
                       if (currentUser != null) ...[
-                        widget.tip.isBookmarked
+                        _isBookmarked
                             ? CustomIconButton(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 7),

@@ -7,7 +7,7 @@ class ForumEntryType{
 
   final String objectId;
   final String text;
-  final String buttonText;
+  final String? buttonText;
   final String typeName;
   final String title;
 

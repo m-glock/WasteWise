@@ -21,7 +21,6 @@ class CustomIcons {
   static const _kFontFam = 'CustomIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData sack = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData map = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lightbulb = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData garbageCan = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);

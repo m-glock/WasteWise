@@ -27,7 +27,7 @@ class _ProgressTileState extends State<ProgressTile> {
             {VoidCallback? refetch, FetchMore? fetchMore}) {
           if (result.hasException) return Text(result.exception.toString());
           if (result.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center();
           }
 
           List<dynamic> searchHistoryData = result.data?["getProgress"];

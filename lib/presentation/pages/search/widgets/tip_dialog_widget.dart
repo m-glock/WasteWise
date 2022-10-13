@@ -29,7 +29,6 @@ class TipDialogWidget {
             ),
             contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
             content: Wrap(
-              direction: Axis.vertical,
               children: [
                 Row(
                   children: [
@@ -38,16 +37,20 @@ class TipDialogWidget {
                       size: 30,
                     ),
                     const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                    Text(
-                      tip.title,
-                      style: Theme.of(context).textTheme.labelMedium,
+                    Expanded(
+                        child: Text(
+                          tip.title,
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
                     ),
                   ],
                 ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                Text(
-                  tip.short,
-                  style: Theme.of(context).textTheme.bodyText1,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                      tip.short,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                 ),
               ],
             ),

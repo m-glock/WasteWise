@@ -143,8 +143,12 @@ class AlertDialogWidget {
       List<Tip> availableTips = [];
       availableTips.addAll(item.tips);
       availableTips.addAll(item.preventions);
-      Tip tip = availableTips.elementAt(rand.nextInt(availableTips.length));
-      TipDialogWidget.showModal(context, tip, item.subcategory!);
+      if(availableTips.isNotEmpty){
+        Tip tip = availableTips.elementAt(rand.nextInt(availableTips.length));
+        TipDialogWidget.showModal(context, tip, item.subcategory!);
+      } else {
+        Navigator.of(context).pop();
+      }
     } else if(!moreInfo){
       Navigator.of(context).pop();
     } else {

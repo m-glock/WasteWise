@@ -142,25 +142,31 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
           Languages.of(context)!.filterByText,
           style: Theme.of(context).textTheme.labelMedium,
         ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ...forumEntryTypesSelected.entries.map((entry) {
               return Row(
-                children: [
-                  Checkbox(
-                    value: entry.value,
-                    onChanged: (bool? checked) {
-                      _filterFeed(entry.key, checked!);
-                    },
-                  ),
-                  Text(entry.key.title),
-                ],
+                  children: [
+                    SizedBox(
+                      height: 24.0,
+                      width: 24.0,
+                      child: Checkbox(
+                        value: entry.value,
+                        onChanged: (bool? checked) {
+                          _filterFeed(entry.key, checked!);
+                        },
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 2)),
+                    Text(entry.key.title),
+                  ],
               );
             }),
           ],
         ),
-        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        const Padding(padding: EdgeInsets.only(bottom: 25)),
         Container(
           color: Theme.of(context).colorScheme.surface,
           child: Row(

@@ -61,7 +61,7 @@ class _ThreadPageState extends State<ThreadPage> {
         replies.add(ForumEntryWidget(
           key: ValueKey(forumEntry.objectId),
           forumEntry: forumEntry,
-          showButton: false,
+          isRootEntry: false,
         ));
       });
     }
@@ -81,30 +81,30 @@ class _ThreadPageState extends State<ThreadPage> {
           Expanded(
             child: SingleChildScrollView(
                 child: Column(
-              children: [
-                ForumEntryWidget(
-                  forumEntry: widget.parentForumEntry,
-                  showButton: false,
-                ),
-                const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: replies.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: Constants.tileBorderRadius,
-                      ),
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      width: double.infinity,
-                      child: replies[index],
-                    );
-                  },
-                ),
-              ],
-            )),
+                  children: [
+                    ForumEntryWidget(
+                      forumEntry: widget.parentForumEntry,
+                      isRootEntry: false,
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: replies.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: Constants.tileBorderRadius,
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          width: double.infinity,
+                          child: replies[index],
+                        );
+                      },
+                    ),
+                  ],
+                )),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           Container(
@@ -170,7 +170,7 @@ class _ThreadPageState extends State<ThreadPage> {
                   replies.add(ForumEntryWidget(
                     key: ValueKey(entry.objectId),
                     forumEntry: entry,
-                    showButton: false,
+                    isRootEntry: false,
                   ));
                 }
 
