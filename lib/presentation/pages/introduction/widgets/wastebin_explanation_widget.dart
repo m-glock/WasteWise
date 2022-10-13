@@ -43,15 +43,16 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
   void _getCategories(dynamic categoryData) async {
     List<WasteBinCategory> categoryList = [];
     for (dynamic element in categoryData) {
-      Uri uri = Uri.parse(element["category_id"]["image_file"]["url"]);
+      if(element["node"]["category_id"]["objectId"] == "ZWHAaWY0YN") continue;
+      Uri uri = Uri.parse(element["node"]["category_id"]["image_file"]["url"]);
       http.Response response = await http.get(uri);
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String imagePath = "${documentDirectory.path}/${element["title"]}.png";
+      String imagePath = "${documentDirectory.path}/${element["node"]["title"]}.png";
       File file = File(imagePath);
       if (!file.existsSync()) {
         file.writeAsBytes(response.bodyBytes);
       }
-      categoryList.add(WasteBinCategory.fromGraphQlData(element, imagePath));
+      categoryList.add(WasteBinCategory.fromGraphQlData(element["node"], imagePath));
     }
 
     setState(() {
@@ -120,7 +121,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
               }
 
               // get categories to display
-              List<dynamic> categoryData = result.data?["getCategories"];
+              List<dynamic> categoryData = result.data?["categoryTLS"]["edges"];
               _getCategories(categoryData);
 
               // display when all data is available

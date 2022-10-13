@@ -62,43 +62,43 @@ class DataService{
 
   Future<void> initialDataExtraction(dynamic data) async {
     // get waste bin categories
-    List<dynamic> categories = data?["getCategories"];
+    List<dynamic> categories = data?["categoryTLS"]["edges"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
     for (dynamic element in categories) {
-      Uri uri = Uri.parse(element["category_id"]["image_file"]["url"]);
+      Uri uri = Uri.parse(element["node"]["category_id"]["image_file"]["url"]);
       http.Response response = await http.get(uri);
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String imagePath = "${documentDirectory.path}/${element["title"]}.png";
+      String imagePath = "${documentDirectory.path}/${element["node"]["title"]}.png";
       File file = File(imagePath);
       if (!file.existsSync()) {
         file.writeAsBytes(response.bodyBytes);
       }
 
-      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element, imagePath);
+      WasteBinCategory category = WasteBinCategory.fromGraphQlData(element["node"], imagePath);
       wasteBinCategories[category.objectId] = category;
     }
 
     // get myths for waste bin categories
-    List<dynamic> categoryMyths = data?["getAllCategoryMyths"];
+    List<dynamic> categoryMyths = data?["categoryMythTLS"]["edges"];
     for (dynamic element in categoryMyths) {
       String categoryId =
-      element["category_myth_id"]["category_id"]["objectId"];
-      wasteBinCategories[categoryId]?.myths.add(Myth.fromGraphQlData(element));
+      element["node"]["category_myth_id"]["category_id"]["objectId"];
+      wasteBinCategories[categoryId]?.myths.add(Myth.fromGraphQlData(element["node"]));
     }
 
     // get content for waste bin categories
     List<dynamic> categoryContent =
-    data?["getAllCategoryContent"];
+    data?["categoryContentTLS"]["edges"];
     for (dynamic element in categoryContent) {
       String categoryId =
-      element["category_content_id"]["category_id"]["objectId"];
-      if (element["category_content_id"]["does_belong"]) {
-        for(String item in element["item_list"]["items"]){
+      element["node"]["category_content_id"]["category_id"]["objectId"];
+      if (element["node"]["category_content_id"]["does_belong"]) {
+        for(String item in element["node"]["item_list"]["items"]){
           wasteBinCategories[categoryId]?.itemsBelong
               .add(item);
         }
       } else {
-        for(String item in element["item_list"]["items"]){
+        for(String item in element["node"]["item_list"]["items"]){
           wasteBinCategories[categoryId]?.itemsDontBelong
               .add(item);
         }
@@ -106,15 +106,15 @@ class DataService{
     }
 
     // get cycles for waste bin categories
-    List<dynamic> categoryCycles = data?["getAllCategoryCycles"];
+    List<dynamic> categoryCycles = data?["categoryCycleTLS"]["edges"];
     for (dynamic element in categoryCycles) {
-      String? uriString = element["category_cycle_id"]["image"]?["url"];
+      String? uriString = element["node"]["category_cycle_id"]["image"]?["url"];
       String? imagePath;
       if(uriString != null){
         Uri uri = Uri.parse(uriString);
         http.Response response = await http.get(uri);
         Directory documentDirectory = await getApplicationDocumentsDirectory();
-        String fileName = "${element["category_cycle_id"]["objectId"]}_${element["title"]}";
+        String fileName = "${element["node"]["category_cycle_id"]["objectId"]}_${element["node"]["title"]}";
         imagePath = "${documentDirectory.path}/$fileName.png";
         File file = File(imagePath);
         if (!file.existsSync()) {
@@ -123,9 +123,9 @@ class DataService{
       }
 
       String categoryId =
-      element["category_cycle_id"]["category_id"]["objectId"];
+      element["node"]["category_cycle_id"]["category_id"]["objectId"];
       wasteBinCategories[categoryId]!.cycleSteps
-          .add(Cycle.fromGraphQLData(element, imagePath));
+          .add(Cycle.fromGraphQLData(element["node"], imagePath));
     }
 
     // save waste bin categories
@@ -133,47 +133,47 @@ class DataService{
     categoriesById.addAll(wasteBinCategories);
 
     // get subcategories
-    List<dynamic> subcategories = data?["getSubcategories"];
+    List<dynamic> subcategories = data?["subcategoryTLS"]["edges"];
     for(dynamic element in subcategories){
-      String subcategoryId = element["subcategory_id"]["objectId"];
-      subcategoriesById[subcategoryId] = Subcategory.fromGraphQlData(element);
+      String subcategoryId = element["node"]["subcategory_id"]["objectId"];
+      subcategoriesById[subcategoryId] = Subcategory.fromGraphQlData(element["node"]);
     }
 
     //get item names
-    List<dynamic> items = data?["getItemNames"];
+    List<dynamic> items = data?["itemTLS"]["edges"];
     for (dynamic element in items) {
-      itemNames[element["title"]] = element["item_id"]["objectId"];
-      List<String> synonyms = element["synonyms"] != null
-          ? element["synonyms"].toString().split(",")
+      itemNames[element["node"]["title"]] = element["node"]["item_id"]["objectId"];
+      List<String> synonyms = element["node"]["synonyms"] != null
+          ? element["node"]["synonyms"].toString().split(",")
           : [];
       for(String synonym in synonyms){
-        itemNames[synonym.trim()] = element["item_id"]["objectId"];
+        itemNames[synonym.trim()] = element["node"]["item_id"]["objectId"];
       };
     }
 
     //get forum types
-    List<dynamic> forumEntryTypes = data?["getForumEntryTypes"];
+    List<dynamic> forumEntryTypes = data?["forumEntryTypeTLS"]["edges"];
     for(dynamic entryType in forumEntryTypes){
-      ForumEntryType type = ForumEntryType.fromGraphQlData(entryType);
+      ForumEntryType type = ForumEntryType.fromGraphQlData(entryType["node"]);
       forumEntryTypesById[type.objectId] = type;
     }
 
     // get collection point types
-    List<dynamic> collectionPointTypes = data?["getCollectionPointTypes"];
+    List<dynamic> collectionPointTypeData = data?["collectionPointTypeTLS"]["edges"];
     collectionPointTypes.clear();
-    for (dynamic cpType in collectionPointTypes) {
+    for (dynamic cpType in collectionPointTypeData) {
       collectionPointTypes
-          .add(CollectionPointType.fromGraphQLData(cpType));
+          .add(CollectionPointType.fromGraphQLData(cpType["node"]));
     }
 
     // get collection points
-    List<dynamic> collectionPoints = data?["getCollectionPoints"];
+    List<dynamic> collectionPoints = data?["collectionPoints"]["edges"];
 
     // build markers for collection points
     Map<String, CollectionPoint> cpByObjectId = {};
     if(markers.isNotEmpty) markers.clear();
     for (dynamic cp in collectionPoints) {
-      CollectionPoint collectionPoint = CollectionPoint.fromGraphQlData(cp, this);
+      CollectionPoint collectionPoint = CollectionPoint.fromGraphQlData(cp["node"], this);
       cpByObjectId[collectionPoint.objectId] = collectionPoint;
       Marker marker = Marker(
         key: ValueKey(collectionPoint.objectId),
@@ -188,12 +188,12 @@ class DataService{
 
     // get accepted subcategories for all collection points
     List<dynamic> subcategoriesOfCP =
-    data?["getSubcategoriesOfAllCollectionPoints"];
+    data?["collectionPointSubcategories"]["edges"];
     for (dynamic subcategoryCpPair in subcategoriesOfCP) {
       String collectionPointObjectId =
-      subcategoryCpPair["collection_point_id"]["objectId"];
+      subcategoryCpPair["node"]["collection_point_id"]["objectId"];
       String subcategoryObjectId =
-      subcategoryCpPair["subcategory_id"]["objectId"];
+      subcategoryCpPair["node"]["subcategory_id"]["objectId"];
       Subcategory? subcategory =
       subcategoriesById[subcategoryObjectId];
       if (subcategory != null) {
@@ -212,9 +212,9 @@ class DataService{
 
     // get zip codes for municipalities
     if(zipCodesById.isEmpty){
-      List<dynamic> zipCodes = data?["getZipCodes"];
+      List<dynamic> zipCodes = data?["zipCodes"]["edges"];
       for (dynamic zipCodeData in zipCodes) {
-        ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
+        ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData["node"]);
         zipCodesById[zipCode.objectId] = zipCode;
       }
     }

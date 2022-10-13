@@ -48,14 +48,10 @@ class _LoginWidgetState extends State<LoginWidget> {
   }
 
   void _getZipCodes() async {
-    DataService dataService = Provider.of<DataService>(context, listen: false);
     List<ZipCode> zipCodes = await GeneralQueries.getZipCodes(context);
-    for (dynamic zipCodeData in zipCodes) {
-      ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
-      dataService.zipCodesById[zipCode.objectId] = zipCode;
-    }
+
     setState(() {
-      zipCodeSuggestions = dataService.zipCodesById.values.toList();
+      zipCodeSuggestions = zipCodes;
     });
   }
 

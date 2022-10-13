@@ -52,7 +52,15 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
               setState(() {
                 municipalityDefault = newValue!;
               });
-              _setMunicipalityId(Provider.of<DataService>(context, listen: false).municipalitiesById[newValue]!);
+
+              DataService dataService = Provider.of<DataService>(context, listen: false);
+              MapEntry<String, String> newEntry = dataService
+                  .municipalitiesById
+                  .entries
+                  .where((element) => element.value == newValue)
+                  .first;
+
+              _setMunicipalityId(newEntry.key);
             },
             items: Provider.of<DataService>(context, listen: false).municipalitiesById.values
                 .map<DropdownMenuItem<String>>((String value) {
