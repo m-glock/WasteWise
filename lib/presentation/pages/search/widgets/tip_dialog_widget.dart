@@ -47,12 +47,10 @@ class TipDialogWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Expanded(
-                    child: Text(
+                  child: Text(
                       tip.short,
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
-                  ),
                 ),
               ],
             ),
