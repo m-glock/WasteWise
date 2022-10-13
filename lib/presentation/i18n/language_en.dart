@@ -194,9 +194,15 @@ class LanguageEn extends Languages {
   @override String get contactPageEmailHintText => "Email";
   @override String get contactPageContentHintText => "Content";
   @override String get contactPageSubmitButtonText => "Submit";
-  @override String get contactPageImprintParagraphTitle => "Information according to § 5 TMG";
   @override String get contactPageValidationText => "Cannot be empty";
   @override String get contactPageEmailValidationText => "Not a valid email";
+
+  // imprint
+  @override String get imprintParagraphTitle => "Information according to § 5 TMG";
+  @override String get legalNotes => "Legal notes";
+  @override String get liabilityTitle => "Liability";
+  @override String get liabilityText => "The information displayed in the app has been carefully selected and prepared according to the information provided by trenntstadt-berlin.de, bsr.de, and berlin-recycling.de. However, no responsibility is taken for the accuracy, completeness and timeliness.";
+  @override String get iconsTitle => "Icons";
 
   // notifications
   @override String get notificationItemTitle => "Meet a challenge";

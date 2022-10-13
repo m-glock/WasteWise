@@ -194,9 +194,15 @@ class LanguageDe extends Languages {
   @override String get contactPageEmailHintText => "E-Mail";
   @override String get contactPageContentHintText => "Inhalt";
   @override String get contactPageSubmitButtonText => "Abschicken";
-  @override String get contactPageImprintParagraphTitle => "Angaben gemäß § 5 TMG";
   @override String get contactPageValidationText => "Darf nicht leer sein.";
   @override String get contactPageEmailValidationText => "Keine valide E-Mail Adresse";
+
+  // imprint
+  @override String get imprintParagraphTitle => "Angaben gemäß § 5 TMG";
+  @override String get legalNotes => "Rechtliche Hinweise";
+  @override String get liabilityTitle => "Haftung";
+  @override String get liabilityText => "Die in der App angezeigten Informationen sind sorgfältig ausgewählt und wurden entsprechend der Informationen von trenntstadt-berlin.de, bsr.de, und berlin-recycling.de aufbereitet. Jedoch wird keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität übernommen.";
+  @override String get iconsTitle => "Icons";
 
   // notifications
   @override String get notificationItemTitle => "Stelle dich einer Herausforderung";

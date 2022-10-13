@@ -194,9 +194,15 @@ abstract class Languages {
   String get contactPageEmailHintText;
   String get contactPageContentHintText;
   String get contactPageSubmitButtonText;
-  String get contactPageImprintParagraphTitle;
   String get contactPageValidationText;
   String get contactPageEmailValidationText;
+
+  //imprint page
+  String get imprintParagraphTitle;
+  String get legalNotes;
+  String get liabilityTitle;
+  String get liabilityText;
+  String get iconsTitle;
 
   // notifications
   String get notificationItemTitle;
