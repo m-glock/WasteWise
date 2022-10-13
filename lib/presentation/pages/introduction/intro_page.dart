@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../logic/services/data_service.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({Key? key}) : super(key: key);

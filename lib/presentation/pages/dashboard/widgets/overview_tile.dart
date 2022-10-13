@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/neighborhood_mutations.dart';
 import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 
-import '../../../../logic/data_holder.dart';
+import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
 
@@ -32,8 +33,9 @@ class _OverviewTileState extends State<OverviewTile> {
   }
 
   void _createForumPost(String userId, String savedItemNumber) async {
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
-        .firstWhere((element) => element.value.typeName == "Progress")
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
+        .firstWhere((element) => element.value.typeName == "Share")
         .key;
     Map<String, dynamic> inputVariables = {
       "userId": (userId),
@@ -44,7 +46,7 @@ class _OverviewTileState extends State<OverviewTile> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );
