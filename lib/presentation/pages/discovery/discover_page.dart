@@ -3,7 +3,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/collection_point_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/tips_and_tricks_page.dart';
 import 'package:recycling_app/presentation/pages/discovery/waste_bin_overview_page.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/discovery_tile.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/tips/discovery_tile.dart';
 import 'package:recycling_app/presentation/icons/custom_icons.dart';
 
 class DiscoverPage extends StatefulWidget {

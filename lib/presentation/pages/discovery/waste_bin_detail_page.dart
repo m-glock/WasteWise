@@ -1,74 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:recycling_app/presentation/general_widgets/custom_icon_button.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/content_widget.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/cycle_widget.dart';
-import 'package:recycling_app/presentation/pages/discovery/widgets/myth_widget.dart';
-import 'package:recycling_app/presentation/util/waste_bin_category.dart';
+import 'package:recycling_app/presentation/pages/discovery/tips_and_tricks_page.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/content_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/cycle_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/waste_bin/myth_widget.dart';
 
-import '../../util/constants.dart';
+import '../../../model_classes/waste_bin_category.dart';
+import '../../../logic/util/constants.dart';
+import '../../icons/custom_icons.dart';
 
-class WasteBinDetailPage extends StatefulWidget {
-  const WasteBinDetailPage({Key? key, required this.wasteBin})
-      : super(key: key);
+class WasteBinDetailPage extends StatelessWidget {
 
   final WasteBinCategory wasteBin;
 
-  @override
-  State<WasteBinDetailPage> createState() => _WasteBinDetailPageState();
-}
+  const WasteBinDetailPage({Key? key, required this.wasteBin}) : super(key: key);
 
-class _WasteBinDetailPageState extends State<WasteBinDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.wasteBin.title),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Constants.pagePadding, vertical: 30),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40,
-                child: TabBar(
-                  labelColor: Theme.of(context).colorScheme.onPrimary,
-                  unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).colorScheme.primary),
-                  tabs: [
-                    Tab(text: Languages.of(context)!.wasteBinContentLabel),
-                    Tab(text: Languages.of(context)!.wasteBinCycleLabel),
-                    Tab(text: Languages.of(context)!.wasteBinMythLabel),
-                  ],
-                ),
+    return wasteBin.cycleSteps.isEmpty && wasteBin.myths.isEmpty
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(wasteBin.title),
+            ),
+            body: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: ContentWidget(category: wasteBin),
               ),
-              Expanded(
-                child: TabBarView(
+          )
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(wasteBin.title),
+                actions: [
+                  CustomIconButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              TipsAndTricksPage(category: wasteBin),
+                        ),
+                      ),
+                      icon: const Icon(CustomIcons.lightbulb, size: 30),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                  )
+                ],
+              ),
+              body: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: Constants.pagePadding, vertical: 30),
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child:
-                          ContentWidget(categoryId: widget.wasteBin.objectId),
+                    SizedBox(
+                      height: 40,
+                      child: TabBar(
+                        labelColor: Theme.of(context).colorScheme.onPrimary,
+                        unselectedLabelColor:
+                            Theme.of(context).colorScheme.onSurface,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withAlpha(200),
+                        ),
+                        labelStyle: Theme.of(context).textTheme.headline2,
+                        tabs: [
+                          Tab(
+                              text:
+                                  Languages.of(context)!.wasteBinContentLabel),
+                          Tab(text: Languages.of(context)!.wasteBinCycleLabel),
+                          Tab(text: Languages.of(context)!.wasteBinMythLabel),
+                        ],
+                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0),
-                      child: CycleWidget(categoryId: widget.wasteBin.objectId),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: MythWidget(categoryId: widget.wasteBin.objectId),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ContentWidget(category: wasteBin),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0),
+                            child: CycleWidget(category: wasteBin),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: MythWidget(category: wasteBin),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

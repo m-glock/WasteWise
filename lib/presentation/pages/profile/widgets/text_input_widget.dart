@@ -5,12 +5,12 @@ class TextInputWidget extends StatelessWidget {
       {Key? key,
       this.isPassword = false,
       required this.controller,
-      required this.label,
+      required this.hintText,
       required this.inputType})
       : super(key: key);
 
   final TextEditingController controller;
-  final String label;
+  final String hintText;
   final bool isPassword;
   final TextInputType inputType;
 
@@ -23,9 +23,11 @@ class TextInputWidget extends StatelessWidget {
       textCapitalization: TextCapitalization.none,
       autocorrect: false,
       decoration: InputDecoration(
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          labelText: label),
+        filled: true,
+        fillColor: Theme.of(context).colorScheme.surface,
+        hintText: hintText,
+        border: InputBorder.none,
+      ),
     );
   }
 }

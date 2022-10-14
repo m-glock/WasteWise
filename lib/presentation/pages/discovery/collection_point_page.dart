@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/comrade_dialog_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
+import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
+
+import 'package:latlong2/latlong.dart';
+
+import '../../../logic/services/data_service.dart';
+import '../../../model_classes/collection_point.dart';
 
 class CollectionPointPage extends StatefulWidget {
   const CollectionPointPage({Key? key}) : super(key: key);
@@ -12,40 +21,78 @@ class CollectionPointPage extends StatefulWidget {
 }
 
 class _CollectionPointPageState extends State<CollectionPointPage> {
+  LatLng currentPosition = LatLng(52.5200, 13.4050);
+  Map<Marker, CollectionPoint> filteredMarkers = {};
+  String? chosenSubcategoryTitle;
+  bool loggedIn = false;
 
-  //TODO ask user for current location
-  final LatLng defaultLatLng = LatLng(52.5200, 13.4050);
-  final List<Marker> markers = [
-    Marker(
-      width: 80,
-      height: 80,
-      point: LatLng(52.49959837860384, 13.48976890965241),
-      builder: (ctx) => const Icon(Icons.location_on),
-    ),
-    Marker(
-      width: 80,
-      height: 80,
-      point: LatLng(52.50774876167709, 13.352096497671688),
-      builder: (ctx) => const Icon(Icons.location_on),
-    ),
-    Marker(
-      width: 80,
-      height: 80,
-      point: LatLng(52.558497882764705, 13.402564931421479),
-      builder: (ctx) => const Icon(Icons.location_on),
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _determinePosition();
+    _getValues();
+    _checkIfLoggedIn();
+  }
 
-  final List<DropdownMenuItem<String>> dropdownOptions = const [
-    DropdownMenuItem(child: Text("Elektronik")),
-    DropdownMenuItem(child: Text("Altkleider")),
-    DropdownMenuItem(child: Text("Dritte Option")),
-  ];
+  void _getValues(){
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    filteredMarkers = Map.of(dataService.markers);
+  }
 
-  String dropdownValue = 'Elektronik';
+  void _checkIfLoggedIn() async {
+    ParseUser? current = await ParseUser.currentUser();
+    setState(() {
+      loggedIn = current != null;
+    });
+  }
+
+  void _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    Position position = await Geolocator.getCurrentPosition();
+
+    setState(() {
+      currentPosition = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  void _filterMarkers(String subcategoryTitle) {
+    filteredMarkers.clear();
+    filteredMarkers.addAll(Provider.of<DataService>(context, listen: false).markers);
+    if(subcategoryTitle != Languages.of(context)!.cpDropdownDefault){
+      filteredMarkers.removeWhere(
+              (key, value) => !value.containsSubcategoryTitle(subcategoryTitle));
+    }
+    setState(() {
+      chosenSubcategoryTitle = subcategoryTitle;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    List<String> dropdownValues = dataService.cpSubcategories.toList();
+    dropdownValues.insert(0, Languages.of(context)!.cpDropdownDefault);
     return Scaffold(
       appBar: AppBar(
         title: Text(Languages.of(context)!.collectionPointsTitle),
@@ -54,70 +101,25 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: dropdownValue,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    items: <String>['Elektronik', 'Altkleider', 'Dritte Option']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+            child: MapFilterDropdownWidget(
+              dropdownValues: dropdownValues,
+              updateMarkersInParent: _filterMarkers,
             ),
           ),
           Flexible(
-            child: FlutterMap(
-              options: MapOptions(
-                center: defaultLatLng,
-                zoom: 9.2,
-              ),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate:
-                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  userAgentPackageName: 'com.glock.recyclingapp',
-                ),
-                MarkerLayerOptions(markers: markers),
-              ],
-              nonRotatedChildren: [
-                AttributionWidget.defaultWidget(
-                  source: 'OpenStreetMap contributors',
-                  onSourceTapped: null,
-                ),
-              ],
+            child: MapWidget(
+              marker: filteredMarkers,
+              currentPosition: currentPosition,
             ),
           ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
-          FloatingActionButton(
-            heroTag: 'btn1',
-            child: Icon(Icons.group),
-            onPressed: null,
-          ),
-          Padding(padding: EdgeInsets.only(bottom: 10)),
-          FloatingActionButton(
-            heroTag: 'btn2',
-            child: Icon(FontAwesomeIcons.filter),
-            onPressed: null,
-          ),
-        ],
-      ),
+      floatingActionButton: loggedIn ? FloatingActionButton(
+        child: const Icon(Icons.group),
+        onPressed: () =>
+            ComradeDialogWidget.showModal(context, chosenSubcategoryTitle),
+      )
+      : null,
     );
   }
 }

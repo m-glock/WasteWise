@@ -4,7 +4,7 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/profile_widget.dart';
 import 'package:recycling_app/presentation/pages/profile/widgets/login_widget.dart';
 
-import '../../util/constants.dart';
+import '../../../logic/util/constants.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -14,7 +14,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-
   bool _isAuthenticated = false;
 
   @override
@@ -31,19 +30,16 @@ class _UserPageState extends State<UserPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(Constants.pagePadding),
-        child: Column(
-          children: [
-            _isAuthenticated
-                ? ProfileWidget(authenticated: _checkIfAuthenticated)
-                : LoginWidget(authenticated: _checkIfAuthenticated)
-          ],
-        ),
+        child: _isAuthenticated
+            ? ProfileWidget(authenticated: _checkIfAuthenticated)
+            : LoginWidget(authenticated: _checkIfAuthenticated),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 
   void _checkIfAuthenticated() async {
-  ParseUser? currentUser = await ParseUser.currentUser();
+    ParseUser? currentUser = await ParseUser.currentUser();
     setState(() {
       _isAuthenticated = currentUser != null;
     });
