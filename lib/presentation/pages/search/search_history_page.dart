@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/history_tile.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/search_history_item.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryPage extends StatefulWidget {
   const SearchHistoryPage({
@@ -27,10 +29,11 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
   void _getItems(List<dynamic> searchHistoryData) async {
     List<SearchHistoryItem> items = [];
     GraphQLClient client = GraphQLProvider.of(context).value;
+    DataService dataService = Provider.of<DataService>(context, listen: false);
     for (dynamic element in searchHistoryData) {
       items.add(
           await SearchHistoryItem.fromGraphQlData(
-              element, client, widget.languageCode
+              element, client, widget.languageCode, dataService, context
           )
       );
     }
@@ -48,9 +51,8 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
       ),
       body: Query(
         options: QueryOptions(
-          document: gql(GraphQLQueries.searchHistoryQuery),
+          document: gql(SearchQueries.searchHistoryQuery),
           variables: {
-            "languageCode": widget.languageCode,
             "userId": widget.userId,
           },
         ),
@@ -62,7 +64,7 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
           }
 
           // get municipalities for selection
-          List<dynamic> searchHistoryData = result.data?["getSearchHistory"];
+          List<dynamic> searchHistoryData = result.data?["searchHistories"]["edges"];
           _getItems(searchHistoryData);
 
           // display when all data is available

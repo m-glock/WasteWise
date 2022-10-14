@@ -2,16 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/tip_queries.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/thread_page.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../model_classes/forum_entry.dart';
 import '../../../../model_classes/tip.dart';
 import '../../../i18n/locale_constant.dart';
 import '../../../../logic/util/constants.dart';
 import '../../../../model_classes/subcategory.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import '../../../../logic/util/time_duration.dart';
 import '../../../icons/custom_icons.dart';
 
@@ -65,8 +66,9 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
   }
 
   Future<String> _getSubcategory() async {
+    DataService dataService = Provider.of<DataService>(context, listen: false);
     Subcategory subcategory =
-        DataHolder.subcategoriesById[widget.forumEntry.linkId]!;
+        dataService.subcategoriesById[widget.forumEntry.linkId]!;
     return "\"${subcategory.title}\"";
   }
 
@@ -104,11 +106,11 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
     QueryResult<Object?> result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.tipDetailQuery),
+        document: gql(TipQueries.tipDetailQuery),
         variables: inputVariables,
       ),
     );
-    return Tip.fromGraphQlData(result.data?["getTip"]);
+    return Tip.fromGraphQlData(result.data?["tipTLS"]["edges"][0]);
   }
 
   Widget _getIcon(){

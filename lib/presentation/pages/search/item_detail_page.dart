@@ -8,9 +8,9 @@ import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/item_detail_tile.dart';
 
+import '../../../logic/database_access/mutations/bookmark_mutations.dart';
 import '../../../model_classes/item.dart';
 import '../../../model_classes/tip.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage(
@@ -46,8 +46,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
 
     // remove or add the bookmark depending on the bookmark state
     bool success = widget.item.bookmarked
-        ? await GraphQLQueries.removeItemBookmark(widget.item.objectId, client)
-        : await GraphQLQueries.addItemBookmark(widget.item.objectId, client);
+        ? await BookmarkMutations.removeItemBookmark(widget.item.objectId, client)
+        : await BookmarkMutations.addItemBookmark(widget.item.objectId, client);
 
     // change bookmark status if DB entry was successful
     // or notify user if not

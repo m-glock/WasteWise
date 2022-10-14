@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/barcode_scanner_button.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/search_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../logic/util/user.dart';
 import '../../../model_classes/item.dart';
 import '../../i18n/languages.dart';
 import '../../i18n/locale_constant.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 import 'search_history_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -41,7 +42,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((entry) => InkWell(
               onTap: () {
                 _getItem(entry.value).then((item) {
-                  if (item == null) throw Exception("No item found.");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -59,20 +59,12 @@ class _SearchPageState extends State<SearchPage> {
         .toList();
   }
 
-  Future<Item?> _getItem(String itemId) async {
-    // get item info
-    Locale locale = await getLocale();
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult result = await client.query(
-      QueryOptions(document: gql(GraphQLQueries.itemDetailQuery), variables: {
-        "languageCode": locale.languageCode,
-        "itemObjectId": itemId,
-        "userId":
-            Provider.of<User>(context, listen: false).currentUser?.objectId ??
-                "",
-      }),
+  Future<Item> _getItem(String itemId) async {
+    return await ItemQueries.getItemDetails(
+        context,
+        itemId,
+        Provider.of<User>(context, listen: false).currentUser?.objectId ?? ""
     );
-    return Item.fromGraphQlData(result.data);
   }
 
   @override
@@ -84,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SearchBar(itemNames: DataHolder.itemNames),
+              SearchBar(itemNames: Provider.of<DataService>(context, listen: false).itemNames),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
@@ -115,7 +107,7 @@ class _SearchPageState extends State<SearchPage> {
                   : Query(
                       options: QueryOptions(
                         document:
-                            gql(GraphQLQueries.getRecentlyAndOftenSearched),
+                            gql(SearchQueries.recentlyAndOftenSearchedItemsQuery),
                         variables: {
                           "languageCode": languageCode,
                           "userId": user.currentUser?.objectId ?? "",

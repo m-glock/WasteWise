@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_app_purpose_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_language_widget.dart';
@@ -8,11 +9,10 @@ import 'package:recycling_app/presentation/pages/introduction/widgets/intro_lear
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_login_widget.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/intro_user_data_widget.dart';
 import 'package:recycling_app/presentation/pages/loading_page.dart';
-import 'package:recycling_app/logic/data_holder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class IntroductionPage extends StatefulWidget {
   const IntroductionPage({Key? key}) : super(key: key);
@@ -25,25 +25,17 @@ class _IntroductionPageState extends State<IntroductionPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (DataHolder.municipalitiesById.isEmpty) {
+    if (Provider.of<DataService>(context, listen: false).municipalitiesById.isEmpty) {
       _setDefaultMunicipality();
     }
   }
 
   void _setDefaultMunicipality() async {
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(document: gql(GraphQLQueries.municipalityQuery)),
-    );
-
-    List<dynamic> municipalities = result.data?["getMunicipalities"];
-    for (dynamic municipality in municipalities) {
-      DataHolder.municipalitiesById[municipality["objectId"]] =
-          municipality["name"];
-    }
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    await GeneralQueries.getMunicipality(context, dataService);
 
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String? municipalityId = DataHolder.municipalitiesById.entries.first.key;
+    String? municipalityId = dataService.municipalitiesById.entries.first.key;
     await _prefs.setString(
         Constants.prefSelectedMunicipalityCode, municipalityId);
   }

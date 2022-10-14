@@ -1,17 +1,16 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/database_access/mutations/search_mutations.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/search_sort_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../model_classes/item.dart';
-import '../../../i18n/locale_constant.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key, required this.itemNames}) : super(key: key);
@@ -31,37 +30,14 @@ class _SearchBarState extends State<SearchBar> {
     bool? learnMore = _prefs.getBool(Constants.prefLearnMore) ?? true;
 
     // get item info
-    Locale locale = await getLocale();
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult result = await client.query(
-      QueryOptions(
-          document: gql(GraphQLQueries.itemDetailQuery),
-          variables: {
-            "languageCode": locale.languageCode,
-            "itemObjectId": widget.itemNames[selected],
-            "userId": (await ParseUser.currentUser())?.objectId ?? "",
-          }),
+    Item item = await ItemQueries.getItemDetails(
+        context,
+        widget.itemNames[selected]!,
+        (await ParseUser.currentUser())?.objectId ?? ""
     );
-    Item? item = Item.fromGraphQlData(result.data);
-    if(item == null) throw Exception("No item found.");
 
     if(!learnMore){
-      ParseUser? currentUser = await ParseUser.currentUser();
-      if(currentUser != null){
-        GraphQLClient client = GraphQLProvider.of(context).value;
-        await client.query(
-          QueryOptions(
-            fetchPolicy: FetchPolicy.networkOnly,
-            document: gql(GraphQLQueries.searchHistoryMutation),
-            variables: {
-              "itemId": item.objectId,
-              "userId": currentUser.objectId,
-              "selectedCategoryId": null,
-              "sortedCorrectly": null
-            },
-          ),
-        );
-      }
+      SearchMutations.addToSearchHistory(context, item.objectId, null, null);
     }
 
     Navigator.push(

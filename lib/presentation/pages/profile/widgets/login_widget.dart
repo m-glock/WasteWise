@@ -1,18 +1,17 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:provider/provider.dart';
-import 'package:recycling_app/logic/data_holder.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/logic/services/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/user.dart';
 import '../../../../model_classes/zip_code.dart';
 import '../../../i18n/languages.dart';
 import '../../../../logic/util/constants.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import 'text_input_widget.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -40,36 +39,19 @@ class _LoginWidgetState extends State<LoginWidget> {
   void initState() {
     super.initState();
     _signup = widget.onlySignup;
-    if (DataHolder.zipCodesById.isEmpty) {
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    if (dataService.zipCodesById.isEmpty) {
       _getZipCodes();
     } else {
-      zipCodeSuggestions = DataHolder.zipCodesById.values.toList();
+      zipCodeSuggestions = dataService.zipCodesById.values.toList();
     }
   }
 
   void _getZipCodes() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String? municipalityId =
-        _prefs.getString(Constants.prefSelectedMunicipalityCode);
-    Map<String, dynamic> inputVariables = {
-      "municipalityId": municipalityId,
-    };
+    List<ZipCode> zipCodes = await GeneralQueries.getZipCodes(context);
 
-    GraphQLClient client = GraphQLProvider.of(context).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        document: gql(GraphQLQueries.getZipCodes),
-        variables: inputVariables,
-      ),
-    );
-
-    List<dynamic> zipCodes = result.data?["getZipCodes"];
-    for (dynamic zipCodeData in zipCodes) {
-      ZipCode zipCode = ZipCode.fromGraphQLData(zipCodeData);
-      DataHolder.zipCodesById[zipCode.objectId] = zipCode;
-    }
     setState(() {
-      zipCodeSuggestions = DataHolder.zipCodesById.values.toList();
+      zipCodeSuggestions = zipCodes;
     });
   }
 

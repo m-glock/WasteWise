@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:recycling_app/logic/database_access/queries/general_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../model_classes/waste_bin_category.dart';
 import '../../../i18n/locale_constant.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class WasteBinExplanationScreen extends StatefulWidget {
   const WasteBinExplanationScreen(
@@ -43,15 +43,16 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
   void _getCategories(dynamic categoryData) async {
     List<WasteBinCategory> categoryList = [];
     for (dynamic element in categoryData) {
-      Uri uri = Uri.parse(element["category_id"]["image_file"]["url"]);
+      if(element["node"]["category_id"]["objectId"] == "ZWHAaWY0YN") continue;
+      Uri uri = Uri.parse(element["node"]["category_id"]["image_file"]["url"]);
       http.Response response = await http.get(uri);
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String imagePath = "${documentDirectory.path}/${element["title"]}.png";
+      String imagePath = "${documentDirectory.path}/${element["node"]["title"]}.png";
       File file = File(imagePath);
       if (!file.existsSync()) {
         file.writeAsBytes(response.bodyBytes);
       }
-      categoryList.add(WasteBinCategory.fromGraphQlData(element, imagePath));
+      categoryList.add(WasteBinCategory.fromGraphQlData(element["node"], imagePath));
     }
 
     setState(() {
@@ -106,7 +107,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
         ? _getWidget()
         : Query(
             options: QueryOptions(
-              document: gql(GraphQLQueries.categoryQuery),
+              document: gql(GeneralQueries.categoryQuery),
               variables: {
                 "languageCode": languageCode,
                 "municipalityId": widget.municipalityId,
@@ -120,7 +121,7 @@ class _WasteBinExplanationScreenState extends State<WasteBinExplanationScreen> {
               }
 
               // get categories to display
-              List<dynamic> categoryData = result.data?["getCategories"];
+              List<dynamic> categoryData = result.data?["categoryTLS"]["edges"];
               _getCategories(categoryData);
 
               // display when all data is available

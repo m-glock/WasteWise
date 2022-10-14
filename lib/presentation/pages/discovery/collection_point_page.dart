@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/comrade_dialog_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_filter_dropdown_widget.dart';
 import 'package:recycling_app/presentation/pages/discovery/widgets/collection_point/map_widget.dart';
 
-import 'package:recycling_app/logic/data_holder.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/collection_point.dart';
 
 class CollectionPointPage extends StatefulWidget {
@@ -34,7 +35,8 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
   }
 
   void _getValues(){
-    filteredMarkers = Map.of(DataHolder.markers);
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    filteredMarkers = Map.of(dataService.markers);
   }
 
   void _checkIfLoggedIn() async {
@@ -76,7 +78,7 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
 
   void _filterMarkers(String subcategoryTitle) {
     filteredMarkers.clear();
-    filteredMarkers.addAll(DataHolder.markers);
+    filteredMarkers.addAll(Provider.of<DataService>(context, listen: false).markers);
     if(subcategoryTitle != Languages.of(context)!.cpDropdownDefault){
       filteredMarkers.removeWhere(
               (key, value) => !value.containsSubcategoryTitle(subcategoryTitle));
@@ -88,7 +90,8 @@ class _CollectionPointPageState extends State<CollectionPointPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> dropdownValues = DataHolder.cpSubcategories.toList();
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    List<String> dropdownValues = dataService.cpSubcategories.toList();
     dropdownValues.insert(0, Languages.of(context)!.cpDropdownDefault);
     return Scaffold(
       appBar: AppBar(

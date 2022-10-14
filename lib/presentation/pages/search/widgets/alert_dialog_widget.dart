@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/database_access/mutations/bookmark_mutations.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/search/item_detail_page.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/tip_dialog_widget.dart';
 
 import '../../../../model_classes/item.dart';
 import '../../../../model_classes/tip.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class AlertDialogWidget {
   static Random rand = Random();
@@ -41,9 +41,9 @@ class AlertDialogWidget {
 
                       // remove or add the bookmark depending on the bookmark state
                       bool success = isBookmarked
-                          ? await GraphQLQueries.removeItemBookmark(
+                          ? await BookmarkMutations.removeItemBookmark(
                               item.objectId, client)
-                          : await GraphQLQueries.addItemBookmark(
+                          : await BookmarkMutations.addItemBookmark(
                               item.objectId, client);
 
                       // change bookmark status if DB entry was successful

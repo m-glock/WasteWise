@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/neighborhood_mutations.dart';
+import 'package:recycling_app/logic/database_access/queries/neighborhood_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/neighborhood/widgets/forum_entry_widget.dart';
 
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/forum_entry.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/data_holder.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 import '../../general_widgets/custom_icon_button.dart';
 
 class ThreadPage extends StatefulWidget {
-  const ThreadPage({Key? key, required this.parentForumEntry}) : super(key: key);
+  const ThreadPage({Key? key, required this.parentForumEntry})
+      : super(key: key);
 
   final ForumEntry parentForumEntry;
 
@@ -24,7 +27,8 @@ class _ThreadPageState extends State<ThreadPage> {
   List<ForumEntryWidget> replies = [];
 
   void _createForumReply() async {
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Question")
         .key;
     Map<String, dynamic> inputVariables = {
@@ -37,22 +41,22 @@ class _ThreadPageState extends State<ThreadPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );
 
-    Map<String, dynamic>? forumReplyData = result.data?["createForumEntries"];
+    Map<String, dynamic>? forumReplyData = result.data?["createForumEntry"];
 
-    String snackBarText =
-    result.hasException || forumReplyData == null
+    String snackBarText = result.hasException || forumReplyData == null
         ? Languages.of(context)!.cpPostUnsuccessfulText
         : Languages.of(context)!.cpPostSuccessfulText;
 
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (forumReplyData != null) {
-      ForumEntry forumEntry = ForumEntry.fromGraphQLData(forumReplyData);
+      ForumEntry forumEntry =
+          ForumEntry.fromGraphQLData(forumReplyData["forumEntry"], dataService);
       setState(() {
         replies.add(ForumEntryWidget(
           key: ValueKey(forumEntry.objectId),
@@ -69,7 +73,7 @@ class _ThreadPageState extends State<ThreadPage> {
         .showSnackBar(SnackBar(content: Text(snackBarText)));
   }
 
-  Widget _getWidget(){
+  Widget _getWidget() {
     return Padding(
       padding: EdgeInsets.all(Constants.pagePadding),
       child: Column(
@@ -143,33 +147,36 @@ class _ThreadPageState extends State<ThreadPage> {
       body: replies.isNotEmpty
           ? _getWidget()
           : Query(
-        options: QueryOptions(
-            document: gql(GraphQLQueries.getForumReplies),
-            variables: {
-              "parentEntryId": widget.parentForumEntry.objectId,
-            }),
-        builder: (QueryResult result,
-            {VoidCallback? refetch, FetchMore? fetchMore}) {
-          if (result.hasException) {
-            return Text(result.exception.toString());
-          }
-          if (result.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+              options: QueryOptions(
+                  document: gql(NeighborhoodQueries.forumRepliesQuery),
+                  variables: {
+                    "parentEntryId": widget.parentForumEntry.objectId,
+                  }),
+              builder: (QueryResult result,
+                  {VoidCallback? refetch, FetchMore? fetchMore}) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
+                if (result.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          List<dynamic> replyData = result.data?["getForumEntryReplies"];
-          for (dynamic element in replyData) {
-            ForumEntry entry = ForumEntry.fromGraphQLData(element);
-            replies.add(ForumEntryWidget(
-              key: ValueKey(entry.objectId),
-              forumEntry: entry,
-              isRootEntry: false,
-            ));
-          }
+                List<dynamic> replyData = result.data?["forumEntries"]["edges"];
+                DataService dataService =
+                    Provider.of<DataService>(context, listen: false);
+                for (dynamic element in replyData) {
+                  ForumEntry entry =
+                      ForumEntry.fromGraphQLData(element["node"], dataService);
+                  replies.add(ForumEntryWidget(
+                    key: ValueKey(entry.objectId),
+                    forumEntry: entry,
+                    isRootEntry: false,
+                  ));
+                }
 
-          return _getWidget();
-        },
-      ),
+                return _getWidget();
+              },
+            ),
     );
   }
 }

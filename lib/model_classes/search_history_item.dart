@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
+import 'package:recycling_app/logic/services/data_service.dart';
 import 'package:recycling_app/model_classes/waste_bin_category.dart';
-
-import '../logic/data_holder.dart';
-import '../logic/database_access/graphl_ql_queries.dart';
 
 class SearchHistoryItem {
   final String objectId;
@@ -15,28 +15,21 @@ class SearchHistoryItem {
       this.selectedCategory, this.createdAt);
 
   static Future<SearchHistoryItem> fromGraphQlData(dynamic searchHistoryData,
-      GraphQLClient client, String languageCode) async {
-    WasteBinCategory correctCategory = DataHolder.categoriesById[
-        searchHistoryData["item_id"]["subcategory_id"]["category_id"]
+      GraphQLClient client, String languageCode, DataService dataService, BuildContext context) async {
+    WasteBinCategory correctCategory = dataService.categoriesById[
+        searchHistoryData["node"]["item_id"]["subcategory_id"]["category_id"]
             ["objectId"]]!;
 
-    QueryResult<Object> result = await client.query(
-      QueryOptions(
-        document: gql(GraphQLQueries.getItemName),
-        variables: {
-          "languageCode": languageCode,
-          "itemId": searchHistoryData["item_id"]["objectId"],
-        },
-      ),
-    );
+    String itemName = await ItemQueries.getItemName(
+        context, languageCode, searchHistoryData["node"]["item_id"]["objectId"]);
 
-    DateTime temp = DateTime.parse(searchHistoryData["createdAt"]);
+    DateTime temp = DateTime.parse(searchHistoryData["node"]["createdAt"]);
     return SearchHistoryItem(
-        searchHistoryData["item_id"]["objectId"],
-        result.data?["getItemName"]["title"],
+        searchHistoryData["node"]["item_id"]["objectId"],
+        itemName,
         correctCategory,
-        DataHolder
-            .categoriesById[searchHistoryData["selected_category_id"]["objectId"]]!,
+        dataService
+            .categoriesById[searchHistoryData["node"]["selected_category_id"]["objectId"]]!,
         temp);
   }
 }

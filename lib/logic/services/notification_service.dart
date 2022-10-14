@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
+import 'package:recycling_app/logic/database_access/queries/item_queries.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 import 'package:recycling_app/logic/util/constants.dart';
@@ -11,11 +14,9 @@ import 'package:recycling_app/logic/util/constants.dart';
 import '../util/user.dart';
 import '../../model_classes/item.dart';
 import '../../model_classes/tip.dart';
-import '../../presentation/i18n/locale_constant.dart';
 import '../../presentation/pages/search/search_sort_page.dart';
-import '../data_holder.dart';
-import '../database_access/graphl_ql_queries.dart';
 import '../util/notification_type.dart';
+import 'data_service.dart';
 
 class NotificationService {
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -108,16 +109,7 @@ class NotificationService {
   }
 
   void openTipPage() async {
-    GraphQLClient client = GraphQLProvider.of(context!).value;
-    QueryResult<Object?> result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.noCache,
-        document: gql(GraphQLQueries.getRandomTip),
-        variables: {"languageCode": (await getLocale()).languageCode},
-      ),
-    );
-
-    Tip tip = Tip.fromGraphQlData(result.data?["getRandomTip"]);
+    Tip tip = await DashboardQueries.getRandomTip(context!);
     Navigator.push(
         context!,
         MaterialPageRoute(
@@ -136,7 +128,7 @@ class NotificationService {
       result = await client.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
-          document: gql(GraphQLQueries.getRecentlyWronglySortedItem),
+          document: gql(SearchQueries.recentlyWronglySortedItemQuery),
           variables: {"userId": userId},
         ),
       );
@@ -144,28 +136,14 @@ class NotificationService {
     } else {
       // get random item
       Random rand = Random();
-      int index = rand.nextInt(DataHolder.itemNames.length);
+      DataService dataService = Provider.of<DataService>(context!, listen: false);
+      int index = rand.nextInt(dataService.itemNames.length);
       MapEntry<String, String> itemData =
-          DataHolder.itemNames.entries.elementAt(index);
+          dataService.itemNames.entries.elementAt(index);
       itemId = itemData.value;
     }
 
-    Map<String, dynamic> inputVariables = {
-      "languageCode": (await getLocale()).languageCode,
-      "itemObjectId": itemId,
-      "userId": userId,
-    };
-    GraphQLClient client = GraphQLProvider.of(context!).value;
-    result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(GraphQLQueries.itemDetailQuery),
-        variables: inputVariables,
-      ),
-    );
-
-    Item item = Item.fromGraphQlData(result.data)!;
-
+    Item item = await ItemQueries.getItemDetails(context!, itemId, userId);
     Navigator.push(context!,
         MaterialPageRoute(builder: (context) => SearchSortPage(item: item)));
   }

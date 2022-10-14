@@ -2,8 +2,8 @@ import 'package:recycling_app/model_classes/subcategory.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../model_classes/address.dart';
-import '../logic/data_holder.dart';
 import '../../../model_classes/contact.dart';
+import '../logic/services/data_service.dart';
 import 'collection_point_type.dart';
 
 part 'generated/collection_point.g.dart';
@@ -23,10 +23,10 @@ class CollectionPoint {
       this.address, this.collectionPointType, this.withHazardousMaterials,
       this.withSecondHand, this.acceptedSubcategories);
 
-  static CollectionPoint fromGraphQlData(dynamic collectionPointData) {
+  static CollectionPoint fromGraphQlData(dynamic collectionPointData, DataService dataService) {
     String cpTypeId =
         collectionPointData["collection_point_type_id"]["objectId"];
-    CollectionPointType cpType = DataHolder.collectionPointTypes
+    CollectionPointType cpType = dataService.collectionPointTypes
         .firstWhere((element) => element.objectId == cpTypeId);
 
     return CollectionPoint(

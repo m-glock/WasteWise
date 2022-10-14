@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/database_access/mutations/bookmark_mutations.dart';
 import 'package:recycling_app/presentation/pages/discovery/tip_detail_page.dart';
 
 import '../../../../../model_classes/tip.dart';
 import '../../../../general_widgets/custom_icon_button.dart';
 import '../../../../i18n/languages.dart';
 import '../../../../../logic/util/constants.dart';
-import '../../../../../logic/database_access/graphl_ql_queries.dart';
 
 class TipTile extends StatefulWidget {
   const TipTile({
@@ -28,11 +28,13 @@ class TipTile extends StatefulWidget {
 
 class _TipTileState extends State<TipTile> {
   ParseUser? currentUser;
+  bool? isBookmarked;
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+    isBookmarked = widget.tip.isBookmarked;
   }
 
   void _getCurrentUser() async {
@@ -46,14 +48,15 @@ class _TipTileState extends State<TipTile> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     // remove or add the bookmark depending on the bookmark state
     bool success = widget.tip.isBookmarked
-        ? await GraphQLQueries.removeTipBookmark(widget.tip.objectId, client)
-        : await GraphQLQueries.addTipBookmark(widget.tip.objectId, client);
+        ? await BookmarkMutations.removeTipBookmark(widget.tip.objectId, client)
+        : await BookmarkMutations.addTipBookmark(widget.tip.objectId, client);
 
     // change bookmark status if DB entry was successful
     // or notify user if not
     if (success) {
+      widget.tip.isBookmarked = !widget.tip.isBookmarked;
       setState(() {
-        widget.tip.isBookmarked = !widget.tip.isBookmarked;
+        isBookmarked = widget.tip.isBookmarked;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -63,8 +66,9 @@ class _TipTileState extends State<TipTile> {
   }
 
   void _updateBookmarkInWidget() {
+    widget.tip.isBookmarked = !widget.tip.isBookmarked;
     setState(() {
-      widget.tip.isBookmarked = !widget.tip.isBookmarked;
+      isBookmarked = !isBookmarked!;
     });
   }
 
@@ -104,7 +108,7 @@ class _TipTileState extends State<TipTile> {
         child: Row(
           children: [
             if (currentUser != null)
-              widget.tip.isBookmarked
+              isBookmarked!
                   ? CustomIconButton(
                       padding: const EdgeInsets.only(right: 10),
                       onPressed: _bookmarkTip,

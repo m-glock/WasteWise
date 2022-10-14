@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/neighborhood_mutations.dart';
+import 'package:recycling_app/logic/database_access/queries/search_queries.dart';
 
-import '../../../../logic/data_holder.dart';
+import '../../../../logic/services/data_service.dart';
 import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 
 class OverviewTile extends StatefulWidget {
   const OverviewTile({Key? key}) : super(key: key);
@@ -32,26 +33,26 @@ class _OverviewTileState extends State<OverviewTile> {
   }
 
   void _createForumPost(String userId, String savedItemNumber) async {
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Progress")
         .key;
     Map<String, dynamic> inputVariables = {
       "userId": (userId),
       "forumEntryTypeId": forumTypeId,
       "text": savedItemNumber,
+      "parentEntryId": null,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );
 
-    Map<String, dynamic>? forumEntryData = result.data?["createForumEntries"];
-
-    String snackBarText = result.hasException || forumEntryData == null
+    String snackBarText = result.hasException || result.data?["createForumEntry"] == null
         ? Languages.of(context)!.overviewShareUnsuccessful
         : Languages.of(context)!.overviewShareSuccessful;
 
@@ -65,7 +66,7 @@ class _OverviewTileState extends State<OverviewTile> {
       builder: (BuildContext context, User user, child) {
         return Query(
           options: QueryOptions(
-            document: gql(GraphQLQueries.recentlyAndOftenSearchedItemQuery),
+            document: gql(SearchQueries.searchedAndWronglySortedItemsQuery),
             variables: {"userId": user.currentUser?.objectId ?? ""},
           ),
           builder: (QueryResult result,

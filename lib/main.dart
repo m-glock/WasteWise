@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/services/data_service.dart';
 import 'package:recycling_app/presentation/pages/introduction/intro_page.dart';
 import 'package:recycling_app/presentation/pages/loading_page.dart';
 import 'package:recycling_app/presentation/themes/button_theme.dart';
@@ -35,6 +36,7 @@ void main() async {
         providers: [
           ChangeNotifierProvider<User>(create: (_) => User()),
           Provider<NotificationService>(create: (_) => NotificationService()),
+          Provider<DataService>(create: (_) => DataService()),
         ],
         child: const MyApp(),
       )

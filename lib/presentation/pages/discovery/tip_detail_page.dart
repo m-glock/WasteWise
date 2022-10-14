@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:recycling_app/logic/data_holder.dart';
+import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/mutations/bookmark_mutations.dart';
 
+import '../../../logic/database_access/mutations/neighborhood_mutations.dart';
+import '../../../logic/services/data_service.dart';
 import '../../../model_classes/tip.dart';
 import '../../general_widgets/custom_icon_button.dart';
 import '../../i18n/languages.dart';
 import '../../../logic/util/constants.dart';
-import '../../../logic/database_access/graphl_ql_queries.dart';
 
 class TipDetailPage extends StatefulWidget {
   const TipDetailPage(
@@ -56,8 +58,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     // remove or add the bookmark depending on the bookmark state
     bool success = widget.tip.isBookmarked
-        ? await GraphQLQueries.removeTipBookmark(widget.tip.objectId, client)
-        : await GraphQLQueries.addTipBookmark(widget.tip.objectId, client);
+        ? await BookmarkMutations.removeTipBookmark(widget.tip.objectId, client)
+        : await BookmarkMutations.addTipBookmark(widget.tip.objectId, client);
 
     // change bookmark status if DB entry was successful
     // or notify user if not
@@ -83,25 +85,27 @@ class _TipDetailPageState extends State<TipDetailPage> {
       ));
     }
 
-    String forumTypeId = DataHolder.forumEntryTypesById.entries
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    String forumTypeId = dataService.forumEntryTypesById.entries
         .firstWhere((element) => element.value.typeName == "Share")
         .key;
     Map<String, dynamic> inputVariables = {
       "userId": currentUser!.objectId,
       "forumEntryTypeId": forumTypeId,
-      "linkId": widget.tip.objectId
+      "linkId": widget.tip.objectId,
+      "parentEntryId": null,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
     QueryResult<Object?> result = await client.query(
       QueryOptions(
-        document: gql(GraphQLQueries.createForumPost),
+        document: gql(NeighborhoodMutations.createForumPostMutation),
         variables: inputVariables,
       ),
     );
 
     String snackBarText =
-        result.hasException || result.data?["createForumEntries"] == null
+        result.hasException || result.data?["createForumEntry"] == null
             ? Languages.of(context)!.tipShareUnsuccessfulText
             : Languages.of(context)!.tipShareSuccessfulText;
 

@@ -1,10 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:recycling_app/logic/database_access/mutations/search_mutations.dart';
 import 'package:recycling_app/presentation/pages/search/widgets/alert_dialog_widget.dart';
-import 'package:recycling_app/logic/database_access/graphl_ql_queries.dart';
 
 import '../../../../model_classes/item.dart';
 import '../../../../model_classes/waste_bin_category.dart';
@@ -27,25 +25,6 @@ class SearchSortGridTile extends StatefulWidget {
 
 class _SearchSortGridTileState extends State<SearchSortGridTile> {
 
-  void _addToSearchHistory() async{
-    ParseUser? currentUser = await ParseUser.currentUser();
-    if(currentUser != null){
-      GraphQLClient client = GraphQLProvider.of(context).value;
-      await client.query(
-        QueryOptions(
-          fetchPolicy: FetchPolicy.networkOnly,
-          document: gql(GraphQLQueries.searchHistoryMutation),
-          variables: {
-            "itemId": widget.item.objectId,
-            "userId": currentUser.objectId,
-            "selectedCategoryId": widget.category.objectId,
-            "sortedCorrectly": widget.category == widget.item.wasteBin
-          },
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -65,7 +44,12 @@ class _SearchSortGridTileState extends State<SearchSortGridTile> {
         ],
       ),
       onTap: () {
-        _addToSearchHistory();
+        SearchMutations.addToSearchHistory(
+            context,
+            widget.item.objectId,
+            widget.category.objectId,
+            widget.category == widget.item.wasteBin
+        );
         AlertDialogWidget.showModal(
             context, widget.item, widget.isCorrect);
       },

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recycling_app/presentation/i18n/languages.dart';
 import 'package:recycling_app/presentation/pages/introduction/widgets/wastebin_explanation_widget.dart';
 import 'package:recycling_app/logic/util/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../logic/data_holder.dart';
+import '../../../../logic/services/data_service.dart';
 
 class UserDataIntroScreen extends StatefulWidget {
   const UserDataIntroScreen({Key? key}) : super(key: key);
@@ -14,8 +15,16 @@ class UserDataIntroScreen extends StatefulWidget {
 }
 
 class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
-  String municipalityDefault = DataHolder.municipalitiesById.values.first;
-  String municipalityIdDefault = DataHolder.municipalitiesById.keys.first;
+  late String municipalityDefault;
+  late String municipalityIdDefault;
+
+  @override
+  void initState() {
+    super.initState();
+    DataService dataService = Provider.of<DataService>(context, listen: false);
+    municipalityDefault = dataService.municipalitiesById.values.first;
+    municipalityIdDefault = dataService.municipalitiesById.keys.first;
+  }
 
   void _setMunicipalityId(String municipalityObjectId) async {
     municipalityIdDefault = municipalityObjectId;
@@ -43,9 +52,17 @@ class _UserDataIntroScreenState extends State<UserDataIntroScreen> {
               setState(() {
                 municipalityDefault = newValue!;
               });
-              _setMunicipalityId(DataHolder.municipalitiesById[newValue]!);
+
+              DataService dataService = Provider.of<DataService>(context, listen: false);
+              MapEntry<String, String> newEntry = dataService
+                  .municipalitiesById
+                  .entries
+                  .where((element) => element.value == newValue)
+                  .first;
+
+              _setMunicipalityId(newEntry.key);
             },
-            items: DataHolder.municipalitiesById.values
+            items: Provider.of<DataService>(context, listen: false).municipalitiesById.values
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,

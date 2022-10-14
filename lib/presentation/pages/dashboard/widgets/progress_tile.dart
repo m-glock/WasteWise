@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:recycling_app/logic/database_access/queries/dashboard_queries.dart';
 
 import '../../../../logic/util/user.dart';
 import '../../../i18n/languages.dart';
-import '../../../../logic/database_access/graphl_ql_queries.dart';
 import 'bar_chart_widget.dart';
 
 class ProgressTile extends StatefulWidget {
@@ -15,13 +15,18 @@ class ProgressTile extends StatefulWidget {
 }
 
 class _ProgressTileState extends State<ProgressTile> {
+  DateTime threeMonthsAgo = DateTime(DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(builder: (BuildContext context, User user, child) {
       return Query(
         options: QueryOptions(
-          document: gql(GraphQLQueries.getProgress),
-          variables: {"userId": user.currentUser?.objectId ?? ""},
+          document: gql(DashboardQueries.progressQuery),
+          variables: {
+            "userId": user.currentUser?.objectId ?? "",
+            "date": threeMonthsAgo.toString(),
+          },
         ),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -30,7 +35,7 @@ class _ProgressTileState extends State<ProgressTile> {
             return const Center();
           }
 
-          List<dynamic> searchHistoryData = result.data?["getProgress"];
+          List<dynamic> searchHistoryData = result.data?["searchHistories"]["edges"];
 
           // display when all data is available
           return Expanded(
