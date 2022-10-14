@@ -47,10 +47,10 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     }
 
     for (dynamic element in widget.searchHistoryData) {
-      DateTime searchHistoryDate = DateTime.parse(element["createdAt"]);
+      DateTime searchHistoryDate = DateTime.parse(element["node"]["createdAt"]);
       ChartValuePair valuePair = chartData[searchHistoryDate.month]!;
       valuePair.incrementSearchedItemAmount();
-      bool sortedCorrectly = element["sorted_correctly"] ?? false;
+      bool sortedCorrectly = element["node"]["sorted_correctly"] ?? false;
       if (!sortedCorrectly) valuePair.incrementSavedItemAmount();
     }
 

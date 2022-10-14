@@ -65,6 +65,7 @@ class DataService{
     List<dynamic> categories = data?["categoryTLS"]["edges"];
     Map<String, WasteBinCategory> wasteBinCategories = {};
     for (dynamic element in categories) {
+      if(element["node"]["category_id"]["objectId"] == "ZWHAaWY0YN") continue;
       Uri uri = Uri.parse(element["node"]["category_id"]["image_file"]["url"]);
       http.Response response = await http.get(uri);
       Directory documentDirectory = await getApplicationDocumentsDirectory();

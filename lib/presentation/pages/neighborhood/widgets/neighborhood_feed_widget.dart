@@ -89,7 +89,7 @@ class _NeighborhoodFeedWidgetState extends State<NeighborhoodFeedWidget> {
       ),
     );
 
-    Map<String, dynamic>? forumEntryData = result.data?["createForumEntries"];
+    Map<String, dynamic>? forumEntryData = result.data?["createForumEntry"];
 
     String snackBarText = result.hasException || forumEntryData == null
         ? Languages.of(context)!.cpPostUnsuccessfulText

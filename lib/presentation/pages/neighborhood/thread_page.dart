@@ -46,7 +46,7 @@ class _ThreadPageState extends State<ThreadPage> {
       ),
     );
 
-    Map<String, dynamic>? forumReplyData = result.data?["createForumEntries"];
+    Map<String, dynamic>? forumReplyData = result.data?["createForumEntry"];
 
     String snackBarText = result.hasException || forumReplyData == null
         ? Languages.of(context)!.cpPostUnsuccessfulText
@@ -56,7 +56,7 @@ class _ThreadPageState extends State<ThreadPage> {
 
     if (forumReplyData != null) {
       ForumEntry forumEntry =
-          ForumEntry.fromGraphQLData(forumReplyData, dataService);
+          ForumEntry.fromGraphQLData(forumReplyData["forumEntry"], dataService);
       setState(() {
         replies.add(ForumEntryWidget(
           key: ValueKey(forumEntry.objectId),
@@ -161,12 +161,12 @@ class _ThreadPageState extends State<ThreadPage> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                List<dynamic> replyData = result.data?["getForumEntryReplies"];
+                List<dynamic> replyData = result.data?["forumEntries"]["edges"];
                 DataService dataService =
                     Provider.of<DataService>(context, listen: false);
                 for (dynamic element in replyData) {
                   ForumEntry entry =
-                      ForumEntry.fromGraphQLData(element, dataService);
+                      ForumEntry.fromGraphQLData(element["node"], dataService);
                   replies.add(ForumEntryWidget(
                     key: ValueKey(entry.objectId),
                     forumEntry: entry,

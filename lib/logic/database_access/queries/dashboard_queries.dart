@@ -7,7 +7,7 @@ import '../../../presentation/i18n/locale_constant.dart';
 class DashboardQueries{
 
   static String compareInNeighborhoodQuery = """
-    query CompareInNeighborhood(\$userId: String!, \$municipalityId: String!, \$zipCodes: [String!]!){
+    query CompareInNeighborhood(\$userId: ID!, \$municipalityId: ID!, \$zipCodes: [String!]!){
       compareInNeighborhood(
         userId: \$userId, 
         municipalityId: \$municipalityId, 
@@ -36,11 +36,15 @@ class DashboardQueries{
   """;
 
   static String progressQuery = """
-    query GetProgress(\$userId: String!){
-      getProgress(userId: \$userId){
-        objectId
-        sorted_correctly
-        createdAt
+    query SearchHistories(\$userId: ID!, \$date: Date!){
+      searchHistories(where:{user_id:{have:{objectId:{equalTo: \$userId}}}AND:{createdAt:{greaterThanOrEqualTo:\$date}}}){
+        edges{
+          node{
+            objectId
+            sorted_correctly
+            createdAt
+          }
+        }
       }
     }
   """;

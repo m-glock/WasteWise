@@ -92,7 +92,8 @@ class ComradeDialogWidget {
     Map<String, dynamic> inputVariables = {
       "userId": currentUser?.objectId,
       "forumEntryTypeId": forumTypeId,
-      "linkId": subcategoryId
+      "linkId": subcategoryId,
+      "parentEntryId": null,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -104,7 +105,7 @@ class ComradeDialogWidget {
     );
 
     String snackBarText =
-        result.hasException || result.data?["createForumEntries"] == null
+        result.hasException || result.data?["createForumEntry"] == null
             ? Languages.of(context)!.cpAllyUnsuccessfulText
             : Languages.of(context)!.cpAllySuccessfulText;
 

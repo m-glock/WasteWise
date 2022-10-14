@@ -1,7 +1,7 @@
 class BookmarkQueries{
 
   static String bookmarkedItemsQuery = """
-    query GetAllItemBookmarksForUser(\$languageCode: String!, \$userId: String){
+    query GetAllItemBookmarksForUser(\$languageCode: String!, \$userId: ID){
       getAllItemBookmarksForUser(languageCode: \$languageCode, userId: \$userId){
         title
         item_id{

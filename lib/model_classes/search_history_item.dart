@@ -17,19 +17,19 @@ class SearchHistoryItem {
   static Future<SearchHistoryItem> fromGraphQlData(dynamic searchHistoryData,
       GraphQLClient client, String languageCode, DataService dataService, BuildContext context) async {
     WasteBinCategory correctCategory = dataService.categoriesById[
-        searchHistoryData["item_id"]["subcategory_id"]["category_id"]
+        searchHistoryData["node"]["item_id"]["subcategory_id"]["category_id"]
             ["objectId"]]!;
 
     String itemName = await ItemQueries.getItemName(
-        context, languageCode, searchHistoryData["item_id"]["objectId"]);
+        context, languageCode, searchHistoryData["node"]["item_id"]["objectId"]);
 
-    DateTime temp = DateTime.parse(searchHistoryData["createdAt"]);
+    DateTime temp = DateTime.parse(searchHistoryData["node"]["createdAt"]);
     return SearchHistoryItem(
-        searchHistoryData["item_id"]["objectId"],
+        searchHistoryData["node"]["item_id"]["objectId"],
         itemName,
         correctCategory,
         dataService
-            .categoriesById[searchHistoryData["selected_category_id"]["objectId"]]!,
+            .categoriesById[searchHistoryData["node"]["selected_category_id"]["objectId"]]!,
         temp);
   }
 }

@@ -15,13 +15,18 @@ class ProgressTile extends StatefulWidget {
 }
 
 class _ProgressTileState extends State<ProgressTile> {
+  DateTime threeMonthsAgo = DateTime(DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<User>(builder: (BuildContext context, User user, child) {
       return Query(
         options: QueryOptions(
           document: gql(DashboardQueries.progressQuery),
-          variables: {"userId": user.currentUser?.objectId ?? ""},
+          variables: {
+            "userId": user.currentUser?.objectId ?? "",
+            "date": threeMonthsAgo.toString(),
+          },
         ),
         builder: (QueryResult result,
             {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -30,7 +35,7 @@ class _ProgressTileState extends State<ProgressTile> {
             return const Center();
           }
 
-          List<dynamic> searchHistoryData = result.data?["getProgress"];
+          List<dynamic> searchHistoryData = result.data?["searchHistories"]["edges"];
 
           // display when all data is available
           return Expanded(

@@ -92,7 +92,8 @@ class _TipDetailPageState extends State<TipDetailPage> {
     Map<String, dynamic> inputVariables = {
       "userId": currentUser!.objectId,
       "forumEntryTypeId": forumTypeId,
-      "linkId": widget.tip.objectId
+      "linkId": widget.tip.objectId,
+      "parentEntryId": null,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -104,7 +105,7 @@ class _TipDetailPageState extends State<TipDetailPage> {
     );
 
     String snackBarText =
-        result.hasException || result.data?["createForumEntries"] == null
+        result.hasException || result.data?["createForumEntry"] == null
             ? Languages.of(context)!.tipShareUnsuccessfulText
             : Languages.of(context)!.tipShareSuccessfulText;
 

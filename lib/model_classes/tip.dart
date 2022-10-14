@@ -15,13 +15,24 @@ class Tip {
       {this.isBookmarked = false});
 
   static Tip fromGraphQlData(Map<dynamic, dynamic> tip, {bool bookmarked = false}) {
-    return Tip(
-        tip["tip_id"]["objectId"],
-        tip["title"],
-        tip["explanation"],
-        tip["tip_id"]["tip_type_id"]["objectId"],
-        tip["tip_id"]["image"]["url"],
-        tip["short"],
-        isBookmarked: bookmarked);
+    if(tip.containsKey("node")){
+      return Tip(
+          tip["node"]["tip_id"]["objectId"],
+          tip["node"]["title"],
+          tip["node"]["explanation"],
+          tip["node"]["tip_id"]["tip_type_id"]["objectId"],
+          tip["node"]["tip_id"]["image"]["url"],
+          tip["node"]["short"],
+          isBookmarked: bookmarked);
+    } else {
+      return Tip(
+          tip["tip_id"]["objectId"],
+          tip["title"],
+          tip["explanation"],
+          tip["tip_id"]["tip_type_id"]["objectId"],
+          tip["tip_id"]["image"]["url"],
+          tip["short"],
+          isBookmarked: bookmarked);
+    }
   }
 }

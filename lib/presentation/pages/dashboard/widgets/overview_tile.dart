@@ -35,12 +35,13 @@ class _OverviewTileState extends State<OverviewTile> {
   void _createForumPost(String userId, String savedItemNumber) async {
     DataService dataService = Provider.of<DataService>(context, listen: false);
     String forumTypeId = dataService.forumEntryTypesById.entries
-        .firstWhere((element) => element.value.typeName == "Share")
+        .firstWhere((element) => element.value.typeName == "Progress")
         .key;
     Map<String, dynamic> inputVariables = {
       "userId": (userId),
       "forumEntryTypeId": forumTypeId,
       "text": savedItemNumber,
+      "parentEntryId": null,
     };
 
     GraphQLClient client = GraphQLProvider.of(context).value;
@@ -51,9 +52,7 @@ class _OverviewTileState extends State<OverviewTile> {
       ),
     );
 
-    Map<String, dynamic>? forumEntryData = result.data?["createForumEntries"];
-
-    String snackBarText = result.hasException || forumEntryData == null
+    String snackBarText = result.hasException || result.data?["createForumEntry"] == null
         ? Languages.of(context)!.overviewShareUnsuccessful
         : Languages.of(context)!.overviewShareSuccessful;
 

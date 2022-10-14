@@ -5,8 +5,16 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class SearchMutations{
 
   static String searchHistoryMutation = """
-    mutation CreateObject(\$itemId: String!, \$userId: String!, \$selectedCategoryId: String!, \$sortedCorrectly: Boolean!){
-      addToSearchHistory(itemId: \$itemId, userId: \$userId, selectedCategoryId: \$selectedCategoryId, sortedCorrectly: \$sortedCorrectly)
+    mutation CreateObject(\$itemId: ID!, \$userId: ID!, \$selectedCategoryId: ID!, \$sortedCorrectly: Boolean!){
+      createSearchHistory(input:{fields:{
+        item_id:{link:\$itemId}
+        user_id:{link:\$userId}
+        selected_category_id:{link:\$selectedCategoryId}
+        sorted_correctly: \$sortedCorrectly
+      }}){
+        searchHistory{
+          objectId
+      }}
     }
   """;
 

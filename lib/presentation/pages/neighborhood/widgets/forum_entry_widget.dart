@@ -110,7 +110,7 @@ class _ForumEntryWidgetState extends State<ForumEntryWidget> {
         variables: inputVariables,
       ),
     );
-    return Tip.fromGraphQlData(result.data?["getTip"]);
+    return Tip.fromGraphQlData(result.data?["tipTLS"]["edges"][0]);
   }
 
   Widget _getIcon(){

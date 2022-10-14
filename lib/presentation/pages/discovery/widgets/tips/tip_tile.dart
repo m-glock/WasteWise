@@ -28,11 +28,13 @@ class TipTile extends StatefulWidget {
 
 class _TipTileState extends State<TipTile> {
   ParseUser? currentUser;
+  bool? isBookmarked;
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+    isBookmarked = widget.tip.isBookmarked;
   }
 
   void _getCurrentUser() async {
@@ -52,8 +54,9 @@ class _TipTileState extends State<TipTile> {
     // change bookmark status if DB entry was successful
     // or notify user if not
     if (success) {
+      widget.tip.isBookmarked = !widget.tip.isBookmarked;
       setState(() {
-        widget.tip.isBookmarked = !widget.tip.isBookmarked;
+        isBookmarked = widget.tip.isBookmarked;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -63,8 +66,9 @@ class _TipTileState extends State<TipTile> {
   }
 
   void _updateBookmarkInWidget() {
+    widget.tip.isBookmarked = !widget.tip.isBookmarked;
     setState(() {
-      widget.tip.isBookmarked = !widget.tip.isBookmarked;
+      isBookmarked = !isBookmarked!;
     });
   }
 
@@ -104,7 +108,7 @@ class _TipTileState extends State<TipTile> {
         child: Row(
           children: [
             if (currentUser != null)
-              widget.tip.isBookmarked
+              isBookmarked!
                   ? CustomIconButton(
                       padding: const EdgeInsets.only(right: 10),
                       onPressed: _bookmarkTip,

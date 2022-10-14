@@ -9,18 +9,23 @@ import '../../services/data_service.dart';
 class ItemQueries{
 
   static String itemDetailQuery = """
-    query GetItem(\$languageCode: String!, \$itemObjectId: String!, \$userId: String!){
-      getItem(languageCode: \$languageCode, itemObjectId: \$itemObjectId){
-        title
-        explanation
-        synonyms
-        item_id{
-          objectId
-          subcategory_id{
-            objectId
-            category_id{
-              objectId 
-      	    }
+    query GetItem(\$languageCode: String!, \$itemObjectId: ID!, \$userId: ID!){
+      itemTLS(where:{item_id:{have:{objectId:{equalTo: \$itemObjectId}}}
+        AND:{language_code:{equalTo: \$languageCode}}}){
+        edges{
+          node{
+            title
+            explanation
+            synonyms
+            item_id{
+              objectId
+              subcategory_id{
+                objectId
+                category_id{
+                  objectId 
+      	        }
+              }
+            }
           }
         }
       }
@@ -45,10 +50,12 @@ class ItemQueries{
         }
       }
       
-      getTipTypes(languageCode: \$languageCode){
-        tip_type_id{
-          objectId
-          default_label
+      tipTypes{
+        edges{
+          node{
+            objectId
+            default_label
+          }
         }
       }
       
@@ -59,7 +66,7 @@ class ItemQueries{
   """;
 
   static String barcodeMaterialQuery = """
-  query GetBarcodeMaterials(\$languageCode: String!, \$municipalityId: String!){
+  query GetBarcodeMaterials(\$languageCode: String!, \$municipalityId: ID!){
     getBarcodeMaterials(languageCode: \$languageCode, municipalityId: \$municipalityId){
       title
       barcode_material_id{
@@ -73,9 +80,10 @@ class ItemQueries{
   """;
 
   static String itemNameQuery = """
-    query GetItemName(\$languageCode: String!, \$itemId: String){
-      getItemName(languageCode: \$languageCode, itemId: \$itemId){
-        title
+    query GetItemName(\$languageCode: String!, \$itemId: ID){
+      itemTLS(where:{item_id:{have:{objectId:{equalTo: \$itemId}}}
+        AND:{language_code:{equalTo: \$languageCode}}}){
+        edges{node{title}}
       }
     }
   """;
@@ -93,7 +101,7 @@ class ItemQueries{
       ),
     );
 
-    return result.data?["getItemName"]["title"];
+    return result.data?["itemTLS"]["edges"][0]["node"]["title"];
   }
 
   static Future<Item> getItemDetails(

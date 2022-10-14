@@ -53,7 +53,6 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
         options: QueryOptions(
           document: gql(SearchQueries.searchHistoryQuery),
           variables: {
-            "languageCode": widget.languageCode,
             "userId": widget.userId,
           },
         ),
@@ -65,7 +64,7 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
           }
 
           // get municipalities for selection
-          List<dynamic> searchHistoryData = result.data?["getSearchHistory"];
+          List<dynamic> searchHistoryData = result.data?["searchHistories"]["edges"];
           _getItems(searchHistoryData);
 
           // display when all data is available

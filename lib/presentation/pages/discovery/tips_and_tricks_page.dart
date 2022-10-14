@@ -182,10 +182,10 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       }
 
                       //set tips
-                      List<dynamic> tipData = result.data?["getTips"];
+                      List<dynamic> tipData = result.data?["tipTLS"]["edges"];
                       for (dynamic element in tipData) {
-                        tipList[element["tip_id"]["objectId"]] =
-                            Tip.fromGraphQlData(element);
+                        tipList[element["node"]["tip_id"]["objectId"]] =
+                            Tip.fromGraphQlData(element["node"]);
                       }
 
                       // set bookmarks
@@ -197,22 +197,22 @@ class _TipsAndTricksPageState extends State<TipsAndTricksPage> {
                       }
 
                       // set tip types
-                      List<dynamic> tipTypeData = result.data?["getTipTypes"];
+                      List<dynamic> tipTypeData = result.data?["tipTypeTLS"]["edges"];
                       tipTypeOptions[Languages.of(context)!
                           .defaultTipTypeDropdownItem] = "default";
                       for (dynamic element in tipTypeData) {
-                        tipTypeOptions[element["title"]] =
-                            element["tip_type_id"]["objectId"];
+                        tipTypeOptions[element["node"]["title"]] =
+                            element["node"]["tip_type_id"]["objectId"];
                       }
 
                       // add subcategories to tips
                       DataService dataService = Provider.of<DataService>(context, listen: false);
                       List<dynamic> tipSubcategoryData =
-                          result.data?["getTipSubcategories"];
+                          result.data?["tipSubcategories"]["edges"];
                       for (dynamic element in tipSubcategoryData) {
-                        Tip tip = tipList[element["tip_id"]["objectId"]]!;
+                        Tip tip = tipList[element["node"]["tip_id"]["objectId"]]!;
                         Subcategory subcategory = dataService.subcategoriesById[
-                            element["subcategory_id"]["objectId"]]!;
+                            element["node"]["subcategory_id"]["objectId"]]!;
                         tip.subcategories.add(subcategory);
                       }
 

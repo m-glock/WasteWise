@@ -7,38 +7,51 @@ import '../../../presentation/i18n/locale_constant.dart';
 class TipQueries{
 
   static String tipListQuery = """
-    query GetTips(\$languageCode: String!, \$userId: String){
-      getTipTypes(languageCode: \$languageCode){
-        title
-        tip_type_id{
-          objectId
-          color
-          default_label
+    query GetTips(\$languageCode: String!, \$userId: ID){
+      tipTypeTLS(where:{language_code:{equalTo: \$languageCode}}){
+        edges{
+          node{
+            title
+            tip_type_id{
+              objectId
+              color
+              default_label
+            }
+          }
         }
       }
       
-      getTips(languageCode: \$languageCode){
-        tip_id{
-          objectId
-    	    tip_type_id{
-    	      objectId
-      	    color
-    	    },
-    	    image{
-    	      url
-    	    }
-  	    }, 
-        title,
-        explanation,
-        short
+      
+      tipTLS(where:{language_code:{equalTo: \$languageCode}}){
+        edges{
+          node{
+            tip_id{
+              objectId
+    	        tip_type_id{
+    	          objectId
+      	        color
+    	        },
+    	        image{
+    	          url
+    	        }
+  	        }, 
+            title,
+            explanation,
+            short
+          }
+        }
       }
       
-      getTipSubcategories{
-        tip_id{
-          objectId
-        }
-        subcategory_id{
-          objectId
+      tipSubcategories{
+        edges{
+          node{
+            tip_id{
+              objectId
+            }
+            subcategory_id{
+              objectId
+            }
+          }
         }
       }
       
@@ -51,21 +64,26 @@ class TipQueries{
   """;
 
   static String tipDetailQuery = """
-    query GetTip(\$languageCode: String!, \$tipId: String!){
-      getTip(languageCode: \$languageCode, tipId: \$tipId){
-        tip_id{
-          objectId
-    	    tip_type_id{
-    	      objectId
-      	    color
-    	    },
-    	    image{
-    	      url
-    	    }
-  	    }, 
-        title,
-        explanation,
-        short
+    query GetTip(\$languageCode: String!, \$tipId: ID!){
+      tipTLS(where:{tip_id:{have:{objectId:{equalTo: \$tipId}}}
+        AND:{language_code:{equalTo: \$languageCode}}}){
+        edges{
+          node{
+            tip_id{
+              objectId
+    	        tip_type_id{
+    	          objectId
+      	        color
+    	        },
+    	        image{
+    	          url
+    	        }
+  	        }, 
+            title,
+            explanation,
+            short
+          }
+        }
       }
     }
   """;
@@ -86,6 +104,6 @@ class TipQueries{
       ),
     );
 
-    return Tip.fromGraphQlData(result.data?["getTip"], bookmarked: true);
+    return Tip.fromGraphQlData(result.data?["tipTLS"]["edges"][0], bookmarked: true);
   }
 }
