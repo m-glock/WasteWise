@@ -73,12 +73,14 @@ class LanguageEn extends Languages {
   @override String get registrationDialogCloseButtonText => "Okay";
   @override String get logoutFailedText => "Something went wrong. Logout was not successful.";
   @override String get notAValidZipCode => " is not a valid zip code for your area.";
+  @override String get missingUsernameOrData => "Make sure that all needed fields are filled out";
 
   // profile page
   @override String get profileLogoutButtonText => "Logout";
 
   // search history page
   @override String get searchHistoryPageTitle => "Search History";
+  @override String get searchHistoryEmpty => "You have not searched for any items yet.";
 
   // bookmark and bookmark page
   @override String get bookmarkPageTitle => "Bookmarks";

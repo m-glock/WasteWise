@@ -74,6 +74,7 @@ abstract class Languages {
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
   String get notAValidZipCode;
+  String get missingUsernameOrData;
   String get logoutFailedText;
 
   // profile page
@@ -81,6 +82,7 @@ abstract class Languages {
 
   // search history page
   String get searchHistoryPageTitle;
+  String get searchHistoryEmpty;
 
   // bookmark and bookmark page
   String get bookmarkPageTitle;

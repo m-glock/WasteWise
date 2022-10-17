@@ -33,6 +33,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final GlobalKey<AutoCompleteTextFieldState<ZipCode>> _key = GlobalKey();
   List<ZipCode> zipCodeSuggestions = [];
   ZipCode? _zipCode;
+  String _zipCodeText = "";
   late bool _signup;
 
   @override
@@ -89,7 +90,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     border: InputBorder.none,
                   ),
                   itemSorter: (ZipCode item1, ZipCode item2) {
-                    return item1.compareTo(item2);
+                    return item1.zipCode.compareTo(item2.zipCode);
                   },
                   itemBuilder: (BuildContext context, ZipCode suggestion) {
                     return Padding(
@@ -110,12 +111,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ));
                     }
                   },
+                  textChanged: (String text) {
+                    _zipCodeText = text;
+                  },
                   itemSubmitted: (ZipCode data) {
                     _zipCode = data;
                   },
                   key: _key,
                   itemFilter: (ZipCode suggestion, String query) {
-                    return suggestion.zipCode.startsWith(query.toLowerCase());
+                    return suggestion.zipCode.toLowerCase().startsWith(query.toLowerCase());
                   },
                 ),
               ),
@@ -154,13 +158,45 @@ class _LoginWidgetState extends State<LoginWidget> {
     final String username = controllerUsername.text.trim();
     final String password = controllerPassword.text.trim();
 
+    if(username == "" || password == ""){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          Languages.of(context)!.missingUsernameOrData,
+        ),
+      ));
+      return;
+    }
+
     ParseResponse response;
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     if (_signup) {
       final String email = controllerEmail.text.trim();
       final ParseUser user = ParseUser.createUser(username, password, email);
 
-      // set zip code and municipality
+      if(email == ""){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            Languages.of(context)!.missingUsernameOrData,
+          ),
+        ));
+        return;
+      }
+
+      // set zip code
+      if(_zipCode == null && _zipCodeText != ""){
+        ZipCode? selected = zipCodeSuggestions
+            .firstWhereOrNull((element) => element.zipCode == _zipCodeText);
+        if (selected != null) {
+          _zipCode = selected;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              _zipCodeText + Languages.of(context)!.notAValidZipCode,
+            ),
+          ));
+          return;
+        }
+      }
       user.set("zip_code_id", _zipCode);
       if(_zipCode != null) {
         _prefs.setString(
