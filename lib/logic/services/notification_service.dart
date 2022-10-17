@@ -104,7 +104,7 @@ class NotificationService {
         break;
     }
     await _flutterLocalNotificationsPlugin!.periodicallyShow(
-        id, title, body, RepeatInterval.everyMinute, _notificationDetails!, //TODO change that for final commit
+        id, title, body, RepeatInterval.weekly, _notificationDetails!,
         androidAllowWhileIdle: true);
   }
 
