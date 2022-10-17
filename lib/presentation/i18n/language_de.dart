@@ -72,6 +72,7 @@ class LanguageDe extends Languages {
   @override String get registrationDialogCloseButtonText => "Okay";
   @override String get logoutFailedText => "Etwas ist schief gelaufen. Logout konnte nicht durchgeführt werden.";
   @override String get notAValidZipCode => " ist keine valide Postleitzahl für die ausgewählte Region.";
+  @override String get missingUsernameOrData => "Stelle sicher dass alle benötigten Felder ausgefüllt sind.";
 
   // profile page
   @override String get profileLogoutButtonText => "Logout";

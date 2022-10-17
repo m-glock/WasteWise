@@ -74,6 +74,7 @@ abstract class Languages {
   String get errorDialogTitle;
   String get registrationDialogCloseButtonText;
   String get notAValidZipCode;
+  String get missingUsernameOrData;
   String get logoutFailedText;
 
   // profile page

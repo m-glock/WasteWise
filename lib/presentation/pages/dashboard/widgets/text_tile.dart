@@ -29,7 +29,7 @@ class _TextTileState extends State<TextTile> {
     String? id = _prefs.getString(Constants.prefSelectedMunicipalityCode);
 
     // get zip codes
-    String? zipCodeId = current.get("zip_code_id").get("objectId");
+    String? zipCodeId = current.get("zip_code_id")?.get("objectId");
     List<String> nearbyZipCodes = [];
     if (zipCodeId != null) {
       DataService dataService = Provider.of<DataService>(context, listen: false);
@@ -92,7 +92,7 @@ class _TextTileState extends State<TextTile> {
     return Consumer<User>(builder: (BuildContext context, User user, child) {
       if(user.currentUser == null){
          return _getWidget();
-      } else if (municipalityId == null || zipCodes.isEmpty) {
+      } else if (municipalityId == null) {
         _getValues(user.currentUser!);
         return const Center(child: CircularProgressIndicator());
       } else {
