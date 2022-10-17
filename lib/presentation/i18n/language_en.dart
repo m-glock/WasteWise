@@ -80,6 +80,7 @@ class LanguageEn extends Languages {
 
   // search history page
   @override String get searchHistoryPageTitle => "Search History";
+  @override String get searchHistoryEmpty => "You have not searched for any items yet.";
 
   // bookmark and bookmark page
   @override String get bookmarkPageTitle => "Bookmarks";

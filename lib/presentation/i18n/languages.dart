@@ -82,6 +82,7 @@ abstract class Languages {
 
   // search history page
   String get searchHistoryPageTitle;
+  String get searchHistoryEmpty;
 
   // bookmark and bookmark page
   String get bookmarkPageTitle;

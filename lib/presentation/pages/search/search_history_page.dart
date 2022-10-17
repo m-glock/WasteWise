@@ -10,11 +10,9 @@ import '../../../model_classes/search_history_item.dart';
 import '../../../logic/util/constants.dart';
 
 class SearchHistoryPage extends StatefulWidget {
-  const SearchHistoryPage({
-    Key? key,
-    required this.userId,
-    required this.languageCode
-  }) : super(key: key);
+  const SearchHistoryPage(
+      {Key? key, required this.userId, required this.languageCode})
+      : super(key: key);
 
   final String userId;
   final String languageCode;
@@ -31,11 +29,8 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     DataService dataService = Provider.of<DataService>(context, listen: false);
     for (dynamic element in searchHistoryData) {
-      items.add(
-          await SearchHistoryItem.fromGraphQlData(
-              element, client, widget.languageCode, dataService, context
-          )
-      );
+      items.add(await SearchHistoryItem.fromGraphQlData(
+          element, client, widget.languageCode, dataService, context));
     }
 
     setState(() {
@@ -64,28 +59,33 @@ class _SearchHistoryPageState extends State<SearchHistoryPage> {
           }
 
           // get municipalities for selection
-          List<dynamic> searchHistoryData = result.data?["searchHistories"]["edges"];
+          List<dynamic> searchHistoryData =
+              result.data?["searchHistories"]["edges"];
           _getItems(searchHistoryData);
 
           // display when all data is available
-          return Padding(
-            padding: EdgeInsets.all(Constants.pagePadding),
-            child: SingleChildScrollView(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: itemsAndCategories.length,
-                itemBuilder: (BuildContext context, int index) {
-                  SearchHistoryItem element = itemsAndCategories[index];
-                  return HistoryTile(
-                    item: element,
-                    languageCode: widget.languageCode,
-                    userId: widget.userId,
-                  );
-                },
-              ),
-            ),
-          );
+          return itemsAndCategories.isEmpty
+              ? Center(
+                  child: Text(Languages.of(context)!.searchHistoryEmpty),
+                )
+              : Padding(
+                  padding: EdgeInsets.all(Constants.pagePadding),
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: itemsAndCategories.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        SearchHistoryItem element = itemsAndCategories[index];
+                        return HistoryTile(
+                          item: element,
+                          languageCode: widget.languageCode,
+                          userId: widget.userId,
+                        );
+                      },
+                    ),
+                  ),
+                );
         },
       ),
     );

@@ -79,6 +79,7 @@ class LanguageDe extends Languages {
 
   // search history page
   @override String get searchHistoryPageTitle => "Suchverlauf";
+  @override String get searchHistoryEmpty => "Du hast noch nach keinen Items gesucht.";
 
   // bookmark and bookmark page
   @override String get bookmarkPageTitle => "Lesezeichen";
